@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belediye Talep ve Akıllı Şikâyet Yönetim Sistemi</title>
+  <meta name="description" content="Vatandaş belediye talep, şikâyet, yapay zekâ kategorizasyon, birim personel atama ve harita takip sistemi">
+
+  <!-- CSS & Fonts -->
+  <link rel="stylesheet" href="/css/style.css?v=1.0.4">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-building-columns"></i>
+          <span>Belediye</span>Talep
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="active"><a href="#" data-view="dashboard"><i class="fas fa-chart-pie"></i> <span>Gösterge Paneli</span></a></li>
+        
+        <li class="has-submenu" id="nav-depts-menu">
+          <a href="#" onclick="toggleDeptSubmenu(event)">
+            <i class="fas fa-building"></i> <span>Belediye Birimleri</span>
+            <i class="fas fa-chevron-down submenu-arrow"></i>
+          </a>
+          <ul class="sidebar-submenu" id="sidebar-dept-list">
+            <!-- Populated dynamically -->
+          </ul>
+        </li>
+
+        <li><a href="#" data-view="complaints"><i class="fas fa-list-check"></i> <span>Tüm Talepler</span></a></li>
+        <li id="nav-my-complaints" style="display:none;"><a href="#" data-view="my-complaints"><i class="fas fa-folder-open"></i> <span>Taleplerim</span></a></li>
+        <li><a href="#" data-view="map"><i class="fas fa-map-location-dot"></i> <span>Harita Analizi</span></a></li>
+        <li id="nav-admin-users" style="display:none;"><a href="#" data-view="admin-users"><i class="fas fa-users-gear"></i> <span>Kullanıcı Yönetimi</span></a></li>
+        <li id="nav-admin-depts" style="display:none;"><a href="#" data-view="admin-departments"><i class="fas fa-sitemap"></i> <span>Müdürlük Yönetimi</span></a></li>
+        <li id="nav-admin-logs" style="display:none;"><a href="#" data-view="admin-logs"><i class="fas fa-shield-halved"></i> <span>Audit Logları</span></a></li>
+      </ul>
+
+      <div class="sidebar-user">
+        <div class="user-info">
+          <span class="user-name" id="user-display-name">Ziyaretçi Vatandaş</span>
+          <span class="user-role" id="user-display-role">Giriş Yapılmadı</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="search-box">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" id="global-search" placeholder="Takip No (BLD-2026-...) veya kelime ara..." onkeyup="if(event.key==='Enter') navigateTo('complaints')">
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" onclick="openModal('modal-quick-track')">
+            <i class="fas fa-search-location"></i> Takip No Sorgula
+          </button>
+          
+          <button class="btn btn-primary" onclick="openModal('modal-new-complaint')">
+            <i class="fas fa-plus"></i> Yeni Talep Oluştur
+          </button>
+
+          <button class="btn btn-secondary" id="btn-open-login" onclick="openModal('modal-login')">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+          </button>
+
+          <button class="btn btn-secondary" id="btn-logout" style="display:none;" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Çıkış
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Page Content Body -->
+      <main class="content-body">
+
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="view-dashboard">
+          <div class="page-title">
+            <h2>Belediye Genel Durum & Raporlama</h2>
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Canlı sistem metrikleri ve yönetim verileri</span>
+          </div>
+
+          <!-- KPI Summary Cards Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon blue"><i class="fas fa-inbox"></i></div>
+              <div class="kpi-details">
+                <h4>Toplam Talep</h4>
+                <div class="value" id="kpi-total">0</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon yellow"><i class="fas fa-clock"></i></div>
+              <div class="kpi-details">
+                <h4>Bekleyen Talepler</h4>
+                <div class="value" id="kpi-pending">0</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon green"><i class="fas fa-circle-check"></i></div>
+              <div class="kpi-details">
+                <h4>Çözülen Talepler</h4>
+                <div class="value" id="kpi-resolved">0</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon red"><i class="fas fa-triangle-exclamation"></i></div>
+              <div class="kpi-details">
+                <h4>Acil ve Kritik</h4>
+                <div class="value" id="kpi-urgent">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart.js Graphics Grid -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <h3><i class="fas fa-chart-column"></i> Kategorilere Göre Talep Dağılımı</h3>
+              <canvas id="chart-categories" height="140"></canvas>
+            </div>
+
+            <div class="chart-card">
+              <h3><i class="fas fa-chart-pie"></i> Durum Dağılımı</h3>
+              <canvas id="chart-status" height="200"></canvas>
+            </div>
+          </div>
+
+          <div class="charts-grid">
+            <div class="chart-card">
+              <h3><i class="fas fa-sitemap"></i> Müdürlüklere Göre Dağılım</h3>
+              <canvas id="chart-departments" height="140"></canvas>
+            </div>
+
+            <div class="chart-card">
+              <h3><i class="fas fa-map-pin"></i> Mahalle Bazlı Yoğunluk</h3>
+              <canvas id="chart-neighborhoods" height="200"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. COMPLAINTS LIST VIEW -->
+        <section id="view-complaints" style="display:none;">
+          <div class="page-title">
+            <h2>Talep ve Şikâyet Kayıtları</h2>
+            <button class="btn btn-primary" onclick="openModal('modal-new-complaint')"><i class="fas fa-plus"></i> Yeni Talep</button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-header">
+              <div style="display: flex; gap: 12px;">
+                <select id="filter-category" onchange="loadComplaintsList()" class="search-box" style="width: auto; padding: 8px 12px;">
+                  <option value="">Tüm Kategoriler</option>
+                </select>
+              </div>
+            </div>
+
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Takip Kodu</th>
+                  <th>Başlık</th>
+                  <th>Kategori</th>
+                  <th>Mahalle</th>
+                  <th>Durum</th>
+                  <th>Tarih</th>
+                  <th>İşlem</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-complaints">
+                <tr><td colspan="7" style="text-align: center;">Yükleniyor...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. MAP VIEW -->
+        <section id="view-map" style="display:none;">
+          <div class="page-title">
+            <h2>İnteraktif Harita Analiz Modülü</h2>
+            <span>Leaflet & OpenStreetMap canlı talep ve yoğunluk haritası</span>
+          </div>
+
+          <div class="chart-card">
+            <div id="map-container"></div>
+          </div>
+        </section>
+
+        <!-- 4. ADMIN USERS VIEW -->
+        <section id="view-admin-users" style="display:none;">
+          <div class="page-title">
+            <h2>Kullanıcı ve Rol Yönetimi</h2>
+          </div>
+          <div class="table-card">
+            <p style="padding: 20px;">Sistem yöneticisi kullanıcı yönetim paneli.</p>
+          </div>
+        </section>
+
+        <!-- 5. ADMIN DEPTS VIEW -->
+        <section id="view-admin-departments" style="display:none;">
+          <div class="page-title">
+            <h2>Belediye Müdürlükleri Yönetimi</h2>
+          </div>
+          <div class="table-card">
+            <p style="padding: 20px;">Belediye birimleri ve müdürlük yönetim alanı.</p>
+          </div>
+        </section>
+
+        <!-- 6. ADMIN LOGS VIEW -->
+        <section id="view-admin-logs" style="display:none;">
+          <div class="page-title">
+            <h2>Sistem Audit Denetim Logları</h2>
+          </div>
+          <div class="table-card">
+            <p style="padding: 20px;">Güvenlik ve denetim kayıtları.</p>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- App Footer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <p>&copy; 2026 <strong>Yebsoft</strong> - Belediye Talep ve Akıllı Şikâyet Yönetim Sistemi. Tüm Hakları Saklıdır.</p>
+          <div class="footer-links">
+            <span>Sistem Durumu: <strong style="color: #10b981;">● Aktif</strong></span>
+            <span>| Sürüm: 1.0.0</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL 1: NEW COMPLAINT MODAL -->
+  <div class="modal-overlay" id="modal-new-complaint">
+    <div class="modal-container" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-paper-plane" style="color: var(--accent);"></i> Yeni Talep / Şikâyet Oluştur</h3>
+        <button class="close-btn" onclick="closeModal('modal-new-complaint')">&times;</button>
+      </div>
+
+      <form id="form-new-complaint">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Talep Başlığı *</label>
+            <input type="text" id="complaint-title" name="title" required placeholder="Örn: Atatürk Caddesinde Çöp Taşıyor" class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;" />
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Talep Detaylı Açıklaması *</label>
+            <textarea id="complaint-description" name="description" rows="4" required placeholder="Sorunu detaylıca açıklayınız. Yapay zekâ metninizi otomatik analiz edecektir..." class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;"></textarea>
+          </div>
+
+          <!-- AI Assistant Dynamic Box -->
+          <div id="ai-suggestion-container" style="display: none;"></div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">Kategori *</label>
+              <select id="complaint-category" name="category_id" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;"></select>
+            </div>
+
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">Aciliyet Seviyesi</label>
+              <select id="complaint-urgency" name="urgency_level" class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;">
+                <option value="Düşük">Düşük</option>
+                <option value="Normal" selected>Normal</option>
+                <option value="Yüksek">Yüksek</option>
+                <option value="Acil">Acil</option>
+                <option value="Kritik">Kritik</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">İlçe *</label>
+              <select id="complaint-district" name="district_id" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;"></select>
+            </div>
+
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">Mahalle *</label>
+              <select id="complaint-neighborhood" name="neighborhood_id" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;"></select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Açık Adres</label>
+            <input type="text" name="open_address" placeholder="Cadde, sokak, kapı no bilgisi..." class="search-box" style="width: 100%; border-radius: 8px; padding: 10px 14px;" />
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Harita Üzerinden Konum Seçiniz (İsteğe Bağlı)</label>
+            <div id="complaint-picker-map" style="height: 200px; border-radius: 8px; margin-top: 6px;"></div>
+            <input type="hidden" id="complaint-lat" name="latitude" />
+            <input type="hidden" id="complaint-lng" name="longitude" />
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Fotoğraf veya Belge Yükle</label>
+            <input type="file" name="files" multiple accept="image/*,.pdf" class="search-box" style="width: 100%; border-radius: 8px; padding: 8px;" />
+          </div>
+
+          <!-- Hidden AI Data Fields -->
+          <input type="hidden" id="ai_suggested_category_id" name="ai_suggested_category_id" />
+          <input type="hidden" id="ai_suggested_dept_id" name="ai_suggested_dept_id" />
+          <input type="hidden" id="ai_suggested_priority" name="ai_suggested_priority" />
+          <input type="hidden" id="ai_sentiment" name="ai_sentiment" />
+          <input type="hidden" id="ai_flagged" name="ai_flagged" />
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-new-complaint')">İptal</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Talebi Gönder</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: QUICK TRACK MODAL -->
+  <div class="modal-overlay" id="modal-quick-track">
+    <div class="modal-container" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-search"></i> Talep Takip Kodu Sorgula</h3>
+        <button class="close-btn" onclick="closeModal('modal-quick-track')">&times;</button>
+      </div>
+      <form id="form-quick-track">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label style="font-size: 0.9rem; color: var(--text-muted);">Takip Numarası</label>
+            <input type="text" id="track-code-input" placeholder="Örn: BLD-2026-000101" required class="search-box" style="width: 100%; padding: 12px; border-radius: 8px; font-size: 1.1rem; text-transform: uppercase;" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Sorgula</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: COMPLAINT DETAIL MODAL -->
+  <div class="modal-overlay" id="modal-complaint-detail">
+    <div class="modal-container" style="max-width: 720px;">
+      <div class="modal-header">
+        <h3>Talep Detayı</h3>
+        <button class="close-btn" onclick="closeModal('modal-complaint-detail')">&times;</button>
+      </div>
+      <div id="complaint-detail-content">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: LOGIN MODAL -->
+  <div class="modal-overlay" id="modal-login">
+    <div class="modal-container" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3>Giriş Yap</h3>
+        <button class="close-btn" onclick="closeModal('modal-login')">&times;</button>
+      </div>
+      <form id="form-login">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <input type="email" id="login-email" placeholder="E-posta Adresi" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <input type="password" id="login-password" placeholder="Şifre" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Giriş Yap</button>
+          <p style="font-size: 0.85rem; text-align: center; color: var(--text-muted);">
+            Hesabınız yok mu? <a href="#" onclick="closeModal('modal-login'); openModal('modal-register');" style="color: var(--accent);">Vatandaş Kaydı Oluştur</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: REGISTER MODAL -->
+  <div class="modal-overlay" id="modal-register">
+    <div class="modal-container" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3>Vatandaş Kaydı</h3>
+        <button class="close-btn" onclick="closeModal('modal-register')">&times;</button>
+      </div>
+      <form id="form-register">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <input type="text" id="reg-fullname" placeholder="Adınız Soyadınız" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <input type="email" id="reg-email" placeholder="E-posta Adresiniz" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <input type="text" id="reg-phone" placeholder="Telefon Numarası" class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <input type="password" id="reg-password" placeholder="Şifre (en az 6 karakter)" required class="search-box" style="width: 100%; border-radius: 8px; padding: 10px;" />
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Kayıt Ol</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Scripts -->
+  <script src="/js/leaflet-map.js?v=1.0.4"></script>
+  <script src="/js/charts.js?v=1.0.4"></script>
+  <script src="/js/ai-helper.js?v=1.0.4"></script>
+  <script src="/js/app.js?v=1.0.4"></script>
+</body>
+</html>
