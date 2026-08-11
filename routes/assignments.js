@@ -13,13 +13,13 @@ router.post('/assign', authenticateToken, checkRole(['Sistem Yöneticisi', 'Biri
   try {
     await conn.beginTransaction();
 
-    const [cRows] = await conn.query('SELECT tracking_code, department_id FROM complaints WHERE id = ?', [complaint_id]);
+    const [cRows] = await conn.query('SELECT tracking_code, department_id, status FROM complaints WHERE id = ?', [complaint_id]);
     if (cRows.length === 0) {
       await conn.rollback();
       return res.status(404).json({ success: false, message: 'Talep bulunamadı.' });
     }
 
-    const { tracking_code, department_id } = cRows[0];
+    const { tracking_code, department_id, status: oldStatus } = cRows[0];
 
     // Create Assignment
     const [assignResult] = await conn.query(
@@ -30,25 +30,35 @@ router.post('/assign', authenticateToken, checkRole(['Sistem Yöneticisi', 'Biri
 
     // Update Complaint Status & Priority
     await conn.query(
-      `UPDATE complaints SET status = 'Personele atandı', priority_level = COALESCE(?, priority_level), updated_at = NOW() WHERE id = ?`,
-      [priority_level || null, complaint_id]
+      `UPDATE complaints SET status = ?, priority_level = COALESCE(?, priority_level), updated_at = NOW() WHERE id = ?`,
+      ['Personele atandı', priority_level || null, complaint_id]
     );
 
-    // Status History Log
+    const { memData } = require('../config/db');
+    const compMem = (memData.complaints || []).find(c => c.id == complaint_id);
+    if (compMem) {
+      compMem.status = 'Personele atandı';
+      if (priority_level) compMem.priority_level = priority_level;
+    }
+
+    // Status History Log with real old_status
     await conn.query(
       `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
-       VALUES (?, ?, 'İlgili birime yönlendirildi', 'Personele atandı', ?)`,
-      [complaint_id, req.user.id, `Personele atandı: ${task_description || ''}`]
+       VALUES (?, ?, ?, 'Personele atandı', ?)`,
+      [complaint_id, req.user.id, oldStatus || 'Yeni', `Personele atandı: ${task_description || ''}`]
     );
 
     // Send Notification to Employee
+    const { createSystemNotification } = require('../config/db');
     const [empUser] = await conn.query('SELECT user_id FROM employees WHERE id = ?', [employee_id]);
     if (empUser.length > 0) {
-      await conn.query(
-        `INSERT INTO notifications (user_id, title, message, type, reference_id)
-         VALUES (?, 'Yeni Görev Atandı', ?, 'Görev', ?)`,
-        [empUser[0].user_id, `${tracking_code} numaralı şikayet için yeni görev atandı: ${task_description || 'İnceleme bekleniyor'}`, complaint_id]
-      );
+      await createSystemNotification({
+        user_id: empUser[0].user_id,
+        title: '📌 Yeni Görev Atandı',
+        message: `${tracking_code} numaralı şikâyet için yeni görev atandı: ${task_description || 'İnceleme bekleniyor'}`,
+        type: 'Görev',
+        reference_id: complaint_id
+      });
     }
 
     await conn.commit();
@@ -81,9 +91,16 @@ router.post(
       let employeeId = req.user.employee_id;
       if (!employeeId) {
         const [empRows] = await conn.query('SELECT id FROM employees WHERE user_id = ? LIMIT 1', [req.user.id]);
-        if (empRows.length > 0) employeeId = empRows[0].id;
-        else employeeId = 1;
+        if (empRows.length > 0) {
+          employeeId = empRows[0].id;
+        } else {
+          await conn.rollback();
+          return res.status(400).json({ success: false, message: 'Personel kaydı bulunamadı.' });
+        }
       }
+
+      const [cRows] = await conn.query('SELECT status FROM complaints WHERE id = ?', [complaint_id]);
+      const currentStatus = (cRows && cRows.length > 0) ? cRows[0].status : 'Personele atandı';
 
       let resolutionPhotoPath = null;
       if (req.file) {
@@ -117,12 +134,28 @@ router.post(
       // Update Complaint Status
       await conn.query('UPDATE complaints SET status = ?, updated_at = NOW() WHERE id = ?', [new_status, complaint_id]);
 
-      // Add History
+      // Add History with real old_status
       await conn.query(
         `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
-         VALUES (?, ?, 'Personele atandı', ?, ?)`,
-        [complaint_id, req.user.id, new_status, sanitizeInput(action_description)]
+         VALUES (?, ?, ?, ?, ?)`,
+        [complaint_id, req.user.id, currentStatus, new_status, sanitizeInput(action_description)]
       );
+
+      // Notify Citizen / Creator
+      const { createSystemNotification } = require('../config/db');
+      const [cDetail] = await conn.query('SELECT tracking_code, citizen_id, user_id, title FROM complaints WHERE id = ?', [complaint_id]);
+      if (cDetail && cDetail.length > 0) {
+        const creatorId = cDetail[0].user_id || cDetail[0].citizen_id;
+        if (creatorId) {
+          await createSystemNotification({
+            user_id: creatorId,
+            title: '✅ Talebiniz Güncellendi',
+            message: `[${cDetail[0].tracking_code}] - "${cDetail[0].title}" başlıklı talebiniz hakkında işlem yapıldı (${new_status}).`,
+            type: 'Çözüm',
+            reference_id: complaint_id
+          });
+        }
+      }
 
       await conn.commit();
       await createAuditLog(req.user.id, 'ADD_COMPLAINT_ACTION', 'complaint_actions', complaint_id, null, { action_description, new_status }, req.ip);

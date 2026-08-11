@@ -51,18 +51,57 @@ router.post('/users', async (req, res) => {
       [role_id, sanitizeInput(full_name), email, sanitizeInput(phone) || null, password_hash]
     );
 
-    const newUserId = uResult.insertId;
+    const newUserId = uResult ? (uResult.insertId || uResult[0]?.insertId || Date.now()) : Date.now();
 
     if (role_id == 2 || role_id == 3) {
       // Birim Yöneticisi veya Personel ise employees tablosuna ekle
       await conn.query(
         `INSERT INTO employees (user_id, department_id, title)
          VALUES (?, ?, ?)`,
-        [newUserId, department_id || 1, sanitizeInput(title) || 'Saha Görevlisi']
+        [newUserId, department_id || 1, sanitizeInput(title) || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi')]
       );
     } else if (role_id == 4) {
       // Vatandaş ise
       await conn.query(`INSERT INTO citizens (user_id) VALUES (?)`, [newUserId]);
+    }
+
+    // Memory proxy sync
+    const { memData } = require('../config/db');
+    if (memData && memData.users) {
+      const deptObj = (memData.departments || []).find(d => d.id == department_id);
+      const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };
+      const role_name = roleNameMap[role_id] || 'Vatandaş';
+
+      const memUser = {
+        id: newUserId,
+        role_id: Number(role_id),
+        role_name,
+        full_name,
+        email,
+        phone,
+        password_hash,
+        is_active: 1,
+        department_id: (role_id == 2 || role_id == 3 || role_id == 1) ? Number(department_id) : null,
+        department_name: deptObj ? deptObj.name : null,
+        employee_title: title || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi')
+      };
+      memData.users.push(memUser);
+
+      if (role_id == 2 || role_id == 3) {
+        if (!memData.employees) memData.employees = [];
+        memData.employees.push({
+          id: memData.employees.length + 1,
+          user_id: newUserId,
+          department_id: Number(department_id) || 1,
+          title: title || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi')
+        });
+      } else if (role_id == 4) {
+        if (!memData.citizens) memData.citizens = [];
+        memData.citizens.push({
+          id: memData.citizens.length + 1,
+          user_id: newUserId
+        });
+      }
     }
 
     await conn.commit();
@@ -84,19 +123,133 @@ router.put('/users/:id/toggle-active', async (req, res) => {
 
   try {
     const [uRows] = await pool.query('SELECT is_active FROM users WHERE id = ?', [userId]);
-    if (uRows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı.' });
+    let currentStatus = 1;
+    if (uRows && uRows.length > 0) {
+      currentStatus = uRows[0].is_active;
     }
 
-    const newStatus = uRows[0].is_active ? 0 : 1;
+    const newStatus = currentStatus ? 0 : 1;
     await pool.query('UPDATE users SET is_active = ? WHERE id = ?', [newStatus, userId]);
 
-    await createAuditLog(req.user.id, 'TOGGLE_USER_ACTIVE', 'users', userId, { is_active: uRows[0].is_active }, { is_active: newStatus }, req.ip);
+    const { memData } = require('../config/db');
+    if (memData && memData.users) {
+      const u = memData.users.find(usr => usr.id == userId);
+      if (u) u.is_active = newStatus;
+    }
+
+    await createAuditLog(req.user.id, 'TOGGLE_USER_ACTIVE', 'users', userId, { is_active: currentStatus }, { is_active: newStatus }, req.ip);
 
     res.json({ success: true, message: `Kullanıcı durumu ${newStatus ? 'Aktif' : 'Pasif'} yapıldı.` });
   } catch (err) {
     console.error('Durum değiştirme hatası:', err);
     res.status(500).json({ success: false, message: 'Sunucu hatası.' });
+  }
+});
+
+// 3.5. Kullanıcı Bilgilerini Güncelle
+router.put('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { full_name, phone, role_id, department_id, title, password } = req.body;
+
+  const conn = await pool.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    let password_hash = null;
+    if (password && password.length >= 6) {
+      password_hash = await bcrypt.hash(password, 10);
+      await conn.query(
+        `UPDATE users SET full_name = ?, phone = ?, role_id = ?, password_hash = ? WHERE id = ?`,
+        [sanitizeInput(full_name), sanitizeInput(phone) || null, role_id, password_hash, userId]
+      );
+    } else {
+      await conn.query(
+        `UPDATE users SET full_name = ?, phone = ?, role_id = ? WHERE id = ?`,
+        [sanitizeInput(full_name), sanitizeInput(phone) || null, role_id, userId]
+      );
+    }
+
+    if (role_id == 2 || role_id == 3) {
+      const [empExisting] = await conn.query('SELECT id FROM employees WHERE user_id = ?', [userId]);
+      if (empExisting.length > 0) {
+        await conn.query(
+          `UPDATE employees SET department_id = ?, title = ? WHERE user_id = ?`,
+          [department_id || 1, sanitizeInput(title) || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi'), userId]
+        );
+      } else {
+        await conn.query(
+          `INSERT INTO employees (user_id, department_id, title) VALUES (?, ?, ?)`,
+          [userId, department_id || 1, sanitizeInput(title) || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi')]
+        );
+      }
+    }
+
+    // Memory proxy update
+    const { memData } = require('../config/db');
+    if (memData && memData.users) {
+      const u = memData.users.find(usr => usr.id == userId);
+      if (u) {
+        if (full_name) u.full_name = full_name;
+        if (phone) u.phone = phone;
+        if (role_id) {
+          u.role_id = Number(role_id);
+          const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };
+          u.role_name = roleNameMap[role_id] || u.role_name;
+        }
+        if (password_hash) u.password_hash = password_hash;
+
+        if (department_id) {
+          u.department_id = Number(department_id);
+          const deptObj = (memData.departments || []).find(d => d.id == department_id);
+          if (deptObj) u.department_name = deptObj.name;
+        }
+        if (title) u.employee_title = title;
+
+        let emp = (memData.employees || []).find(e => e.user_id == userId);
+        if (emp) {
+          if (department_id) emp.department_id = Number(department_id);
+          if (title) emp.title = title;
+        } else if (role_id == 2 || role_id == 3) {
+          if (!memData.employees) memData.employees = [];
+          memData.employees.push({
+            id: memData.employees.length + 1,
+            user_id: Number(userId),
+            department_id: Number(department_id) || 1,
+            title: title || 'Saha Görevlisi'
+          });
+        }
+      }
+    }
+
+    await conn.commit();
+    await createAuditLog(req.user.id, 'UPDATE_USER', 'users', userId, null, { full_name, role_id }, req.ip);
+
+    res.json({ success: true, message: 'Kullanıcı bilgileri güncellendi.' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Kullanıcı güncelleme hatası:', err);
+    res.status(500).json({ success: false, message: 'Sunucu hatası.' });
+  } finally {
+    conn.release();
+  }
+});
+
+// 3.6. Kullanıcı Soft Delete (Fiziksel SQL DELETE yerine is_active = 0)
+router.delete('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await pool.query('UPDATE users SET is_active = 0 WHERE id = ?', [userId]);
+    const { memData } = require('../config/db');
+    if (memData && memData.users) {
+      const u = memData.users.find(usr => usr.id == userId);
+      if (u) u.is_active = 0;
+    }
+    await createAuditLog(req.user.id, 'SOFT_DELETE_USER', 'users', userId, { is_active: 1 }, { is_active: 0 }, req.ip);
+    res.json({ success: true, message: 'Kullanıcı başarıyla pasife alındı (Soft Delete).' });
+  } catch (err) {
+    console.error('Soft delete user error:', err);
+    res.status(500).json({ success: false, message: 'Kullanıcı silinemedi.' });
   }
 });
 
@@ -107,6 +260,7 @@ router.get('/departments', async (req, res) => {
       `SELECT d.*, COUNT(e.id) as employee_count
        FROM departments d
        LEFT JOIN employees e ON d.id = e.department_id
+       WHERE d.is_active = 1
        GROUP BY d.id ORDER BY d.id ASC`
     );
     res.json({ success: true, departments });
@@ -128,7 +282,78 @@ router.post('/departments', async (req, res) => {
   }
 });
 
-// 5. Audit Logları Göster
+// 4.5. Müdürlük Soft Delete (Fiziksel SQL DELETE yerine is_active = 0)
+router.delete('/departments/:id', async (req, res) => {
+  const deptId = req.params.id;
+  try {
+    await pool.query('UPDATE departments SET is_active = 0 WHERE id = ?', [deptId]);
+    const { memData } = require('../config/db');
+    if (memData && memData.departments) {
+      const d = memData.departments.find(dept => dept.id == deptId);
+      if (d) d.is_active = 0;
+    }
+    await createAuditLog(req.user.id, 'SOFT_DELETE_DEPARTMENT', 'departments', deptId, { is_active: 1 }, { is_active: 0 }, req.ip);
+    res.json({ success: true, message: 'Müdürlük pasife alındı (Soft Delete).' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Müdürlük silinemedi.' });
+  }
+});
+
+// 5. Admin / Yönetici Talep Yönetimsel Güncelleme (Title & Description DISABLED in UI & ignored)
+router.put('/complaints/:id', async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+    const { category_id, department_id, priority_level, status } = req.body;
+
+    const [cRows] = await pool.query('SELECT status FROM complaints WHERE id = ?', [complaintId]);
+    if (!cRows || cRows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Talep bulunamadı.' });
+    }
+
+    const oldStatus = cRows[0].status;
+
+    await pool.query(
+      `UPDATE complaints 
+       SET category_id = COALESCE(?, category_id),
+           department_id = COALESCE(?, department_id),
+           priority_level = COALESCE(?, priority_level),
+           urgency_level = COALESCE(?, urgency_level),
+           status = COALESCE(?, status),
+           updated_at = NOW()
+       WHERE id = ?`,
+      [category_id || null, department_id || null, priority_level || null, priority_level || null, status || null, complaintId]
+    );
+
+    const { memData } = require('../config/db');
+    if (memData && memData.complaints) {
+      const memComp = memData.complaints.find(c => c.id == complaintId);
+      if (memComp) {
+        if (category_id) memComp.category_id = category_id;
+        if (department_id) memComp.department_id = department_id;
+        if (priority_level) {
+          memComp.priority_level = priority_level;
+          memComp.urgency_level = priority_level;
+        }
+        if (status) memComp.status = status;
+      }
+    }
+
+    if (status && status !== oldStatus) {
+      await pool.query(
+        `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
+         VALUES (?, ?, ?, ?, 'Yönetici tarafından güncellendi.')`,
+        [complaintId, req.user.id, oldStatus, status]
+      );
+    }
+
+    res.json({ success: true, message: 'Talep yönetimsel bilgileri başarıyla güncellendi.' });
+  } catch (err) {
+    console.error('Admin complaint update error:', err);
+    res.status(500).json({ success: false, message: 'Talep güncellenemedi.' });
+  }
+});
+
+// 6. Audit Logları Göster
 router.get('/audit-logs', async (req, res) => {
   try {
     const [logs] = await pool.query(

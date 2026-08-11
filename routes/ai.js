@@ -67,7 +67,7 @@ router.post('/analyze', async (req, res) => {
   const fullText = (title + ' ' + description).toLowerCase();
 
   // 1. Kategori & Müdürlük Skoru
-  let bestMatch = AI_RULES[0];
+  let bestMatch = null;
   let maxScore = 0;
 
   AI_RULES.forEach(rule => {
@@ -81,8 +81,16 @@ router.post('/analyze', async (req, res) => {
     }
   });
 
+  const categoryResult = bestMatch || {
+    category_id: 14,
+    category_name: 'Diğer',
+    department_id: 1,
+    dept_name: 'Fen İşleri Müdürlüğü',
+    priority: 'Normal'
+  };
+
   // 2. Aciliyet & Öncelik Analizi
-  let urgency = bestMatch.priority;
+  let urgency = categoryResult.priority;
   let hasEmergency = false;
 
   EMERGENCY_WORDS.forEach(word => {
@@ -136,10 +144,10 @@ router.post('/analyze', async (req, res) => {
   res.json({
     success: true,
     analysis: {
-      suggested_category_id: bestMatch.category_id,
-      suggested_category_name: bestMatch.category_name,
-      suggested_department_id: bestMatch.department_id,
-      suggested_department_name: bestMatch.dept_name,
+      suggested_category_id: categoryResult.category_id,
+      suggested_category_name: categoryResult.category_name,
+      suggested_department_id: categoryResult.department_id,
+      suggested_department_name: categoryResult.dept_name,
       suggested_priority: urgency,
       sentiment: sentiment,
       is_flagged: isFlagged,

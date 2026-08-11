@@ -59,19 +59,61 @@ async function seed() {
     // 4. Districts & Neighborhoods
     await conn.query(`
       INSERT INTO districts (id, name) VALUES
-      (1, 'Merkez Kaza'),
-      (2, 'Kuzey İlçesi')
+      (1, 'Giresun Merkez'),
+      (2, 'Bulancak'),
+      (3, 'Espiye'),
+      (4, 'Görele'),
+      (5, 'Tirebolu')
       ON DUPLICATE KEY UPDATE name=VALUES(name);
     `);
 
     await conn.query(`
       INSERT INTO neighborhoods (id, district_id, name) VALUES
-      (1, 1, 'Atatürk Mahallesi'),
-      (2, 1, 'Cumhuriyet Mahallesi'),
-      (3, 1, 'Fatih Mahallesi'),
-      (4, 1, 'Mimar Sinan Mahallesi'),
-      (5, 2, 'Gazi Mahallesi'),
-      (6, 2, 'Hürriyet Mahallesi')
+      (1, 1, 'Aksu Mahallesi'),
+      (2, 1, 'Aydınlar Mahallesi'),
+      (3, 1, 'Çaykara Mahallesi'),
+      (4, 1, 'Çınarlar Mahallesi'),
+      (5, 1, 'Çıtlakkale Mahallesi'),
+      (6, 1, 'Cumhuriyet Mahallesi'),
+      (7, 1, 'Erikliman Mahallesi'),
+      (8, 1, 'Fevzi Çakmak Mahallesi'),
+      (9, 1, 'Gaziler Mahallesi'),
+      (10, 1, 'Gedikkaya Mahallesi'),
+      (11, 1, 'Gemilerçekeği Mahallesi'),
+      (12, 1, 'Güre Mahallesi'),
+      (13, 1, 'Hacı Hüseyin Mahallesi'),
+      (14, 1, 'Hacımiktat Mahallesi'),
+      (15, 1, 'Hacısiyam Mahallesi'),
+      (16, 1, 'Kale Mahallesi'),
+      (17, 1, 'Kapu Mahallesi'),
+      (18, 1, 'Kavaklar Mahallesi'),
+      (19, 1, 'Kayadibi Mahallesi'),
+      (20, 1, 'Küçükköy Mahallesi'),
+      (21, 1, 'Konacık Mahallesi'),
+      (22, 1, 'Nizamiye Mahallesi'),
+      (23, 1, 'Osmaniye Mahallesi'),
+      (24, 1, 'Seldeğirmeni Mahallesi'),
+      (25, 1, 'Şeyhkeramettin Mahallesi'),
+      (26, 1, 'Sultan Selim Mahallesi'),
+      (27, 1, 'Tekke Mahallesi'),
+      (28, 1, 'Teyyaredüzü Mahallesi'),
+      (29, 1, 'Yalı Mahallesi'),
+      (30, 2, 'Acısu Mahallesi'),
+      (31, 2, 'Arifli Mahallesi'),
+      (32, 2, 'Bahçelievler Mahallesi'),
+      (33, 2, 'Ballıca Mahallesi'),
+      (34, 2, 'Bulancak Mahallesi'),
+      (35, 2, 'Duacıoğlu Mahallesi'),
+      (36, 2, 'Güzelyalı Mahallesi'),
+      (37, 2, 'İhsaniye Mahallesi'),
+      (38, 2, 'İsmetpaşa Mahallesi'),
+      (39, 2, 'Kızılot Mahallesi'),
+      (40, 2, 'Pazarsuyu Mahallesi'),
+      (41, 2, 'Sanayi Mahallesi'),
+      (42, 2, 'Saraçlı Mahallesi'),
+      (43, 2, 'Sisin Mahallesi'),
+      (44, 2, 'Şemsettin Mahallesi'),
+      (45, 2, 'Toprakdeğirmeni Mahallesi')
       ON DUPLICATE KEY UPDATE name=VALUES(name);
     `);
 

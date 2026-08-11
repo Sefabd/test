@@ -4,16 +4,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const { pool } = require('../config/db');
-const { authenticateToken, JWT_SECRET } = require('../middleware/auth');
-const { createAuditLog, sanitizeInput } = require('../middleware/security');
+const { JWT_SECRET } = require('../middleware/auth');
+const { createAuditLog } = require('../middleware/security');
 
-// Vatandaş Kayıt Ol
+// 1. Vatandaş Kayıt Ol (Register)
 router.post(
   '/register',
   [
     body('full_name').notEmpty().withMessage('Ad soyad zorunludur.').trim(),
-    body('email').isEmail().withMessage('Geçerli bir e-posta giriniz.').trim(),
-    body('password').isLength({ min: 6 }).withMessage('Şifre en az 6 karakter olmalıdır.').trim()
+    body('email').isEmail().withMessage('Geçerli bir e-posta adresi giriniz.').trim(),
+    body('password').isLength({ min: 6 }).withMessage('Şifre en az 6 karakter olmalıdır.'),
+    body('phone').notEmpty().withMessage('Telefon numarası zorunludur.').trim()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -21,71 +22,84 @@ router.post(
       return res.status(400).json({ success: false, message: errors.array()[0].msg });
     }
 
-    const { full_name, password, phone, identity_number, address } = req.body;
-    const email = req.body.email ? req.body.email.trim().toLowerCase() : '';
+    const { full_name, email, password, phone, identity_number, address } = req.body;
+    const cleanEmail = String(email).trim().toLowerCase();
+
     const conn = await pool.getConnection();
 
     try {
       await conn.beginTransaction();
 
-      // Check existing email
-      const [existing] = await conn.query('SELECT id FROM users WHERE email = ?', [email]);
-      if (existing && existing.length > 0) {
+      const [existingUsers] = await conn.query('SELECT id FROM users WHERE email = ?', [cleanEmail]);
+      if (existingUsers && existingUsers.length > 0) {
         await conn.rollback();
-        return res.status(400).json({ success: false, message: 'Bu e-posta adresi zaten kayıtlı.' });
+        return res.status(400).json({ success: false, message: 'Bu e-posta adresi ile zaten kayıtlı bir hesap var.' });
       }
 
-      const password_hash = await bcrypt.hash(password, 10);
-      const role_id = 4; // Vatandaş Rolü
+      const salt = await bcrypt.genSalt(10);
+      const password_hash = await bcrypt.hash(password, salt);
 
       const [userResult] = await conn.query(
         `INSERT INTO users (role_id, full_name, email, phone, password_hash, is_active)
-         VALUES (?, ?, ?, ?, ?, 1)`,
-        [role_id, sanitizeInput(full_name), email, sanitizeInput(phone) || null, password_hash]
+         VALUES (4, ?, ?, ?, ?, 1)`,
+        [full_name, cleanEmail, phone, password_hash]
       );
 
-      const userId = userResult ? (userResult.insertId || userResult[0]?.insertId || 1) : 1;
+      const userId = userResult ? (userResult.insertId || userResult[0]?.insertId || Date.now()) : Date.now();
 
       const [citizenResult] = await conn.query(
         `INSERT INTO citizens (user_id, identity_number, address)
          VALUES (?, ?, ?)`,
-        [userId, sanitizeInput(identity_number) || null, sanitizeInput(address) || null]
+        [userId, identity_number || null, address || null]
       );
 
-      const citizenId = citizenResult ? (citizenResult.insertId || citizenResult[0]?.insertId || 1) : 1;
+      const citizenId = citizenResult ? (citizenResult.insertId || citizenResult[0]?.insertId || userId) : userId;
 
       await conn.commit();
 
-      await createAuditLog(userId, 'USER_REGISTER', 'users', userId, null, { email, full_name }, req.ip);
-
       const token = jwt.sign(
-        { id: userId, email, role_id: 4, role_name: 'Vatandaş', full_name, citizen_id: citizenId },
+        {
+          id: userId,
+          email: cleanEmail,
+          role_id: 4,
+          role_name: 'Vatandaş',
+          citizen_id: citizenId,
+          full_name
+        },
         JWT_SECRET,
-        { expiresIn: '7d' }
+        { expiresIn: '24h' }
       );
 
       res.status(201).json({
         success: true,
-        message: 'Kayıt başarıyla tamamlandı.',
+        message: 'Kayıt başarıyla oluşturuldu.',
         token,
-        user: { id: userId, full_name, email, role_id: 4, role_name: 'Vatandaş', citizen_id: citizenId }
+        user: {
+          id: userId,
+          full_name,
+          email: cleanEmail,
+          phone,
+          role_id: 4,
+          role_name: 'Vatandaş',
+          citizen_id: citizenId
+        }
       });
     } catch (err) {
       await conn.rollback();
       console.error('Kayıt hatası:', err);
-      res.status(500).json({ success: false, message: 'Sunucu hatası oluştu: ' + (err.message || 'Bilinmeyen hata') });
+      res.status(500).json({ success: false, message: 'Kayıt işlemi sırasında hata meydana geldi.' });
     } finally {
       conn.release();
     }
   }
 );
 
-// Giriş Yap (Guarantee zero password failure for demo accounts)
+// 2. Kullanıcı Giriş Yap (Login)
 router.post(
   '/login',
   [
-    body('email').notEmpty().withMessage('Geçerli e-posta giriniz.').trim(),
-    body('password').notEmpty().withMessage('Şifre zorunludur.').trim()
+    body('email').notEmpty().withMessage('Lütfen e-posta adresi giriniz.').trim(),
+    body('password').notEmpty().withMessage('Şifre alanı boş bırakılamaz.')
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -93,19 +107,16 @@ router.post(
       return res.status(400).json({ success: false, message: errors.array()[0].msg });
     }
 
-    const password = (req.body.password || '').trim();
-    const email = req.body.email ? req.body.email.trim().toLowerCase() : '';
+    const { email, password } = req.body;
+    const cleanEmail = String(email).trim().toLowerCase();
 
     try {
       const [users] = await pool.query(
-        `SELECT u.*, r.name as role_name, c.id as citizen_id, e.id as employee_id, e.department_id, d.name as department_name
+        `SELECT u.*, r.name as role_name
          FROM users u
          JOIN roles r ON u.role_id = r.id
-         LEFT JOIN citizens c ON u.id = c.user_id
-         LEFT JOIN employees e ON u.id = e.user_id
-         LEFT JOIN departments d ON e.department_id = d.id
-         WHERE u.email = ?`,
-        [email]
+         WHERE u.email = ? AND u.is_active = 1`,
+        [cleanEmail]
       );
 
       if (!users || users.length === 0) {
@@ -114,78 +125,256 @@ router.post(
 
       const user = users[0];
 
-      if (!user.is_active) {
-        return res.status(403).json({ success: false, message: 'Hesabınız pasif durumdadır.' });
-      }
-
-      // 100% Reliable Password Validation
-      let isMatch = (password === '123456');
-      if (!isMatch && user.password_hash) {
-        try {
-          isMatch = await bcrypt.compare(password, user.password_hash);
-        } catch (e) {
-          isMatch = false;
-        }
-      }
-
+      // Password Match Verification via bcrypt
+      const isMatch = await bcrypt.compare(password, user.password_hash);
       if (!isMatch) {
         return res.status(401).json({ success: false, message: 'E-posta adresi veya şifre hatalı.' });
       }
 
-      const payload = {
-        id: user.id,
-        email: user.email,
-        full_name: user.full_name,
-        role_id: user.role_id,
-        role_name: user.role_name || (user.role_id === 1 ? 'Sistem Yöneticisi' : (user.role_id === 2 ? 'Birim Yöneticisi' : (user.role_id === 3 ? 'Personel' : 'Vatandaş'))),
-        citizen_id: user.citizen_id || null,
-        employee_id: user.employee_id || null,
-        department_id: user.department_id || null,
-        department_name: user.department_name || null
-      };
+      let citizen_id = null;
+      let employee_id = null;
+      let department_id = null;
+      let department_name = null;
 
-      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+      if (user.role_name === 'Vatandaş') {
+        const [citizens] = await pool.query('SELECT id FROM citizens WHERE user_id = ?', [user.id]);
+        if (citizens && citizens.length > 0) {
+          citizen_id = citizens[0].id;
+        } else {
+          citizen_id = user.id;
+        }
+      } else {
+        // Priority 1: Email-to-Department Mapping for all Municipal Managers & Staff
+        const EMAIL_DEPT_MAP = {
+          'fenisleri.mudur@belediye.gov.tr': { id: 1, name: 'Fen İşleri Müdürlüğü' },
+          'ali.fen@belediye.gov.tr': { id: 1, name: 'Fen İşleri Müdürlüğü' },
+          'temizlik.mudur@belediye.gov.tr': { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
+          'veli.temizlik@belediye.gov.tr': { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
+          'park.mudur@belediye.gov.tr': { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
+          'fatma.park@belediye.gov.tr': { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
+          'zabita.mudur@belediye.gov.tr': { id: 4, name: 'Zabıta Müdürlüğü' },
+          'su.mudur@belediye.gov.tr': { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' },
+          'veteriner.mudur@belediye.gov.tr': { id: 6, name: 'Veteriner İşleri Müdürlüğü' },
+          'ulasim.mudur@belediye.gov.tr': { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü' },
+          'sosyal.mudur@belediye.gov.tr': { id: 8, name: 'Sosyal Hizmetler Müdürlüğü' },
+          'imar.mudur@belediye.gov.tr': { id: 9, name: 'İmar ve Şehircilik Müdürlüğü' },
+          'bilgiislem.mudur@belediye.gov.tr': { id: 10, name: 'Bilgi İşlem Müdürlüğü' }
+        };
 
-      await createAuditLog(user.id, 'USER_LOGIN', 'users', user.id, null, { email: user.email }, req.ip);
+        if (EMAIL_DEPT_MAP[cleanEmail]) {
+          department_id = EMAIL_DEPT_MAP[cleanEmail].id;
+          department_name = EMAIL_DEPT_MAP[cleanEmail].name;
+        } else {
+          department_id = user.department_id || null;
+          employee_id = user.employee_id || null;
+
+          const [employees] = await pool.query(
+            `SELECT e.id, e.department_id, d.name as department_name
+             FROM employees e
+             JOIN departments d ON e.department_id = d.id
+             WHERE e.user_id = ?`,
+            [user.id]
+          );
+          if (employees && employees.length > 0) {
+            employee_id = employees[0].id;
+            department_id = employees[0].department_id;
+            department_name = employees[0].department_name;
+          }
+
+          if (department_id && !department_name) {
+            const [depts] = await pool.query('SELECT name FROM departments WHERE id = ?', [department_id]);
+            if (depts && depts.length > 0) {
+              department_name = depts[0].name;
+            }
+          }
+        }
+      }
+
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+          role_id: user.role_id,
+          role_name: user.role_name,
+          citizen_id: citizen_id || user.id,
+          employee_id,
+          department_id,
+          department_name,
+          full_name: user.full_name
+        },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+      );
 
       res.json({
         success: true,
         message: 'Giriş başarılı.',
         token,
-        user: payload
+        user: {
+          id: user.id,
+          full_name: user.full_name,
+          email: user.email,
+          phone: user.phone,
+          role_id: user.role_id,
+          role_name: user.role_name,
+          citizen_id: citizen_id || user.id,
+          employee_id,
+          department_id,
+          department_name
+        }
       });
     } catch (err) {
       console.error('Giriş hatası:', err);
-      res.status(500).json({ success: false, message: 'Sunucu hatası oluştu.' });
+      res.status(500).json({ success: false, message: 'Giriş işlemi sırasında sunucu hatası oluştu.' });
     }
   }
 );
 
-// Profil Bilgisi
+// 3. Current User Verification & Session Check Endpoint (GET /api/auth/me)
+const { authenticateToken } = require('../middleware/auth');
 router.get('/me', authenticateToken, async (req, res) => {
   try {
-    const [users] = await pool.query(
-      `SELECT u.id, u.full_name, u.email, u.phone, u.role_id, r.name as role_name,
-              c.id as citizen_id, c.identity_number, c.address,
-              e.id as employee_id, e.department_id, e.title, d.name as department_name
+    const userId = req.user.id;
+    const [uRows] = await pool.query(
+      `SELECT u.id, u.role_id, r.name as role_name, u.full_name, u.email, u.phone, u.is_active,
+              e.id as employee_id, e.department_id, d.name as department_name, e.title as employee_title,
+              c.id as citizen_id
        FROM users u
        JOIN roles r ON u.role_id = r.id
-       LEFT JOIN citizens c ON u.id = c.user_id
        LEFT JOIN employees e ON u.id = e.user_id
        LEFT JOIN departments d ON e.department_id = d.id
+       LEFT JOIN citizens c ON u.id = c.user_id
        WHERE u.id = ?`,
-      [req.user.id]
+      [userId]
     );
 
-    if (!users || users.length === 0) {
-      return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı.' });
+    if (!uRows || uRows.length === 0 || uRows[0].is_active === 0) {
+      return res.status(401).json({ success: false, message: 'Geçersiz veya pasif kullanıcı oturumu.' });
     }
 
-    res.json({ success: true, user: users[0] });
+    const u = uRows[0];
+    res.json({
+      success: true,
+      user: {
+        id: u.id,
+        full_name: u.full_name,
+        email: u.email,
+        phone: u.phone,
+        role_id: u.role_id,
+        role_name: u.role_name,
+        citizen_id: u.citizen_id || u.id,
+        employee_id: u.employee_id || null,
+        department_id: u.department_id || null,
+        department_name: u.department_name || null,
+        employee_title: u.employee_title || null
+      }
+    });
   } catch (err) {
-    console.error('Profil hatası:', err);
+    console.error('Me endpoint error:', err);
     res.status(500).json({ success: false, message: 'Sunucu hatası.' });
   }
+});
+
+// 3. Profil Bilgilerini Güncelle (PUT /api/auth/profile)
+router.put('/profile', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Oturum gerekli.' });
+
+  jwt.verify(token, JWT_SECRET, async (err, authUser) => {
+    if (err) return res.status(403).json({ success: false, message: 'Geçersiz oturum.' });
+
+    const { full_name, phone, address } = req.body;
+    const userId = authUser.id;
+
+    try {
+      if (full_name || phone) {
+        await pool.query(
+          'UPDATE users SET full_name = COALESCE(?, full_name), phone = COALESCE(?, phone) WHERE id = ?',
+          [full_name || null, phone || null, userId]
+        );
+      }
+
+      if (address && authUser.role_name === 'Vatandaş') {
+        await pool.query(
+          'UPDATE citizens SET address = ? WHERE user_id = ?',
+          [address, userId]
+        );
+      }
+
+      const { memData } = require('../config/db');
+      const memUser = (memData.users || []).find(u => u.id == userId);
+      if (memUser) {
+        if (full_name) memUser.full_name = full_name;
+        if (phone) memUser.phone = phone;
+      }
+      if (address) {
+        const memCit = (memData.citizens || []).find(c => c.user_id == userId || c.id == userId);
+        if (memCit) memCit.address = address;
+        if (memUser) memUser.address = address;
+      }
+
+      const [updatedRows] = await pool.query('SELECT u.*, r.name as role_name FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id = ?', [userId]);
+      const updatedUser = updatedRows && updatedRows.length > 0 ? updatedRows[0] : (memUser || null);
+
+      res.json({
+        success: true,
+        message: 'Profil bilgileriniz başarıyla güncellendi.',
+        user: updatedUser ? {
+          id: updatedUser.id,
+          full_name: updatedUser.full_name,
+          email: updatedUser.email,
+          phone: updatedUser.phone,
+          role_id: updatedUser.role_id,
+          role_name: updatedUser.role_name,
+          address: address || updatedUser.address || null
+        } : null
+      });
+    } catch (dbErr) {
+      console.error('Profile update error:', dbErr);
+      res.status(500).json({ success: false, message: 'Profil güncellenirken hata oluştu.' });
+    }
+  });
+});
+
+// 4. Şifre Değiştir (PUT /api/auth/change-password)
+router.put('/change-password', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Oturum gerekli.' });
+
+  jwt.verify(token, JWT_SECRET, async (err, authUser) => {
+    if (err) return res.status(403).json({ success: false, message: 'Geçersiz oturum.' });
+
+    const { current_password, new_password } = req.body;
+    if (!current_password || !new_password || new_password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Yeni şifre en az 6 karakter olmalıdır.' });
+    }
+
+    const userId = authUser.id;
+
+    try {
+      const [users] = await pool.query('SELECT password_hash FROM users WHERE id = ?', [userId]);
+      if (!users || users.length === 0) {
+        return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı.' });
+      }
+
+      const isMatch = await bcrypt.compare(current_password, users[0].password_hash);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Mevcut şifreniz hatalı.' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const newHash = await bcrypt.hash(new_password, salt);
+
+      await pool.query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, userId]);
+
+      res.json({ success: true, message: 'Şifreniz başarıyla güncellendi.' });
+    } catch (dbErr) {
+      console.error('Password change error:', dbErr);
+      res.status(500).json({ success: false, message: 'Şifre değiştirilirken hata oluştu.' });
+    }
+  });
 });
 
 module.exports = router;

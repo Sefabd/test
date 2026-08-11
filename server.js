@@ -25,9 +25,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/complaints', require('./routes/complaints'));
 app.use('/api/assignments', require('./routes/assignments'));
+app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/stats', require('./routes/stats'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/public', require('./routes/public'));
 
 // SPA Fallback Route

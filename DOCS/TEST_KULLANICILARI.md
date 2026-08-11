@@ -31,6 +31,10 @@ Sistemde önceden tanımlanmış hazır test kullanıcıları aşağıda listele
 
 ---
 
-### 4. 👤 Vatandaş (Citizen)
-- **E-posta**: `caner@gmail.com`
-- **Şifre**: `123456`
+### 4. 👤 Vatandaş Hesapları (Citizen)
+- **Caner Özkan (Vatandaş)**:
+  - **E-posta**: `caner@gmail.com`
+  - **Şifre**: `123456`
+- **Sefa Bodur (Vatandaş)**:
+  - **E-posta**: `sefa@gmail.com`
+  - **Şifre**: `123456`
