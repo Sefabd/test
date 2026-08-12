@@ -28,10 +28,24 @@ function checkRole(allowedRoles = []) {
       return res.status(401).json({ success: false, message: 'Yetkilendirme hatası.' });
     }
 
-    // allowedRoles string veya array olabilir
     const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
-    if (rolesArray.length > 0 && !rolesArray.includes(req.user.role_name)) {
+    const userRoleName = req.user.role_name;
+    const userRoleId = Number(req.user.role_id);
+
+    const isAllowed = rolesArray.some(role => {
+      if (typeof role === 'number') return role === userRoleId;
+      if (typeof role === 'string') {
+        if (role === userRoleName) return true;
+        if (role === 'Sistem Yöneticisi' && (userRoleId === 1 || userRoleName === 'Admin')) return true;
+        if (role === 'Birim Yöneticisi' && (userRoleId === 2 || userRoleName === 'Müdür')) return true;
+        if (role === 'Personel' && (userRoleId === 3 || userRoleName === 'Saha Personeli')) return true;
+        if (role === 'Vatandaş' && (userRoleId === 4 || userRoleName === 'Citizen')) return true;
+      }
+      return false;
+    });
+
+    if (rolesArray.length > 0 && !isAllowed) {
       return res.status(403).json({
         success: false,
         message: `Bu işlem için yetkiniz bulunmamaktadır. Gerekli Rol: ${rolesArray.join(' veya ')}`

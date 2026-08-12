@@ -32,14 +32,22 @@ router.get('/users', async (req, res) => {
 router.post('/users', async (req, res) => {
   const { full_name, email, password, phone, role_id, department_id, title } = req.body;
 
+  const cleanName = full_name ? String(full_name).trim() : '';
+  const cleanEmail = email ? String(email).trim().toLowerCase() : '';
+
+  if (!cleanName || !cleanEmail) {
+    return res.status(400).json({ success: false, message: 'Ad Soyad ve E-posta adresi zorunludur.' });
+  }
+
   const conn = await pool.getConnection();
 
   try {
     await conn.beginTransaction();
 
-    const [existing] = await conn.query('SELECT id FROM users WHERE email = ?', [email]);
-    if (existing.length > 0) {
+    const [existing] = await conn.query('SELECT id FROM users WHERE LOWER(email) = ?', [cleanEmail]);
+    if (existing && existing.length > 0) {
       await conn.rollback();
+      conn.release();
       return res.status(400).json({ success: false, message: 'Bu e-posta adresi zaten kayıtlı.' });
     }
 
@@ -121,6 +129,10 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id/toggle-active', async (req, res) => {
   const userId = req.params.id;
 
+  if (userId == 1) {
+    return res.status(400).json({ success: false, message: 'Ana sistem yöneticisi hesabı pasife alınamaz!' });
+  }
+
   try {
     const [uRows] = await pool.query('SELECT is_active FROM users WHERE id = ?', [userId]);
     let currentStatus = 1;
@@ -149,24 +161,35 @@ router.put('/users/:id/toggle-active', async (req, res) => {
 // 3.5. Kullanıcı Bilgilerini Güncelle
 router.put('/users/:id', async (req, res) => {
   const userId = req.params.id;
-  const { full_name, phone, role_id, department_id, title, password } = req.body;
+  const { full_name, email, phone, role_id, department_id, title, password } = req.body;
 
   const conn = await pool.getConnection();
 
   try {
     await conn.beginTransaction();
 
+    const cleanEmail = email ? String(email).trim().toLowerCase() : null;
+
+    if (cleanEmail) {
+      const [duplicate] = await conn.query('SELECT id FROM users WHERE LOWER(email) = ? AND id != ?', [cleanEmail, userId]);
+      if (duplicate && duplicate.length > 0) {
+        await conn.rollback();
+        conn.release();
+        return res.status(400).json({ success: false, message: 'Bu e-posta adresi başka bir kullanıcı tarafından kullanılmaktadır.' });
+      }
+    }
+
     let password_hash = null;
     if (password && password.length >= 6) {
       password_hash = await bcrypt.hash(password, 10);
       await conn.query(
-        `UPDATE users SET full_name = ?, phone = ?, role_id = ?, password_hash = ? WHERE id = ?`,
-        [sanitizeInput(full_name), sanitizeInput(phone) || null, role_id, password_hash, userId]
+        `UPDATE users SET full_name = ?, email = COALESCE(?, email), phone = ?, role_id = ?, password_hash = ? WHERE id = ?`,
+        [sanitizeInput(full_name), cleanEmail, sanitizeInput(phone) || null, role_id, password_hash, userId]
       );
     } else {
       await conn.query(
-        `UPDATE users SET full_name = ?, phone = ?, role_id = ? WHERE id = ?`,
-        [sanitizeInput(full_name), sanitizeInput(phone) || null, role_id, userId]
+        `UPDATE users SET full_name = ?, email = COALESCE(?, email), phone = ?, role_id = ? WHERE id = ?`,
+        [sanitizeInput(full_name), cleanEmail, sanitizeInput(phone) || null, role_id, userId]
       );
     }
 
@@ -191,7 +214,8 @@ router.put('/users/:id', async (req, res) => {
       const u = memData.users.find(usr => usr.id == userId);
       if (u) {
         if (full_name) u.full_name = full_name;
-        if (phone) u.phone = phone;
+        if (cleanEmail) u.email = cleanEmail;
+        if (phone !== undefined) u.phone = phone;
         if (role_id) {
           u.role_id = Number(role_id);
           const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };

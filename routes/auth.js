@@ -115,7 +115,7 @@ router.post(
         `SELECT u.*, r.name as role_name
          FROM users u
          JOIN roles r ON u.role_id = r.id
-         WHERE u.email = ? AND u.is_active = 1`,
+         WHERE u.email = ?`,
         [cleanEmail]
       );
 
@@ -124,6 +124,10 @@ router.post(
       }
 
       const user = users[0];
+
+      if (!user.is_active) {
+        return res.status(403).json({ success: false, message: 'Hesabınız pasife alınmıştır. Sisteme giriş yapabilmek için lütfen yönetici ile iletişime geçiniz.' });
+      }
 
       // Password Match Verification via bcrypt
       const isMatch = await bcrypt.compare(password, user.password_hash);

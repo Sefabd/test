@@ -1,0 +1,1580 @@
+{
+  "roles": [
+    {
+      "id": 1,
+      "name": "Sistem Yöneticisi",
+      "description": "Tam yetkili sistem yöneticisi"
+    },
+    {
+      "id": 2,
+      "name": "Birim Yöneticisi",
+      "description": "Belediye müdürlük yöneticisi"
+    },
+    {
+      "id": 3,
+      "name": "Personel",
+      "description": "Belediye saha veya masa başı iş takip personeli"
+    },
+    {
+      "id": 4,
+      "name": "Vatandaş",
+      "description": "Sisteme kayıtlı vatandaş"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "name": "Fen İşleri Müdürlüğü",
+      "code": "FEN"
+    },
+    {
+      "id": 2,
+      "name": "Temizlik İşleri Müdürlüğü",
+      "code": "TEM"
+    },
+    {
+      "id": 3,
+      "name": "Park ve Bahçeler Müdürlüğü",
+      "code": "PARK"
+    },
+    {
+      "id": 4,
+      "name": "Zabıta Müdürlüğü",
+      "code": "ZBT"
+    },
+    {
+      "id": 5,
+      "name": "Su ve Kanalizasyon Müdürlüğü",
+      "code": "SUK"
+    },
+    {
+      "id": 6,
+      "name": "Veteriner İşleri Müdürlüğü",
+      "code": "VET"
+    },
+    {
+      "id": 7,
+      "name": "Ulaşım Hizmetleri Müdürlüğü",
+      "code": "ULS"
+    },
+    {
+      "id": 8,
+      "name": "Sosyal Hizmetler Müdürlüğü",
+      "code": "SHM"
+    },
+    {
+      "id": 9,
+      "name": "İmar ve Şehircilik Müdürlüğü",
+      "code": "IMR"
+    },
+    {
+      "id": 10,
+      "name": "Bilgi İşlem Müdürlüğü",
+      "code": "BIM"
+    }
+  ],
+  "complaint_categories": [
+    {
+      "id": 1,
+      "department_id": 1,
+      "name": "Yol ve Kaldırım Sorunu",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 2,
+      "department_id": 1,
+      "name": "Çukur veya Asfalt Problemi",
+      "default_priority": "Acil"
+    },
+    {
+      "id": 3,
+      "department_id": 2,
+      "name": "Çöp ve Çevre Kirliliği",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 4,
+      "department_id": 3,
+      "name": "Park ve Yeşil Alan Sorunu",
+      "default_priority": "Düşük"
+    },
+    {
+      "id": 5,
+      "department_id": 4,
+      "name": "Gürültü Şikâyeti",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 6,
+      "department_id": 4,
+      "name": "Ruhsatsız İşletme",
+      "default_priority": "Yüksek"
+    },
+    {
+      "id": 7,
+      "department_id": 5,
+      "name": "Su Kaçağı",
+      "default_priority": "Acil"
+    },
+    {
+      "id": 8,
+      "department_id": 5,
+      "name": "Kanalizasyon Problemi",
+      "default_priority": "Yüksek"
+    },
+    {
+      "id": 9,
+      "department_id": 6,
+      "name": "Başıboş Hayvan",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 10,
+      "department_id": 7,
+      "name": "Toplu Taşıma Sorunu",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 11,
+      "department_id": 8,
+      "name": "Sosyal Yardım Talebi",
+      "default_priority": "Düşük"
+    },
+    {
+      "id": 12,
+      "department_id": 9,
+      "name": "İmar ve Yapı Şikâyeti",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 13,
+      "department_id": 10,
+      "name": "Sokak Lambası Arızası",
+      "default_priority": "Normal"
+    },
+    {
+      "id": 14,
+      "department_id": 1,
+      "name": "Diğer",
+      "default_priority": "Normal"
+    }
+  ],
+  "districts": [
+    {
+      "id": 1,
+      "name": "Giresun Merkez"
+    },
+    {
+      "id": 2,
+      "name": "Bulancak"
+    },
+    {
+      "id": 3,
+      "name": "Espiye"
+    },
+    {
+      "id": 4,
+      "name": "Görele"
+    },
+    {
+      "id": 5,
+      "name": "Tirebolu"
+    }
+  ],
+  "neighborhoods": [
+    {
+      "id": 1,
+      "district_id": 1,
+      "name": "Aksu Mahallesi"
+    },
+    {
+      "id": 2,
+      "district_id": 1,
+      "name": "Aydınlar Mahallesi"
+    },
+    {
+      "id": 3,
+      "district_id": 1,
+      "name": "Çaykara Mahallesi"
+    },
+    {
+      "id": 4,
+      "district_id": 1,
+      "name": "Çınarlar Mahallesi"
+    },
+    {
+      "id": 5,
+      "district_id": 1,
+      "name": "Çıtlakkale Mahallesi"
+    },
+    {
+      "id": 6,
+      "district_id": 1,
+      "name": "Cumhuriyet Mahallesi"
+    },
+    {
+      "id": 7,
+      "district_id": 1,
+      "name": "Erikliman Mahallesi"
+    },
+    {
+      "id": 8,
+      "district_id": 1,
+      "name": "Fevzi Çakmak Mahallesi"
+    },
+    {
+      "id": 9,
+      "district_id": 1,
+      "name": "Gaziler Mahallesi"
+    },
+    {
+      "id": 10,
+      "district_id": 1,
+      "name": "Gedikkaya Mahallesi"
+    },
+    {
+      "id": 11,
+      "district_id": 1,
+      "name": "Gemilerçekeği Mahallesi"
+    },
+    {
+      "id": 12,
+      "district_id": 1,
+      "name": "Güre Mahallesi"
+    },
+    {
+      "id": 13,
+      "district_id": 1,
+      "name": "Hacı Hüseyin Mahallesi"
+    },
+    {
+      "id": 14,
+      "district_id": 1,
+      "name": "Hacımiktat Mahallesi"
+    },
+    {
+      "id": 15,
+      "district_id": 1,
+      "name": "Hacısiyam Mahallesi"
+    },
+    {
+      "id": 16,
+      "district_id": 1,
+      "name": "Kale Mahallesi"
+    },
+    {
+      "id": 17,
+      "district_id": 1,
+      "name": "Kapu Mahallesi"
+    },
+    {
+      "id": 18,
+      "district_id": 1,
+      "name": "Kavaklar Mahallesi"
+    },
+    {
+      "id": 19,
+      "district_id": 1,
+      "name": "Kayadibi Mahallesi"
+    },
+    {
+      "id": 20,
+      "district_id": 1,
+      "name": "Küçükköy Mahallesi"
+    },
+    {
+      "id": 21,
+      "district_id": 1,
+      "name": "Konacık Mahallesi"
+    },
+    {
+      "id": 22,
+      "district_id": 1,
+      "name": "Nizamiye Mahallesi"
+    },
+    {
+      "id": 23,
+      "district_id": 1,
+      "name": "Osmaniye Mahallesi"
+    },
+    {
+      "id": 24,
+      "district_id": 1,
+      "name": "Seldeğirmeni Mahallesi"
+    },
+    {
+      "id": 25,
+      "district_id": 1,
+      "name": "Şeyhkeramettin Mahallesi"
+    },
+    {
+      "id": 26,
+      "district_id": 1,
+      "name": "Sultan Selim Mahallesi"
+    },
+    {
+      "id": 27,
+      "district_id": 1,
+      "name": "Tekke Mahallesi"
+    },
+    {
+      "id": 28,
+      "district_id": 1,
+      "name": "Teyyaredüzü Mahallesi"
+    },
+    {
+      "id": 29,
+      "district_id": 1,
+      "name": "Yalı Mahallesi"
+    },
+    {
+      "id": 30,
+      "district_id": 2,
+      "name": "Acısu Mahallesi"
+    },
+    {
+      "id": 31,
+      "district_id": 2,
+      "name": "Arifli Mahallesi"
+    },
+    {
+      "id": 32,
+      "district_id": 2,
+      "name": "Bahçelievler Mahallesi"
+    },
+    {
+      "id": 33,
+      "district_id": 2,
+      "name": "Ballıca Mahallesi"
+    },
+    {
+      "id": 34,
+      "district_id": 2,
+      "name": "Bulancak Mahallesi"
+    },
+    {
+      "id": 35,
+      "district_id": 2,
+      "name": "Duacıoğlu Mahallesi"
+    },
+    {
+      "id": 36,
+      "district_id": 2,
+      "name": "Güzelyalı Mahallesi"
+    },
+    {
+      "id": 37,
+      "district_id": 2,
+      "name": "İhsaniye Mahallesi"
+    },
+    {
+      "id": 38,
+      "district_id": 2,
+      "name": "İsmetpaşa Mahallesi"
+    },
+    {
+      "id": 39,
+      "district_id": 2,
+      "name": "Kızılot Mahallesi"
+    },
+    {
+      "id": 40,
+      "district_id": 2,
+      "name": "Pazarsuyu Mahallesi"
+    },
+    {
+      "id": 41,
+      "district_id": 2,
+      "name": "Sanayi Mahallesi"
+    },
+    {
+      "id": 42,
+      "district_id": 2,
+      "name": "Saraçlı Mahallesi"
+    },
+    {
+      "id": 43,
+      "district_id": 2,
+      "name": "Sisin Mahallesi"
+    },
+    {
+      "id": 44,
+      "district_id": 2,
+      "name": "Şemsettin Mahallesi"
+    },
+    {
+      "id": 45,
+      "district_id": 2,
+      "name": "Toprakdeğirmeni Mahallesi"
+    },
+    {
+      "id": 46,
+      "district_id": 3,
+      "name": "Çam Mahallesi"
+    },
+    {
+      "id": 47,
+      "district_id": 3,
+      "name": "Esentepe Mahallesi"
+    },
+    {
+      "id": 48,
+      "district_id": 4,
+      "name": "Sayfiye Mahallesi"
+    },
+    {
+      "id": 49,
+      "district_id": 4,
+      "name": "Hendekbaşı Mahallesi"
+    },
+    {
+      "id": 50,
+      "district_id": 5,
+      "name": "Demirci Mahallesi"
+    },
+    {
+      "id": 51,
+      "district_id": 5,
+      "name": "Yeniköy Mahallesi"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "role_id": 1,
+      "full_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "email": "admin@belediye.gov.tr",
+      "phone": "05551112233",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Sistem Yöneticisi"
+    },
+    {
+      "id": 2,
+      "role_id": 2,
+      "full_name": "Mehmet Demir (Fen İşleri Müdürü)",
+      "email": "fenisleri.mudur@belediye.gov.tr",
+      "phone": "05552223344",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 1,
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü"
+    },
+    {
+      "id": 3,
+      "role_id": 2,
+      "full_name": "Ayşe Kaya (Temizlik Müdürü)",
+      "email": "temizlik.mudur@belediye.gov.tr",
+      "phone": "05553334455",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 2,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü"
+    },
+    {
+      "id": 4,
+      "role_id": 2,
+      "full_name": "Kemal Özcan (Park Müdürü)",
+      "email": "park.mudur@belediye.gov.tr",
+      "phone": "05554443322",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 3,
+      "department_id": 3,
+      "department_name": "Park ve Bahçeler Müdürlüğü"
+    },
+    {
+      "id": 5,
+      "role_id": 2,
+      "full_name": "Hasan Yılmaz (Zabıta Müdürü)",
+      "email": "zabita.mudur@belediye.gov.tr",
+      "phone": "05555554433",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 4,
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü"
+    },
+    {
+      "id": 6,
+      "role_id": 2,
+      "full_name": "Mustafa Çelik (Su Müdürü)",
+      "email": "su.mudur@belediye.gov.tr",
+      "phone": "05556665544",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 5,
+      "department_id": 5,
+      "department_name": "Su ve Kanalizasyon Müdürlüğü"
+    },
+    {
+      "id": 12,
+      "role_id": 2,
+      "full_name": "Dr. Selin Aydın (Veteriner Müdürü)",
+      "email": "veteriner.mudur@belediye.gov.tr",
+      "phone": "05557776655",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 6,
+      "department_id": 6,
+      "department_name": "Veteriner İşleri Müdürlüğü"
+    },
+    {
+      "id": 13,
+      "role_id": 2,
+      "full_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "email": "ulasim.mudur@belediye.gov.tr",
+      "phone": "05558887766",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 7,
+      "department_id": 7,
+      "department_name": "Ulaşım Hizmetleri Müdürlüğü"
+    },
+    {
+      "id": 14,
+      "role_id": 2,
+      "full_name": "Zeynep Aksoy (Sosyal Hizmetler Müdürü)",
+      "email": "sosyal.mudur@belediye.gov.tr",
+      "phone": "05559998877",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 8,
+      "department_id": 8,
+      "department_name": "Sosyal Hizmetler Müdürlüğü"
+    },
+    {
+      "id": 15,
+      "role_id": 2,
+      "full_name": "İrfan Yılmaz (İmar Müdürü)",
+      "email": "imar.mudur@belediye.gov.tr",
+      "phone": "05551001122",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 9,
+      "department_id": 9,
+      "department_name": "İmar ve Şehircilik Müdürlüğü"
+    },
+    {
+      "id": 16,
+      "role_id": 2,
+      "full_name": "Bilal Yalçın (Bilgi İşlem Müdürü)",
+      "email": "bilgiislem.mudur@belediye.gov.tr",
+      "phone": "05552002233",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "employee_id": 10,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü"
+    },
+    {
+      "id": 7,
+      "role_id": 3,
+      "full_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "email": "ali.fen@belediye.gov.tr",
+      "phone": "05554445566",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 1,
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "employee_title": "Asfalt & Kaldırım Ekip Şefi"
+    },
+    {
+      "id": 17,
+      "role_id": 3,
+      "full_name": "Burak Yılmaz (Fen İşleri Saha Ekibi)",
+      "email": "burak.fen@belediye.gov.tr",
+      "phone": "05554445567",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 11,
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "employee_title": "Yol Bakım Görevlisi"
+    },
+    {
+      "id": 18,
+      "role_id": 3,
+      "full_name": "Cem Sert (Fen İşleri Operatör)",
+      "email": "cem.fen@belediye.gov.tr",
+      "phone": "05554445568",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 12,
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "employee_title": "İş Makinesi Operatörü"
+    },
+    {
+      "id": 8,
+      "role_id": 3,
+      "full_name": "Veli Şahin (Temizlik Saha Personeli)",
+      "email": "veli.temizlik@belediye.gov.tr",
+      "phone": "05555556677",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 2,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Atık Yönetimi Görevlisi"
+    },
+    {
+      "id": 19,
+      "role_id": 3,
+      "full_name": "Emin Kılıç (Temizlik Ekip Şefi)",
+      "email": "emin.temizlik@belediye.gov.tr",
+      "phone": "05555556678",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 13,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Süpürge & Hijyen Şefi"
+    },
+    {
+      "id": 20,
+      "role_id": 3,
+      "full_name": "Ferdi Arslan (Konteyner Ekibi)",
+      "email": "ferdi.temizlik@belediye.gov.tr",
+      "phone": "05555556679",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 14,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Konteyner Bakım Görevlisi"
+    },
+    {
+      "id": 9,
+      "role_id": 3,
+      "full_name": "Fatma Şahin (Park Saha Personeli)",
+      "email": "fatma.park@belediye.gov.tr",
+      "phone": "05556667700",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 3,
+      "department_id": 3,
+      "department_name": "Park ve Bahçeler Müdürlüğü",
+      "employee_title": "Peyzaj ve Bahçe Görevlisi"
+    },
+    {
+      "id": 21,
+      "role_id": 3,
+      "full_name": "Hakan Çetin (Budama & Yeşil Alan)",
+      "email": "hakan.park@belediye.gov.tr",
+      "phone": "05556667701",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 15,
+      "department_id": 3,
+      "department_name": "Park ve Bahçeler Müdürlüğü",
+      "employee_title": "Ağaç Budama Görevlisi"
+    },
+    {
+      "id": 22,
+      "role_id": 3,
+      "full_name": "İbrahim Koç (Çocuk Parkı Bakım)",
+      "email": "ibrahim.park@belediye.gov.tr",
+      "phone": "05556667702",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 16,
+      "department_id": 3,
+      "department_name": "Park ve Bahçeler Müdürlüğü",
+      "employee_title": "Oyun Parkı Bakım Personeli"
+    },
+    {
+      "id": 23,
+      "role_id": 3,
+      "full_name": "Kadir Güven (Zabıta Komiseri)",
+      "email": "kadir.zabita@belediye.gov.tr",
+      "phone": "05557778801",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 17,
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü",
+      "employee_title": "Zabıta Saha Komiseri"
+    },
+    {
+      "id": 24,
+      "role_id": 3,
+      "full_name": "Levent Baş (İşyeri Denetim)",
+      "email": "levent.zabita@belediye.gov.tr",
+      "phone": "05557778802",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 18,
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü",
+      "employee_title": "İşyeri Denetim Personeli"
+    },
+    {
+      "id": 25,
+      "role_id": 3,
+      "full_name": "Murat Yıldız (Çevre Zabıtası)",
+      "email": "murat.zabita@belediye.gov.tr",
+      "phone": "05557778803",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 19,
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü",
+      "employee_title": "Çevre Zabıta Görevlisi"
+    },
+    {
+      "id": 26,
+      "role_id": 3,
+      "full_name": "Nihat Aydoğan (Su Arıza Ekip Şefi)",
+      "email": "nihat.su@belediye.gov.tr",
+      "phone": "05558889901",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 20,
+      "department_id": 5,
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "employee_title": "Şebeke Arıza Görevlisi"
+    },
+    {
+      "id": 27,
+      "role_id": 3,
+      "full_name": "Orhan Tekin (Kanalizasyon Şefi)",
+      "email": "orhan.su@belediye.gov.tr",
+      "phone": "05558889902",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 21,
+      "department_id": 5,
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "employee_title": "Vidanjör Operatörü"
+    },
+    {
+      "id": 28,
+      "role_id": 3,
+      "full_name": "Polat Dinç (Tesisat Görevlisi)",
+      "email": "polat.su@belediye.gov.tr",
+      "phone": "05558889903",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 22,
+      "department_id": 5,
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "employee_title": "Tesisat Onarım Uzmanı"
+    },
+    {
+      "id": 29,
+      "role_id": 3,
+      "full_name": "Recep Yavuz (Sokak Canları Ekibi)",
+      "email": "recep.vet@belediye.gov.tr",
+      "phone": "05559990001",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 23,
+      "department_id": 6,
+      "department_name": "Veteriner İşleri Müdürlüğü",
+      "employee_title": "Hayvan Bakım ve Nakil"
+    },
+    {
+      "id": 30,
+      "role_id": 3,
+      "full_name": "Sinan Kurt (Veteriner Teknikeri)",
+      "email": "sinan.vet@belediye.gov.tr",
+      "phone": "05559990002",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 24,
+      "department_id": 6,
+      "department_name": "Veteriner İşleri Müdürlüğü",
+      "employee_title": "Veteriner Sağlık Teknikeri"
+    },
+    {
+      "id": 31,
+      "role_id": 3,
+      "full_name": "Turgut Doğan (İlaçlama Ekip Şefi)",
+      "email": "turgut.vet@belediye.gov.tr",
+      "phone": "05559990003",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 25,
+      "department_id": 6,
+      "department_name": "Veteriner İşleri Müdürlüğü",
+      "employee_title": "Çevre İlaçlama Görevlisi"
+    },
+    {
+      "id": 32,
+      "role_id": 3,
+      "full_name": "Ümit Varol (Sinyalizasyon)",
+      "email": "umit.ulasim@belediye.gov.tr",
+      "phone": "05551110001",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 26,
+      "department_id": 7,
+      "department_name": "Ulaşım Hizmetleri Müdürlüğü",
+      "employee_title": "Sinyalizasyon Teknisyeni"
+    },
+    {
+      "id": 33,
+      "role_id": 3,
+      "full_name": "Volkan Güneş (Durak Bakım Ekibi)",
+      "email": "volkan.ulasim@belediye.gov.tr",
+      "phone": "05551110002",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 27,
+      "department_id": 7,
+      "department_name": "Ulaşım Hizmetleri Müdürlüğü",
+      "employee_title": "Durak Bakım Personeli"
+    },
+    {
+      "id": 34,
+      "role_id": 3,
+      "full_name": "Yasin Bulut (Hat Denetim Görevlisi)",
+      "email": "yasin.ulasim@belediye.gov.tr",
+      "phone": "05551110003",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 28,
+      "department_id": 7,
+      "department_name": "Ulaşım Hizmetleri Müdürlüğü",
+      "employee_title": "Toplu Taşıma Denetçisi"
+    },
+    {
+      "id": 35,
+      "role_id": 3,
+      "full_name": "Ahmet Can (Sosyal Saha İnceleme)",
+      "email": "ahmet.sosyal@belediye.gov.tr",
+      "phone": "05552220001",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 29,
+      "department_id": 8,
+      "department_name": "Sosyal Hizmetler Müdürlüğü",
+      "employee_title": "Saha İnceleme Görevlisi"
+    },
+    {
+      "id": 36,
+      "role_id": 3,
+      "full_name": "Berna Şen (Aşevi ve Gıda Dağıtım)",
+      "email": "berna.sosyal@belediye.gov.tr",
+      "phone": "05552220002",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 30,
+      "department_id": 8,
+      "department_name": "Sosyal Hizmetler Müdürlüğü",
+      "employee_title": "Lojistik Destek Personeli"
+    },
+    {
+      "id": 37,
+      "role_id": 3,
+      "full_name": "Cansu Efe (Evde Bakım Destek)",
+      "email": "cansu.sosyal@belediye.gov.tr",
+      "phone": "05552220003",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 31,
+      "department_id": 8,
+      "department_name": "Sosyal Hizmetler Müdürlüğü",
+      "employee_title": "Evde Bakım Görevlisi"
+    },
+    {
+      "id": 38,
+      "role_id": 3,
+      "full_name": "Davut Soylu (İmar Denetim Şefi)",
+      "email": "davut.imar@belediye.gov.tr",
+      "phone": "05553330001",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 32,
+      "department_id": 9,
+      "department_name": "İmar ve Şehircilik Müdürlüğü",
+      "employee_title": "Yapı Kontrol Teknisyeni"
+    },
+    {
+      "id": 39,
+      "role_id": 3,
+      "full_name": "Erdem Kara (Kentsel Dönüşüm Ekibi)",
+      "email": "erdem.imar@belediye.gov.tr",
+      "phone": "05553330002",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 33,
+      "department_id": 9,
+      "department_name": "İmar ve Şehircilik Müdürlüğü",
+      "employee_title": "Harita Teknikeri"
+    },
+    {
+      "id": 40,
+      "role_id": 3,
+      "full_name": "Fatih Uzun (Yapı İnceleme Görevlisi)",
+      "email": "fatih.imar@belediye.gov.tr",
+      "phone": "05553330003",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 34,
+      "department_id": 9,
+      "department_name": "İmar ve Şehircilik Müdürlüğü",
+      "employee_title": "Yapı İnceleme Personeli"
+    },
+    {
+      "id": 41,
+      "role_id": 3,
+      "full_name": "Gökhan Aydın (Sokak Lambası & Ağ Ekibi)",
+      "email": "gokhan.bim@belediye.gov.tr",
+      "phone": "05554440001",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 35,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Akıllı Şehir & Kamera Şefi"
+    },
+    {
+      "id": 42,
+      "role_id": 3,
+      "full_name": "Harun Polat (Saha Donanım Görevlisi)",
+      "email": "harun.bim@belediye.gov.tr",
+      "phone": "05554440002",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 36,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Sistem Teknisyeni"
+    },
+    {
+      "id": 43,
+      "role_id": 3,
+      "full_name": "İsmail Can (Aydınlatma ve Sensör)",
+      "email": "ismail.bim@belediye.gov.tr",
+      "phone": "05554440003",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Personel",
+      "employee_id": 37,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Saha Sensör Uzmanı"
+    },
+    {
+      "id": 10,
+      "role_id": 4,
+      "full_name": "Caner Özkan (Vatandaş)",
+      "email": "caner@gmail.com",
+      "phone": "05556667788",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Vatandaş",
+      "citizen_id": 6
+    },
+    {
+      "id": 11,
+      "role_id": 4,
+      "full_name": "Sefa Bodur (Vatandaş)",
+      "email": "sefa@gmail.com",
+      "phone": "05557778899",
+      "password_hash": "$2a$10$pvvkjakHg4sghcB9J.IpsuQbU2XlUn0poFtdXJqBML1sS1hnLsbZC",
+      "is_active": 1,
+      "role_name": "Vatandaş",
+      "citizen_id": 7
+    }
+  ],
+  "citizens": [
+    {
+      "id": 6,
+      "user_id": 10,
+      "identity_number": "12345678901",
+      "address": "Giresun Hacısıyam Mah. Inönü Cad. No:12"
+    },
+    {
+      "id": 7,
+      "user_id": 11,
+      "identity_number": "98765432109",
+      "address": "Giresun Hacısıyam Mah. Gazi Cad. No:44"
+    }
+  ],
+  "employees": [
+    {
+      "id": 1,
+      "user_id": 7,
+      "department_id": 1,
+      "title": "Asfalt & Kaldırım Ekip Şefi"
+    },
+    {
+      "id": 2,
+      "user_id": 8,
+      "department_id": 2,
+      "title": "Atık Yönetimi Görevlisi"
+    },
+    {
+      "id": 3,
+      "user_id": 9,
+      "department_id": 3,
+      "title": "Peyzaj ve Bahçe Görevlisi"
+    },
+    {
+      "id": 4,
+      "user_id": 23,
+      "department_id": 4,
+      "title": "Zabıta Saha Komiseri"
+    },
+    {
+      "id": 5,
+      "user_id": 26,
+      "department_id": 5,
+      "title": "Şebeke Arıza Görevlisi"
+    },
+    {
+      "id": 6,
+      "user_id": 29,
+      "department_id": 6,
+      "title": "Hayvan Bakım ve Nakil"
+    },
+    {
+      "id": 7,
+      "user_id": 32,
+      "department_id": 7,
+      "title": "Sinyalizasyon Teknisyeni"
+    },
+    {
+      "id": 8,
+      "user_id": 35,
+      "department_id": 8,
+      "title": "Saha İnceleme Görevlisi"
+    },
+    {
+      "id": 9,
+      "user_id": 38,
+      "department_id": 9,
+      "title": "Yapı Kontrol Teknisyeni"
+    },
+    {
+      "id": 10,
+      "user_id": 41,
+      "department_id": 10,
+      "title": "Akıllı Şehir & Kamera Şefi"
+    }
+  ],
+  "complaints": [
+    {
+      "id": 5,
+      "tracking_code": "BLD-2026-108160",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": "3",
+      "department_id": 2,
+      "district_id": "3",
+      "neighborhood_id": "12",
+      "title": "thh",
+      "description": "sfgdh",
+      "open_address": null,
+      "latitude": "40.946",
+      "longitude": "38.709",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Öneri / İstek",
+      "created_at": "2026-08-12T10:40:56.687Z",
+      "category_name": "Çöp ve Çevre Kirliliği",
+      "district_name": "Espiye",
+      "neighborhood_name": "Güre Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 4,
+      "tracking_code": "BLD-2026-584807",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": "14",
+      "department_id": 1,
+      "district_id": "1",
+      "neighborhood_id": "1",
+      "title": "tes",
+      "description": "rtydfg",
+      "open_address": "Kavaklar, Kavaklar, Giresun Merkez",
+      "latitude": "40.911",
+      "longitude": "38.39",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Personele atandı",
+      "is_public": 0,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Soru / Bilgi Talebi",
+      "created_at": "2026-08-12T10:40:20.067Z",
+      "category_name": "Diğer",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Aksu Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "assigned_to_user_id": 7,
+      "assigned_employee_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 1,
+      "tracking_code": "BLD-2026-000101",
+      "citizen_id": 6,
+      "user_id": 10,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "Giresun Atatürk Bulvarında Derin Asfalt Çukuru",
+      "description": "Giresun Atatürk Bulvarı Valilik önündeki yolda 20 cm derinliğinde büyük bir asfalt çukuru oluşmuştur.",
+      "open_address": "Atatürk Bulvarı No:45 Önü, Giresun Merkez",
+      "latitude": 40.911,
+      "longitude": 38.39,
+      "urgency_level": "Acil",
+      "priority_level": "Acil",
+      "status": "İlgili birime yönlendirildi",
+      "is_public": 1,
+      "base_upvote_count": 0,
+      "upvote_count": 1,
+      "contact_preference": "E-posta",
+      "created_at": "2026-08-10T09:20:09.312Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Hacısıyam Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "forwarded_from_department_id": 3
+    },
+    {
+      "id": 2,
+      "tracking_code": "BLD-2026-000102",
+      "citizen_id": 6,
+      "user_id": 10,
+      "category_id": 3,
+      "department_id": 2,
+      "district_id": 1,
+      "neighborhood_id": 2,
+      "title": "Gazi Caddesinde Çöp Konteyneri Taşmış Durumda",
+      "description": "Giresun Gazi Caddesi Garanti Bankası yanında çöp konteynerleri boşaltılmadı.",
+      "open_address": "Gazi Cad. No:18 Yanı, Giresun Merkez",
+      "latitude": 40.914,
+      "longitude": 38.387,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "base_upvote_count": 0,
+      "upvote_count": 0,
+      "contact_preference": "SMS",
+      "created_at": "2026-08-08T09:20:09.312Z",
+      "category_name": "Çöp ve Çevre Kirliliği",
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Nizamiye Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 3,
+      "tracking_code": "BLD-2026-000103",
+      "citizen_id": 7,
+      "user_id": 11,
+      "category_id": 2,
+      "department_id": 2,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "Hacısıyam Mahallesinde Su Kesintisi ve Basınç Düşüklüğü",
+      "description": "Hacısıyam Mahallesinde sabah saatlerinden itibaren üst katlarda su basıncı düşüktür.",
+      "open_address": "Inönü Cad. No:12, Giresun Merkez",
+      "latitude": 40.9095,
+      "longitude": 38.3915,
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "İlgili birime yönlendirildi",
+      "is_public": 1,
+      "base_upvote_count": 0,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "created_at": "2026-08-12T09:20:09.312Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Hacısıyam Mahallesi",
+      "citizen_name": "Sefa Bodur (Vatandaş)",
+      "forwarded_from_department_id": 5
+    }
+  ],
+  "complaint_upvotes": [
+    {
+      "complaint_id": 5,
+      "user_id": 2
+    },
+    {
+      "complaint_id": 1,
+      "user_id": 2
+    }
+  ],
+  "complaint_assignments": [],
+  "complaint_status_history": [
+    {
+      "id": 1,
+      "complaint_id": 1,
+      "changed_by_user_id": 6,
+      "old_status": null,
+      "new_status": "Yeni",
+      "change_reason": "Vatandaş tarafından talep oluşturuldu.",
+      "created_at": "2026-08-10T09:20:09.312Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 2,
+      "complaint_id": 1,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Fen İşleri Müdürlüğü tarafından incelemeye alındı.",
+      "created_at": "2026-08-10T21:20:09.312Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "id": 3,
+      "complaint_id": 1,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli Ali Usta görevlendirildi.",
+      "created_at": "2026-08-11T09:20:09.312Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "id": 4,
+      "complaint_id": 2,
+      "changed_by_user_id": 6,
+      "old_status": null,
+      "new_status": "Yeni",
+      "change_reason": "Vatandaş tarafından talep oluşturuldu.",
+      "created_at": "2026-08-08T09:20:09.312Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 5,
+      "complaint_id": 2,
+      "changed_by_user_id": 3,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı",
+      "change_reason": "Veli Şahin görevlendirildi.",
+      "created_at": "2026-08-09T09:20:09.312Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "id": 6,
+      "complaint_id": 2,
+      "changed_by_user_id": 5,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "Konteynerler boşaltıldı ve çevresi dezenfekte edildi.",
+      "created_at": "2026-08-09T21:20:09.312Z",
+      "changed_by_name": "Veli Şahin (Temizlik Saha Personeli)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-12T10:40:20.067Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": 5,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-12T10:40:56.687Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "4",
+      "changed_by_user_id": 7,
+      "old_status": "Yeni",
+      "new_status": "İptal edildi",
+      "change_reason": "dfsdf",
+      "created_at": "2026-08-12T10:46:48.361Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "id": 10,
+      "complaint_id": 4,
+      "changed_by_user_id": 7,
+      "old_status": "İptal edildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-12T10:47:30.180Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": "4",
+      "changed_by_user_id": 7,
+      "old_status": "İptal edildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-12T10:47:30.180Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "1",
+      "changed_by_user_id": "Personele atandı",
+      "old_status": 2,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: Test yonlendirme",
+      "created_at": "2026-08-12T13:47:34.761Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "1",
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 2,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: Park ve Bahcelere sevk edildi",
+      "created_at": "2026-08-12T13:54:04.820Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "1",
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 2,
+      "new_status": "Talep Park ve Bahçeler Müdürlüğü birimine yönlendirildi. Sebeb: Park ve Bahcelere sevk edildi",
+      "created_at": "2026-08-12T14:06:26.544Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "3",
+      "changed_by_user_id": "Yeni",
+      "old_status": 1,
+      "new_status": "Talep Temizlik İşleri Müdürlüğü birimine yönlendirildi. Sebeb: -",
+      "created_at": "2026-08-12T14:07:51.513Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "1",
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 1,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: daf",
+      "created_at": "2026-08-12T14:08:46.303Z",
+      "changed_by_name": "Sistem"
+    }
+  ],
+  "complaint_actions": [
+    {
+      "id": 1,
+      "complaint_id": 2,
+      "employee_id": 2,
+      "action_description": "Çöp konteynerleri boşaltıldı ve yıkanarak dezenfekte edildi.",
+      "work_done": "Konteyner temizliği ve yıkanması",
+      "tools_equipment_used": "Çöp Kamyonu 28 BLD 153, Dezenfektan Kit",
+      "citizen_response": "Çözüm sağlandı.",
+      "resolution_photo_path": null,
+      "employee_name": "Veli Şahin",
+      "employee_title": "Atık Yönetimi Görevlisi",
+      "created_at": "2026-08-09T21:20:09.312Z"
+    }
+  ],
+  "complaint_files": [],
+  "notifications": [
+    {
+      "id": 1786543726808,
+      "user_id": null,
+      "department_id": 1,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: daf",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "1",
+      "created_at": "2026-08-12T14:08:46.303Z"
+    },
+    {
+      "id": 1786543671852,
+      "user_id": null,
+      "department_id": 2,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-000103] - \"Hacısıyam Mahallesinde Su Kesintisi ve Basınç Düşüklüğü\" talebi Temizlik İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: -",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "3",
+      "created_at": "2026-08-12T14:07:51.513Z"
+    },
+    {
+      "id": 1786543587502,
+      "user_id": null,
+      "department_id": 3,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Park ve Bahçeler Müdürlüğü biriminize yönlendirildi. Sebeb: Park ve Bahcelere sevk edildi",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "1",
+      "created_at": "2026-08-12T14:06:26.544Z"
+    },
+    {
+      "id": 1786542845390,
+      "user_id": null,
+      "department_id": 3,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: Park ve Bahcelere sevk edildi",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "1",
+      "created_at": "2026-08-12T13:54:04.820Z"
+    },
+    {
+      "id": 1786542455058,
+      "user_id": null,
+      "department_id": 2,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: Test yonlendirme",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "1",
+      "created_at": "2026-08-12T13:47:34.761Z"
+    },
+    {
+      "id": 1786531608938,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-584807] - \"tes\" başlıklı talebiniz hakkında işlem yapıldı (İptal edildi).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": "4",
+      "created_at": "2026-08-12T10:46:48.361Z"
+    }
+  ],
+  "satisfaction_surveys": [],
+  "audit_logs": [
+    {
+      "id": 1,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": "4",
+      "old_value": null,
+      "new_value": "{\"action_description\":\"dfsdf\",\"new_status\":\"İptal edildi\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T10:46:48.369Z"
+    },
+    {
+      "id": 2,
+      "user_id": 7,
+      "action": "SELF_ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "4",
+      "old_value": "{}",
+      "new_value": "{\"self_assigned_by\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T10:47:30.180Z"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T13:34:59.391Z"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T13:34:59.868Z"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T13:35:00.660Z"
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-12T13:35:01.092Z"
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "title": "📢 Giresun Belediyesi 153 Çözüm Merkezi Dijital Portalı Hizmete Girdi!",
+      "content": "Vatandaşlarımızın belediye hizmetlerine 7/24 daha hızlı erişebilmesi, talep ve şikâyetlerini yapay zekâ desteğiyle iletebilmesi amacıyla yeni çözüm merkezimiz yayına alınmıştır.",
+      "category": "Genel Duyuru",
+      "priority": "Yüksek",
+      "created_at": "2026-08-10T10:38:53.537Z",
+      "created_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 2,
+      "title": "💧 Hacısıyam ve Nizamiye Mahallelerinde Planlı Su Kesintisi",
+      "content": "Ana isale hattı yenileme çalışmaları sebebiyle 12 Ağustos Salı günü 09:00 - 16:00 saatleri arasında su kesintisi yaşanacaktır. Vatandaşlarımızın tedbirli olması rica olunur.",
+      "category": "Altyapı & Su Kesintisi",
+      "priority": "Acil",
+      "created_at": "2026-08-11T10:38:53.537Z",
+      "created_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 3,
+      "title": "🚧 Atatürk Caddesi Asfalt Yenileme Çalışmaları Başladı",
+      "content": "Fen İşleri Müdürlüğümüz tarafından Atatürk Caddesi genelinde asfalt serme ve kaldırım düzenleme çalışmaları başlatılmıştır. Sürücülerin alternatif güzergâhları kullanması önemle duyurulur.",
+      "category": "Yol Çalışması",
+      "priority": "Normal",
+      "created_at": "2026-08-12T10:38:53.537Z",
+      "created_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    }
+  ]
+}

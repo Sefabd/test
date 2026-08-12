@@ -39,7 +39,8 @@ const memData = {
     { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü', code: 'ULS' },
     { id: 8, name: 'Sosyal Hizmetler Müdürlüğü', code: 'SHM' },
     { id: 9, name: 'İmar ve Şehircilik Müdürlüğü', code: 'IMR' },
-    { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM' }
+    { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM' },
+    { id: 11, name: '153 Çözüm Ana Masası (Ön İnceleme Birimi)', code: '153-TRIAGE' }
   ],
   complaint_categories: [
     { id: 1, department_id: 1, name: 'Yol ve Kaldırım Sorunu', default_priority: 'Normal' },
@@ -55,7 +56,7 @@ const memData = {
     { id: 11, department_id: 8, name: 'Sosyal Yardım Talebi', default_priority: 'Düşük' },
     { id: 12, department_id: 9, name: 'İmar ve Yapı Şikâyeti', default_priority: 'Normal' },
     { id: 13, department_id: 10, name: 'Sokak Lambası Arızası', default_priority: 'Normal' },
-    { id: 14, department_id: 1, name: 'Diğer', default_priority: 'Normal' }
+    { id: 14, department_id: 11, name: 'Diğer', default_priority: 'Normal' }
   ],
   districts: [
     { id: 1, name: 'Giresun Merkez' },
@@ -123,17 +124,73 @@ const memData = {
     { id: 51, district_id: 5, name: 'Yeniköy Mahallesi' }
   ],
   users: [
+    // 1. SİSTEM YÖNETİCİSİ (ADMIN)
     { id: 1, role_id: 1, full_name: 'Ahmet Yılmaz (Sistem Yöneticisi)', email: 'admin@belediye.gov.tr', phone: '05551112233', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Sistem Yöneticisi' },
+    
+    // 2. BİRİM YÖNETİCİLERİ (10 MÜDÜRLÜK MÜDÜRÜ)
     { id: 2, role_id: 2, full_name: 'Mehmet Demir (Fen İşleri Müdürü)', email: 'fenisleri.mudur@belediye.gov.tr', phone: '05552223344', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 1, department_id: 1, department_name: 'Fen İşleri Müdürlüğü' },
     { id: 3, role_id: 2, full_name: 'Ayşe Kaya (Temizlik Müdürü)', email: 'temizlik.mudur@belediye.gov.tr', phone: '05553334455', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 2, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü' },
     { id: 4, role_id: 2, full_name: 'Kemal Özcan (Park Müdürü)', email: 'park.mudur@belediye.gov.tr', phone: '05554443322', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 3, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü' },
     { id: 5, role_id: 2, full_name: 'Hasan Yılmaz (Zabıta Müdürü)', email: 'zabita.mudur@belediye.gov.tr', phone: '05555554433', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 4, department_id: 4, department_name: 'Zabıta Müdürlüğü' },
     { id: 6, role_id: 2, full_name: 'Mustafa Çelik (Su Müdürü)', email: 'su.mudur@belediye.gov.tr', phone: '05556665544', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 5, department_id: 5, department_name: 'Su ve Kanalizasyon Müdürlüğü' },
-    
-    { id: 7, role_id: 3, full_name: 'Ali Usta (Fen İşleri Saha Personeli)', email: 'ali.fen@belediye.gov.tr', phone: '05554445566', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 1, department_id: 1, department_name: 'Fen İşleri Müdürlüğü' },
-    { id: 8, role_id: 3, full_name: 'Veli Şahin (Temizlik Saha Personeli)', email: 'veli.temizlik@belediye.gov.tr', phone: '05555556677', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 2, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü' },
-    { id: 9, role_id: 3, full_name: 'Fatma Şahin (Park Saha Personeli)', email: 'fatma.park@belediye.gov.tr', phone: '05556667700', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 3, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü' },
-    
+    { id: 12, role_id: 2, full_name: 'Dr. Selin Aydın (Veteriner Müdürü)', email: 'veteriner.mudur@belediye.gov.tr', phone: '05557776655', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 6, department_id: 6, department_name: 'Veteriner İşleri Müdürlüğü' },
+    { id: 13, role_id: 2, full_name: 'Uğur Öztürk (Ulaşım Müdürü)', email: 'ulasim.mudur@belediye.gov.tr', phone: '05558887766', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 7, department_id: 7, department_name: 'Ulaşım Hizmetleri Müdürlüğü' },
+    { id: 14, role_id: 2, full_name: 'Zeynep Aksoy (Sosyal Hizmetler Müdürü)', email: 'sosyal.mudur@belediye.gov.tr', phone: '05559998877', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 8, department_id: 8, department_name: 'Sosyal Hizmetler Müdürlüğü' },
+    { id: 15, role_id: 2, full_name: 'İrfan Yılmaz (İmar Müdürü)', email: 'imar.mudur@belediye.gov.tr', phone: '05551001122', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 9, department_id: 9, department_name: 'İmar ve Şehircilik Müdürlüğü' },
+    { id: 16, role_id: 2, full_name: 'Bilal Yalçın (Bilgi İşlem Müdürü)', email: 'bilgiislem.mudur@belediye.gov.tr', phone: '05552002233', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 10, department_id: 10, department_name: 'Bilgi İşlem Müdürlüğü' },
+
+    // 3. SAHA PERSONELLERİ (HER BİRİME 3 SAHA ÇALIŞANI = 30 PERSONEL)
+    // Dept 1: Fen İşleri
+    { id: 7, role_id: 3, full_name: 'Ali Usta (Fen İşleri Saha Personeli)', email: 'ali.fen@belediye.gov.tr', phone: '05554445566', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 1, department_id: 1, department_name: 'Fen İşleri Müdürlüğü', employee_title: 'Asfalt & Kaldırım Ekip Şefi' },
+    { id: 17, role_id: 3, full_name: 'Burak Yılmaz (Fen İşleri Saha Ekibi)', email: 'burak.fen@belediye.gov.tr', phone: '05554445567', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 11, department_id: 1, department_name: 'Fen İşleri Müdürlüğü', employee_title: 'Yol Bakım Görevlisi' },
+    { id: 18, role_id: 3, full_name: 'Cem Sert (Fen İşleri Operatör)', email: 'cem.fen@belediye.gov.tr', phone: '05554445568', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 12, department_id: 1, department_name: 'Fen İşleri Müdürlüğü', employee_title: 'İş Makinesi Operatörü' },
+
+    // Dept 2: Temizlik İşleri
+    { id: 8, role_id: 3, full_name: 'Veli Şahin (Temizlik Saha Personeli)', email: 'veli.temizlik@belediye.gov.tr', phone: '05555556677', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 2, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü', employee_title: 'Atık Yönetimi Görevlisi' },
+    { id: 19, role_id: 3, full_name: 'Emin Kılıç (Temizlik Ekip Şefi)', email: 'emin.temizlik@belediye.gov.tr', phone: '05555556678', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 13, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü', employee_title: 'Süpürge & Hijyen Şefi' },
+    { id: 20, role_id: 3, full_name: 'Ferdi Arslan (Konteyner Ekibi)', email: 'ferdi.temizlik@belediye.gov.tr', phone: '05555556679', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 14, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü', employee_title: 'Konteyner Bakım Görevlisi' },
+
+    // Dept 3: Park ve Bahçeler
+    { id: 9, role_id: 3, full_name: 'Fatma Şahin (Park Saha Personeli)', email: 'fatma.park@belediye.gov.tr', phone: '05556667700', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 3, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü', employee_title: 'Peyzaj ve Bahçe Görevlisi' },
+    { id: 21, role_id: 3, full_name: 'Hakan Çetin (Budama & Yeşil Alan)', email: 'hakan.park@belediye.gov.tr', phone: '05556667701', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 15, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü', employee_title: 'Ağaç Budama Görevlisi' },
+    { id: 22, role_id: 3, full_name: 'İbrahim Koç (Çocuk Parkı Bakım)', email: 'ibrahim.park@belediye.gov.tr', phone: '05556667702', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 16, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü', employee_title: 'Oyun Parkı Bakım Personeli' },
+
+    // Dept 4: Zabıta
+    { id: 23, role_id: 3, full_name: 'Kadir Güven (Zabıta Komiseri)', email: 'kadir.zabita@belediye.gov.tr', phone: '05557778801', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 17, department_id: 4, department_name: 'Zabıta Müdürlüğü', employee_title: 'Zabıta Saha Komiseri' },
+    { id: 24, role_id: 3, full_name: 'Levent Baş (İşyeri Denetim)', email: 'levent.zabita@belediye.gov.tr', phone: '05557778802', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 18, department_id: 4, department_name: 'Zabıta Müdürlüğü', employee_title: 'İşyeri Denetim Personeli' },
+    { id: 25, role_id: 3, full_name: 'Murat Yıldız (Çevre Zabıtası)', email: 'murat.zabita@belediye.gov.tr', phone: '05557778803', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 19, department_id: 4, department_name: 'Zabıta Müdürlüğü', employee_title: 'Çevre Zabıta Görevlisi' },
+
+    // Dept 5: Su ve Kanalizasyon
+    { id: 26, role_id: 3, full_name: 'Nihat Aydoğan (Su Arıza Ekip Şefi)', email: 'nihat.su@belediye.gov.tr', phone: '05558889901', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 20, department_id: 5, department_name: 'Su ve Kanalizasyon Müdürlüğü', employee_title: 'Şebeke Arıza Görevlisi' },
+    { id: 27, role_id: 3, full_name: 'Orhan Tekin (Kanalizasyon Şefi)', email: 'orhan.su@belediye.gov.tr', phone: '05558889902', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 21, department_id: 5, department_name: 'Su ve Kanalizasyon Müdürlüğü', employee_title: 'Vidanjör Operatörü' },
+    { id: 28, role_id: 3, full_name: 'Polat Dinç (Tesisat Görevlisi)', email: 'polat.su@belediye.gov.tr', phone: '05558889903', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 22, department_id: 5, department_name: 'Su ve Kanalizasyon Müdürlüğü', employee_title: 'Tesisat Onarım Uzmanı' },
+
+    // Dept 6: Veteriner İşleri
+    { id: 29, role_id: 3, full_name: 'Recep Yavuz (Sokak Canları Ekibi)', email: 'recep.vet@belediye.gov.tr', phone: '05559990001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 23, department_id: 6, department_name: 'Veteriner İşleri Müdürlüğü', employee_title: 'Hayvan Bakım ve Nakil' },
+    { id: 30, role_id: 3, full_name: 'Sinan Kurt (Veteriner Teknikeri)', email: 'sinan.vet@belediye.gov.tr', phone: '05559990002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 24, department_id: 6, department_name: 'Veteriner İşleri Müdürlüğü', employee_title: 'Veteriner Sağlık Teknikeri' },
+    { id: 31, role_id: 3, full_name: 'Turgut Doğan (İlaçlama Ekip Şefi)', email: 'turgut.vet@belediye.gov.tr', phone: '05559990003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 25, department_id: 6, department_name: 'Veteriner İşleri Müdürlüğü', employee_title: 'Çevre İlaçlama Görevlisi' },
+
+    // Dept 7: Ulaşım Hizmetleri
+    { id: 32, role_id: 3, full_name: 'Ümit Varol (Sinyalizasyon)', email: 'umit.ulasim@belediye.gov.tr', phone: '05551110001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 26, department_id: 7, department_name: 'Ulaşım Hizmetleri Müdürlüğü', employee_title: 'Sinyalizasyon Teknisyeni' },
+    { id: 33, role_id: 3, full_name: 'Volkan Güneş (Durak Bakım Ekibi)', email: 'volkan.ulasim@belediye.gov.tr', phone: '05551110002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 27, department_id: 7, department_name: 'Ulaşım Hizmetleri Müdürlüğü', employee_title: 'Durak Bakım Personeli' },
+    { id: 34, role_id: 3, full_name: 'Yasin Bulut (Hat Denetim Görevlisi)', email: 'yasin.ulasim@belediye.gov.tr', phone: '05551110003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 28, department_id: 7, department_name: 'Ulaşım Hizmetleri Müdürlüğü', employee_title: 'Toplu Taşıma Denetçisi' },
+
+    // Dept 8: Sosyal Hizmetler
+    { id: 35, role_id: 3, full_name: 'Ahmet Can (Sosyal Saha İnceleme)', email: 'ahmet.sosyal@belediye.gov.tr', phone: '05552220001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 29, department_id: 8, department_name: 'Sosyal Hizmetler Müdürlüğü', employee_title: 'Saha İnceleme Görevlisi' },
+    { id: 36, role_id: 3, full_name: 'Berna Şen (Aşevi ve Gıda Dağıtım)', email: 'berna.sosyal@belediye.gov.tr', phone: '05552220002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 30, department_id: 8, department_name: 'Sosyal Hizmetler Müdürlüğü', employee_title: 'Lojistik Destek Personeli' },
+    { id: 37, role_id: 3, full_name: 'Cansu Efe (Evde Bakım Destek)', email: 'cansu.sosyal@belediye.gov.tr', phone: '05552220003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 31, department_id: 8, department_name: 'Sosyal Hizmetler Müdürlüğü', employee_title: 'Evde Bakım Görevlisi' },
+
+    // Dept 9: İmar ve Şehircilik
+    { id: 38, role_id: 3, full_name: 'Davut Soylu (İmar Denetim Şefi)', email: 'davut.imar@belediye.gov.tr', phone: '05553330001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 32, department_id: 9, department_name: 'İmar ve Şehircilik Müdürlüğü', employee_title: 'Yapı Kontrol Teknisyeni' },
+    { id: 39, role_id: 3, full_name: 'Erdem Kara (Kentsel Dönüşüm Ekibi)', email: 'erdem.imar@belediye.gov.tr', phone: '05553330002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 33, department_id: 9, department_name: 'İmar ve Şehircilik Müdürlüğü', employee_title: 'Harita Teknikeri' },
+    { id: 40, role_id: 3, full_name: 'Fatih Uzun (Yapı İnceleme Görevlisi)', email: 'fatih.imar@belediye.gov.tr', phone: '05553330003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 34, department_id: 9, department_name: 'İmar ve Şehircilik Müdürlüğü', employee_title: 'Yapı İnceleme Personeli' },
+
+    // Dept 10: Bilgi İşlem
+    { id: 41, role_id: 3, full_name: 'Gökhan Aydın (Sokak Lambası & Ağ Ekibi)', email: 'gokhan.bim@belediye.gov.tr', phone: '05554440001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 35, department_id: 10, department_name: 'Bilgi İşlem Müdürlüğü', employee_title: 'Akıllı Şehir & Kamera Şefi' },
+    { id: 42, role_id: 3, full_name: 'Harun Polat (Saha Donanım Görevlisi)', email: 'harun.bim@belediye.gov.tr', phone: '05554440002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 36, department_id: 10, department_name: 'Bilgi İşlem Müdürlüğü', employee_title: 'Sistem Teknisyeni' },
+    { id: 43, role_id: 3, full_name: 'İsmail Can (Aydınlatma ve Sensör)', email: 'ismail.bim@belediye.gov.tr', phone: '05554440003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Personel', employee_id: 37, department_id: 10, department_name: 'Bilgi İşlem Müdürlüğü', employee_title: 'Saha Sensör Uzmanı' },
+
+    // 4. VATANDAŞLAR
     { id: 10, role_id: 4, full_name: 'Caner Özkan (Vatandaş)', email: 'caner@gmail.com', phone: '05556667788', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Vatandaş', citizen_id: 6 },
     { id: 11, role_id: 4, full_name: 'Sefa Bodur (Vatandaş)', email: 'sefa@gmail.com', phone: '05557778899', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Vatandaş', citizen_id: 7 }
   ],
@@ -144,7 +201,14 @@ const memData = {
   employees: [
     { id: 1, user_id: 7, department_id: 1, title: 'Asfalt & Kaldırım Ekip Şefi' },
     { id: 2, user_id: 8, department_id: 2, title: 'Atık Yönetimi Görevlisi' },
-    { id: 3, user_id: 9, department_id: 3, title: 'Peyzaj ve Bahçe Görevlisi' }
+    { id: 3, user_id: 9, department_id: 3, title: 'Peyzaj ve Bahçe Görevlisi' },
+    { id: 4, user_id: 23, department_id: 4, title: 'Zabıta Saha Komiseri' },
+    { id: 5, user_id: 26, department_id: 5, title: 'Şebeke Arıza Görevlisi' },
+    { id: 6, user_id: 29, department_id: 6, title: 'Hayvan Bakım ve Nakil' },
+    { id: 7, user_id: 32, department_id: 7, title: 'Sinyalizasyon Teknisyeni' },
+    { id: 8, user_id: 35, department_id: 8, title: 'Saha İnceleme Görevlisi' },
+    { id: 9, user_id: 38, department_id: 9, title: 'Yapı Kontrol Teknisyeni' },
+    { id: 10, user_id: 41, department_id: 10, title: 'Akıllı Şehir & Kamera Şefi' }
   ],
   complaints: [
     {
@@ -190,6 +254,40 @@ const memData = {
   satisfaction_surveys: [],
   audit_logs: []
 };
+
+// Physical JSON Data Persistence Engine
+const dbFilePath = path.join(__dirname, '../data/db.json');
+
+function saveDbJson() {
+  try {
+    const dir = path.dirname(dbFilePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(dbFilePath, JSON.stringify(memData, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving db.json:', err.message);
+  }
+}
+
+function loadDbJson() {
+  try {
+    if (fs.existsSync(dbFilePath)) {
+      const dataStr = fs.readFileSync(dbFilePath, 'utf8');
+      const loaded = JSON.parse(dataStr);
+      if (loaded && Array.isArray(loaded.users) && Array.isArray(loaded.complaints)) {
+        Object.assign(memData, loaded);
+        console.log('💾 Veritabanı verileri fiziksel data/db.json dosyasından yüklendi.');
+      }
+    } else {
+      saveDbJson();
+    }
+  } catch (err) {
+    console.error('Error loading db.json:', err.message);
+  }
+}
+
+loadDbJson();
 
 // Clean, Direct Upvote Toggle (Memory + MySQL Sync)
 async function toggleComplaintUpvote(complaintId, userId) {
@@ -342,9 +440,13 @@ const resilientPool = {
           ...u,
           role_name: u.role_name || (u.role_id === 1 ? 'Sistem Yöneticisi' : (u.role_id === 2 ? 'Birim Yöneticisi' : (u.role_id === 3 ? 'Personel' : 'Vatandaş')))
         }));
-        if (params && params.length > 0 && params[0]) {
+        if (params && params.length > 0 && params[0] !== undefined) {
           const searchVal = String(params[0]).trim().toLowerCase();
-          res = res.filter(u => u.email.toLowerCase() === searchVal || String(u.id) === searchVal);
+          if (sqlUpper.includes('WHERE EMAIL =') || sqlUpper.includes('WHERE LOWER(EMAIL) =') || sqlUpper.includes('EMAIL = ?') || sqlUpper.includes('WHERE U.EMAIL =')) {
+            res = res.filter(u => u.email && u.email.toLowerCase() === searchVal);
+          } else if (sqlUpper.includes('WHERE ID =') || sqlUpper.includes('WHERE U.ID =') || sqlUpper.includes('U.ID = ?')) {
+            res = res.filter(u => String(u.id) === searchVal);
+          }
         }
         return [res];
       }
@@ -583,10 +685,19 @@ const resilientPool = {
         const userId = params[params.length - 1];
         const user = memData.users.find(u => u.id == userId);
         if (user) {
-          if (params[0]) user.full_name = params[0];
-          if (params[1]) user.phone = params[1];
-          if (sqlUpper.includes('IS_ACTIVE = 0')) user.is_active = 0;
-          if (sqlUpper.includes('PASSWORD_HASH =')) user.password_hash = params[0];
+          if (sqlUpper.includes('IS_ACTIVE =') || sqlUpper.includes('IS_ACTIVE=')) {
+            user.is_active = Number(params[0]);
+          } else {
+            if (params[0] && typeof params[0] === 'string' && isNaN(Number(params[0]))) {
+              user.full_name = params[0];
+            }
+            if (sqlUpper.includes('EMAIL =') && params[1] && typeof params[1] === 'string' && params[1].includes('@')) {
+              user.email = params[1];
+            }
+            if (params[2] && typeof params[2] === 'string' && !isNaN(Number(params[2]))) {
+              user.phone = params[2];
+            }
+          }
         }
         return [{ affectedRows: 1 }];
       }
@@ -598,6 +709,10 @@ const resilientPool = {
           cit.address = params[0];
         }
         return [{ affectedRows: 1 }];
+      }
+
+      if (sqlUpper.startsWith('INSERT') || sqlUpper.startsWith('UPDATE') || sqlUpper.startsWith('DELETE')) {
+        saveDbJson();
       }
 
       return [{ affectedRows: 1 }];
@@ -633,6 +748,7 @@ async function createSystemNotification({ user_id, department_id, title, message
   };
 
   memData.notifications.unshift(notifObj);
+  saveDbJson();
 
   if (!useMemoryFallback && realPool) {
     try {
@@ -669,5 +785,6 @@ module.exports = {
   memData,
   toggleComplaintUpvote,
   getUpvotedComplaintIdsForUser,
-  createSystemNotification
+  createSystemNotification,
+  saveDbJson
 };

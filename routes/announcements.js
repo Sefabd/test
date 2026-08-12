@@ -56,6 +56,8 @@ router.get('/', async (req, res) => {
       list = memData.announcements;
     }
 
+    list = list.filter(a => a.is_active !== 0);
+
     res.json({
       success: true,
       announcements: list
@@ -112,19 +114,20 @@ router.post('/', authenticateToken, checkRole(['Sistem Yöneticisi']), async (re
   }
 });
 
-// 3. DELETE ANNOUNCEMENT (ADMIN ONLY)
+// 3. SOFT DELETE ANNOUNCEMENT (ADMIN ONLY)
 router.delete('/:id', authenticateToken, checkRole(['Sistem Yöneticisi']), async (req, res) => {
   try {
     const id = req.params.id;
     try {
-      await pool.query('DELETE FROM announcements WHERE id = ?', [id]);
+      await pool.query('UPDATE announcements SET is_active = 0 WHERE id = ?', [id]);
     } catch (e) {}
 
     if (memData.announcements) {
-      memData.announcements = memData.announcements.filter(a => a.id != id);
+      const a = memData.announcements.find(item => item.id == id);
+      if (a) a.is_active = 0;
     }
 
-    res.json({ success: true, message: 'Duyuru silindi.' });
+    res.json({ success: true, message: 'Duyuru başarıyla pasife alındı (Soft Delete).' });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Silme hatası.' });
   }

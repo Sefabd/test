@@ -315,10 +315,11 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================= */
 
 .portal-container {
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: auto;
   background: linear-gradient(135deg, #0a1f44 0%, #153a7a 50%, #1a4b9c 100%);
   color: var(--text-white);
+  display: flex;
   flex-direction: column;
   position: relative;
 }
@@ -330,6 +331,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
 }
 
 .portal-logo {
@@ -393,15 +395,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Portal Main Body Grid */
 .portal-hero {
-  flex: 1;
+  flex: 1 0 auto;
   max-width: 1300px;
   width: 100%;
   margin: 0 auto;
-  padding: 40px 30px;
+  padding: 30px 30px 50px 30px;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 50px;
-  align-items: center;
+  align-items: start;
 }
 
 .hero-badge-153 {

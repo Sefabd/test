@@ -304,16 +304,9 @@
           </a>
         </li>
 
-        <!-- Admin Only Menu Items -->
         <li id="nav-admin-users" style="display: none;">
           <a href="#" onclick="switchWorkspaceTab('admin-users'); event.preventDefault();">
             <i class="fas fa-users-gear"></i> <span>Kullanıcı Yönetimi</span>
-          </a>
-        </li>
-
-        <li id="nav-admin-depts" style="display: none;">
-          <a href="#" onclick="switchWorkspaceTab('admin-depts'); event.preventDefault();">
-            <i class="fas fa-sitemap"></i> <span>Müdürlük Yönetimi</span>
           </a>
         </li>
 
@@ -331,17 +324,8 @@
         </li>
 
         <li id="nav-announcements">
-          <a href="#" onclick="switchWorkspaceTab('announcements'); event.preventDefault();" style="justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <i class="fas fa-bullhorn"></i> <span>Duyurular</span>
-            </div>
-            <span style="background: #ef4444; color: white; border-radius: 10px; padding: 2px 8px; font-size: 0.72rem; font-weight: 800;">3</span>
-          </a>
-        </li>
-
-        <li id="nav-help">
-          <a href="#" onclick="switchWorkspaceTab('help'); event.preventDefault();">
-            <i class="fas fa-circle-question"></i> <span>Yardım Merkezi</span>
+          <a href="#" onclick="switchWorkspaceTab('announcements'); event.preventDefault();">
+            <i class="fas fa-bullhorn"></i> <span>Duyurular</span>
           </a>
         </li>
       </ul>
@@ -384,7 +368,7 @@
             <i class="fas fa-search"></i> Takip Kodu Sorgula
           </button>
           
-          <button type="button" id="btn-citizen-new" class="btn btn-primary btn-sm" onclick="openModal('modal-new-complaint')">
+          <button type="button" id="btn-citizen-new" class="btn btn-primary btn-sm" onclick="openCreateComplaintForm()">
             <i class="fas fa-plus-circle"></i> + Yeni Talep Oluştur
           </button>
 
@@ -769,10 +753,19 @@
                 <!-- AI Assistant Suggestion Box -->
                 <div id="page-ai-suggestion-container" style="display: none;"></div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                  <div>
+                    <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Hedef Birim / Müdürlük *</label>
+                    <select id="page-complaint-department" name="department_id" required class="form-input" style="height: 42px; border-radius: 8px;">
+                      <option value="">-- Birim Seçiniz --</option>
+                    </select>
+                  </div>
+
                   <div>
                     <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Kategori *</label>
-                    <select id="page-complaint-category" name="category_id" required class="form-input" style="height: 42px; border-radius: 8px;"></select>
+                    <select id="page-complaint-category" name="category_id" required class="form-input" style="height: 42px; border-radius: 8px;">
+                      <option value="">-- Önce Birim Seçiniz --</option>
+                    </select>
                   </div>
 
                   <div>
@@ -1006,6 +999,8 @@
               </table>
             </div>
           </div>
+        </section>
+
         <!-- SECTION 9: ANNOUNCEMENTS SECTION -->
         <section id="sec-announcements" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
@@ -1026,23 +1021,121 @@
 
         <!-- SECTION 10: DEDICATED REPORTS & ANALYTICS SECTION -->
         <section id="sec-reports" style="display: none;">
-          <div style="margin-bottom: 20px;">
-            <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;"><i class="fas fa-chart-column" style="color: var(--portal-blue-accent);"></i> Yönetimsel Raporlar & Analitik Paneli</h3>
-            <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Birim performansı, personel çözüm süreleri ve detaylı istatistik raporları.</p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
+            <div>
+              <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.3rem;">
+                <i class="fas fa-chart-column" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Yönetimsel Raporlar & Analitik Paneli
+              </h3>
+              <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Genel birim performansı, saha personeli çözüm süreleri ve detaylı yönetim raporları.</p>
+            </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+          <!-- Dynamic Filter Bar -->
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="flex: 1; min-width: 200px;">
+              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Müdürlük / Birim Seçimi</label>
+              <select id="filter-report-dept" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                <option value="ALL" selected>🏢 Tüm Birimler & Müdürlükler</option>
+              </select>
+            </div>
+
+            <div style="min-width: 160px;">
+              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Zaman Aralığı</label>
+              <select id="filter-report-period" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                <option value="THIS_MONTH" selected>📅 Bu Ay (Son 30 Gün)</option>
+                <option value="LAST_3_MONTHS">📅 Son 3 Ay</option>
+                <option value="THIS_YEAR">📅 Bu Yıl (2026)</option>
+                <option value="ALL">🗓️ Tüm Zamanlar</option>
+              </select>
+            </div>
+
+            <div style="min-width: 180px;">
+              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Rapor Modu</label>
+              <select id="filter-report-type" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                <option value="OVERVIEW" selected>📊 Genel Birim & Saha Analizi</option>
+                <option value="STAFF_DETAIL">👷 Personel Özel Performans Raporu</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- KPI Summary Cards Bar -->
+          <div class="kpi-grid-5" style="grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #eff6ff; color: #1d4ed8;"><i class="fas fa-list-check"></i></div>
+              <div>
+                <span class="kpi-label">Toplam İşlenen Talep</span>
+                <h3 id="report-kpi-total" class="kpi-value">0</h3>
+                <span class="kpi-subtext">Raporlanan döneme ait</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #ecfdf5; color: #047857;"><i class="fas fa-circle-check"></i></div>
+              <div>
+                <span class="kpi-label">Çözülme Oranı</span>
+                <h3 id="report-kpi-rate" class="kpi-value">%0</h3>
+                <span class="kpi-subtext" style="color: #047857;">Çözülen talepler</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #fef3c7; color: #b45309;"><i class="fas fa-stopwatch"></i></div>
+              <div>
+                <span class="kpi-label">Ort. Çözüm Süresi</span>
+                <h3 id="report-kpi-avg-time" class="kpi-value">4.2 Saat</h3>
+                <span class="kpi-subtext" style="color: #b45309;">Saha müdahale hızı</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #f3e8ff; color: #6b21a8;"><i class="fas fa-user-gear"></i></div>
+              <div>
+                <span class="kpi-label">Aktif Saha Personeli</span>
+                <h3 id="report-kpi-staff-count" class="kpi-value">0</h3>
+                <span class="kpi-subtext">Görevli ekip üyesi</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Staff Detailed Performance Table -->
+          <div class="card-box" style="margin-bottom: 24px;">
+            <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px; font-weight: 800; font-size: 1.1rem;">
+              <i class="fas fa-user-check" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Saha Personeli Özel Çözüm & Performans Tablosu
+            </h4>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>PERSONEL ADI</th>
+                    <th>E-POSTA / TELEFON</th>
+                    <th>BAĞLI MÜDÜRLÜK</th>
+                    <th>GÖREV / UNVAN</th>
+                    <th>ATANAN TALEP</th>
+                    <th>TAMAMLANAN</th>
+                    <th>BEKLEYEN</th>
+                    <th>PERFORMANS PUANI</th>
+                  </tr>
+                </thead>
+                <tbody id="table-reports-staff-tbody">
+                  <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Rapor verileri yükleniyor...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
             <div class="card-box">
-              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-user-gear"></i> Saha Personeli Tamamlama Sayıları</h4>
-              <div id="reports-staff-performance-container" style="display: flex; flex-direction: column; gap: 10px;">
-                <div style="text-align: center; color: #94a3b8; padding: 20px;">Yükleniyor...</div>
+              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-chart-pie"></i> Birim Dağılım & Çözüm İstatistiği</h4>
+              <div style="height: 240px; position: relative;">
+                <canvas id="reports-dept-chart"></canvas>
               </div>
             </div>
 
             <div class="card-box">
-              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-building-circle-check"></i> Müdürlük Çözüm Oranları</h4>
+              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-chart-line"></i> Aylık Talep Tamamlama Trendi</h4>
               <div style="height: 240px; position: relative;">
-                <canvas id="reports-dept-chart"></canvas>
+                <canvas id="reports-trend-chart"></canvas>
               </div>
             </div>
           </div>
@@ -1306,7 +1399,7 @@
 
   <!-- MODAL: ADMIN USER CREATE / EDIT -->
   <div class="modal-overlay" id="modal-admin-user">
-    <div class="modal-container" style="max-width: 560px;">
+    <div class="modal-container" style="max-width: 720px; width: 95%;">
       <div class="modal-header">
         <h3 id="modal-user-title" style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;">
           <i class="fas fa-user-gear" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Kullanıcı Ekle / Düzenle
@@ -1316,28 +1409,29 @@
 
       <form id="form-admin-user" onsubmit="handleAdminUserSubmit(event)">
         <input type="hidden" id="edit-user-id" value="">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
           
-          <div>
-            <label style="font-weight: 700; font-size: 0.85rem;">Ad Soyad *</label>
-            <input type="text" id="admin-user-fullname" required placeholder="Örn: Mehmet Demir" class="form-input" style="height: 40px; border-radius: 8px;">
-          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 700; font-size: 0.85rem;">Ad Soyad *</label>
+              <input type="text" id="admin-user-fullname" required placeholder="Örn: Mehmet Demir" class="form-input" style="height: 42px; border-radius: 8px;">
+            </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div>
               <label style="font-weight: 700; font-size: 0.85rem;">E-posta Adresi *</label>
-              <input type="email" id="admin-user-email" required placeholder="ornek@belediye.gov.tr" class="form-input" style="height: 40px; border-radius: 8px;">
-            </div>
-            <div>
-              <label style="font-weight: 700; font-size: 0.85rem;">Telefon Numarası</label>
-              <input type="text" id="admin-user-phone" placeholder="05551112233" class="form-input" style="height: 40px; border-radius: 8px;">
+              <input type="email" id="admin-user-email" required placeholder="ornek@belediye.gov.tr" class="form-input" style="height: 42px; border-radius: 8px;">
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 700; font-size: 0.85rem;">Telefon Numarası</label>
+              <input type="text" id="admin-user-phone" placeholder="05551112233" class="form-input" style="height: 42px; border-radius: 8px;">
+            </div>
+
             <div>
               <label style="font-weight: 700; font-size: 0.85rem;">Sistem Rolü *</label>
-              <select id="admin-user-role" required onchange="handleAdminUserRoleChange()" class="form-input" style="height: 40px; border-radius: 8px;">
+              <select id="admin-user-role" required onchange="handleAdminUserRoleChange()" class="form-input" style="height: 42px; border-radius: 8px;">
                 <option value="4" selected>👤 Vatandaş</option>
                 <option value="3">👷 Personel (Saha Görevlisi)</option>
                 <option value="2">🏢 Birim Yöneticisi (Müdür)</option>
@@ -1587,64 +1681,12 @@
             <textarea id="action-desc" name="action_description" class="form-input" rows="3" required placeholder="Sahada yapılan çalışmayı açıklayınız..."></textarea>
           </div>
           <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Kullanılan Araç / Ekipman</label>
-            <input type="text" name="tools_equipment_used" placeholder="Örn: Asfalt Yama Aracı, Kepçe" class="form-input">
-          </div>
-          <div>
             <label style="font-weight: 600; font-size: 0.85rem;">Çözüm Fotoğrafı Yükle</label>
             <input type="file" name="resolution_photo" accept="image/*" class="form-input">
           </div>
           <button type="submit" class="btn-portal-submit" style="background: linear-gradient(135deg, #10b981, #059669);">
             <i class="fas fa-save"></i> İşlem Kaydını Güncelle
           </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 7: ADMIN ADD USER MODAL -->
-  <div class="modal-overlay" id="modal-add-user">
-    <div class="modal-container" style="max-width: 500px;">
-      <div class="modal-header">
-        <h3>Yeni Kullanıcı / Personel Ekle</h3>
-        <button class="close-btn" onclick="closeModal('modal-add-user')">&times;</button>
-      </div>
-      <form id="form-add-user" onsubmit="handleAddUserSubmit(event)">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Ad Soyad *</label>
-            <input type="text" id="admin-user-fullname" required class="form-input">
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">E-posta *</label>
-            <input type="email" id="admin-user-email" required class="form-input">
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Telefon</label>
-            <input type="text" id="admin-user-phone" class="form-input">
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Şifre *</label>
-            <input type="password" id="admin-user-password" required class="form-input" value="123456">
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Rol *</label>
-            <select id="admin-user-role" class="form-input" required>
-              <option value="2">Birim Yöneticisi</option>
-              <option value="3" selected>Personel</option>
-              <option value="4">Vatandaş</option>
-              <option value="1">Sistem Yöneticisi</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Müdürlük / Birim</label>
-            <select id="admin-user-department" class="form-input"></select>
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 0.85rem;">Unvan / Görev Tanımı</label>
-            <input type="text" id="admin-user-title" placeholder="Örn: Asfalt Saha Şefi" class="form-input">
-          </div>
-          <button type="submit" class="btn-portal-submit">Kullanıcıyı Kaydet</button>
         </div>
       </form>
     </div>
@@ -1722,9 +1764,9 @@
   </div>
 
   <!-- App Scripts -->
-  <script src="/js/leaflet-map.js?v=35.0.0"></script>
-  <script src="/js/charts.js?v=35.0.0"></script>
-  <script src="/js/ai-helper.js?v=35.0.0"></script>
-  <script src="/js/app.js?v=35.0.0"></script>
+  <script src="/js/leaflet-map.js?v=52.0.0"></script>
+  <script src="/js/charts.js?v=52.0.0"></script>
+  <script src="/js/ai-helper.js?v=52.0.0"></script>
+  <script src="/js/app.js?v=52.0.0"></script>
 </body>
 </html>
