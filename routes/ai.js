@@ -84,8 +84,8 @@ router.post('/analyze', async (req, res) => {
   const categoryResult = bestMatch || {
     category_id: 14,
     category_name: 'Diğer',
-    department_id: 1,
-    dept_name: 'Fen İşleri Müdürlüğü',
+    department_id: 11,
+    dept_name: '153 Çözüm Koordinasyon Masası',
     priority: 'Normal'
   };
 
@@ -115,7 +115,21 @@ router.post('/analyze', async (req, res) => {
     sentiment = 'Olumsuz';
   }
 
-  // 5. Mükerrer Şikâyet Kontrolü (Duplicate Detection)
+  // 5. Otomatik Kurumsal Başlık Üretimi (Title Auto-Generation)
+  let autoTitle = '';
+  if (description.trim().length > 0) {
+    const firstSentence = description.trim().split(/[.!?\n]/)[0].trim();
+    if (firstSentence.length > 5 && firstSentence.length <= 60) {
+      autoTitle = firstSentence.charAt(0).toUpperCase() + firstSentence.slice(1);
+    } else if (categoryResult && categoryResult.category_name !== 'Diğer') {
+      autoTitle = `Bulancak ${categoryResult.category_name} Talebi`;
+    } else {
+      const words = description.trim().split(' ').slice(0, 5).join(' ');
+      autoTitle = words.charAt(0).toUpperCase() + words.slice(1) + '...';
+    }
+  }
+
+  // 6. Mükerrer Şikâyet Kontrolü (Duplicate Detection)
   let duplicateCount = 0;
   let similarComplaints = [];
 
@@ -137,13 +151,14 @@ router.post('/analyze', async (req, res) => {
     }
   }
 
-  // 6. Otomatik Anlaşılır Özet Üretme (Text Summarization)
+  // 7. Otomatik Anlaşılır Özet Üretme (Text Summarization)
   const cleanDesc = description.trim();
   const aiSummary = cleanDesc.length > 120 ? cleanDesc.substring(0, 120) + '...' : cleanDesc;
 
   res.json({
     success: true,
     analysis: {
+      generated_title: autoTitle,
       suggested_category_id: categoryResult.category_id,
       suggested_category_name: categoryResult.category_name,
       suggested_department_id: categoryResult.department_id,

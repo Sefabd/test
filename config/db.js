@@ -27,20 +27,22 @@ const memData = {
     { id: 1, name: 'Sistem Yöneticisi', description: 'Tam yetkili sistem yöneticisi' },
     { id: 2, name: 'Birim Yöneticisi', description: 'Belediye müdürlük yöneticisi' },
     { id: 3, name: 'Personel', description: 'Belediye saha veya masa başı iş takip personeli' },
-    { id: 4, name: 'Vatandaş', description: 'Sisteme kayıtlı vatandaş' }
+    { id: 4, name: 'Vatandaş', description: 'Sisteme kayıtlı vatandaş' },
+    { id: 5, name: 'Belediye Başkanı', description: 'Tüm belediye verilerini inceleyen üst düzey gözlemci (Read-Only)' },
+    { id: 6, name: 'Belediye Başkan Yardımcısı', description: 'Kendisine bağlı birimleri yöneten ve izleyen başkan yardımcısı' }
   ],
   departments: [
-    { id: 1, name: 'Fen İşleri Müdürlüğü', code: 'FEN' },
-    { id: 2, name: 'Temizlik İşleri Müdürlüğü', code: 'TEM' },
-    { id: 3, name: 'Park ve Bahçeler Müdürlüğü', code: 'PARK' },
-    { id: 4, name: 'Zabıta Müdürlüğü', code: 'ZBT' },
-    { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü', code: 'SUK' },
-    { id: 6, name: 'Veteriner İşleri Müdürlüğü', code: 'VET' },
-    { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü', code: 'ULS' },
-    { id: 8, name: 'Sosyal Hizmetler Müdürlüğü', code: 'SHM' },
-    { id: 9, name: 'İmar ve Şehircilik Müdürlüğü', code: 'IMR' },
-    { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM' },
-    { id: 11, name: '153 Çözüm Ana Masası (Ön İnceleme Birimi)', code: '153-TRIAGE' }
+    { id: 1, name: 'Fen İşleri Müdürlüğü', code: 'FEN', vice_mayor_user_id: 61 },
+    { id: 2, name: 'Temizlik İşleri Müdürlüğü', code: 'TEM', vice_mayor_user_id: 61 },
+    { id: 3, name: 'Park ve Bahçeler Müdürlüğü', code: 'PARK', vice_mayor_user_id: 62 },
+    { id: 4, name: 'Zabıta Müdürlüğü', code: 'ZBT', vice_mayor_user_id: 62 },
+    { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü', code: 'SUK', vice_mayor_user_id: 61 },
+    { id: 6, name: 'Veteriner İşleri Müdürlüğü', code: 'VET', vice_mayor_user_id: 62 },
+    { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü', code: 'ULS', vice_mayor_user_id: 61 },
+    { id: 8, name: 'Sosyal Hizmetler Müdürlüğü', code: 'SHM', vice_mayor_user_id: 62 },
+    { id: 9, name: 'İmar ve Şehircilik Müdürlüğü', code: 'IMR', vice_mayor_user_id: 61 },
+    { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM', vice_mayor_user_id: 62 },
+    { id: 11, name: '153 Çözüm Koordinasyon Masası', code: '153-TRIAGE', vice_mayor_user_id: 61 }
   ],
   complaint_categories: [
     { id: 1, department_id: 1, name: 'Yol ve Kaldırım Sorunu', default_priority: 'Normal' },
@@ -59,75 +61,39 @@ const memData = {
     { id: 14, department_id: 11, name: 'Diğer', default_priority: 'Normal' }
   ],
   districts: [
-    { id: 1, name: 'Giresun Merkez' },
-    { id: 2, name: 'Bulancak' },
-    { id: 3, name: 'Espiye' },
-    { id: 4, name: 'Görele' },
-    { id: 5, name: 'Tirebolu' }
+    { id: 1, name: 'Bulancak' }
   ],
   neighborhoods: [
-    // GİRESUN MERKEZ MAHALLELERİ (29 Mahalle)
-    { id: 1, district_id: 1, name: 'Aksu Mahallesi' },
-    { id: 2, district_id: 1, name: 'Aydınlar Mahallesi' },
-    { id: 3, district_id: 1, name: 'Çaykara Mahallesi' },
-    { id: 4, district_id: 1, name: 'Çınarlar Mahallesi' },
-    { id: 5, district_id: 1, name: 'Çıtlakkale Mahallesi' },
-    { id: 6, district_id: 1, name: 'Cumhuriyet Mahallesi' },
-    { id: 7, district_id: 1, name: 'Erikliman Mahallesi' },
-    { id: 8, district_id: 1, name: 'Fevzi Çakmak Mahallesi' },
-    { id: 9, district_id: 1, name: 'Gaziler Mahallesi' },
-    { id: 10, district_id: 1, name: 'Gedikkaya Mahallesi' },
-    { id: 11, district_id: 1, name: 'Gemilerçekeği Mahallesi' },
-    { id: 12, district_id: 1, name: 'Güre Mahallesi' },
-    { id: 13, district_id: 1, name: 'Hacı Hüseyin Mahallesi' },
-    { id: 14, district_id: 1, name: 'Hacımiktat Mahallesi' },
-    { id: 15, district_id: 1, name: 'Hacısiyam Mahallesi' },
-    { id: 16, district_id: 1, name: 'Kale Mahallesi' },
-    { id: 17, district_id: 1, name: 'Kapu Mahallesi' },
-    { id: 18, district_id: 1, name: 'Kavaklar Mahallesi' },
-    { id: 19, district_id: 1, name: 'Kayadibi Mahallesi' },
-    { id: 20, district_id: 1, name: 'Küçükköy Mahallesi' },
-    { id: 21, district_id: 1, name: 'Konacık Mahallesi' },
-    { id: 22, district_id: 1, name: 'Nizamiye Mahallesi' },
-    { id: 23, district_id: 1, name: 'Osmaniye Mahallesi' },
-    { id: 24, district_id: 1, name: 'Seldeğirmeni Mahallesi' },
-    { id: 25, district_id: 1, name: 'Şeyhkeramettin Mahallesi' },
-    { id: 26, district_id: 1, name: 'Sultan Selim Mahallesi' },
-    { id: 27, district_id: 1, name: 'Tekke Mahallesi' },
-    { id: 28, district_id: 1, name: 'Teyyaredüzü Mahallesi' },
-    { id: 29, district_id: 1, name: 'Yalı Mahallesi' },
-
-    // BULANCAK İLÇESİ MAHALLELERİ (16 Mahalle)
-    { id: 30, district_id: 2, name: 'Acısu Mahallesi' },
-    { id: 31, district_id: 2, name: 'Arifli Mahallesi' },
-    { id: 32, district_id: 2, name: 'Bahçelievler Mahallesi' },
-    { id: 33, district_id: 2, name: 'Ballıca Mahallesi' },
-    { id: 34, district_id: 2, name: 'Bulancak Mahallesi' },
-    { id: 35, district_id: 2, name: 'Duacıoğlu Mahallesi' },
-    { id: 36, district_id: 2, name: 'Güzelyalı Mahallesi' },
-    { id: 37, district_id: 2, name: 'İhsaniye Mahallesi' },
-    { id: 38, district_id: 2, name: 'İsmetpaşa Mahallesi' },
-    { id: 39, district_id: 2, name: 'Kızılot Mahallesi' },
-    { id: 40, district_id: 2, name: 'Pazarsuyu Mahallesi' },
-    { id: 41, district_id: 2, name: 'Sanayi Mahallesi' },
-    { id: 42, district_id: 2, name: 'Saraçlı Mahallesi' },
-    { id: 43, district_id: 2, name: 'Sisin Mahallesi' },
-    { id: 44, district_id: 2, name: 'Şemsettin Mahallesi' },
-    { id: 45, district_id: 2, name: 'Toprakdeğirmeni Mahallesi' },
-
-    // DİĞER İLÇELER
-    { id: 46, district_id: 3, name: 'Çam Mahallesi' },
-    { id: 47, district_id: 3, name: 'Esentepe Mahallesi' },
-    { id: 48, district_id: 4, name: 'Sayfiye Mahallesi' },
-    { id: 49, district_id: 4, name: 'Hendekbaşı Mahallesi' },
-    { id: 50, district_id: 5, name: 'Demirci Mahallesi' },
-    { id: 51, district_id: 5, name: 'Yeniköy Mahallesi' }
+    // BULANCAK İLÇESİ MAHALLELERİ (16 Resmi Mahalle)
+    { id: 1, district_id: 1, name: 'Acısu Mahallesi' },
+    { id: 2, district_id: 1, name: 'Arifli Mahallesi' },
+    { id: 3, district_id: 1, name: 'Bahçelievler Mahallesi' },
+    { id: 4, district_id: 1, name: 'Ballıca Mahallesi' },
+    { id: 5, district_id: 1, name: 'Bulancak Mahallesi' },
+    { id: 6, district_id: 1, name: 'Duacıoğlu Mahallesi' },
+    { id: 7, district_id: 1, name: 'Güzelyalı Mahallesi' },
+    { id: 8, district_id: 1, name: 'İhsaniye Mahallesi' },
+    { id: 9, district_id: 1, name: 'İsmetpaşa Mahallesi' },
+    { id: 10, district_id: 1, name: 'Kızılot Mahallesi' },
+    { id: 11, district_id: 1, name: 'Pazarsuyu Mahallesi' },
+    { id: 12, district_id: 1, name: 'Sanayi Mahallesi' },
+    { id: 13, district_id: 1, name: 'Saraçlı Mahallesi' },
+    { id: 14, district_id: 1, name: 'Sisin Mahallesi' },
+    { id: 15, district_id: 1, name: 'Şemsettin Mahallesi' },
+    { id: 16, district_id: 1, name: 'Toprakdeğirmeni Mahallesi' }
   ],
   users: [
     // 1. SİSTEM YÖNETİCİSİ (ADMIN)
     { id: 1, role_id: 1, full_name: 'Ahmet Yılmaz (Sistem Yöneticisi)', email: 'admin@belediye.gov.tr', phone: '05551112233', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Sistem Yöneticisi' },
+
+    // 2. BELEDİYE BAŞKANI (EXECUTIVE READ-ONLY)
+    { id: 60, role_id: 5, full_name: 'Necmi Sıbıç (Belediye Başkanı)', email: 'baskan@bulancak.bel.tr', phone: '05550000001', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Belediye Başkanı' },
+
+    // 3. BELEDİYE BAŞKAN YARDIMCILARI
+    { id: 61, role_id: 6, full_name: 'Reşat Nuri Özdemir (Başkan Yardımcısı)', email: 'baskan.yrd1@bulancak.bel.tr', phone: '05550000002', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Belediye Başkan Yardımcısı' },
+    { id: 62, role_id: 6, full_name: 'Ayşegül Erdoğan (Başkan Yardımcısı)', email: 'baskan.yrd2@bulancak.bel.tr', phone: '05550000003', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Belediye Başkan Yardımcısı' },
     
-    // 2. BİRİM YÖNETİCİLERİ (10 MÜDÜRLÜK MÜDÜRÜ)
+    // 4. BİRİM YÖNETİCİLERİ (10 MÜDÜRLÜK MÜDÜRÜ)
     { id: 2, role_id: 2, full_name: 'Mehmet Demir (Fen İşleri Müdürü)', email: 'fenisleri.mudur@belediye.gov.tr', phone: '05552223344', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 1, department_id: 1, department_name: 'Fen İşleri Müdürlüğü' },
     { id: 3, role_id: 2, full_name: 'Ayşe Kaya (Temizlik Müdürü)', email: 'temizlik.mudur@belediye.gov.tr', phone: '05553334455', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 2, department_id: 2, department_name: 'Temizlik İşleri Müdürlüğü' },
     { id: 4, role_id: 2, full_name: 'Kemal Özcan (Park Müdürü)', email: 'park.mudur@belediye.gov.tr', phone: '05554443322', password_hash: defaultPasswordHash, is_active: 1, role_name: 'Birim Yöneticisi', employee_id: 3, department_id: 3, department_name: 'Park ve Bahçeler Müdürlüğü' },
@@ -199,16 +165,48 @@ const memData = {
     { id: 7, user_id: 11, identity_number: '98765432109', address: 'Giresun Hacısıyam Mah. Gazi Cad. No:44' }
   ],
   employees: [
-    { id: 1, user_id: 7, department_id: 1, title: 'Asfalt & Kaldırım Ekip Şefi' },
-    { id: 2, user_id: 8, department_id: 2, title: 'Atık Yönetimi Görevlisi' },
-    { id: 3, user_id: 9, department_id: 3, title: 'Peyzaj ve Bahçe Görevlisi' },
-    { id: 4, user_id: 23, department_id: 4, title: 'Zabıta Saha Komiseri' },
-    { id: 5, user_id: 26, department_id: 5, title: 'Şebeke Arıza Görevlisi' },
-    { id: 6, user_id: 29, department_id: 6, title: 'Hayvan Bakım ve Nakil' },
-    { id: 7, user_id: 32, department_id: 7, title: 'Sinyalizasyon Teknisyeni' },
-    { id: 8, user_id: 35, department_id: 8, title: 'Saha İnceleme Görevlisi' },
-    { id: 9, user_id: 38, department_id: 9, title: 'Yapı Kontrol Teknisyeni' },
-    { id: 10, user_id: 41, department_id: 10, title: 'Akıllı Şehir & Kamera Şefi' }
+    // Birim Yöneticileri (Müdürler)
+    { id: 1, user_id: 2, department_id: 1, title: 'Fen İşleri Müdürü' },
+    { id: 2, user_id: 3, department_id: 2, title: 'Temizlik İşleri Müdürü' },
+    { id: 3, user_id: 4, department_id: 3, title: 'Park ve Bahçeler Müdürü' },
+    { id: 4, user_id: 5, department_id: 4, title: 'Zabıta Müdürü' },
+    { id: 5, user_id: 6, department_id: 5, title: 'Su ve Kanalizasyon Müdürü' },
+    { id: 6, user_id: 12, department_id: 6, title: 'Veteriner İşleri Müdürü' },
+    { id: 7, user_id: 13, department_id: 7, title: 'Ulaşım Hizmetleri Müdürü' },
+    { id: 8, user_id: 14, department_id: 8, title: 'Sosyal Hizmetler Müdürü' },
+    { id: 9, user_id: 15, department_id: 9, title: 'İmar ve Şehircilik Müdürü' },
+    { id: 10, user_id: 16, department_id: 10, title: 'Bilgi İşlem Müdürü' },
+    // Saha Personelleri
+    { id: 11, user_id: 7, department_id: 1, title: 'Asfalt & Kaldırım Ekip Şefi' },
+    { id: 12, user_id: 17, department_id: 1, title: 'Yol Bakım Görevlisi' },
+    { id: 13, user_id: 18, department_id: 1, title: 'İş Makinesi Operatörü' },
+    { id: 14, user_id: 8, department_id: 2, title: 'Atık Yönetimi Görevlisi' },
+    { id: 15, user_id: 19, department_id: 2, title: 'Süpürge & Hijyen Şefi' },
+    { id: 16, user_id: 20, department_id: 2, title: 'Konteyner Bakım Görevlisi' },
+    { id: 17, user_id: 9, department_id: 3, title: 'Peyzaj ve Bahçe Görevlisi' },
+    { id: 18, user_id: 21, department_id: 3, title: 'Ağaç Budama Görevlisi' },
+    { id: 19, user_id: 22, department_id: 3, title: 'Oyun Parkı Bakım Personeli' },
+    { id: 20, user_id: 23, department_id: 4, title: 'Zabıta Saha Komiseri' },
+    { id: 21, user_id: 24, department_id: 4, title: 'İşyeri Denetim Personeli' },
+    { id: 22, user_id: 25, department_id: 4, title: 'Çevre Zabıta Görevlisi' },
+    { id: 23, user_id: 26, department_id: 5, title: 'Şebeke Arıza Görevlisi' },
+    { id: 24, user_id: 27, department_id: 5, title: 'Vidanjör Operatörü' },
+    { id: 25, user_id: 28, department_id: 5, title: 'Tesisat Onarım Uzmanı' },
+    { id: 26, user_id: 29, department_id: 6, title: 'Hayvan Bakım ve Nakil' },
+    { id: 27, user_id: 30, department_id: 6, title: 'Veteriner Sağlık Teknikeri' },
+    { id: 28, user_id: 31, department_id: 6, title: 'Çevre İlaçlama Görevlisi' },
+    { id: 29, user_id: 32, department_id: 7, title: 'Sinyalizasyon Teknisyeni' },
+    { id: 30, user_id: 33, department_id: 7, title: 'Durak Bakım Personeli' },
+    { id: 31, user_id: 34, department_id: 7, title: 'Toplu Taşıma Denetçisi' },
+    { id: 32, user_id: 35, department_id: 8, title: 'Saha İnceleme Görevlisi' },
+    { id: 33, user_id: 36, department_id: 8, title: 'Lojistik Destek Personeli' },
+    { id: 34, user_id: 37, department_id: 8, title: 'Evde Bakım Görevlisi' },
+    { id: 35, user_id: 38, department_id: 9, title: 'Yapı Kontrol Teknisyeni' },
+    { id: 36, user_id: 39, department_id: 9, title: 'Harita Teknikeri' },
+    { id: 37, user_id: 40, department_id: 9, title: 'Yapı İnceleme Personeli' },
+    { id: 38, user_id: 41, department_id: 10, title: 'Akıllı Şehir & Kamera Şefi' },
+    { id: 39, user_id: 42, department_id: 10, title: 'Sistem Teknisyeni' },
+    { id: 40, user_id: 43, department_id: 10, title: 'Saha Sensör Uzmanı' }
   ],
   complaints: [
     {
@@ -272,12 +270,68 @@ function saveDbJson() {
 
 function loadDbJson() {
   try {
+    const seedRoles = [...memData.roles];
+    const seedDepts = [...memData.departments];
+    const seedUsers = [...memData.users];
+
     if (fs.existsSync(dbFilePath)) {
       const dataStr = fs.readFileSync(dbFilePath, 'utf8');
       const loaded = JSON.parse(dataStr);
       if (loaded && Array.isArray(loaded.users) && Array.isArray(loaded.complaints)) {
+        // Clean history duplicates
+        if (Array.isArray(loaded.complaint_status_history)) {
+          const uniqueHistory = [];
+          loaded.complaint_status_history.forEach(h => {
+            const isDup = uniqueHistory.some(e =>
+              String(e.complaint_id) === String(h.complaint_id) &&
+              e.new_status === h.new_status &&
+              e.change_reason === h.change_reason &&
+              (Math.abs(new Date(e.created_at || 0) - new Date(h.created_at || 0)) < 25000)
+            );
+            if (!isDup) {
+              uniqueHistory.push(h);
+            }
+          });
+          loaded.complaint_status_history = uniqueHistory;
+        }
+
         Object.assign(memData, loaded);
-        console.log('💾 Veritabanı verileri fiziksel data/db.json dosyasından yüklendi.');
+
+        // Guarantee all 6 roles exist
+        if (!memData.roles) memData.roles = [];
+        seedRoles.forEach(r => {
+          if (!memData.roles.some(mr => Number(mr.id) === Number(r.id))) {
+            memData.roles.push(r);
+          }
+        });
+
+        // Guarantee all 11 departments and vice mayor bindings exist
+        if (!memData.departments) memData.departments = [];
+        seedDepts.forEach(d => {
+          const found = memData.departments.find(md => Number(md.id) === Number(d.id));
+          if (!found) {
+            memData.departments.push(d);
+          } else if (d.vice_mayor_user_id && !found.vice_mayor_user_id) {
+            found.vice_mayor_user_id = d.vice_mayor_user_id;
+          }
+        });
+
+        // Guarantee essential users (Mayor, Vice Mayors, Admin) exist
+        if (!memData.users) memData.users = [];
+        seedUsers.forEach(u => {
+          const found = memData.users.find(mu => mu.email.toLowerCase() === u.email.toLowerCase() || Number(mu.id) === Number(u.id));
+          if (!found) {
+            memData.users.push(u);
+          } else {
+            found.role_id = Number(u.role_id);
+            found.role_name = u.role_name;
+            if (u.department_id) found.department_id = u.department_id;
+            if (u.department_name) found.department_name = u.department_name;
+          }
+        });
+
+        console.log('💾 Veritabanı verileri fiziksel data/db.json dosyasından yüklendi ve kurumsal organigram ile senkronize edildi.');
+        saveDbJson();
       }
     } else {
       saveDbJson();
@@ -406,6 +460,38 @@ async function initializeDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // Migrate satisfaction_surveys table to allow multiple citizens to rate
+    try {
+      await conn.query(`ALTER TABLE satisfaction_surveys DROP INDEX complaint_id;`);
+    } catch (e) {}
+    try {
+      await conn.query(`ALTER TABLE satisfaction_surveys ADD UNIQUE KEY unique_complaint_citizen (complaint_id, citizen_id);`);
+    } catch (e) {}
+
+    // Add vice_mayor_user_id column to departments if not present
+    try {
+      await conn.query(`ALTER TABLE departments ADD COLUMN vice_mayor_user_id INT NULL;`);
+    } catch (e) {}
+
+    // Ensure roles 5 & 6 exist in SQL
+    try {
+      await conn.query(`
+        INSERT INTO roles (id, name, description) VALUES
+        (5, 'Belediye Başkanı', 'Tüm belediye verilerini inceleyen üst düzey gözlemci (Read-Only)'),
+        (6, 'Belediye Başkan Yardımcısı', 'Kendisine bağlı birimleri yöneten ve izleyen başkan yardımcısı')
+        ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description);
+      `);
+
+      // Ensure Mayor & Vice Mayor users exist in SQL
+      await conn.query(`
+        INSERT INTO users (id, role_id, full_name, email, phone, password_hash, is_active) VALUES
+        (60, 5, 'Necmi Sıbıç (Belediye Başkanı)', 'baskan@bulancak.bel.tr', '05550000001', '${defaultPasswordHash}', 1),
+        (61, 6, 'Reşat Nuri Özdemir (Başkan Yardımcısı)', 'baskan.yrd1@bulancak.bel.tr', '05550000002', '${defaultPasswordHash}', 1),
+        (62, 6, 'Ayşegül Erdoğan (Başkan Yardımcısı)', 'baskan.yrd2@bulancak.bel.tr', '05550000003', '${defaultPasswordHash}', 1)
+        ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), role_id = VALUES(role_id), is_active = 1;
+      `);
+    } catch (e) {}
+
     // Clean reset upvote counts to match complaint_upvotes table exactly
     await conn.query(`UPDATE complaints SET upvote_count = (SELECT COUNT(*) FROM complaint_upvotes WHERE complaint_upvotes.complaint_id = complaints.id);`);
 
@@ -436,10 +522,20 @@ const resilientPool = {
 
     if (sqlUpper.startsWith('SELECT')) {
       if (sqlUpper.includes('FROM USERS')) {
-        let res = memData.users.map(u => ({
-          ...u,
-          role_name: u.role_name || (u.role_id === 1 ? 'Sistem Yöneticisi' : (u.role_id === 2 ? 'Birim Yöneticisi' : (u.role_id === 3 ? 'Personel' : 'Vatandaş')))
-        }));
+        let res = memData.users.map(u => {
+          const roleMap = {
+            1: 'Sistem Yöneticisi',
+            2: 'Birim Yöneticisi',
+            3: 'Personel',
+            4: 'Vatandaş',
+            5: 'Belediye Başkanı',
+            6: 'Belediye Başkan Yardımcısı'
+          };
+          return {
+            ...u,
+            role_name: u.role_name || roleMap[u.role_id] || 'Vatandaş'
+          };
+        });
         if (params && params.length > 0 && params[0] !== undefined) {
           const searchVal = String(params[0]).trim().toLowerCase();
           if (sqlUpper.includes('WHERE EMAIL =') || sqlUpper.includes('WHERE LOWER(EMAIL) =') || sqlUpper.includes('EMAIL = ?') || sqlUpper.includes('WHERE U.EMAIL =')) {
@@ -471,7 +567,17 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('FROM DEPARTMENTS')) {
-        return [[...memData.departments]];
+        let deptRes = memData.departments.map(d => {
+          const vmUser = memData.users.find(u => Number(u.id) === Number(d.vice_mayor_user_id));
+          return {
+            ...d,
+            vice_mayor_name: vmUser ? vmUser.full_name : null
+          };
+        });
+        if (params && params.length > 0 && (sqlUpper.includes('WHERE ID =') || sqlUpper.includes('ID = ?') || sqlUpper.includes('WHERE D.ID ='))) {
+          deptRes = deptRes.filter(d => d.id == params[0]);
+        }
+        return [deptRes];
       }
 
       if (sqlUpper.includes('FROM DISTRICTS')) {
@@ -521,10 +627,19 @@ const resilientPool = {
 
       if (sqlUpper.includes('FROM EMPLOYEES')) {
         let res = memData.employees.map(e => {
-          const u = memData.users.find(usr => usr.id === e.user_id);
-          return { ...e, full_name: u ? u.full_name : 'Personel', email: u ? u.email : '', phone: u ? u.phone : '' };
+          const u = memData.users.find(usr => usr.id === e.user_id || usr.id == e.user_id);
+          const dept = memData.departments.find(d => d.id === e.department_id || d.id == e.department_id);
+          return { ...e, full_name: u ? u.full_name : 'Personel', email: u ? u.email : '', phone: u ? u.phone : '', department_name: dept ? dept.name : '', employee_title: e.title };
         });
-        if (params && params[0]) res = res.filter(e => e.department_id == params[0] || e.id == params[0]);
+        if (params && params[0] !== undefined) {
+          if (sqlUpper.includes('USER_ID') || sqlUpper.includes('E.USER_ID')) {
+            res = res.filter(e => e.user_id == params[0]);
+          } else if (sqlUpper.includes('DEPARTMENT_ID') || sqlUpper.includes('E.DEPARTMENT_ID')) {
+            res = res.filter(e => e.department_id == params[0]);
+          } else {
+            res = res.filter(e => e.department_id == params[0] || e.id == params[0] || e.user_id == params[0]);
+          }
+        }
         return [res];
       }
 
@@ -541,13 +656,17 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('FROM SATISFACTION_SURVEYS')) {
-        if (sqlUpper.includes('AVG(RATING)')) {
-          const avg = memData.satisfaction_surveys.length > 0
-            ? memData.satisfaction_surveys.reduce((a, b) => a + b.rating, 0) / memData.satisfaction_surveys.length
-            : 5.0;
-          return [[{ avg_rating: avg, survey_count: memData.satisfaction_surveys.length }]];
+        let list = memData.satisfaction_surveys || [];
+        if (params && params.length > 0 && params[0] !== undefined) {
+          list = list.filter(s => Number(s.complaint_id) === Number(params[0]));
         }
-        return [memData.satisfaction_surveys.filter(s => s.complaint_id == params[0])];
+        if (sqlUpper.includes('AVG(RATING)')) {
+          const avg = list.length > 0
+            ? list.reduce((a, b) => a + Number(b.rating), 0) / list.length
+            : null;
+          return [[{ avg_rating: avg, vote_count: list.length, survey_count: list.length }]];
+        }
+        return [list];
       }
 
       if (sqlUpper.includes('FROM NOTIFICATIONS')) {
@@ -564,15 +683,17 @@ const resilientPool = {
     if (sqlUpper.startsWith('INSERT')) {
       if (sqlUpper.includes('INTO USERS')) {
         const newId = memData.users.length + 1;
+        const roleId = Number(params[0]);
+        const roleMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };
         const newUser = {
           id: newId,
-          role_id: params[0],
+          role_id: roleId,
           full_name: params[1],
           email: params[2],
           phone: params[3],
           password_hash: params[4],
           is_active: 1,
-          role_name: params[0] == 4 ? 'Vatandaş' : 'Personel'
+          role_name: roleMap[roleId] || 'Vatandaş'
         };
         memData.users.push(newUser);
         return [{ insertId: newId }];
@@ -584,12 +705,76 @@ const resilientPool = {
         return [{ insertId: newId }];
       }
 
+      if (sqlUpper.includes('INTO EMPLOYEES')) {
+        const newId = memData.employees.length + 1;
+        const newEmp = {
+          id: newId,
+          user_id: Number(params[0]),
+          department_id: Number(params[1]) || 1,
+          title: params[2] || 'Saha Görevlisi'
+        };
+        memData.employees.push(newEmp);
+        const u = memData.users.find(usr => usr.id == params[0]);
+        if (u) {
+          u.department_id = Number(params[1]) || 1;
+          const d = memData.departments.find(dept => dept.id == params[1]);
+          if (d) u.department_name = d.name;
+          u.employee_title = params[2] || 'Saha Görevlisi';
+        }
+        return [{ insertId: newId }];
+      }
+
+      if (sqlUpper.includes('INTO SATISFACTION_SURVEYS')) {
+        if (!memData.satisfaction_surveys) memData.satisfaction_surveys = [];
+        // params = [complaintId, citizenId, rating, comment]
+        const sComplaintId = Number(params[0]);
+        const sCitizenId = Number(params[1]);
+        const sRating = Number(params[2]);
+        const sComment = params[3];
+
+        const existing = memData.satisfaction_surveys.find(s => 
+          Number(s.complaint_id) === sComplaintId && 
+          Number(s.citizen_id) === sCitizenId
+        );
+        if (existing) {
+          existing.rating = sRating;
+          existing.review_comment = sComment;
+          existing.updated_at = new Date().toISOString();
+        } else {
+          memData.satisfaction_surveys.push({
+            id: Date.now(),
+            complaint_id: sComplaintId,
+            citizen_id: sCitizenId,
+            user_id: sCitizenId,
+            rating: sRating,
+            review_comment: sComment,
+            created_at: new Date().toISOString()
+          });
+        }
+        // Recompute average: toplam yıldız / değerlendiren kişi sayısı
+        const relSurveys = memData.satisfaction_surveys.filter(s => Number(s.complaint_id) === sComplaintId);
+        const totalStars = relSurveys.reduce((sum, s) => sum + Number(s.rating), 0);
+        const avgRating = relSurveys.length > 0 ? Number((totalStars / relSurveys.length).toFixed(1)) : null;
+        const comp = memData.complaints.find(c => Number(c.id) === sComplaintId);
+        if (comp) {
+          comp.rating = avgRating;
+          comp.rating_vote_count = relSurveys.length;
+          comp.rating_comment = sComment || comp.rating_comment;
+        }
+        if (typeof saveDbJson === 'function') {
+          saveDbJson();
+        }
+        return [{ insertId: 1 }];
+      }
+
       if (sqlUpper.includes('INTO COMPLAINTS')) {
         const newId = memData.complaints.length + 1;
-        const cat = memData.complaint_categories.find(c => c.id == params[2]) || { name: 'Genel', department_name: 'Fen İşleri' };
+        const targetDeptId = Number(params[3]) || 1;
+        const cat = memData.complaint_categories.find(c => c.id == params[2]) || { name: 'Genel', department_name: 'Fen İşleri Müdürlüğü' };
+        const deptObj = memData.departments.find(d => Number(d.id) === targetDeptId) || { name: cat.department_name || 'Fen İşleri Müdürlüğü' };
         const neigh = memData.neighborhoods.find(n => n.id == params[5]) || { name: 'Hacısıyam Mahallesi' };
         const dist = memData.districts.find(d => d.id == params[4]) || { name: 'Giresun Merkez' };
-        const isPublicVal = (params[13] !== undefined && params[13] !== null) ? Number(params[13]) : 1;
+        const isPublicVal = (params[14] !== undefined && params[14] !== null) ? Number(params[14]) : 1;
         const creatorId = Number(params[1]) || 6;
         const creatorObj = memData.users.find(u => u.id == creatorId);
         const creatorName = creatorObj ? creatorObj.full_name : 'Vatandaş';
@@ -599,25 +784,25 @@ const resilientPool = {
           tracking_code: params[0],
           citizen_id: creatorId,
           user_id: creatorId,
-          category_id: params[2],
-          department_id: params[3],
-          district_id: params[4],
-          neighborhood_id: params[5],
+          category_id: Number(params[2]) || 1,
+          department_id: targetDeptId,
+          district_id: Number(params[4]) || 1,
+          neighborhood_id: Number(params[5]) || 1,
           title: params[6],
           description: params[7],
           open_address: params[8],
           latitude: params[9] || 40.9128,
           longitude: params[10] || 38.3895,
-          urgency_level: params[11],
-          priority_level: params[12],
-          status: 'Yeni',
+          urgency_level: params[11] || 'Normal',
+          priority_level: params[12] || params[11] || 'Normal',
+          status: params[13] || 'Yeni',
           is_public: isPublicVal,
           upvote_count: 0,
-          contact_preference: params[14],
-          submission_type: params[15] || 'Şikâyet',
+          contact_preference: params[15] || 'E-posta',
+          submission_type: params[16] || 'Şikâyet',
           created_at: new Date().toISOString(),
           category_name: cat.name,
-          department_name: cat.department_name,
+          department_name: deptObj.name,
           district_name: dist.name,
           neighborhood_name: neigh.name,
           citizen_name: creatorName
@@ -627,57 +812,93 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('INTO COMPLAINT_STATUS_HISTORY')) {
-        memData.complaint_status_history.push({ complaint_id: params[0], changed_by_user_id: params[1], old_status: params[2], new_status: params[3], change_reason: params[4], created_at: new Date().toISOString(), changed_by_name: 'Sistem' });
+        const userObj = memData.users.find(u => u.id == params[1]) || { full_name: 'Yetkili Personel' };
+        memData.complaint_status_history.push({
+          complaint_id: Number(params[0]),
+          changed_by_user_id: params[1],
+          old_status: params[2],
+          new_status: params[3],
+          change_reason: params[4],
+          created_at: new Date().toISOString(),
+          changed_by_name: userObj.full_name
+        });
         return [{ insertId: memData.complaint_status_history.length }];
+      }
+
+      if (sqlUpper.includes('INTO COMPLAINT_ACTIONS')) {
+        if (!memData.complaint_actions) memData.complaint_actions = [];
+        const empUser = memData.users.find(u => u.id == params[1] || u.employee_id == params[1]) || { full_name: 'Saha Personeli', employee_title: 'Saha Görevlisi' };
+        const newAction = {
+          id: memData.complaint_actions.length + 1,
+          complaint_id: Number(params[0]),
+          employee_id: params[1],
+          action_description: params[2],
+          work_done: params[3],
+          tools_equipment_used: params[4],
+          citizen_response: params[5],
+          resolution_photo_path: params[6],
+          employee_name: empUser.full_name,
+          employee_title: empUser.employee_title || 'Saha Görevlisi',
+          created_at: new Date().toISOString()
+        };
+        memData.complaint_actions.push(newAction);
+        saveDbJson();
+        return [{ insertId: newAction.id }];
       }
 
       if (sqlUpper.includes('INTO COMPLAINT_FILES')) {
         memData.complaint_files.push({ id: memData.complaint_files.length + 1, complaint_id: params[0], file_path: params[1], file_name: params[2], file_type: params[3], file_size: params[4], uploaded_by_user_id: params[5], file_category: params[6] });
+        saveDbJson();
         return [{ insertId: memData.complaint_files.length }];
       }
 
       if (sqlUpper.includes('INTO NOTIFICATIONS')) {
         memData.notifications.push({ id: memData.notifications.length + 1, user_id: params[0], title: params[1], message: params[2], type: params[3], reference_id: params[4], created_at: new Date().toISOString() });
+        saveDbJson();
         return [{ insertId: memData.notifications.length }];
       }
 
       if (sqlUpper.includes('INTO AUDIT_LOGS')) {
         memData.audit_logs.push({ id: memData.audit_logs.length + 1, user_id: params[0], action: params[1], entity_name: params[2], entity_id: params[3], old_value: params[4], new_value: params[5], ip_address: params[6], created_at: new Date().toISOString() });
+        saveDbJson();
         return [{ insertId: memData.audit_logs.length }];
       }
 
+      saveDbJson();
       return [{ insertId: 1 }];
     }
 
     if (sqlUpper.startsWith('UPDATE')) {
       if (sqlUpper.includes('UPDATE COMPLAINTS')) {
         const compId = params[params.length - 1];
-        const comp = memData.complaints.find(c => c.id == compId || c.tracking_code == compId);
+        const comp = memData.complaints.find(c => Number(c.id) === Number(compId) || c.tracking_code == compId);
         if (comp) {
-          if (sqlUpper.includes("STATUS = 'PERSONELE ATANDI'") || (params[0] === 'Personele atandı')) {
-            comp.status = 'Personele atandı';
-          } else if (sqlUpper.includes("STATUS = 'İLGİLİ BİRİME YÖNLENDİRİLDİ'") || (params[0] === 'İlgili birime yönlendirildi')) {
-            comp.status = 'İlgili birime yönlendirildi';
-          } else if (sqlUpper.includes("STATUS = 'ÇÖZÜLDÜ'") || (params[0] === 'Çözüldü')) {
-            comp.status = 'Çözüldü';
-          } else if (sqlUpper.includes("STATUS = 'İPTAL EDİLDİ'") || (params[0] === 'İptal edildi')) {
-            comp.status = 'İptal edildi';
-          } else if (params[0] && typeof params[0] === 'string' && params[0] !== 'Düşük' && params[0] !== 'Normal' && params[0] !== 'Yüksek' && params[0] !== 'Acil' && params[0] !== 'Kritik') {
-            comp.status = params[0];
+          if (sqlUpper.includes('SET STATUS = ?') || sqlUpper.includes('STATUS = ?')) {
+            if (params[0] && typeof params[0] === 'string') {
+              comp.status = params[0];
+            }
+          }
+          for (let p of params) {
+            if (typeof p === 'string' && ['Yeni', 'Ön İncelemede', 'İlgili birime yönlendirildi', 'Personele atandı', 'İşlem devam ediyor', 'İşlemde', 'Çözüldü', 'İptal edildi', 'Reddedildi', 'Tamamlandı'].includes(p)) {
+              comp.status = p;
+            }
+            if (typeof p === 'string' && ['Düşük', 'Normal', 'Yüksek', 'Acil', 'Kritik'].includes(p)) {
+              comp.priority_level = p;
+              comp.urgency_level = p;
+            }
           }
 
-          if (params[0] && ['Düşük', 'Normal', 'Yüksek', 'Acil', 'Kritik'].includes(params[0])) {
-            comp.priority_level = params[0];
-          } else if (params[1] && ['Düşük', 'Normal', 'Yüksek', 'Acil', 'Kritik'].includes(params[1])) {
-            comp.priority_level = params[1];
+          if (sqlUpper.includes('DEPARTMENT_ID =') || sqlUpper.includes('DEPARTMENT_ID=')) {
+            const dId = params.find(p => typeof p === 'number' && p > 0);
+            if (dId) {
+              comp.department_id = dId;
+              const deptObj = memData.departments.find(d => Number(d.id) === Number(dId));
+              if (deptObj) comp.department_name = deptObj.name;
+            }
           }
-
-          if (sqlUpper.includes('DEPARTMENT_ID =')) {
-            comp.department_id = params[0];
-            const deptObj = memData.departments.find(d => d.id == params[0]);
-            if (deptObj) comp.department_name = deptObj.name;
-          }
+          comp.updated_at = new Date().toISOString();
         }
+        saveDbJson();
         return [{ affectedRows: 1 }];
       }
 
@@ -699,6 +920,7 @@ const resilientPool = {
             }
           }
         }
+        saveDbJson();
         return [{ affectedRows: 1 }];
       }
 
@@ -708,13 +930,11 @@ const resilientPool = {
         if (cit && params[0]) {
           cit.address = params[0];
         }
+        saveDbJson();
         return [{ affectedRows: 1 }];
       }
 
-      if (sqlUpper.startsWith('INSERT') || sqlUpper.startsWith('UPDATE') || sqlUpper.startsWith('DELETE')) {
-        saveDbJson();
-      }
-
+      saveDbJson();
       return [{ affectedRows: 1 }];
     }
 

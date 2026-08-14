@@ -1,4 +1,4 @@
-// Yapay Zekâ Asistanı - Akıllı Kategori ve Öncelik Öneri Motoru
+// Yapay Zekâ Asistanı - Akıllı Başlık, Kategori, Birim ve Öncelik Otomatik Doldurma Motoru (Bulancak 153)
 
 document.addEventListener('DOMContentLoaded', () => {
   bindAiListeners();
@@ -13,27 +13,37 @@ function bindAiListeners() {
   function handleInput(e, isPage = false) {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      analyzeTextWithAI(e.target.value, isPage);
-    }, 400);
+      analyzeTextWithAI(e.target.value, isPage, true);
+    }, 1500); // 1.5s Debounce
+  }
+
+  function handleBlur(e, isPage = false) {
+    clearTimeout(debounceTimer);
+    if (e.target.value && e.target.value.trim().length >= 5) {
+      analyzeTextWithAI(e.target.value, isPage, true);
+    }
   }
 
   if (modalDescInput) {
     modalDescInput.addEventListener('input', (e) => handleInput(e, false));
+    modalDescInput.addEventListener('blur', (e) => handleBlur(e, false));
   }
 
   if (pageDescInput) {
     pageDescInput.addEventListener('input', (e) => handleInput(e, true));
+    pageDescInput.addEventListener('blur', (e) => handleBlur(e, true));
   }
 }
 
-async function analyzeTextWithAI(text, isPage = false) {
+async function analyzeTextWithAI(text, isPage = false, autoApply = false) {
   const containerId = isPage ? 'page-ai-suggestion-container' : 'ai-suggestion-container';
   const container = document.getElementById(containerId);
-  if (!container) return;
 
-  if (!text || text.trim().length < 3) {
-    container.style.display = 'none';
-    container.innerHTML = '';
+  if (!text || text.trim().length < 5) {
+    if (container) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
     return;
   }
 
@@ -47,25 +57,30 @@ async function analyzeTextWithAI(text, isPage = false) {
     const data = await res.json();
 
     if (data.success && data.analysis) {
-      const { suggested_category_id, suggested_category_name, suggested_department_name, suggested_priority, confidence_score } = data.analysis;
+      const { generated_title, suggested_category_id, suggested_category_name, suggested_department_id, suggested_department_name, suggested_priority, confidence_score } = data.analysis;
 
-      container.style.display = 'block';
-      container.innerHTML = `
-        <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 16px; margin-top: 10px; margin-bottom: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: #0369a1; font-size: 0.88rem;"><i class="fas fa-robot" style="color: #0284c7; margin-right: 4px;"></i> Yapay Zekâ Akıllı Öneri</strong>
-            <span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 10px; font-weight: 700;">Güven: %${Math.round((confidence_score || 0.85) * 100)}</span>
+      // Auto-fill form fields
+      if (autoApply) {
+        applyAiSuggestionsDirect(generated_title, suggested_department_id || 1, suggested_category_id, suggested_priority || 'Normal', isPage);
+      }
+
+      if (container) {
+        container.style.display = 'block';
+        container.innerHTML = `
+          <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 10px 14px; margin-top: 8px; margin-bottom: 12px; animation: fadeIn 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: #15803d; font-size: 0.85rem;"><i class="fas fa-wand-magic-sparkles" style="color: #16a34a; margin-right: 4px;"></i> Yapay Zekâ Otomatik Doldurdu</strong>
+              <span style="font-size: 0.72rem; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 10px; font-weight: 700;">Doğruluk: %${Math.round((confidence_score || 0.90) * 100)}</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #1e293b;">
+              <strong>Önerilen Başlık:</strong> <span style="color: #0f766e; font-weight: 600;">${generated_title || 'Otomatik Belirlendi'}</span><br>
+              <strong>Birim:</strong> <span style="color: #15803d; font-weight: 700;">${suggested_department_name || 'Fen İşleri'}</span> | 
+              <strong>Kategori:</strong> <strong>${suggested_category_name || 'Genel'}</strong> | 
+              <strong>Aciliyet:</strong> <span class="badge" style="background:#dcfce7; color:#15803d; font-weight:700;">${suggested_priority || 'Normal'}</span>
+            </div>
           </div>
-          <div style="font-size: 0.85rem; color: #0f172a; margin-bottom: 8px;">
-            <strong>Önerilen Kategori:</strong> <span style="color: #0284c7; font-weight: 700;">${suggested_category_name || 'Genel'}</span> | 
-            <strong>Birim:</strong> <strong>${suggested_department_name || 'Fen İşleri'}</strong> | 
-            <strong>Öncelik:</strong> <span class="badge badge-yeni">${suggested_priority || 'Normal'}</span>
-          </div>
-          <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; background: #0284c7; color: white; border: none; font-weight: 600;" onclick="applyAiSuggestions(${suggested_category_id}, '${suggested_priority}', ${isPage})">
-            <i class="fas fa-magic"></i> Önerileri Form Alanlarına Uygula
-          </button>
-        </div>
-      `;
+        `;
+      }
 
       // Set hidden fields
       const catField = document.getElementById(isPage ? 'page_ai_suggested_category_id' : 'ai_suggested_category_id');
@@ -78,14 +93,52 @@ async function analyzeTextWithAI(text, isPage = false) {
   }
 }
 
-function applyAiSuggestions(catId, priority, isPage = false) {
+function applyAiSuggestionsDirect(title, deptId, catId, priority, isPage = false) {
+  const titleInput = document.getElementById(isPage ? 'page-complaint-title' : 'complaint-title');
+  const deptSelect = document.getElementById(isPage ? 'page-complaint-department' : 'complaint-department');
   const catSelect = document.getElementById(isPage ? 'page-complaint-category' : 'complaint-category');
   const urgencySelect = document.getElementById(isPage ? 'page-complaint-urgency' : 'complaint-urgency');
 
-  if (catSelect && catId) catSelect.value = catId;
-  if (urgencySelect && priority) urgencySelect.value = priority;
+  // 1. Auto-fill Title if empty or was previously auto-filled
+  if (titleInput && (!titleInput.value || titleInput.value.trim() === '' || titleInput.dataset.aiGenerated === 'true')) {
+    if (title) {
+      titleInput.value = title;
+      titleInput.dataset.aiGenerated = 'true';
+    }
+  }
 
-  if (typeof showToast === 'function') {
+  // 2. Select Department and populate categories
+  if (deptSelect && deptId) {
+    deptSelect.value = deptId;
+    deptSelect.dispatchEvent(new Event('change'));
+  }
+
+  // 3. Select Category & Urgency
+  setTimeout(() => {
+    if (catSelect && catId) {
+      catSelect.value = catId;
+      catSelect.dispatchEvent(new Event('change'));
+    }
+    if (urgencySelect && priority) {
+      urgencySelect.value = priority;
+    }
+  }, 100);
+}
+
+function applyAiSuggestions(deptId, catId, priority, isPage = false) {
+  applyAiSuggestionsDirect(null, deptId, catId, priority, isPage);
+  if (typeof Swal !== 'undefined') {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000
+    });
+    Toast.fire({
+      icon: 'success',
+      title: 'Öneriler forma uygulandı'
+    });
+  } else if (typeof showToast === 'function') {
     showToast('🤖 Yapay zekâ önerileri forma uygulandı!', 'success');
   }
 }

@@ -1,94 +1,86 @@
-// Giresun Interactive Leaflet Map Picker & Real Heatmap Explorer
+// Bulancak Belediyesi 153 Çözüm Merkezi - Leaflet Map Engine & Geofencing Explorer
 
 let pickerMap = null;
 let pickerMarker = null;
 let explorerMap = null;
+let pagePickerMap = null;
+let pagePickerMarker = null;
 
 let heatmapLayerGroup = null;
 let markersLayerGroup = null;
 
-// Giresun City Center Default Coordinates
-const GIRESUN_LAT = 40.9128;
-const GIRESUN_LNG = 38.3895;
+// Bulancak Meydanı Coordinates & Geofencing Bounds
+const BULANCAK_LAT = 40.9385;
+const BULANCAK_LNG = 38.2300;
 
-// === KAPSAMLI GİRESUN MAHALLE KOORDİNATLARI ===
-// Tüm Giresun Merkez ve Bulancak mahalleleri dahil (karada, doğru koordinatlar)
-const GIRESUN_NEIGHBORHOOD_COORDS = {
-  // GİRESUN MERKEZ
-  'Aksu Mahallesi':              { lat: 40.8985, lng: 38.4350 },
-  'Aydınlar Mahallesi':          { lat: 40.9070, lng: 38.3760 },
-  'Çaykara Mahallesi':           { lat: 40.9050, lng: 38.3820 },
-  'Çınarlar Mahallesi':          { lat: 40.9100, lng: 38.3830 },
-  'Çıtlakkale Mahallesi':        { lat: 40.9090, lng: 38.4000 },
-  'Cumhuriyet Mahallesi':        { lat: 40.9115, lng: 38.3885 },
-  'Erikliman Mahallesi':         { lat: 40.9140, lng: 38.3960 },
-  'Fevzi Çakmak Mahallesi':      { lat: 40.9030, lng: 38.3950 },
-  'Gaziler Mahallesi':           { lat: 40.9160, lng: 38.3820 },
-  'Gedikkaya Mahallesi':         { lat: 40.9060, lng: 38.4180 },
-  'Gemilerçekeği Mahallesi':     { lat: 40.9175, lng: 38.3980 },
-  'Güre Mahallesi':              { lat: 40.9080, lng: 38.4060 },
-  'Hacı Hüseyin Mahallesi':      { lat: 40.9130, lng: 38.3790 },
-  'Hacıhüseyin Mahallesi':       { lat: 40.9130, lng: 38.3790 },
-  'Hacımiktat Mahallesi':        { lat: 40.9145, lng: 38.3855 },
-  'Hacısiyam Mahallesi':         { lat: 40.9110, lng: 38.3900 },
-  'Hacısıyam Mahallesi':         { lat: 40.9110, lng: 38.3900 },
-  'Kale Mahallesi':              { lat: 40.9165, lng: 38.3900 },
-  'Kapu Mahallesi':              { lat: 40.9155, lng: 38.3840 },
-  'Kavaklar Mahallesi':          { lat: 40.9005, lng: 38.4140 },
-  'Kayadibi Mahallesi':          { lat: 40.8960, lng: 38.4270 },
-  'Küçükköy Mahallesi':          { lat: 40.8940, lng: 38.4400 },
-  'Konacık Mahallesi':           { lat: 40.9055, lng: 38.4090 },
-  'Nizamiye Mahallesi':          { lat: 40.9140, lng: 38.3870 },
-  'Osmaniye Mahallesi':          { lat: 40.9160, lng: 38.3940 },
-  'Seldeğirmeni Mahallesi':      { lat: 40.9020, lng: 38.4020 },
-  'Şeyhkeramettin Mahallesi':    { lat: 40.9075, lng: 38.3880 },
-  'Sultan Selim Mahallesi':      { lat: 40.9165, lng: 38.3860 },
-  'Tekke Mahallesi':             { lat: 40.9180, lng: 38.3820 },
-  'Teyyaredüzü Mahallesi':       { lat: 40.9030, lng: 38.4100 },
-  'Yalı Mahallesi':              { lat: 40.9185, lng: 38.3960 },
-  'Samanlıkkıranı Mahallesi':    { lat: 40.9020, lng: 38.3850 },
+// Sıkı Bulancak Geofence Sınırları
+const BULANCAK_BOUNDS_MIN_LAT = 40.80;
+const BULANCAK_BOUNDS_MAX_LAT = 41.05;
+const BULANCAK_BOUNDS_MIN_LNG = 38.10;
+const BULANCAK_BOUNDS_MAX_LNG = 38.38;
 
-  // BULANCAK İLÇESİ
-  'Acısu Mahallesi':             { lat: 40.9380, lng: 38.2290 },
-  'Arifli Mahallesi':            { lat: 40.9330, lng: 38.2180 },
-  'Bahçelievler Mahallesi':      { lat: 40.9355, lng: 38.2250 },
-  'Ballıca Mahallesi':           { lat: 40.9295, lng: 38.2140 },
-  'Bulancak Mahallesi':          { lat: 40.9370, lng: 38.2320 },
-  'Duacıoğlu Mahallesi':         { lat: 40.9260, lng: 38.2060 },
-  'Güzelyalı Mahallesi':         { lat: 40.9390, lng: 38.2380 },
-  'İhsaniye Mahallesi':          { lat: 40.9315, lng: 38.2200 },
-  'İsmetpaşa Mahallesi':         { lat: 40.9345, lng: 38.2270 },
-  'Kızılot Mahallesi':           { lat: 40.9240, lng: 38.2100 },
-  'Pazarsuyu Mahallesi':         { lat: 40.9420, lng: 38.2450 },
-  'Sanayi Mahallesi':            { lat: 40.9360, lng: 38.2350 },
-  'Saraçlı Mahallesi':           { lat: 40.9275, lng: 38.2170 },
-  'Sisin Mahallesi':             { lat: 40.9230, lng: 38.1980 },
-  'Şemsettin Mahallesi':         { lat: 40.9310, lng: 38.2240 },
-  'Toprakdeğirmeni Mahallesi':   { lat: 40.9200, lng: 38.2050 }
-};
-
-// Helper: mahalle adına göre koordinat bul (case-insensitive, kısmi eşleşme destekli)
-function findNeighborhoodCoords(nameInput) {
-  if (!nameInput) return null;
-  const name = nameInput.trim();
-
-  // Direct match
-  if (GIRESUN_NEIGHBORHOOD_COORDS[name]) return GIRESUN_NEIGHBORHOOD_COORDS[name];
-
-  // Case-insensitive match
-  const lowerName = name.toLowerCase();
-  const keys = Object.keys(GIRESUN_NEIGHBORHOOD_COORDS);
-  const found = keys.find(k => k.toLowerCase() === lowerName);
-  if (found) return GIRESUN_NEIGHBORHOOD_COORDS[found];
-
-  // Partial match (e.g. 'Hacısıyam' matches 'Hacısıyam Mahallesi')
-  const partial = keys.find(k => k.toLowerCase().includes(lowerName) || lowerName.includes(k.toLowerCase().replace(' mahallesi', '')));
-  if (partial) return GIRESUN_NEIGHBORHOOD_COORDS[partial];
-
-  return null;
+function isInsideBulancak(lat, lng) {
+  const nLat = parseFloat(lat);
+  const nLng = parseFloat(lng);
+  return (
+    nLat >= BULANCAK_BOUNDS_MIN_LAT &&
+    nLat <= BULANCAK_BOUNDS_MAX_LAT &&
+    nLng >= BULANCAK_BOUNDS_MIN_LNG &&
+    nLng <= BULANCAK_BOUNDS_MAX_LNG
+  );
 }
 
-// OpenStreetMap Nominatim Reverse Geocoding API (Sokak, Kapı No, Mahalle)
+function showGeofenceWarning() {
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Bulancak İlçe Sınırları Dışı',
+      text: 'Sadece Bulancak ilçe sınırları içerisinden talep oluşturabilirsiniz.',
+      confirmButtonColor: '#0284c7'
+    });
+  } else if (typeof showToast === 'function') {
+    showToast('⚠️ Sadece Bulancak ilçe sınırları içerisinden talep oluşturabilirsiniz.', 'warning');
+  }
+}
+
+// === BULANCAK MAHALLE KOORDİNATLARI ===
+const BULANCAK_NEIGHBORHOOD_COORDS = {
+  'İhsaniye Mahallesi':          { lat: 40.9350, lng: 38.2250 },
+  'Ballıca Mahallesi':           { lat: 40.9380, lng: 38.2300 },
+  'Sanayi Mahallesi':            { lat: 40.9400, lng: 38.2400 },
+  'Toprakdeğirmeni Mahallesi':   { lat: 40.9390, lng: 38.2350 },
+  'Acısu Mahallesi':             { lat: 40.9320, lng: 38.2200 },
+  'Bahçelievler Mahallesi':      { lat: 40.9360, lng: 38.2280 },
+  'Bulgurlu Mahallesi':          { lat: 40.9290, lng: 38.2150 },
+  'Güzelyalı Mahallesi':         { lat: 40.9420, lng: 38.2450 },
+  'İsmetpaşa Mahallesi':         { lat: 40.9370, lng: 38.2270 },
+  'Kızılot Mahallesi':           { lat: 40.9250, lng: 38.2100 },
+  'Pazarsuyu Mahallesi':         { lat: 40.9450, lng: 38.2600 },
+  'Saraçlı Mahallesi':           { lat: 40.9310, lng: 38.2230 },
+  'Sisorta Mahallesi':           { lat: 40.9200, lng: 38.2000 },
+  'Şemsettin Mahallesi':         { lat: 40.9330, lng: 38.2210 },
+  'Talipli Mahallesi':           { lat: 40.9430, lng: 38.2520 },
+  'Yalıköy Mahallesi':           { lat: 40.9410, lng: 38.2480 }
+};
+
+function findNeighborhoodCoords(nameInput) {
+  if (!nameInput) return { lat: BULANCAK_LAT, lng: BULANCAK_LNG };
+  const name = nameInput.trim();
+
+  if (BULANCAK_NEIGHBORHOOD_COORDS[name]) return BULANCAK_NEIGHBORHOOD_COORDS[name];
+
+  const lowerName = name.toLowerCase();
+  const keys = Object.keys(BULANCAK_NEIGHBORHOOD_COORDS);
+  const found = keys.find(k => k.toLowerCase() === lowerName);
+  if (found) return BULANCAK_NEIGHBORHOOD_COORDS[found];
+
+  const partial = keys.find(k => k.toLowerCase().includes(lowerName) || lowerName.includes(k.toLowerCase().replace(' mahallesi', '')));
+  if (partial) return BULANCAK_NEIGHBORHOOD_COORDS[partial];
+
+  return { lat: BULANCAK_LAT, lng: BULANCAK_LNG };
+}
+
+// Reverse Geocoding via Nominatim
 async function reverseGeocodeLocation(lat, lng) {
   const openAddrInput = document.getElementById('complaint-open-address') ||
                         document.getElementById('page-complaint-open-address');
@@ -100,10 +92,10 @@ async function reverseGeocodeLocation(lat, lng) {
 
     if (data && data.address) {
       const a = data.address;
-      const road = a.road || a.street || a.pedestrian || a.suburb || 'Sokak';
+      const road = a.road || a.street || a.pedestrian || a.suburb || 'Bulancak';
       const houseNum = a.house_number ? `No:${a.house_number}` : '';
-      const suburb = a.suburb || a.neighbourhood || a.quarter || a.district || 'Giresun Merkez';
-      const town = a.city || a.town || 'Giresun';
+      const suburb = a.suburb || a.neighbourhood || a.quarter || 'Bulancak';
+      const town = 'Bulancak';
 
       const fullStr = [road, houseNum, suburb, town].filter(Boolean).join(', ');
       
@@ -118,33 +110,51 @@ async function reverseGeocodeLocation(lat, lng) {
       return fullStr;
     }
   } catch (err) {
-    console.error('Geocode error:', err);
     const openAddrFallback = document.getElementById('complaint-open-address') ||
                              document.getElementById('page-complaint-open-address');
-    if (openAddrFallback) openAddrFallback.value = `Giresun Merkez (${lat}, ${lng})`;
+    if (openAddrFallback) openAddrFallback.value = `Bulancak, Giresun (${lat}, ${lng})`;
   }
 }
 
-// Initialize Interactive Location Picker Map in Complaint Form
+// 1. Initialize Interactive Modal Location Picker Map
 function initLocationPickerMap() {
   const mapDiv = document.getElementById('complaint-picker-map');
   if (!mapDiv) return;
 
   if (pickerMap) {
-    pickerMap.invalidateSize();
+    setTimeout(() => {
+      pickerMap.invalidateSize();
+      pickerMap.setView([BULANCAK_LAT, BULANCAK_LNG], 14);
+    }, 150);
     return;
   }
 
-  pickerMap = L.map('complaint-picker-map').setView([GIRESUN_LAT, GIRESUN_LNG], 14);
+  const bulancakMaxBounds = L.latLngBounds(
+    L.latLng(BULANCAK_BOUNDS_MIN_LAT, BULANCAK_BOUNDS_MIN_LNG),
+    L.latLng(BULANCAK_BOUNDS_MAX_LAT, BULANCAK_BOUNDS_MAX_LNG)
+  );
+
+  pickerMap = L.map('complaint-picker-map', {
+    maxBounds: bulancakMaxBounds,
+    maxBoundsViscosity: 1.0,
+    minZoom: 12
+  }).setView([BULANCAK_LAT, BULANCAK_LNG], 14);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; Giresun Belediyesi 153 Çözüm Merkezi'
+    attribution: '&copy; Bulancak Belediyesi 153 Çözüm Merkezi'
   }).addTo(pickerMap);
 
-  pickerMarker = L.marker([GIRESUN_LAT, GIRESUN_LNG], { draggable: true }).addTo(pickerMap);
+  pickerMarker = L.marker([BULANCAK_LAT, BULANCAK_LNG], { draggable: true }).addTo(pickerMap);
 
   function updatePinCoordinates(lat, lng) {
+    if (!isInsideBulancak(lat, lng)) {
+      showGeofenceWarning();
+      pickerMarker.setLatLng([BULANCAK_LAT, BULANCAK_LNG]);
+      lat = BULANCAK_LAT;
+      lng = BULANCAK_LNG;
+    }
+
     const latInput = document.getElementById('complaint-lat');
     const lngInput = document.getElementById('complaint-lng');
     if (latInput) latInput.value = lat;
@@ -152,118 +162,91 @@ function initLocationPickerMap() {
     reverseGeocodeLocation(lat, lng);
   }
 
-  updatePinCoordinates(GIRESUN_LAT, GIRESUN_LNG);
+  updatePinCoordinates(BULANCAK_LAT, BULANCAK_LNG);
 
   pickerMap.on('click', function(e) {
-    const lat = e.latlng.lat.toFixed(6);
-    const lng = e.latlng.lng.toFixed(6);
+    const lat = Number(e.latlng.lat.toFixed(6));
+    const lng = Number(e.latlng.lng.toFixed(6));
+    if (!isInsideBulancak(lat, lng)) {
+      showGeofenceWarning();
+      return;
+    }
     pickerMarker.setLatLng([lat, lng]);
     updatePinCoordinates(lat, lng);
   });
 
-  pickerMarker.on('dragend', function(e) {
+  pickerMarker.on('dragend', function() {
     const pos = pickerMarker.getLatLng();
-    updatePinCoordinates(pos.lat.toFixed(6), pos.lng.toFixed(6));
+    updatePinCoordinates(Number(pos.lat.toFixed(6)), Number(pos.lng.toFixed(6)));
   });
 }
 
-let pagePickerMap = null;
-let pagePickerMarker = null;
-
+// 2. Initialize Page Location Picker Map
 function initPageLocationPickerMap() {
   const mapDiv = document.getElementById('page-complaint-picker-map');
   if (!mapDiv) return;
 
   if (pagePickerMap) {
-    setTimeout(() => pagePickerMap.invalidateSize(), 200);
+    setTimeout(() => {
+      pagePickerMap.invalidateSize();
+      pagePickerMap.setView([BULANCAK_LAT, BULANCAK_LNG], 14);
+    }, 150);
     return;
   }
 
-  pagePickerMap = L.map('page-complaint-picker-map').setView([GIRESUN_LAT, GIRESUN_LNG], 14);
+  const bulancakMaxBounds = L.latLngBounds(
+    L.latLng(BULANCAK_BOUNDS_MIN_LAT, BULANCAK_BOUNDS_MIN_LNG),
+    L.latLng(BULANCAK_BOUNDS_MAX_LAT, BULANCAK_BOUNDS_MAX_LNG)
+  );
+
+  pagePickerMap = L.map('page-complaint-picker-map', {
+    maxBounds: bulancakMaxBounds,
+    maxBoundsViscosity: 1.0,
+    minZoom: 12
+  }).setView([BULANCAK_LAT, BULANCAK_LNG], 14);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; Giresun Belediyesi 153 Çözüm Merkezi'
+    attribution: '&copy; Bulancak Belediyesi 153 Çözüm Merkezi'
   }).addTo(pagePickerMap);
 
-  pagePickerMarker = L.marker([GIRESUN_LAT, GIRESUN_LNG], { draggable: true }).addTo(pagePickerMap);
+  pagePickerMarker = L.marker([BULANCAK_LAT, BULANCAK_LNG], { draggable: true }).addTo(pagePickerMap);
 
-  async function updatePagePinCoordinates(lat, lng) {
+  function updatePagePinCoordinates(lat, lng) {
+    if (!isInsideBulancak(lat, lng)) {
+      showGeofenceWarning();
+      pagePickerMarker.setLatLng([BULANCAK_LAT, BULANCAK_LNG]);
+      lat = BULANCAK_LAT;
+      lng = BULANCAK_LNG;
+    }
+
     const latInput = document.getElementById('page-complaint-lat');
     const lngInput = document.getElementById('page-complaint-lng');
-    const openAddrInput = document.getElementById('page-complaint-open-address');
-
     if (latInput) latInput.value = lat;
     if (lngInput) lngInput.value = lng;
-    if (openAddrInput) openAddrInput.value = '🔍 Adres tespit ediliyor...';
-
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=tr`);
-      const data = await res.json();
-      if (data && data.address) {
-        const a = data.address;
-        const road = a.road || a.street || a.pedestrian || 'Sokak';
-        const houseNum = a.house_number ? `No:${a.house_number}` : '';
-        const suburb = a.suburb || a.neighbourhood || 'Giresun Merkez';
-        const town = a.city || a.town || 'Giresun';
-
-        const fullStr = [road, houseNum, suburb, town].filter(Boolean).join(', ');
-        if (openAddrInput) openAddrInput.value = fullStr;
-
-        if (typeof showToast === 'function') {
-          showToast(`📍 Adres tespit edildi: ${fullStr}`, 'success');
-        }
-      }
-    } catch (err) {
-      if (openAddrInput) openAddrInput.value = `Giresun Merkez (${lat}, ${lng})`;
-    }
+    reverseGeocodeLocation(lat, lng);
   }
 
-  updatePagePinCoordinates(GIRESUN_LAT, GIRESUN_LNG);
+  updatePagePinCoordinates(BULANCAK_LAT, BULANCAK_LNG);
 
   pagePickerMap.on('click', function(e) {
-    const lat = e.latlng.lat.toFixed(6);
-    const lng = e.latlng.lng.toFixed(6);
+    const lat = Number(e.latlng.lat.toFixed(6));
+    const lng = Number(e.latlng.lng.toFixed(6));
+    if (!isInsideBulancak(lat, lng)) {
+      showGeofenceWarning();
+      return;
+    }
     pagePickerMarker.setLatLng([lat, lng]);
     updatePagePinCoordinates(lat, lng);
   });
 
-  pagePickerMarker.on('dragend', function(e) {
+  pagePickerMarker.on('dragend', function() {
     const pos = pagePickerMarker.getLatLng();
-    updatePagePinCoordinates(pos.lat.toFixed(6), pos.lng.toFixed(6));
+    updatePagePinCoordinates(Number(pos.lat.toFixed(6)), Number(pos.lng.toFixed(6)));
   });
-}
-
-const DISTRICT_COORDS = {
-  '1': { lat: 40.9128, lng: 38.3895, name: 'Giresun Merkez', zoom: 13 },
-  '2': { lat: 40.9370, lng: 38.2320, name: 'Bulancak',       zoom: 14 },
-  '3': { lat: 40.9460, lng: 38.7090, name: 'Espiye',         zoom: 13 },
-  '4': { lat: 40.9870, lng: 38.6750, name: 'Görele',         zoom: 13 },
-  '5': { lat: 41.0030, lng: 38.8110, name: 'Tirebolu',       zoom: 13 }
-};
-
-function flyToDistrictLocation(districtId) {
-  const d = DISTRICT_COORDS[String(districtId)];
-  if (!d) return;
-
-  // fly on both maps
-  const maps = [pagePickerMap, pickerMap].filter(Boolean);
-  maps.forEach(map => {
-    map.flyTo([d.lat, d.lng], d.zoom || 13, { duration: 1.2 });
-  });
-
-  const targetMarker = pagePickerMarker || pickerMarker;
-  if (targetMarker) {
-    targetMarker.setLatLng([d.lat, d.lng]);
-    const latEl = document.getElementById('page-complaint-lat') || document.getElementById('complaint-lat');
-    const lngEl = document.getElementById('page-complaint-lng') || document.getElementById('complaint-lng');
-    if (latEl) latEl.value = d.lat;
-    if (lngEl) lngEl.value = d.lng;
-  }
 }
 
 function flyToNeighborhoodLocation(neighborhoodId) {
-  // Resolve name from neighborhoodsList global (populated in app.js)
   let name = neighborhoodId;
   if (typeof neighborhoodsList !== 'undefined' && Array.isArray(neighborhoodsList)) {
     const found = neighborhoodsList.find(n => n.id == neighborhoodId || n.name === neighborhoodId);
@@ -271,16 +254,12 @@ function flyToNeighborhoodLocation(neighborhoodId) {
   }
 
   const coords = findNeighborhoodCoords(name);
-  if (!coords) {
-    console.warn('[flyToNeighborhood] koordinat bulunamadı:', name);
-    return;
-  }
+  if (!coords) return;
 
   const { lat, lng } = coords;
-
   const maps = [pagePickerMap, pickerMap].filter(Boolean);
   maps.forEach(map => {
-    map.flyTo([lat, lng], 16, { duration: 1.2 });
+    map.flyTo([lat, lng], 15, { duration: 1.2 });
   });
 
   const targetMarker = pagePickerMarker || pickerMarker;
@@ -294,7 +273,18 @@ function flyToNeighborhoodLocation(neighborhoodId) {
   }
 }
 
-// Initialize Real Dynamic Heatmap & Pinpoint Marker Explorer Map
+// 3. Status Pin Colors (Kural 4: Dinamik Harita Renkleri)
+// Yeni = 🔴 Kırmızı, İşlemde/Atandı = 🟠 Turuncu, Ek Bilgi Bekleniyor = 🟡 Sarı, Çözüldü = 🟢 Yeşil, Pasif/İptal = ⚫ Gri
+function getStatusPinColor(status) {
+  const s = (status || '').toLowerCase();
+  if (s === 'yeni') return { color: '#ef4444', label: 'Yeni (Kırmızı)' };
+  if (s.includes('çözüldü') || s.includes('cozuldu')) return { color: '#10b981', label: 'Çözüldü (Yeşil)' };
+  if (s.includes('ek bilgi') || s.includes('bilgi bekleniyor')) return { color: '#eab308', label: 'Ek Bilgi Bekleniyor (Sarı)' };
+  if (s.includes('iptal') || s.includes('reddedildi') || s === 'passive') return { color: '#64748b', label: 'Pasif / İptal (Gri)' };
+  return { color: '#f97316', label: 'İşlemde / Atandı (Turuncu)' };
+}
+
+// 4. Initialize Explorer Heatmap & Dynamic Colored Pins Map
 function initExplorerMap(containerId, complaints = []) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -304,33 +294,38 @@ function initExplorerMap(containerId, complaints = []) {
     explorerMap = null;
   }
 
-  explorerMap = L.map(containerId).setView([GIRESUN_LAT, GIRESUN_LNG], 13);
+  const bulancakMaxBounds = L.latLngBounds(
+    L.latLng(BULANCAK_BOUNDS_MIN_LAT, BULANCAK_BOUNDS_MIN_LNG),
+    L.latLng(BULANCAK_BOUNDS_MAX_LAT, BULANCAK_BOUNDS_MAX_LNG)
+  );
+
+  explorerMap = L.map(containerId, {
+    maxBounds: bulancakMaxBounds,
+    maxBoundsViscosity: 1.0,
+    minZoom: 12
+  }).setView([BULANCAK_LAT, BULANCAK_LNG], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; Giresun Belediyesi 153 Çözüm Merkezi'
+    attribution: '&copy; Bulancak Belediyesi 153 Çözüm Merkezi'
   }).addTo(explorerMap);
 
   heatmapLayerGroup = L.layerGroup();
   markersLayerGroup = L.layerGroup();
 
-  // 1. Group complaints dynamically by neighborhood_name
+  // 1. Group complaints dynamically by Bulancak neighborhoods
   const neighborhoodCounts = {};
   if (complaints && complaints.length > 0) {
     complaints.forEach(c => {
-      const name = c.neighborhood_name || 'Hacısıyam Mahallesi';
+      const name = c.neighborhood_name || 'İhsaniye Mahallesi';
       neighborhoodCounts[name] = (neighborhoodCounts[name] || 0) + 1;
     });
   } else {
-    // Fallback realistic distribution
-    neighborhoodCounts['Hacısıyam Mahallesi'] = 35;
-    neighborhoodCounts['Nizamiye Mahallesi'] = 28;
-    neighborhoodCounts['Gedikkaya Mahallesi'] = 18;
-    neighborhoodCounts['Teyyaredüzü Mahallesi'] = 14;
-    neighborhoodCounts['Kapu Mahallesi'] = 10;
-    neighborhoodCounts['Hacı Hüseyin Mahallesi'] = 8;
-    neighborhoodCounts['Aksu Mahallesi'] = 6;
-    neighborhoodCounts['Çıtlakkale Mahallesi'] = 4;
+    neighborhoodCounts['İhsaniye Mahallesi'] = 14;
+    neighborhoodCounts['Ballıca Mahallesi'] = 11;
+    neighborhoodCounts['Sanayi Mahallesi'] = 8;
+    neighborhoodCounts['Toprakdeğirmeni Mahallesi'] = 6;
+    neighborhoodCounts['Acısu Mahallesi'] = 4;
   }
 
   let highCount = 0;
@@ -339,21 +334,21 @@ function initExplorerMap(containerId, complaints = []) {
 
   Object.keys(neighborhoodCounts).forEach(name => {
     const count = neighborhoodCounts[name];
-    const coords = findNeighborhoodCoords(name) || { lat: 40.9110, lng: 38.3900 };
+    const coords = findNeighborhoodCoords(name);
 
     let circleColor = '#10b981';
     let fillColor = 'rgba(16, 185, 129, 0.35)';
     let radius = 220;
 
-    if (count >= 20) {
+    if (count >= 10) {
       circleColor = '#ef4444';
       fillColor = 'rgba(239, 68, 68, 0.45)';
-      radius = 380;
+      radius = 350;
       highCount++;
-    } else if (count >= 10) {
+    } else if (count >= 5) {
       circleColor = '#f97316';
       fillColor = 'rgba(249, 115, 22, 0.4)';
-      radius = 300;
+      radius = 280;
       mediumCount++;
     } else {
       lowCount++;
@@ -379,13 +374,13 @@ function initExplorerMap(containerId, complaints = []) {
     labelMarker.bindPopup(`
       <div style="font-family: sans-serif; padding: 4px;">
         <strong style="color: #0f3470;">${name}</strong><br/>
-        <span style="font-size: 0.85rem; color: #475569;">Gerçek Şikâyet Yoğunluğu: <strong>${count} Talep</strong></span>
+        <span style="font-size: 0.85rem; color: #475569;">Talep Yoğunluğu: <strong>${count} Başvuru</strong></span>
       </div>
     `);
     heatmapLayerGroup.addLayer(labelMarker);
   });
 
-  // Update regional stats counter UI
+  // Update regional stats counter UI if present
   const highStat = document.getElementById('stat-high-regions');
   const medStat = document.getElementById('stat-med-regions');
   const lowStat = document.getElementById('stat-low-regions');
@@ -393,38 +388,43 @@ function initExplorerMap(containerId, complaints = []) {
   if (medStat) medStat.textContent = `${mediumCount} Bölge`;
   if (lowStat) lowStat.textContent = `${lowCount} Bölge`;
 
-  // 2. Build Individual Pinpoint Location Markers Layer
-  const pinPointsList = (complaints && complaints.length > 0) ? complaints : [
-    { id: 1, tracking_code: 'BLD-2026-000101', title: 'Derin Asfalt Çukuru', latitude: 40.9110, longitude: 38.3900, neighborhood_name: 'Hacısıyam Mahallesi', open_address: 'Atatürk Bulvarı No:45, Giresun', status: 'Personele atandı', urgency_level: 'Acil' },
-    { id: 2, tracking_code: 'BLD-2026-000102', title: 'Çöp Konteyneri Taşmış', latitude: 40.9140, longitude: 38.3870, neighborhood_name: 'Nizamiye Mahallesi', open_address: 'Gazi Cad. No:18, Giresun', status: 'Çözüldü', urgency_level: 'Normal' }
-  ];
+  // 2. Build Individual Status-Colored Pinpoint Markers (🔴, 🟠, 🟡, 🟢, ⚫)
+  const pinPointsList = (complaints && complaints.length > 0) ? complaints : [];
 
   pinPointsList.forEach(c => {
-    const lat = parseFloat(c.latitude) || GIRESUN_LAT;
-    const lng = parseFloat(c.longitude) || GIRESUN_LNG;
+    let lat = parseFloat(c.latitude);
+    let lng = parseFloat(c.longitude);
 
-    let pinColor = '#2563eb';
-    if (c.status === 'Çözüldü') pinColor = '#10b981';
-    else if (c.status === 'İşlem devam ediyor') pinColor = '#f59e0b';
-    else if (c.urgency_level === 'Acil' || c.urgency_level === 'Kritik') pinColor = '#ef4444';
+    if (isNaN(lat) || isNaN(lng) || !isInsideBulancak(lat, lng)) {
+      const fallback = findNeighborhoodCoords(c.neighborhood_name);
+      lat = fallback.lat + (Math.random() - 0.5) * 0.004;
+      lng = fallback.lng + (Math.random() - 0.5) * 0.004;
+    }
+
+    const { color: pinColor } = getStatusPinColor(c.status);
 
     const circlePin = L.circleMarker([lat, lng], {
-      radius: 8,
+      radius: 9,
       fillColor: pinColor,
       color: '#ffffff',
       weight: 2,
       opacity: 1,
-      fillOpacity: 0.9
+      fillOpacity: 0.95
     });
 
     circlePin.bindPopup(`
-      <div style="font-family: sans-serif; padding: 4px;">
-        <strong style="color: #0f3470;">${c.tracking_code}</strong><br/>
-        <h4 style="margin: 4px 0;">${c.title}</h4>
-        <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 6px;">📍 ${c.open_address || c.neighborhood_name}</p>
-        <span style="display: inline-block; padding: 3px 8px; background: ${pinColor}; color: white; border-radius: 10px; font-size: 0.75rem; font-weight: 700;">
-          ${c.status} (${c.urgency_level || '-'})
-        </span>
+      <div style="font-family: sans-serif; padding: 4px; min-width: 200px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <strong style="color: #0f3470; font-size: 0.85rem;">${c.tracking_code || 'BLD-153'}</strong>
+          <span style="display:inline-block; padding: 2px 6px; background: ${pinColor}; color: white; border-radius: 8px; font-size: 0.7rem; font-weight: 700;">
+            ${c.status || 'Yeni'}
+          </span>
+        </div>
+        <h4 style="margin: 4px 0; font-size: 0.92rem;">${c.title || 'Başlıksız Talep'}</h4>
+        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 6px;">📍 ${c.open_address || c.neighborhood_name || 'Bulancak'}</p>
+        <button type="button" class="btn btn-primary btn-sm" style="font-size:0.75rem; padding:4px 8px; width:100%; border-radius:6px;" onclick="openComplaintDetail('${c.tracking_code || c.id}')">
+          <i class="fas fa-eye"></i> Detayları İncele
+        </button>
       </div>
     `);
 

@@ -5,31 +5,138 @@ const { pool } = require('../config/db');
 const { authenticateToken, checkRole } = require('../middleware/auth');
 const { createAuditLog, sanitizeInput } = require('../middleware/security');
 
-// Tüm Yetkiler Admin Korumalı
-router.use(authenticateToken, checkRole(['Sistem Yöneticisi']));
+// Helper function to calculate employee rating
+function getEmployeeAverageRating(userId, memData) {
+  if (!memData || !memData.complaints) return { avg_rating: '4.8', rating_count: 0 };
+  
+  const staffComplaints = memData.complaints.filter(c => 
+    Number(c.assigned_to_user_id) === Number(userId) ||
+    Number(c.assigned_employee_id) === Number(userId) ||
+    (memData.complaint_actions && memData.complaint_actions.some(a => Number(a.complaint_id) === Number(c.id) && Number(a.employee_id) === Number(userId)))
+  );
 
-// 1. Kullanıcı Listesi
-router.get('/users', async (req, res) => {
+  const ratings = [];
+  staffComplaints.forEach(c => {
+    if (memData.satisfaction_surveys) {
+      const surveys = memData.satisfaction_surveys.filter(s => Number(s.complaint_id) === Number(c.id));
+      surveys.forEach(s => ratings.push(Number(s.rating)));
+    }
+    if (c.rating && Number(c.rating) > 0) {
+      ratings.push(Number(c.rating));
+    }
+  });
+
+  if (ratings.length > 0) {
+    const sum = ratings.reduce((a, b) => a + b, 0);
+    return {
+      avg_rating: (sum / ratings.length).toFixed(1),
+      rating_count: ratings.length
+    };
+  }
+
+  return { avg_rating: '4.8', rating_count: 0 };
+}
+
+// 1. Kullanıcı Listesi (Admin ve Birim Yöneticisi Raporları İçin - Kesin Tekil Liste & Puanlar)
+router.get('/users', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi']), async (req, res) => {
   try {
-    const [users] = await pool.query(
-      `SELECT u.id, u.full_name, u.email, u.phone, u.role_id, r.name as role_name, u.is_active, u.created_at,
-              e.title as employee_title, d.name as department_name
-       FROM users u
-       JOIN roles r ON u.role_id = r.id
-       LEFT JOIN employees e ON u.id = e.user_id
-       LEFT JOIN departments d ON e.department_id = d.id
-       ORDER BY u.created_at DESC`
-    );
+    const { memData } = require('../config/db');
+    let userList = [];
 
-    res.json({ success: true, users });
+    const roleNameMap = {
+      1: 'Sistem Yöneticisi',
+      2: 'Birim Yöneticisi',
+      3: 'Personel',
+      4: 'Vatandaş',
+      5: 'Belediye Başkanı',
+      6: 'Belediye Başkan Yardımcısı'
+    };
+
+    if (memData && memData.users && memData.users.length > 0) {
+      userList = memData.users.map(u => {
+        const emp = (memData.employees || []).find(e => Number(e.user_id) === Number(u.id));
+        const deptId = u.department_id || (emp ? emp.department_id : null);
+        const dept = (memData.departments || []).find(d => Number(d.id) === Number(deptId));
+        const role = (memData.roles || []).find(r => Number(r.id) === Number(u.role_id));
+        const ratingInfo = getEmployeeAverageRating(u.id, memData);
+
+        // Assigned departments for Vice Mayor (role_id: 6)
+        let assignedDepts = [];
+        let assignedDeptNames = [];
+        if (Number(u.role_id) === 6) {
+          const depts = (memData.departments || []).filter(d => Number(d.vice_mayor_user_id) === Number(u.id));
+          assignedDepts = depts.map(d => Number(d.id));
+          assignedDeptNames = depts.map(d => d.name);
+        }
+
+        return {
+          id: Number(u.id),
+          full_name: u.full_name,
+          email: u.email,
+          phone: u.phone,
+          role_id: Number(u.role_id),
+          role_name: u.role_name || roleNameMap[u.role_id] || (role ? role.name : 'Vatandaş'),
+          is_active: u.is_active !== undefined ? u.is_active : 1,
+          created_at: u.created_at || new Date().toISOString(),
+          employee_title: u.employee_title || (emp ? emp.title : (u.role_id === 2 ? 'Birim Müdürü' : (u.role_id === 3 ? 'Saha Görevlisi' : (u.role_id === 5 ? 'Belediye Başkanı' : (u.role_id === 6 ? 'Başkan Yardımcısı' : null))))),
+          department_name: u.department_name || (dept ? dept.name : null),
+          department_id: deptId ? Number(deptId) : null,
+          assigned_department_ids: assignedDepts,
+          assigned_department_names: assignedDeptNames,
+          avg_rating: ratingInfo.avg_rating,
+          rating_count: ratingInfo.rating_count
+        };
+      });
+    }
+
+    if (userList.length === 0) {
+      try {
+        const [dbUsers] = await pool.query(
+          `SELECT DISTINCT u.id, u.full_name, u.email, u.phone, u.role_id, r.name as role_name, u.is_active, u.created_at,
+                  COALESCE(e.title, u.employee_title) as employee_title,
+                  COALESCE(d.name, u.department_name) as department_name,
+                  COALESCE(e.department_id, u.department_id) as department_id
+           FROM users u
+           JOIN roles r ON u.role_id = r.id
+           LEFT JOIN employees e ON u.id = e.user_id
+           LEFT JOIN departments d ON (e.department_id = d.id OR u.department_id = d.id)
+           GROUP BY u.id
+           ORDER BY u.created_at DESC`
+        );
+        userList = dbUsers || [];
+      } catch (e) {}
+    }
+
+    // Strict ID-based Deduplication
+    const uniqueMap = new Map();
+    userList.forEach(u => {
+      if (u && u.id) {
+        const numId = Number(u.id);
+        if (!uniqueMap.has(numId)) {
+          uniqueMap.set(numId, u);
+        }
+      }
+    });
+
+    let result = Array.from(uniqueMap.values());
+
+    // Eğer Birim Yöneticisi ise sadece kendi birimindeki personelleri görsün
+    if (req.user.role_name === 'Birim Yöneticisi' && req.user.department_id) {
+      result = result.filter(u => Number(u.department_id) === Number(req.user.department_id));
+    }
+
+    res.json({ success: true, users: result });
   } catch (err) {
     console.error('Kullanıcı listesi hatası:', err);
     res.status(500).json({ success: false, message: 'Sunucu hatası.' });
   }
 });
 
+// Admin-Only Middleware for User Management and Logs
+const requireAdmin = checkRole(['Sistem Yöneticisi']);
+
 // 2. Yeni Personel / Yönetici Oluştur
-router.post('/users', async (req, res) => {
+router.post('/users', authenticateToken, requireAdmin, async (req, res) => {
   const { full_name, email, password, phone, role_id, department_id, title } = req.body;
 
   const cleanName = full_name ? String(full_name).trim() : '';
@@ -37,6 +144,10 @@ router.post('/users', async (req, res) => {
 
   if (!cleanName || !cleanEmail) {
     return res.status(400).json({ success: false, message: 'Ad Soyad ve E-posta adresi zorunludur.' });
+  }
+
+  if ((role_id == 2 || role_id == 3) && (!department_id || Number(department_id) === 0)) {
+    return res.status(400).json({ success: false, message: 'Personel veya Birim Yöneticisi için Birim / Müdürlük seçimi zorunludur.' });
   }
 
   const conn = await pool.getConnection();
@@ -126,7 +237,7 @@ router.post('/users', async (req, res) => {
 });
 
 // 3. Kullanıcı Durumu (Aktif/Pasif) Değiştir
-router.put('/users/:id/toggle-active', async (req, res) => {
+router.put('/users/:id/toggle-active', authenticateToken, requireAdmin, async (req, res) => {
   const userId = req.params.id;
 
   if (userId == 1) {
@@ -159,14 +270,20 @@ router.put('/users/:id/toggle-active', async (req, res) => {
 });
 
 // 3.5. Kullanıcı Bilgilerini Güncelle
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id', authenticateToken, requireAdmin, async (req, res) => {
   const userId = req.params.id;
-  const { full_name, email, phone, role_id, department_id, title, password } = req.body;
+  const { full_name, email, phone, role_id, department_id, title, password, assigned_department_ids } = req.body;
 
   const conn = await pool.getConnection();
 
   try {
     await conn.beginTransaction();
+
+    if ((role_id == 2 || role_id == 3) && (!department_id || Number(department_id) === 0)) {
+      await conn.rollback();
+      conn.release();
+      return res.status(400).json({ success: false, message: 'Personel veya Birim Yöneticisi için Birim / Müdürlük seçimi zorunludur.' });
+    }
 
     const cleanEmail = email ? String(email).trim().toLowerCase() : null;
 
@@ -208,8 +325,20 @@ router.put('/users/:id', async (req, res) => {
       }
     }
 
+    // Vice Mayor Assigned Departments Management
+    if (Number(role_id) === 6 && Array.isArray(assigned_department_ids)) {
+      try {
+        await conn.query('UPDATE departments SET vice_mayor_user_id = NULL WHERE vice_mayor_user_id = ?', [userId]);
+        if (assigned_department_ids.length > 0) {
+          for (const deptId of assigned_department_ids) {
+            await conn.query('UPDATE departments SET vice_mayor_user_id = ? WHERE id = ?', [userId, deptId]);
+          }
+        }
+      } catch (e) {}
+    }
+
     // Memory proxy update
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
     if (memData && memData.users) {
       const u = memData.users.find(usr => usr.id == userId);
       if (u) {
@@ -218,7 +347,7 @@ router.put('/users/:id', async (req, res) => {
         if (phone !== undefined) u.phone = phone;
         if (role_id) {
           u.role_id = Number(role_id);
-          const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };
+          const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş', 5: 'Belediye Başkanı', 6: 'Belediye Başkan Yardımcısı' };
           u.role_name = roleNameMap[role_id] || u.role_name;
         }
         if (password_hash) u.password_hash = password_hash;
@@ -244,6 +373,22 @@ router.put('/users/:id', async (req, res) => {
           });
         }
       }
+
+      // Memory department assignments update for Vice Mayor
+      if (Number(role_id) === 6 && Array.isArray(assigned_department_ids)) {
+        (memData.departments || []).forEach(d => {
+          if (Number(d.vice_mayor_user_id) === Number(userId)) {
+            d.vice_mayor_user_id = null;
+          }
+          if (assigned_department_ids.includes(Number(d.id))) {
+            d.vice_mayor_user_id = Number(userId);
+          }
+        });
+      }
+
+      if (typeof saveDbJson === 'function') {
+        saveDbJson();
+      }
     }
 
     await conn.commit();
@@ -260,14 +405,15 @@ router.put('/users/:id', async (req, res) => {
 });
 
 // 3.6. Kullanıcı Soft Delete (Fiziksel SQL DELETE yerine is_active = 0)
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', authenticateToken, requireAdmin, async (req, res) => {
   const userId = req.params.id;
   try {
     await pool.query('UPDATE users SET is_active = 0 WHERE id = ?', [userId]);
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
     if (memData && memData.users) {
       const u = memData.users.find(usr => usr.id == userId);
       if (u) u.is_active = 0;
+      if (typeof saveDbJson === 'function') saveDbJson();
     }
     await createAuditLog(req.user.id, 'SOFT_DELETE_USER', 'users', userId, { is_active: 1 }, { is_active: 0 }, req.ip);
     res.json({ success: true, message: 'Kullanıcı başarıyla pasife alındı (Soft Delete).' });
@@ -277,100 +423,218 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
-// 4. Müdürlükler (Departments) CRUD
-router.get('/departments', async (req, res) => {
+// 3.7. Belediye Başkan Yardımcıları Listesi (Dropdown için)
+router.get('/vice-mayors', authenticateToken, async (req, res) => {
   try {
-    const [departments] = await pool.query(
-      `SELECT d.*, COUNT(e.id) as employee_count
-       FROM departments d
-       LEFT JOIN employees e ON d.id = e.department_id
-       WHERE d.is_active = 1
-       GROUP BY d.id ORDER BY d.id ASC`
-    );
-    res.json({ success: true, departments });
+    const { memData } = require('../config/db');
+    let vmList = [];
+    if (memData && memData.users) {
+      vmList = memData.users.filter(u => Number(u.role_id) === 6 && u.is_active !== 0).map(u => ({
+        id: u.id,
+        full_name: u.full_name,
+        email: u.email
+      }));
+    }
+    if (vmList.length === 0) {
+      const [rows] = await pool.query('SELECT id, full_name, email FROM users WHERE role_id = 6 AND is_active = 1');
+      vmList = rows || [];
+    }
+    res.json({ success: true, vice_mayors: vmList });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Başkan yardımcıları alınamadı.' });
+  }
+});
+
+// 4. Müdürlükler (Departments) CRUD
+router.get('/departments', authenticateToken, async (req, res) => {
+  try {
+    const { memData } = require('../config/db');
+    let depts = [];
+
+    if (memData && memData.departments) {
+      depts = memData.departments.filter(d => d.is_active !== 0).map(d => {
+        const vm = (memData.users || []).find(u => Number(u.id) === Number(d.vice_mayor_user_id));
+        const empCount = (memData.employees || []).filter(e => Number(e.department_id) === Number(d.id)).length;
+        return {
+          id: Number(d.id),
+          name: d.name,
+          code: d.code,
+          vice_mayor_user_id: d.vice_mayor_user_id ? Number(d.vice_mayor_user_id) : null,
+          vice_mayor_name: vm ? vm.full_name : null,
+          employee_count: empCount,
+          is_active: d.is_active !== undefined ? d.is_active : 1
+        };
+      });
+    }
+
+    if (depts.length === 0) {
+      const [sqlDepts] = await pool.query(
+        `SELECT d.*, u.full_name as vice_mayor_name, COUNT(e.id) as employee_count
+         FROM departments d
+         LEFT JOIN users u ON d.vice_mayor_user_id = u.id
+         LEFT JOIN employees e ON d.id = e.department_id
+         WHERE d.is_active = 1
+         GROUP BY d.id ORDER BY d.id ASC`
+      );
+      depts = sqlDepts || [];
+    }
+
+    res.json({ success: true, departments: depts });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Sunucu hatası.' });
   }
 });
 
-router.post('/departments', async (req, res) => {
-  const { name, code } = req.body;
+router.post('/departments', authenticateToken, requireAdmin, async (req, res) => {
+  const { name, code, vice_mayor_user_id } = req.body;
   try {
+    const vmId = vice_mayor_user_id ? Number(vice_mayor_user_id) : null;
+    const cleanCode = sanitizeInput(code).toUpperCase();
+    const cleanName = sanitizeInput(name);
+
     await pool.query(
-      `INSERT INTO departments (name, code, is_active) VALUES (?, ?, 1)`,
-      [sanitizeInput(name), sanitizeInput(code).toUpperCase()]
+      `INSERT INTO departments (name, code, vice_mayor_user_id, is_active) VALUES (?, ?, ?, 1)`,
+      [cleanName, cleanCode, vmId]
     );
+
+    const { memData, saveDbJson } = require('../config/db');
+    if (memData) {
+      if (!memData.departments) memData.departments = [];
+      memData.departments.push({
+        id: memData.departments.length + 1,
+        name: cleanName,
+        code: cleanCode,
+        vice_mayor_user_id: vmId,
+        is_active: 1
+      });
+      if (typeof saveDbJson === 'function') saveDbJson();
+    }
+
     res.status(201).json({ success: true, message: 'Yeni müdürlük eklendi.' });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Müdürlük eklenirken hata oluştu.' });
   }
 });
 
+// 4.3. Müdürlük Güncelle (Zimmetlenen Başkan Yardımcısı Dahil)
+router.put('/departments/:id', authenticateToken, requireAdmin, async (req, res) => {
+  const deptId = Number(req.params.id);
+  const { name, code, vice_mayor_user_id } = req.body;
+  try {
+    const vmId = vice_mayor_user_id ? Number(vice_mayor_user_id) : null;
+    const cleanCode = code ? sanitizeInput(code).toUpperCase() : null;
+    const cleanName = name ? sanitizeInput(name) : null;
+
+    await pool.query(
+      `UPDATE departments SET name = COALESCE(?, name), code = COALESCE(?, code), vice_mayor_user_id = ? WHERE id = ?`,
+      [cleanName, cleanCode, vmId, deptId]
+    );
+
+    const { memData, saveDbJson } = require('../config/db');
+    if (memData && memData.departments) {
+      const d = memData.departments.find(item => Number(item.id) === deptId);
+      if (d) {
+        if (cleanName) d.name = cleanName;
+        if (cleanCode) d.code = cleanCode;
+        d.vice_mayor_user_id = vmId;
+      }
+      if (typeof saveDbJson === 'function') saveDbJson();
+    }
+
+    res.json({ success: true, message: 'Müdürlük bilgileri ve Başkan Yardımcısı zimmeti güncellendi.' });
+  } catch (err) {
+    console.error('Department update error:', err);
+    res.status(500).json({ success: false, message: 'Müdürlük güncellenemedi.' });
+  }
+});
+
 // 4.5. Müdürlük Soft Delete (Fiziksel SQL DELETE yerine is_active = 0)
-router.delete('/departments/:id', async (req, res) => {
+router.delete('/departments/:id', authenticateToken, requireAdmin, async (req, res) => {
   const deptId = req.params.id;
   try {
     await pool.query('UPDATE departments SET is_active = 0 WHERE id = ?', [deptId]);
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
     if (memData && memData.departments) {
       const d = memData.departments.find(dept => dept.id == deptId);
       if (d) d.is_active = 0;
+      if (typeof saveDbJson === 'function') saveDbJson();
     }
     await createAuditLog(req.user.id, 'SOFT_DELETE_DEPARTMENT', 'departments', deptId, { is_active: 1 }, { is_active: 0 }, req.ip);
     res.json({ success: true, message: 'Müdürlük pasife alındı (Soft Delete).' });
   } catch (err) {
+    console.error('Soft delete user error:', err);
     res.status(500).json({ success: false, message: 'Müdürlük silinemedi.' });
   }
 });
 
-// 5. Admin / Yönetici Talep Yönetimsel Güncelleme (Title & Description DISABLED in UI & ignored)
-router.put('/complaints/:id', async (req, res) => {
+// 5. Admin / Yönetici / Personel Talep Yönetimsel Güncelleme
+router.put('/complaints/:id', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi', 'Personel']), async (req, res) => {
   try {
-    const complaintId = req.params.id;
+    const rawId = req.params.id || (req.body && (req.body.complaint_id || req.body.id));
+    const complaintId = rawId ? String(rawId).trim() : null;
     const { category_id, department_id, priority_level, status } = req.body;
 
-    const [cRows] = await pool.query('SELECT status FROM complaints WHERE id = ?', [complaintId]);
-    if (!cRows || cRows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Talep bulunamadı.' });
+    if (!complaintId || complaintId === 'undefined' || complaintId === 'null') {
+      return res.status(400).json({ success: false, message: 'Güncellenecek talep kaydı bulunamadı (Geçersiz talep ID).' });
     }
 
-    const oldStatus = cRows[0].status;
-
-    await pool.query(
-      `UPDATE complaints 
-       SET category_id = COALESCE(?, category_id),
-           department_id = COALESCE(?, department_id),
-           priority_level = COALESCE(?, priority_level),
-           urgency_level = COALESCE(?, urgency_level),
-           status = COALESCE(?, status),
-           updated_at = NOW()
-       WHERE id = ?`,
-      [category_id || null, department_id || null, priority_level || null, priority_level || null, status || null, complaintId]
-    );
-
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
+    let memComp = null;
     if (memData && memData.complaints) {
-      const memComp = memData.complaints.find(c => c.id == complaintId);
-      if (memComp) {
-        if (category_id) memComp.category_id = category_id;
-        if (department_id) memComp.department_id = department_id;
-        if (priority_level) {
-          memComp.priority_level = priority_level;
-          memComp.urgency_level = priority_level;
-        }
-        if (status) memComp.status = status;
-      }
+      memComp = memData.complaints.find(c => Number(c.id) === Number(complaintId) || String(c.tracking_code) === complaintId);
     }
 
-    if (status && status !== oldStatus) {
+    const oldStatus = memComp ? memComp.status : 'Yeni';
+
+    try {
       await pool.query(
-        `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
-         VALUES (?, ?, ?, ?, 'Yönetici tarafından güncellendi.')`,
-        [complaintId, req.user.id, oldStatus, status]
+        `UPDATE complaints 
+         SET category_id = COALESCE(?, category_id),
+             department_id = COALESCE(?, department_id),
+             priority_level = COALESCE(?, priority_level),
+             urgency_level = COALESCE(?, urgency_level),
+             status = COALESCE(?, status),
+             updated_at = NOW()
+         WHERE id = ?`,
+        [category_id || null, department_id || null, priority_level || null, priority_level || null, status || null, complaintId]
       );
+    } catch (e) {
+      console.warn('MySQL update complaints fallback:', e.message);
     }
 
-    res.json({ success: true, message: 'Talep yönetimsel bilgileri başarıyla güncellendi.' });
+    if (memComp) {
+      if (category_id) memComp.category_id = Number(category_id);
+      if (department_id) memComp.department_id = Number(department_id);
+      if (priority_level) {
+        memComp.priority_level = priority_level;
+        memComp.urgency_level = priority_level;
+      }
+      if (status) memComp.status = status;
+      memComp.updated_at = new Date().toISOString();
+    }
+
+    if (typeof saveDbJson === 'function') {
+      saveDbJson();
+    }
+
+    const userRoleStr = req.user.role_name || (req.user.role_id === 1 ? 'Sistem Yöneticisi' : (req.user.role_id === 2 ? 'Birim Yöneticisi' : 'Personel'));
+    if (status && status !== oldStatus) {
+      try {
+        await pool.query(
+          `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
+           VALUES (?, ?, ?, ?, ?)`,
+          [complaintId, req.user.id, oldStatus, status, `${userRoleStr} tarafından güncellendi.`]
+        );
+      } catch (e) {}
+    }
+
+    res.json({
+      success: true,
+      message: 'Talep bilgileri ve durumu başarıyla güncellendi.',
+      complaint_id: complaintId,
+      status: status || (memComp ? memComp.status : null),
+      priority_level: priority_level || (memComp ? memComp.priority_level : null)
+    });
   } catch (err) {
     console.error('Admin complaint update error:', err);
     res.status(500).json({ success: false, message: 'Talep güncellenemedi.' });
@@ -378,7 +642,7 @@ router.put('/complaints/:id', async (req, res) => {
 });
 
 // 6. Audit Logları Göster
-router.get('/audit-logs', async (req, res) => {
+router.get('/audit-logs', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const [logs] = await pool.query(
       `SELECT a.*, u.full_name as user_name

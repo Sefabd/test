@@ -68,8 +68,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 2. CREATE ANNOUNCEMENT (ADMIN ONLY)
-router.post('/', authenticateToken, checkRole(['Sistem Yöneticisi']), async (req, res) => {
+// 2. CREATE ANNOUNCEMENT (Admin, Müdür, Başkan Yardımcısı, Belediye Başkanı)
+router.post('/', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi', 'Belediye Başkan Yardımcısı', 'Belediye Başkanı']), async (req, res) => {
   try {
     const { title, content, category, priority } = req.body;
     if (!title || !content) {
@@ -88,7 +88,7 @@ router.post('/', authenticateToken, checkRole(['Sistem Yöneticisi']), async (re
       priority: priority || 'Normal',
       created_at: new Date().toISOString(),
       created_by_user_id: req.user.id,
-      created_by_name: req.user.full_name || 'Sistem Yöneticisi'
+      created_by_name: req.user.full_name || 'Belediye Yetkilisi'
     };
 
     try {
@@ -114,8 +114,8 @@ router.post('/', authenticateToken, checkRole(['Sistem Yöneticisi']), async (re
   }
 });
 
-// 3. SOFT DELETE ANNOUNCEMENT (ADMIN ONLY)
-router.delete('/:id', authenticateToken, checkRole(['Sistem Yöneticisi']), async (req, res) => {
+// 3. SOFT DELETE ANNOUNCEMENT (Admin, Müdür, Başkan Yardımcısı, Belediye Başkanı)
+router.delete('/:id', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi', 'Belediye Başkan Yardımcısı', 'Belediye Başkanı']), async (req, res) => {
   try {
     const id = req.params.id;
     try {

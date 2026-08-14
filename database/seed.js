@@ -16,8 +16,10 @@ async function seed() {
       (1, 'Sistem Yöneticisi', 'Tüm sistem yetkilerine sahip admin'),
       (2, 'Birim Yöneticisi', 'Belediye müdürlük yöneticisi'),
       (3, 'Personel', 'Saha ve işlem personeli'),
-      (4, 'Vatandaş', 'Talep ve şikâyet oluşturan vatandaş')
-      ON DUPLICATE KEY UPDATE name=VALUES(name);
+      (4, 'Vatandaş', 'Talep ve şikâyet oluşturan vatandaş'),
+      (5, 'Belediye Başkanı', 'Tüm belediye verilerini inceleyen üst düzey gözlemci (Read-Only)'),
+      (6, 'Belediye Başkan Yardımcısı', 'Kendisine bağlı birimleri yöneten ve izleyen başkan yardımcısı')
+      ON DUPLICATE KEY UPDATE name=VALUES(name), description=VALUES(description);
     `);
 
     // 2. Departments (10 Varsayılan Birim)
@@ -52,18 +54,14 @@ async function seed() {
       (11, 8, 'Sosyal Yardım Talebi', 'Erzak, yakacak veya eğitim desteği', 'Normal'),
       (12, 9, 'İmar ve Yapı Şikâyeti', 'Kaçak yapılaşma veya tehlikeli bina', 'Yüksek'),
       (13, 10, 'Sokak Lambası Arızası', 'Karanlıkta kalan sokak, aydınlatma direği arızası', 'Normal'),
-      (14, 1, 'Diğer', 'Diğer belediye hizmet talepleri', 'Düşük')
+      (14, 1, 'Diğer', '153 Çözüm Koordinasyon Masası', 'Düşük')
       ON DUPLICATE KEY UPDATE name=VALUES(name);
     `);
 
-    // 4. Districts & Neighborhoods
+    // 4. Bulancak Districts & Neighborhoods
     await conn.query(`
       INSERT INTO districts (id, name) VALUES
-      (1, 'Giresun Merkez'),
-      (2, 'Bulancak'),
-      (3, 'Espiye'),
-      (4, 'Görele'),
-      (5, 'Tirebolu')
+      (1, 'Bulancak')
       ON DUPLICATE KEY UPDATE name=VALUES(name);
     `);
 

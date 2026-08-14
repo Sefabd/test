@@ -111,13 +111,23 @@ router.post(
     const cleanEmail = String(email).trim().toLowerCase();
 
     try {
-      const [users] = await pool.query(
+      let [users] = await pool.query(
         `SELECT u.*, r.name as role_name
          FROM users u
          JOIN roles r ON u.role_id = r.id
          WHERE u.email = ?`,
         [cleanEmail]
       );
+
+      if (!users || users.length === 0) {
+        const { memData } = require('../config/db');
+        if (memData && memData.users) {
+          const memUser = memData.users.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+          if (memUser) {
+            users = [memUser];
+          }
+        }
+      }
 
       if (!users || users.length === 0) {
         return res.status(401).json({ success: false, message: 'E-posta adresi veya şifre hatalı.' });
@@ -137,10 +147,11 @@ router.post(
 
       let citizen_id = null;
       let employee_id = null;
-      let department_id = null;
-      let department_name = null;
+      let department_id = user.department_id || null;
+      let department_name = user.department_name || null;
+      let employee_title = user.employee_title || null;
 
-      if (user.role_name === 'Vatandaş') {
+      if (user.role_name === 'Vatandaş' || user.role_id === 4) {
         const [citizens] = await pool.query('SELECT id FROM citizens WHERE user_id = ?', [user.id]);
         if (citizens && citizens.length > 0) {
           citizen_id = citizens[0].id;
@@ -148,50 +159,58 @@ router.post(
           citizen_id = user.id;
         }
       } else {
-        // Priority 1: Email-to-Department Mapping for all Municipal Managers & Staff
-        const EMAIL_DEPT_MAP = {
-          'fenisleri.mudur@belediye.gov.tr': { id: 1, name: 'Fen İşleri Müdürlüğü' },
-          'ali.fen@belediye.gov.tr': { id: 1, name: 'Fen İşleri Müdürlüğü' },
-          'temizlik.mudur@belediye.gov.tr': { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-          'veli.temizlik@belediye.gov.tr': { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-          'park.mudur@belediye.gov.tr': { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-          'fatma.park@belediye.gov.tr': { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-          'zabita.mudur@belediye.gov.tr': { id: 4, name: 'Zabıta Müdürlüğü' },
-          'su.mudur@belediye.gov.tr': { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' },
-          'veteriner.mudur@belediye.gov.tr': { id: 6, name: 'Veteriner İşleri Müdürlüğü' },
-          'ulasim.mudur@belediye.gov.tr': { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü' },
-          'sosyal.mudur@belediye.gov.tr': { id: 8, name: 'Sosyal Hizmetler Müdürlüğü' },
-          'imar.mudur@belediye.gov.tr': { id: 9, name: 'İmar ve Şehircilik Müdürlüğü' },
-          'bilgiislem.mudur@belediye.gov.tr': { id: 10, name: 'Bilgi İşlem Müdürlüğü' }
-        };
-
-        if (EMAIL_DEPT_MAP[cleanEmail]) {
-          department_id = EMAIL_DEPT_MAP[cleanEmail].id;
-          department_name = EMAIL_DEPT_MAP[cleanEmail].name;
-        } else {
-          department_id = user.department_id || null;
-          employee_id = user.employee_id || null;
-
-          const [employees] = await pool.query(
-            `SELECT e.id, e.department_id, d.name as department_name
-             FROM employees e
-             JOIN departments d ON e.department_id = d.id
-             WHERE e.user_id = ?`,
-            [user.id]
-          );
-          if (employees && employees.length > 0) {
-            employee_id = employees[0].id;
-            department_id = employees[0].department_id;
-            department_name = employees[0].department_name;
+        // Purely Database & In-Memory Dynamic Department / Employee Resolution
+        const [employees] = await pool.query(
+          `SELECT e.id, e.department_id, e.title as employee_title, d.name as department_name
+           FROM employees e
+           JOIN departments d ON e.department_id = d.id
+           WHERE e.user_id = ?`,
+          [user.id]
+        );
+        if (employees && employees.length > 0) {
+          employee_id = employees[0].id;
+          department_id = employees[0].department_id;
+          department_name = employees[0].department_name;
+          if (employees[0].employee_title) {
+            employee_title = employees[0].employee_title;
           }
-
-          if (department_id && !department_name) {
-            const [depts] = await pool.query('SELECT name FROM departments WHERE id = ?', [department_id]);
-            if (depts && depts.length > 0) {
-              department_name = depts[0].name;
-            }
+        } else if (department_id) {
+          const [depts] = await pool.query('SELECT name FROM departments WHERE id = ?', [department_id]);
+          if (depts && depts.length > 0) {
+            department_name = depts[0].name;
           }
         }
+
+        // Check in-memory sync if active
+        const { memData } = require('../config/db');
+        if (memData) {
+          const memEmp = (memData.employees || []).find(e => e.user_id == user.id);
+          if (memEmp) {
+            employee_id = memEmp.id;
+            department_id = memEmp.department_id || department_id;
+            employee_title = memEmp.title || employee_title;
+          }
+          if (department_id) {
+            const memDept = (memData.departments || []).find(d => d.id == department_id);
+            if (memDept) department_name = memDept.name;
+          }
+        }
+      }
+
+      let assigned_department_ids = [];
+      if (user.role_id === 6 || user.role_name === 'Belediye Başkan Yardımcısı') {
+        const { memData } = require('../config/db');
+        if (memData && memData.departments) {
+          assigned_department_ids = memData.departments
+            .filter(d => Number(d.vice_mayor_user_id) === Number(user.id))
+            .map(d => Number(d.id));
+        }
+        try {
+          const [deptRows] = await pool.query('SELECT id FROM departments WHERE vice_mayor_user_id = ?', [user.id]);
+          if (deptRows && deptRows.length > 0) {
+            assigned_department_ids = [...new Set([...assigned_department_ids, ...deptRows.map(d => Number(d.id))])];
+          }
+        } catch (e) {}
       }
 
       const token = jwt.sign(
@@ -204,6 +223,7 @@ router.post(
           employee_id,
           department_id,
           department_name,
+          assigned_department_ids,
           full_name: user.full_name
         },
         JWT_SECRET,
@@ -224,7 +244,8 @@ router.post(
           citizen_id: citizen_id || user.id,
           employee_id,
           department_id,
-          department_name
+          department_name,
+          assigned_department_ids
         }
       });
     } catch (err) {

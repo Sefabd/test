@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giresun Belediyesi 153 Çözüm Merkezi - Talep ve Akıllı Şikâyet Yönetimi</title>
-  <meta name="description" content="T.C. Giresun Belediyesi 153 Çözüm Merkezi vatandaş talep portalı ve birim yönetim sistemi">
+  <title>Bulancak Belediyesi 153 Çözüm Merkezi - Talep ve Akıllı Şikâyet Yönetimi</title>
+  <meta name="description" content="T.C. Bulancak Belediyesi 153 Çözüm Merkezi vatandaş talep portalı ve birim yönetim sistemi">
 
   <!-- Favicon & Brand Logo -->
   <link rel="icon" type="image/png" href="/images/giresun-153-logo.png">
 
   <!-- CSS & Fonts -->
-  <link rel="stylesheet" href="/css/style.css?v=25.0.0">
+  <link rel="stylesheet" href="/css/style.css?v=56.0.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- SweetAlert2 Modern Alert & Toast Library -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- Leaflet Map CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- html2pdf.js for Professional PDF Reporting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -31,7 +37,7 @@
       <div class="app-loading-spinner-box">
         <div class="app-loading-spinner"></div>
       </div>
-      <h4 class="app-loading-title">T.C. GİRESUN BELEDİYESİ</h4>
+      <h4 class="app-loading-title">T.C. BULANCAK BELEDİYESİ</h4>
       <p class="app-loading-subtitle">153 Çözüm Merkezi Yükleniyor...</p>
     </div>
   </div>
@@ -46,7 +52,7 @@
       <a href="/" class="portal-logo">
         <img src="/images/giresun-153-logo.png" alt="153 Çözüm Merkezi Logo" class="app-official-logo" style="height: 72px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); transition: transform 0.3s ease;" />
         <div class="portal-logo-text">
-          <span class="portal-logo-title" style="font-size: 0.85rem; font-weight: 800;">T.C. GİRESUN BELEDİYESİ</span>
+          <span class="portal-logo-title" style="font-size: 0.85rem; font-weight: 800;">T.C. BULANCAK BELEDİYESİ</span>
           <span class="portal-logo-subtitle" style="font-size: 1.35rem; font-weight: 800;">153 ÇÖZÜM MERKEZİ</span>
         </div>
       </a>
@@ -68,16 +74,16 @@
       <!-- Left Column: Hero Intro -->
       <div class="hero-left">
         <div class="hero-badge-153">
-          <i class="fas fa-phone-volume"></i> GİRESUN 153 ÇÖZÜM MERKEZİ
+          <i class="fas fa-phone-volume"></i> BULANCAK 153 ÇÖZÜM MERKEZİ
         </div>
 
         <h1 class="hero-title">
           Oy için değil,<br>
-          <span>Giresun için.</span>
+          <span>Bulancak için.</span>
         </h1>
 
         <p class="hero-desc">
-          Talep, öneri ve şikâyetlerinizi bize iletin, Giresun'u birlikte daha yaşanabilir yeşil bir şehir hale getirelim.
+          Talep, öneri ve şikâyetlerinizi bize iletin, Bulancak'ı birlikte daha modern ve yaşanabilir bir ilçe haline getirelim.
         </p>
 
         <!-- Feature Circles -->
@@ -100,9 +106,9 @@
 
         <!-- Mobile App Promo Card -->
         <div class="mobile-app-card">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://giresun.bel.tr" alt="QR Code" class="qr-code">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bulancak.bel.tr" alt="QR Code" class="qr-code">
           <div class="mobile-app-info">
-            <h5>Giresun Mobil Çözüm Merkezi</h5>
+            <h5>Bulancak Mobil Çözüm Merkezi</h5>
             <p>Mobil uygulama ile 153 Çözüm Merkezi her an yanınızda. Temsilcilerimizle anında iletişim kurabilirsiniz.</p>
           </div>
         </div>
@@ -304,15 +310,34 @@
           </a>
         </li>
 
+        <li id="nav-solution-archive">
+          <a href="#" onclick="switchWorkspaceTab('solution-archive'); event.preventDefault();">
+            <i class="fas fa-box-archive"></i> <span>Çözüm Arşivi</span>
+          </a>
+        </li>
+
         <li id="nav-admin-users" style="display: none;">
           <a href="#" onclick="switchWorkspaceTab('admin-users'); event.preventDefault();">
             <i class="fas fa-users-gear"></i> <span>Kullanıcı Yönetimi</span>
           </a>
         </li>
 
+        <li id="nav-admin-depts" style="display: none;">
+          <a href="#" onclick="switchWorkspaceTab('admin-depts'); event.preventDefault();">
+            <i class="fas fa-sitemap"></i> <span>Müdürlük Yönetimi</span>
+          </a>
+        </li>
+
         <li id="nav-admin-logs" style="display: none;">
           <a href="#" onclick="switchWorkspaceTab('admin-logs'); event.preventDefault();">
             <i class="fas fa-shield-halved"></i> <span>Audit Logları</span>
+          </a>
+        </li>
+
+        <!-- Birim Yöneticisi / Müdür Saha Personelleri Menüsü -->
+        <li id="nav-dept-staff" style="display: none;">
+          <a href="#" onclick="switchWorkspaceTab('dept-staff'); event.preventDefault();">
+            <i class="fas fa-user-tie"></i> <span>Saha Personelleri</span>
           </a>
         </li>
 
@@ -481,6 +506,11 @@
                   <option value="FORWARDED">🔄 Yönlendirilen Talepler</option>
                 </select>
 
+                <!-- Vice Mayor Sub-Department Filter Dropdown (Role 6) -->
+                <select id="filter-vice-mayor-dept" onchange="applyComplaintFilters()" class="filter-select" style="min-width: 200px; display: none; background: #f0fdf4; border-color: #86efac; font-weight: 700; color: #166534;">
+                  <option value="ALL">🏛️ Bağlı Tüm Birimlerim</option>
+                </select>
+
                 <!-- Category Filter Dropdown -->
                 <select id="filter-complaint-category" onchange="applyComplaintFilters()" class="filter-select" style="min-width: 165px;">
                   <option value="ALL">Tüm Kategoriler</option>
@@ -532,7 +562,7 @@
                     <th>MAHALLE</th>
                     <th>DURUM</th>
                     <th>TARİH</th>
-                    <th>İŞLEM</th>
+                    <th style="text-align: right; padding-right: 18px;">İŞLEM</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-complaints">
@@ -789,25 +819,19 @@
                   </select>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                  <div>
-                    <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">İlçe *</label>
-                    <select id="page-complaint-district" name="district_id" required class="form-input" style="height: 42px; border-radius: 8px;"></select>
-                  </div>
-
-                  <div>
-                    <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Mahalle *</label>
-                    <select id="page-complaint-neighborhood" name="neighborhood_id" required class="form-input" style="height: 42px; border-radius: 8px;"></select>
-                  </div>
+                <div>
+                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Bulancak Mahallesi *</label>
+                  <select id="page-complaint-neighborhood" name="neighborhood_id" required class="form-input" style="height: 42px; border-radius: 8px; font-weight: 600;"></select>
+                  <input type="hidden" id="page-complaint-district" name="district_id" value="1">
                 </div>
 
                 <div>
                   <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Açık Adres (Haritaya Tıklayarak Otomatik Doldurabilirsiniz)</label>
-                  <input type="text" id="page-complaint-open-address" name="open_address" placeholder="Haritada bir noktaya tıklayınca otomatik dolacaktır..." class="form-input" style="height: 42px; border-radius: 8px;">
+                  <input type="text" id="page-complaint-open-address" name="open_address" placeholder="Haritada Bulancak sınırları içinde bir noktaya tıklayınca otomatik dolacaktır..." class="form-input" style="height: 42px; border-radius: 8px;">
                 </div>
 
                 <div>
-                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">📍 Giresun Haritası Üzerinden Konum Seçiniz (Tıklayınca Adres Dolacaktır)</label>
+                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
                   <div id="page-complaint-picker-map" style="height: 240px; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 6px;"></div>
                   <input type="hidden" id="page-complaint-lat" name="latitude">
                   <input type="hidden" id="page-complaint-lng" name="longitude">
@@ -979,7 +1003,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
               <div>
                 <h3 style="color: var(--portal-blue-primary);"><i class="fas fa-users-gear"></i> Birim Saha Personellerim</h3>
-                <p style="color: var(--text-muted); margin: 2px 0 0 0;" id="dept-staff-subtext">Müdürlüğünüze bağlı aktif görevliler.</p>
+                <p style="color: var(--text-muted); margin: 2px 0 0 0;" id="dept-staff-subtext">Müdürlüğünüze bağlı aktif saha görevlileri ve ortalama vatandaş memnuniyet puanları.</p>
               </div>
             </div>
             <div class="table-responsive">
@@ -990,11 +1014,12 @@
                     <th>E-POSTA</th>
                     <th>TELEFON</th>
                     <th>UNVAN / GÖREV</th>
+                    <th>ORTALAMA MEMNUNİYET</th>
                     <th>DURUM</th>
                   </tr>
                 </thead>
                 <tbody id="dept-staff-tbody">
-                  <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Yükleniyor...</td></tr>
+                  <tr><td colspan="6" style="text-align: center; color: #94a3b8;">Yükleniyor...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1005,7 +1030,7 @@
         <section id="sec-announcements" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;"><i class="fas fa-bullhorn" style="color: var(--portal-blue-accent);"></i> Giresun Belediyesi Resmi Duyurular</h3>
+              <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;"><i class="fas fa-bullhorn" style="color: var(--portal-blue-accent);"></i> Bulancak Belediyesi Resmi Duyurular</h3>
               <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Belediye yönetimi tarafından yayınlanan kamu duyuruları ve altyapı kesinti bilgilendirmeleri.</p>
             </div>
             
@@ -1019,126 +1044,232 @@
           </div>
         </section>
 
-        <!-- SECTION 10: DEDICATED REPORTS & ANALYTICS SECTION -->
+        <!-- SECTION 10: DEDICATED REPORTS & ANALYTICS SECTION (ÜST DÜZEY YÖNETİCİ & BAŞKAN ANALİTİK PANELİ) -->
         <section id="sec-reports" style="display: none;">
           <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
             <div>
               <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.3rem;">
-                <i class="fas fa-chart-column" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Yönetimsel Raporlar & Analitik Paneli
+                <i class="fas fa-chart-column" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Üst Düzey Yönetimsel Analitik & Raporlar
               </h3>
-              <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Genel birim performansı, saha personeli çözüm süreleri ve detaylı yönetim raporları.</p>
+              <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Belediye Başkanı ve Yöneticiler için anlık performans, tür dağılımları ve çözüm istatistikleri.</p>
+            </div>
+            
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="exportReportsToPdf()" style="font-weight: 600;">
+                <i class="fas fa-file-pdf" style="color: #ef4444; margin-right: 4px;"></i> PDF İndir / Çıktı Al
+              </button>
             </div>
           </div>
 
-          <!-- Dynamic Filter Bar -->
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0;">
-            <div style="flex: 1; min-width: 200px;">
-              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Müdürlük / Birim Seçimi</label>
-              <select id="filter-report-dept" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
-                <option value="ALL" selected>🏢 Tüm Birimler & Müdürlükler</option>
-              </select>
+          <!-- Dynamic Time Range Buttons Bar -->
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; background: #ffffff; padding: 14px 18px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-right: 4px;">📅 Zaman Filtresi:</span>
+              <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-this-week" onclick="setReportTimeRange('this_week')">Bu Hafta</button>
+              <button type="button" class="btn btn-primary btn-sm report-time-btn active" id="btn-report-this-month" onclick="setReportTimeRange('this_month')">Bu Ay</button>
+              <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-last-month" onclick="setReportTimeRange('last_month')">Geçen Ay</button>
+              <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-custom" onclick="toggleReportCustomDate()">Özel Tarih Aralığı</button>
             </div>
 
-            <div style="min-width: 160px;">
-              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Zaman Aralığı</label>
-              <select id="filter-report-period" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
-                <option value="THIS_MONTH" selected>📅 Bu Ay (Son 30 Gün)</option>
-                <option value="LAST_3_MONTHS">📅 Son 3 Ay</option>
-                <option value="THIS_YEAR">📅 Bu Yıl (2026)</option>
-                <option value="ALL">🗓️ Tüm Zamanlar</option>
-              </select>
-            </div>
-
-            <div style="min-width: 180px;">
-              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Rapor Modu</label>
-              <select id="filter-report-type" onchange="loadReportsData()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
-                <option value="OVERVIEW" selected>📊 Genel Birim & Saha Analizi</option>
-                <option value="STAFF_DETAIL">👷 Personel Özel Performans Raporu</option>
-              </select>
+            <!-- Custom Date Inputs (hidden by default) -->
+            <div id="report-custom-date-box" style="display: none; align-items: center; gap: 8px;">
+              <input type="date" id="report-start-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
+              <span style="color: #64748b; font-weight: 600;">-</span>
+              <input type="date" id="report-end-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="applyReportCustomDate()" style="height: 36px; padding: 0 12px;">Uygula</button>
             </div>
           </div>
 
-          <!-- KPI Summary Cards Bar -->
-          <div class="kpi-grid-5" style="grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
-            <div class="kpi-card">
-              <div class="kpi-icon-box" style="background: #eff6ff; color: #1d4ed8;"><i class="fas fa-list-check"></i></div>
+          <!-- Dynamic KPI Cards Bar -->
+          <div class="kpi-grid-5" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div class="kpi-card" style="border-left: 4px solid #2563eb;">
+              <div class="kpi-icon-box" style="background: #eff6ff; color: #1d4ed8;"><i class="fas fa-inbox"></i></div>
               <div>
-                <span class="kpi-label">Toplam İşlenen Talep</span>
-                <h3 id="report-kpi-total" class="kpi-value">0</h3>
-                <span class="kpi-subtext">Raporlanan döneme ait</span>
+                <span class="kpi-label">Toplam Başvuru</span>
+                <h3 id="report-kpi-total" class="kpi-value" style="font-size: 1.5rem;">0</h3>
+                <span class="kpi-subtext" id="report-kpi-period-label">Seçili dönemde</span>
               </div>
             </div>
 
-            <div class="kpi-card">
+            <div class="kpi-card" style="border-left: 4px solid #16a34a;">
               <div class="kpi-icon-box" style="background: #ecfdf5; color: #047857;"><i class="fas fa-circle-check"></i></div>
               <div>
-                <span class="kpi-label">Çözülme Oranı</span>
-                <h3 id="report-kpi-rate" class="kpi-value">%0</h3>
-                <span class="kpi-subtext" style="color: #047857;">Çözülen talepler</span>
+                <span class="kpi-label">Çözülen Talepler</span>
+                <h3 id="report-kpi-resolved" class="kpi-value" style="font-size: 1.5rem; color: #16a34a;">0</h3>
+                <span class="kpi-subtext" style="color: #047857;">Başarıyla sonuçlanan</span>
               </div>
             </div>
 
-            <div class="kpi-card">
-              <div class="kpi-icon-box" style="background: #fef3c7; color: #b45309;"><i class="fas fa-stopwatch"></i></div>
+            <div class="kpi-card" style="border-left: 4px solid #f59e0b;">
+              <div class="kpi-icon-box" style="background: #fffbeb; color: #d97706;"><i class="fas fa-clock-rotate-left"></i></div>
+              <div>
+                <span class="kpi-label">İşlemde Olanlar</span>
+                <h3 id="report-kpi-pending" class="kpi-value" style="font-size: 1.5rem; color: #d97706;">0</h3>
+                <span class="kpi-subtext">Sahada devam eden</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="border-left: 4px solid #06b6d4;">
+              <div class="kpi-icon-box" style="background: #ecfeff; color: #0891b2;"><i class="fas fa-percent"></i></div>
+              <div>
+                <span class="kpi-label">Genel Çözüm Oranı</span>
+                <h3 id="report-kpi-rate" class="kpi-value" style="font-size: 1.5rem; color: #0891b2;">%0</h3>
+                <span class="kpi-subtext">Dinamik matematiksel oran</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="border-left: 4px solid #8b5cf6;">
+              <div class="kpi-icon-box" style="background: #f5f3ff; color: #7c3aed;"><i class="fas fa-stopwatch"></i></div>
               <div>
                 <span class="kpi-label">Ort. Çözüm Süresi</span>
-                <h3 id="report-kpi-avg-time" class="kpi-value">4.2 Saat</h3>
-                <span class="kpi-subtext" style="color: #b45309;">Saha müdahale hızı</span>
-              </div>
-            </div>
-
-            <div class="kpi-card">
-              <div class="kpi-icon-box" style="background: #f3e8ff; color: #6b21a8;"><i class="fas fa-user-gear"></i></div>
-              <div>
-                <span class="kpi-label">Aktif Saha Personeli</span>
-                <h3 id="report-kpi-staff-count" class="kpi-value">0</h3>
-                <span class="kpi-subtext">Görevli ekip üyesi</span>
+                <h3 id="report-kpi-avg-time" class="kpi-value" style="font-size: 1.5rem; color: #7c3aed;">0 gün</h3>
+                <span class="kpi-subtext">Başvuru-çözüm arası</span>
               </div>
             </div>
           </div>
 
-          <!-- Staff Detailed Performance Table -->
-          <div class="card-box" style="margin-bottom: 24px;">
-            <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px; font-weight: 800; font-size: 1.1rem;">
-              <i class="fas fa-user-check" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Saha Personeli Özel Çözüm & Performans Tablosu
+          <!-- Dual Analytics Charts (Submission Types Pie + Department Performance) -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+            <div class="card-box" style="margin-bottom: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h4 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1rem;">
+                  <i class="fas fa-chart-pie" style="color: #2563eb; margin-right: 6px;"></i> Başvuru Türleri Dağılımı
+                </h4>
+                <small style="color: #64748b; font-weight: 600;">Şikâyet / Soru / Öneri</small>
+              </div>
+              <div style="height: 280px; position: relative; display: flex; align-items: center; justify-content: center;">
+                <canvas id="chart-report-types"></canvas>
+              </div>
+            </div>
+
+            <div class="card-box" style="margin-bottom: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h4 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1rem;">
+                  <i class="fas fa-building" style="color: #10b981; margin-right: 6px;"></i> Müdürlük Bazlı Çözüm Oranları
+                </h4>
+                <small style="color: #64748b; font-weight: 600;">Performans Grafiği</small>
+              </div>
+              <div style="height: 280px; position: relative;">
+                <canvas id="chart-report-depts"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Department Performance Table -->
+          <div class="card-box">
+            <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px; font-weight: 800;">
+              <i class="fas fa-table-list" style="color: #2563eb; margin-right: 6px;"></i> Birim & Müdürlük Detaylı Performans Tablosu
             </h4>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>PERSONEL ADI</th>
-                    <th>E-POSTA / TELEFON</th>
-                    <th>BAĞLI MÜDÜRLÜK</th>
-                    <th>GÖREV / UNVAN</th>
-                    <th>ATANAN TALEP</th>
-                    <th>TAMAMLANAN</th>
-                    <th>BEKLEYEN</th>
-                    <th>PERFORMANS PUANI</th>
+                    <th>BİRİM / MÜDÜRLÜK</th>
+                    <th>TOPLAM TALEP</th>
+                    <th>ÇÖZÜLEN TALEP</th>
+                    <th>ÇÖZÜLME ORANI</th>
+                    <th>DURUM</th>
                   </tr>
                 </thead>
-                <tbody id="table-reports-staff-tbody">
-                  <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Rapor verileri yükleniyor...</td></tr>
+                <tbody id="report-dept-performance-tbody">
+                  <tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 18px;">Rapor verileri hesaplanıyor...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
+        </section>
 
-          <!-- Charts Row -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-            <div class="card-box">
-              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-chart-pie"></i> Birim Dağılım & Çözüm İstatistiği</h4>
-              <div style="height: 240px; position: relative;">
-                <canvas id="reports-dept-chart"></canvas>
+        <!-- SECTION 11: ÇÖZÜM ARŞİVİ SEKİSİ (ONLY RESOLVED COMPLAINTS) -->
+        <section id="sec-solution-archive" style="display: none;">
+          <div class="card-box">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
+              <div>
+                <h3 style="color: #047857; font-weight: 800; margin: 0; font-size: 1.25rem;">
+                  <i class="fas fa-box-archive" style="color: #10b981; margin-right: 6px;"></i> Bulancak Belediyesi Çözüm Arşivi
+                </h3>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Saha personellerimiz ve müdürlüklerimiz tarafından başarıyla çözülen tüm taleplerin resmi arşivi.</p>
+              </div>
+              <span class="badge" style="background: #d1fae5; color: #065f46; font-size: 0.85rem; padding: 6px 14px; border: 1px solid #a7f3d0; font-weight: 700;">
+                <i class="fas fa-check-circle" style="color: #059669; margin-right: 4px;"></i> Sadece Çözülen Kayıtlar
+              </span>
+            </div>
+
+            <!-- Live Filter Toolbar for Archive -->
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="flex: 2; min-width: 220px;">
+                <input type="text" id="filter-archive-search" oninput="applyArchiveFilters()" placeholder="🔍 Başlık veya adres ile anlık ara..." class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+              </div>
+
+              <div style="flex: 1; min-width: 170px;">
+                <select id="filter-archive-neighborhood" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>📍 Tüm Mahalleler</option>
+                </select>
+              </div>
+
+              <div style="flex: 1; min-width: 170px;">
+                <select id="filter-archive-category" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>📂 Tüm Kategoriler</option>
+                </select>
               </div>
             </div>
 
-            <div class="card-box">
-              <h4 style="color: var(--portal-blue-primary); margin-bottom: 14px;"><i class="fas fa-chart-line"></i> Aylık Talep Tamamlama Trendi</h4>
-              <div style="height: 240px; position: relative;">
-                <canvas id="reports-trend-chart"></canvas>
-              </div>
+            <!-- Archive Data Table -->
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>TAKİP KODU</th>
+                    <th>BAŞLIK & KONU</th>
+                    <th>MAHALLE & ADRES</th>
+                    <th>KATEGORİ</th>
+                    <th>BİRİM</th>
+                    <th>ÇÖZÜM TARİHİ</th>
+                    <th>VATANDAŞ MEMNUNİYETİ</th>
+                    <th style="text-align: right; padding-right: 14px;">DETAY</th>
+                  </tr>
+                </thead>
+                <tbody id="archive-tbody">
+                  <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Çözüm arşivi yükleniyor...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
+        </section>
+
+        <!-- SECTION 12: MÜDÜRLÜK / BİRİM YÖNETİMİ SEKİSİ (ADMIN) -->
+        <section id="sec-admin-depts" style="display: none;">
+          <div class="card-box">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
+              <div>
+                <h3 style="color: var(--portal-blue-primary); font-weight: 800; margin: 0; font-size: 1.25rem;">
+                  <i class="fas fa-sitemap" style="color: #2563eb; margin-right: 6px;"></i> Belediye Müdürlükleri & Başkan Yardımcısı Zimmet Yönetimi
+                </h3>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Birimleri oluşturun, düzenleyin ve ilgili Belediye Başkan Yardımcılarına zimmetleyin.</p>
+              </div>
+              <button class="btn btn-primary" onclick="openAddDepartmentModal()" style="font-weight: 700; border-radius: 8px;">
+                <i class="fas fa-plus"></i> + Yeni Müdürlük Ekle
+              </button>
+            </div>
+
+            <!-- Departments Table -->
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>MÜDÜRLÜK ADI</th>
+                    <th>KOD</th>
+                    <th>BAĞLI OLDUĞU BAŞKAN YARDIMCISI</th>
+                    <th>PERSONEL SAYISI</th>
+                    <th>DURUM</th>
+                    <th style="text-align: right; padding-right: 14px;">İŞLEMLER</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-depts-tbody">
+                  <tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Müdürlükler yükleniyor...</td></tr>
+                </tbody>
+              </table>
+            </div>
         </section>
 
         <!-- SECTION 11: DEDICATED HELP & FAQ CENTER SECTION -->
@@ -1200,7 +1331,7 @@
   <div class="modal-overlay" id="modal-new-complaint">
     <div class="modal-container" style="max-width: 780px;">
       <div class="modal-header">
-        <h3><i class="fas fa-paper-plane" style="color: var(--portal-blue-primary);"></i> Giresun Belediyesi Yeni Talep Oluştur</h3>
+        <h3><i class="fas fa-paper-plane" style="color: var(--portal-blue-primary);"></i> Bulancak Belediyesi Yeni Talep Oluştur</h3>
         <button class="close-btn" onclick="closeModal('modal-new-complaint')">&times;</button>
       </div>
 
@@ -1208,22 +1339,38 @@
         <div style="display: flex; flex-direction: column; gap: 16px;">
 
           <div>
-            <label style="font-weight: 600; font-size: 0.9rem;">Talep Başlığı *</label>
-            <input type="text" id="complaint-title" name="title" required placeholder="Örn: Hacısıyam Mahallesinde Bozuk Asfalt" class="form-input">
-          </div>
-
-          <div>
             <label style="font-weight: 600; font-size: 0.9rem;">Talep Detaylı Açıklaması *</label>
-            <textarea id="complaint-description" name="description" rows="4" required placeholder="Sorunu detaylıca açıklayınız. Yapay zekâ metninizi otomatik analiz edecektir..." class="form-input"></textarea>
+            <textarea id="complaint-description" name="description" rows="4" required placeholder="Sorununuzu detaylıca buraya yazınız. Yapay zekâ metninizi analiz edip başlık, birim, kategori ve aciliyeti otomatik belirleyecektir..." class="form-input"></textarea>
           </div>
 
           <!-- AI Assistant Suggestion Box -->
           <div id="ai-suggestion-container" style="display: none;"></div>
 
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Talep Başlığı *</label>
+            <input type="text" id="complaint-title" name="title" required placeholder="Örn: İhsaniye Mahallesi Bozuk Asfalt Onarımı" class="form-input">
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">İlgili Müdürlük / Birim *</label>
+              <select id="complaint-department" name="department_id" required class="form-input"></select>
+            </div>
+
             <div>
               <label style="font-weight: 600; font-size: 0.9rem;">Kategori *</label>
               <select id="complaint-category" name="category_id" required class="form-input"></select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem;">Başvuru / Talep Türü *</label>
+              <select name="submission_type" class="form-input">
+                <option value="Şikâyet" selected>🚨 Şikâyet / Arıza (Saha Ekipleri Müdahalesi)</option>
+                <option value="Soru / Bilgi Talebi">❓ Soru / Bilgi Talebi (Belediye Bilgilendirmesi)</option>
+                <option value="Öneri / İstek">💡 Öneri / Görüş / Genel İstek</option>
+              </select>
             </div>
 
             <div>
@@ -1238,35 +1385,21 @@
             </div>
           </div>
 
+          <!-- Bulancak Mahalle Seçimi (İlçe kaldırıldı - %100 Bulancak Yerelleştirilmiş) -->
           <div>
-            <label style="font-weight: 600; font-size: 0.9rem;">Başvuru / Talep Türü *</label>
-            <select name="submission_type" class="form-input">
-              <option value="Şikâyet" selected>🚨 Şikâyet / Arıza (Saha Ekipleri Müdahalesi)</option>
-              <option value="Soru / Bilgi Talebi">❓ Soru / Bilgi Talebi (Belediye Bilgilendirmesi)</option>
-              <option value="Öneri / İstek">💡 Öneri / Görüş / Genel İstek</option>
-            </select>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div>
-              <label style="font-weight: 600; font-size: 0.9rem;">İlçe *</label>
-              <select id="complaint-district" name="district_id" required class="form-input"></select>
-            </div>
-
-            <div>
-              <label style="font-weight: 600; font-size: 0.9rem;">Mahalle *</label>
-              <select id="complaint-neighborhood" name="neighborhood_id" required class="form-input"></select>
-            </div>
+            <label style="font-weight: 600; font-size: 0.9rem;">Bulancak Mahallesi *</label>
+            <select id="complaint-neighborhood" name="neighborhood_id" required class="form-input" style="height: 42px; border-radius: 8px; font-weight: 600;"></select>
+            <input type="hidden" id="complaint-district" name="district_id" value="1">
           </div>
 
           <div>
             <label style="font-weight: 600; font-size: 0.9rem;">Açık Adres (Haritaya Tıklayarak Otomatik Doldurabilirsiniz)</label>
-            <input type="text" id="complaint-open-address" name="open_address" placeholder="Haritada bir noktaya tıklayınca otomatik dolacaktır..." class="form-input">
+            <input type="text" id="complaint-open-address" name="open_address" placeholder="Haritada Bulancak sınırları içinde bir noktaya tıklayınca otomatik dolacaktır..." class="form-input">
           </div>
 
           <div>
-            <label style="font-weight: 600; font-size: 0.9rem;">📍 Giresun Haritası Üzerinden Konum Seçiniz (Tıklayınca Adres Dolacaktır)</label>
-            <div id="complaint-picker-map" style="height: 220px; border-radius: 8px; margin-top: 6px;"></div>
+            <label style="font-weight: 600; font-size: 0.9rem;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
+            <div id="complaint-picker-map" style="height: 220px; border-radius: 8px; margin-top: 6px; border: 1px solid #cbd5e1;"></div>
             <input type="hidden" id="complaint-lat" name="latitude">
             <input type="hidden" id="complaint-lng" name="longitude">
           </div>
@@ -1397,9 +1530,9 @@
     </div>
   </div>
 
-  <!-- MODAL: ADMIN USER CREATE / EDIT -->
+  <!-- MODAL: ADMIN USER CREATE / EDIT (GENİŞLETİLMİŞ MODAL-LG VE COL-MD-6 GRID DÜZENİ) -->
   <div class="modal-overlay" id="modal-admin-user">
-    <div class="modal-container" style="max-width: 720px; width: 95%;">
+    <div class="modal-container" style="max-width: 840px; width: 95%;">
       <div class="modal-header">
         <h3 id="modal-user-title" style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;">
           <i class="fas fa-user-gear" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Kullanıcı Ekle / Düzenle
@@ -1419,7 +1552,7 @@
 
             <div>
               <label style="font-weight: 700; font-size: 0.85rem;">E-posta Adresi *</label>
-              <input type="email" id="admin-user-email" required placeholder="ornek@belediye.gov.tr" class="form-input" style="height: 42px; border-radius: 8px;">
+              <input type="email" id="admin-user-email" required placeholder="ornek@bulancak.bel.tr" class="form-input" style="height: 42px; border-radius: 8px;">
             </div>
           </div>
 
@@ -1431,22 +1564,24 @@
 
             <div>
               <label style="font-weight: 700; font-size: 0.85rem;">Sistem Rolü *</label>
-              <select id="admin-user-role" required onchange="handleAdminUserRoleChange()" class="form-input" style="height: 42px; border-radius: 8px;">
+              <select id="admin-user-role" required onchange="handleAdminUserRoleChange()" class="form-input" style="height: 42px; border-radius: 8px; font-weight: 700;">
                 <option value="4" selected>👤 Vatandaş</option>
                 <option value="3">👷 Personel (Saha Görevlisi)</option>
                 <option value="2">🏢 Birim Yöneticisi (Müdür)</option>
+                <option value="6">🏛️ Belediye Başkan Yardımcısı</option>
+                <option value="5">🎖️ Belediye Başkanı (Executive Read-Only)</option>
                 <option value="1">👑 Sistem Yöneticisi (Admin)</option>
               </select>
             </div>
-
-            <div>
-              <label style="font-weight: 700; font-size: 0.85rem;" id="lbl-admin-user-pwd">Şifre * (En az 6 karakter)</label>
-              <input type="password" id="admin-user-password" placeholder="••••••••" class="form-input" style="height: 40px; border-radius: 8px;">
-              <small id="hint-admin-user-pwd" style="font-size: 0.74rem; color: #64748b; display: none;">Düzenleme modunda boş bırakırsanız eski şifre korunur.</small>
-            </div>
           </div>
 
-          <!-- KURUM PERSONELİ VE YÖNETİCİ BİLGİLERİ (BİRİM & UNVAN) -->
+          <div>
+            <label style="font-weight: 700; font-size: 0.85rem;" id="lbl-admin-user-pwd">Şifre * (En az 6 karakter)</label>
+            <input type="password" id="admin-user-password" placeholder="••••••••" class="form-input" style="height: 40px; border-radius: 8px;">
+            <small id="hint-admin-user-pwd" style="font-size: 0.74rem; color: #64748b; display: none;">Düzenleme modunda boş bırakırsanız eski şifre korunur.</small>
+          </div>
+
+          <!-- KURUM PERSONELİ VE MÜDÜR BİLGİLERİ (BİRİM & UNVAN) -->
           <div id="container-admin-user-org" style="display: none; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; margin-top: 4px;">
             <h5 style="color: var(--portal-blue-primary); margin: 0 0 10px 0; font-size: 0.88rem; font-weight: 800;">
               <i class="fas fa-building" style="color: #2563eb; margin-right: 4px;"></i> Kurum & Görev Bilgileri
@@ -1467,8 +1602,58 @@
             </div>
           </div>
 
+          <!-- BELEDİYE BAŞKAN YARDIMCISI BİRİM ZİMMETLEME ALANI (DİNAMİK ÇOKLU SEÇİM) -->
+          <div id="container-admin-user-vice-mayor-depts" style="display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px;">
+            <h5 style="color: #1e40af; margin: 0 0 8px 0; font-size: 0.88rem; font-weight: 800;">
+              <i class="fas fa-sitemap" style="color: #2563eb; margin-right: 4px;"></i> Başkan Yardımcısına Zimmetlenecek / Bağlanacak Müdürlükler
+            </h5>
+            <p style="font-size: 0.8rem; color: #3b82f6; margin-bottom: 10px;">Seçilen birimlerin tüm talep akışı, raporları ve harita analizleri bu Başkan Yardımcısına açık olacaktır.</p>
+            <div id="vice-mayor-dept-checkbox-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 180px; overflow-y: auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #bfdbfe;">
+              <!-- Dynamic Checkbox items -->
+            </div>
+          </div>
+
           <button type="submit" class="btn-portal-submit" style="margin-top: 6px;">
             <i class="fas fa-floppy-disk"></i> Kullanıcıyı Kaydet
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN DEPARTMENT CREATE / EDIT (MÜDÜRLÜK CRUD & BAŞKAN YARDIMCISI ZİMMETİ) -->
+  <div class="modal-overlay" id="modal-admin-dept">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 id="modal-dept-title" style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;">
+          <i class="fas fa-sitemap" style="color: #2563eb; margin-right: 6px;"></i> Müdürlük Ekle / Düzenle
+        </h3>
+        <button class="close-btn" onclick="closeModal('modal-admin-dept')">&times;</button>
+      </div>
+
+      <form id="form-admin-dept" onsubmit="handleAdminDeptSubmit(event)">
+        <input type="hidden" id="edit-dept-id" value="">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label style="font-weight: 700; font-size: 0.85rem;">Müdürlük Adı *</label>
+            <input type="text" id="admin-dept-name" required placeholder="Örn: Fen İşleri Müdürlüğü" class="form-input" style="height: 40px; border-radius: 8px;">
+          </div>
+
+          <div>
+            <label style="font-weight: 700; font-size: 0.85rem;">Müdürlük Kodu *</label>
+            <input type="text" id="admin-dept-code" required placeholder="Örn: FEN" class="form-input" style="height: 40px; border-radius: 8px; text-transform: uppercase;">
+          </div>
+
+          <div>
+            <label style="font-weight: 700; font-size: 0.85rem;">Bağlı Olduğu Belediye Başkan Yardımcısı (Zimmet)</label>
+            <select id="admin-dept-vice-mayor" class="form-input" style="height: 40px; border-radius: 8px; font-weight: 600;">
+              <option value="">-- Zimmetlenmedi (Bağımsız) --</option>
+              <!-- Dynamic Vice Mayors -->
+            </select>
+          </div>
+
+          <button type="submit" class="btn-portal-submit" style="margin-top: 8px;">
+            <i class="fas fa-save"></i> Müdürlüğü Kaydet
           </button>
         </div>
       </form>
@@ -1545,12 +1730,12 @@
 
   <!-- MODAL 3: COMPLAINT DETAIL MODAL -->
   <div class="modal-overlay" id="modal-complaint-detail">
-    <div class="modal-container" style="max-width: 720px;">
-      <div class="modal-header">
-        <h3>Başvuru ve Çözüm Detayı</h3>
+    <div class="modal-container" style="max-width: 960px; width: 95%;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+        <h3 style="margin: 0; font-weight: 800; color: var(--portal-blue-primary);"><i class="fas fa-file-circle-check" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Başvuru ve Çözüm Detayı</h3>
         <button class="close-btn" onclick="closeModal('modal-complaint-detail')">&times;</button>
       </div>
-      <div id="complaint-detail-content"></div>
+      <div id="complaint-detail-content" style="padding-top: 12px;"></div>
     </div>
   </div>
 
@@ -1714,59 +1899,12 @@
         </div>
       </form>
     </div>
-  <!-- MODAL 9: NEW ANNOUNCEMENT (ADMIN) -->
-  <div class="modal-overlay" id="modal-new-announcement">
-    <div class="modal-container" style="max-width: 580px;">
-      <div class="modal-header">
-        <h4 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;"><i class="fas fa-bullhorn" style="color: var(--portal-blue-accent);"></i> Yeni Belediye Duyurusu Yayınla</h4>
-        <button class="close-btn" onclick="closeModal('modal-new-announcement')">&times;</button>
-      </div>
-
-      <form id="form-new-announcement" onsubmit="handleCreateAnnouncementSubmit(event)">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div>
-            <label style="font-weight: 700; font-size: 0.85rem;">Duyuru Başlığı *</label>
-            <input type="text" id="announcement-title" name="title" required placeholder="Örn: Hacısıyam ve Nizamiye Mahallelerinde Planlı Su Kesintisi" class="form-input" style="height: 42px; border-radius: 8px;">
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-              <label style="font-weight: 700; font-size: 0.85rem;">Duyuru Kategorisi</label>
-              <select id="announcement-category" name="category" class="form-input" style="height: 40px; border-radius: 8px;">
-                <option value="Genel Duyuru">📢 Genel Duyuru</option>
-                <option value="Altyapı & Su Kesintisi">💧 Altyapı & Su Kesintisi</option>
-                <option value="Yol Çalışması">🚧 Yol Çalışması</option>
-                <option value="Etkinlik & Kültür">🎉 Etkinlik & Kültür</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-weight: 700; font-size: 0.85rem;">Öncelik Seviyesi</label>
-              <select id="announcement-priority" name="priority" class="form-input" style="height: 40px; border-radius: 8px;">
-                <option value="Normal">Normal</option>
-                <option value="Yüksek">Yüksek</option>
-                <option value="Acil">Acil</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label style="font-weight: 700; font-size: 0.85rem;">Duyuru Detayı / Metni *</label>
-            <textarea id="announcement-content" name="content" rows="4" required placeholder="Vatandaşlara iletilecek duyuru detayını yazınız..." class="form-input" style="border-radius: 8px;"></textarea>
-          </div>
-
-          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-new-announcement')">Vazgeç</button>
-            <button type="submit" class="btn btn-primary" style="font-weight: 700;"><i class="fas fa-paper-plane"></i> Duyuruyu Yayınla</button>
-          </div>
-        </div>
-      </form>
-    </div>
   </div>
 
   <!-- App Scripts -->
-  <script src="/js/leaflet-map.js?v=52.0.0"></script>
-  <script src="/js/charts.js?v=52.0.0"></script>
-  <script src="/js/ai-helper.js?v=52.0.0"></script>
-  <script src="/js/app.js?v=52.0.0"></script>
+  <script src="/js/leaflet-map.js?v=56.0.0"></script>
+  <script src="/js/charts.js?v=56.0.0"></script>
+  <script src="/js/ai-helper.js?v=56.0.0"></script>
+  <script src="/js/app.js?v=56.0.0"></script>
 </body>
 </html>

@@ -1,5 +1,32 @@
-// Giresun 153 Çözüm Merkezi SPA App Controller & Role Workspaces
+// ============================================================================
+// Bulancak Belediyesi 153 Çözüm Merkezi - Enterprise SPA App Controller
+// ============================================================================
 
+// SweetAlert2 Toast Helper
+const Toast = (typeof Swal !== 'undefined') ? Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+}) : null;
+
+function showToast(msg, type = 'info') {
+  if (Toast) {
+    Toast.fire({
+      icon: (type === 'error') ? 'error' : (type === 'success' ? 'success' : (type === 'warning' ? 'warning' : 'info')),
+      title: msg
+    });
+  } else {
+    console.log(`[Toast ${type}]: ${msg}`);
+  }
+}
+
+// Global Application State
 let currentUser = JSON.parse(localStorage.getItem('user')) || null;
 let currentToken = localStorage.getItem('token') || null;
 
@@ -17,50 +44,55 @@ let categoriesList = [
   { id: 11, department_id: 8, name: 'Sosyal Yardım Talebi', department_name: 'Sosyal Hizmetler Müdürlüğü' },
   { id: 12, department_id: 9, name: 'İmar ve Yapı Şikâyeti', department_name: 'İmar ve Şehircilik Müdürlüğü' },
   { id: 13, department_id: 10, name: 'Sokak Lambası Arızası', department_name: 'Bilgi İşlem Müdürlüğü' },
-  { id: 14, department_id: 1, name: 'Diğer', department_name: 'Fen İşleri Müdürlüğü' }
+  { id: 14, department_id: 11, name: 'Diğer', department_name: '153 Çözüm Koordinasyon Masası' }
 ];
 
 let departmentsList = [
-  { id: 1, name: 'Fen İşleri Müdürlüğü', code: 'FEN' },
-  { id: 2, name: 'Temizlik İşleri Müdürlüğü', code: 'TEM' },
-  { id: 3, name: 'Park ve Bahçeler Müdürlüğü', code: 'PARK' },
-  { id: 4, name: 'Zabıta Müdürlüğü', code: 'ZBT' },
-  { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü', code: 'SUK' },
-  { id: 6, name: 'Veteriner İşleri Müdürlüğü', code: 'VET' },
-  { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü', code: 'ULS' },
-  { id: 8, name: 'Sosyal Hizmetler Müdürlüğü', code: 'SHM' },
-  { id: 9, name: 'İmar ve Şehircilik Müdürlüğü', code: 'IMR' },
-  { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM' }
+  { id: 1, name: 'Fen İşleri Müdürlüğü', code: 'FEN', vice_mayor_user_id: 61 },
+  { id: 2, name: 'Temizlik İşleri Müdürlüğü', code: 'TEM', vice_mayor_user_id: 61 },
+  { id: 3, name: 'Park ve Bahçeler Müdürlüğü', code: 'PARK', vice_mayor_user_id: 62 },
+  { id: 4, name: 'Zabıta Müdürlüğü', code: 'ZBT', vice_mayor_user_id: 62 },
+  { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü', code: 'SUK', vice_mayor_user_id: 61 },
+  { id: 6, name: 'Veteriner İşleri Müdürlüğü', code: 'VET', vice_mayor_user_id: 62 },
+  { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü', code: 'ULS', vice_mayor_user_id: 61 },
+  { id: 8, name: 'Sosyal Hizmetler Müdürlüğü', code: 'SHM', vice_mayor_user_id: 62 },
+  { id: 9, name: 'İmar ve Şehircilik Müdürlüğü', code: 'IMR', vice_mayor_user_id: 61 },
+  { id: 10, name: 'Bilgi İşlem Müdürlüğü', code: 'BIM', vice_mayor_user_id: 62 },
+  { id: 11, name: '153 Çözüm Koordinasyon Masası', code: 'TRG', vice_mayor_user_id: 61 }
 ];
 
 let districtsList = [
-  { id: 1, name: 'Giresun Merkez', lat: 40.9128, lng: 38.3895 },
-  { id: 2, name: 'Bulancak', lat: 40.9378, lng: 38.2294 },
-  { id: 3, name: 'Espiye', lat: 40.9575, lng: 38.7147 },
-  { id: 4, name: 'Görele', lat: 41.0319, lng: 39.0381 },
-  { id: 5, name: 'Tirebolu', lat: 41.0069, lng: 38.8144 }
+  { id: 1, name: 'Bulancak', lat: 40.9385, lng: 38.2300 }
 ];
 
 let neighborhoodsList = [
-  { id: 1, district_id: 1, name: 'Hacısıyam Mahallesi', lat: 40.9100, lng: 38.3910 },
-  { id: 2, district_id: 1, name: 'Nizamiye Mahallesi', lat: 40.9150, lng: 38.3850 },
-  { id: 3, district_id: 1, name: 'Gedikkaya Mahallesi', lat: 40.9200, lng: 38.4050 },
-  { id: 4, district_id: 1, name: 'Teyyaredüzü Mahallesi', lat: 40.9180, lng: 38.4200 },
-  { id: 5, district_id: 1, name: 'Kapu Mahallesi', lat: 40.9170, lng: 38.3880 },
-  { id: 6, district_id: 1, name: 'Hacıhüseyin Mahallesi', lat: 40.9140, lng: 38.3780 },
-  { id: 7, district_id: 1, name: 'Aksu Mahallesi', lat: 40.9150, lng: 38.4350 },
-  { id: 8, district_id: 1, name: 'Çaykara Mahallesi', lat: 40.9110, lng: 38.3800 },
-  { id: 9, district_id: 2, name: 'Ballıca Mahallesi', lat: 40.9380, lng: 38.2300 },
-  { id: 10, district_id: 2, name: 'İhsaniye Mahallesi', lat: 40.9350, lng: 38.2250 },
-  { id: 11, district_id: 2, name: 'Sanayi Mahallesi', lat: 40.9400, lng: 38.2400 },
-  { id: 12, district_id: 3, name: 'Çam Mahallesi', lat: 40.9580, lng: 38.7150 },
-  { id: 13, district_id: 3, name: 'Esentepe Mahallesi', lat: 40.9550, lng: 38.7100 },
-  { id: 14, district_id: 4, name: 'Sayfiye Mahallesi', lat: 41.0320, lng: 39.0380 },
-  { id: 15, district_id: 4, name: 'Hendekbaşı Mahallesi', lat: 41.0300, lng: 39.0350 },
-  { id: 16, district_id: 5, name: 'Demirci Mahallesi', lat: 41.0070, lng: 38.8150 },
-  { id: 17, district_id: 5, name: 'Yeniköy Mahallesi', lat: 41.0050, lng: 38.8100 }
+  { id: 1, district_id: 1, name: 'İhsaniye Mahallesi', lat: 40.9350, lng: 38.2250 },
+  { id: 2, district_id: 1, name: 'Ballıca Mahallesi', lat: 40.9380, lng: 38.2300 },
+  { id: 3, district_id: 1, name: 'Sanayi Mahallesi', lat: 40.9400, lng: 38.2400 },
+  { id: 4, district_id: 1, name: 'Toprakdeğirmeni Mahallesi', lat: 40.9390, lng: 38.2350 },
+  { id: 5, district_id: 1, name: 'Acısu Mahallesi', lat: 40.9320, lng: 38.2200 },
+  { id: 6, district_id: 1, name: 'Bahçelievler Mahallesi', lat: 40.9360, lng: 38.2280 },
+  { id: 7, district_id: 1, name: 'Bulgurlu Mahallesi', lat: 40.9290, lng: 38.2150 },
+  { id: 8, district_id: 1, name: 'Güzelyalı Mahallesi', lat: 40.9420, lng: 38.2450 },
+  { id: 9, district_id: 1, name: 'İsmetpaşa Mahallesi', lat: 40.9370, lng: 38.2270 },
+  { id: 10, district_id: 1, name: 'Kızılot Mahallesi', lat: 40.9250, lng: 38.2100 },
+  { id: 11, district_id: 1, name: 'Pazarsuyu Mahallesi', lat: 40.9450, lng: 38.2600 },
+  { id: 12, district_id: 1, name: 'Saraçlı Mahallesi', lat: 40.9310, lng: 38.2230 },
+  { id: 13, district_id: 1, name: 'Sisorta Mahallesi', lat: 40.9200, lng: 38.2000 },
+  { id: 14, district_id: 1, name: 'Şemsettin Mahallesi', lat: 40.9330, lng: 38.2210 },
+  { id: 15, district_id: 1, name: 'Talipli Mahallesi', lat: 40.9430, lng: 38.2520 },
+  { id: 16, district_id: 1, name: 'Yalıköy Mahallesi', lat: 40.9410, lng: 38.2480 }
 ];
 
+let currentFetchedComplaints = [];
+let currentFetchedAdminUsers = [];
+let currentFetchedAdminDepts = [];
+let currentArchiveComplaints = [];
+let isAppInitialized = false;
+
+// ============================================================================
+// 1. APPLICATION INITIALIZATION & SESSION VERIFICATION
+// ============================================================================
 document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
@@ -68,8 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   setTimeout(initApp, 100);
 }
-
-let isAppInitialized = false;
 
 async function initApp() {
   if (isAppInitialized) return;
@@ -80,7 +110,7 @@ async function initApp() {
   const loadingScreen = document.getElementById('app-loading-screen');
 
   try {
-    // 1. Asynchronous Session Verification (/api/auth/me)
+    // 1. Verify token & session with backend
     if (currentToken) {
       try {
         const res = await fetch('/api/auth/me', {
@@ -91,7 +121,7 @@ async function initApp() {
           currentUser = data.user;
           localStorage.setItem('user', JSON.stringify(data.user));
         } else {
-          // Token expired or invalid -> Clear session
+          // Token expired or invalid
           currentUser = null;
           currentToken = null;
           localStorage.removeItem('token');
@@ -102,37 +132,33 @@ async function initApp() {
       }
     }
 
-    // 2. Render Target View Silently (Before Fading Out Loading Screen)
+    // 2. Populate metadata and dropdowns
+    populateDropdowns();
+    bindForms();
+    loadMetadata();
+
+    // 3. Render appropriate view
     if (currentUser && currentToken) {
       if (landingPortal) landingPortal.style.display = 'none';
       if (appWorkspace) appWorkspace.style.display = 'flex';
 
       updateUserUi();
-      populateDropdowns();
-      bindForms();
-      loadMetadata();
 
-      // Determine workspace initial tab
       const hashTab = location.hash ? location.hash.replace('#', '') : null;
-      let targetTab = hashTab || (currentUser.role_name === 'Vatandaş' ? 'my-complaints' : 'dashboard');
-      if (currentUser.role_name === 'Personel' && (!hashTab || hashTab === 'dashboard')) {
-        targetTab = 'complaints';
-      }
+      let targetTab = hashTab || getDefaultRoleTab(currentUser.role_name);
 
       await switchWorkspaceTab(targetTab, false);
       setInterval(checkNotifications, 30000);
     } else {
       if (appWorkspace) appWorkspace.style.display = 'none';
       if (landingPortal) landingPortal.style.display = 'flex';
-      populateDropdowns();
-      bindForms();
     }
   } catch (err) {
     console.error('App init error:', err);
     if (appWorkspace) appWorkspace.style.display = 'none';
     if (landingPortal) landingPortal.style.display = 'flex';
   } finally {
-    // 3. Smooth Fade-Out Loading Screen (0% FOUC)
+    // 4. Smooth Fade-Out Loading Screen (Guaranteed 0% Stuck)
     if (loadingScreen) {
       loadingScreen.classList.add('fade-out');
       setTimeout(() => {
@@ -142,7 +168,9 @@ async function initApp() {
   }
 }
 
-// Switch Landing Auth Tabs
+// ============================================================================
+// 2. AUTHENTICATION & LOGIN MANAGEMENT
+// ============================================================================
 function switchAuthTab(type) {
   const citTab = document.getElementById('tab-cit-btn');
   const empTab = document.getElementById('tab-emp-btn');
@@ -150,19 +178,18 @@ function switchAuthTab(type) {
   const empForm = document.getElementById('auth-form-employee');
 
   if (type === 'citizen') {
-    citTab.classList.add('active');
-    empTab.classList.remove('active');
-    citForm.style.display = 'block';
-    empForm.style.display = 'none';
+    if (citTab) citTab.classList.add('active');
+    if (empTab) empTab.classList.remove('active');
+    if (citForm) citForm.style.display = 'block';
+    if (empForm) empForm.style.display = 'none';
   } else {
-    empTab.classList.add('active');
-    citTab.classList.remove('active');
-    empForm.style.display = 'block';
-    citForm.style.display = 'none';
+    if (empTab) empTab.classList.add('active');
+    if (citTab) citTab.classList.remove('active');
+    if (empForm) empForm.style.display = 'block';
+    if (citForm) citForm.style.display = 'none';
   }
 }
 
-// Quick Demo Login Shortcut Button
 async function quickDemoLogin(email) {
   switchAuthTab('employee');
   const emailInput = document.getElementById('login-emp-email');
@@ -175,28 +202,42 @@ async function quickDemoLogin(email) {
   await executeLogin(email, '123456');
 }
 
-// Guest Attempting Complaint Notice
 function triggerGuestComplaintNotice() {
   if (!currentUser) {
     showToast('Talep ve şikâyet oluşturabilmek için lütfen giriş yapın veya kayıt olun.', 'info');
     switchAuthTab('citizen');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
-    openModal('modal-new-complaint');
+    openCreateComplaintForm();
   }
 }
 
-// Perform Login API Call
 async function handleAuthLogin(e, roleType) {
   if (e) e.preventDefault();
-  const email = roleType === 'personel'
-    ? document.getElementById('login-emp-email').value
-    : document.getElementById('login-cit-email').value;
-  const password = roleType === 'personel'
-    ? document.getElementById('login-emp-password').value
-    : document.getElementById('login-cit-password').value;
+  const formId = roleType === 'personel' ? 'auth-form-employee' : 'auth-form-citizen';
+  const form = document.getElementById(formId);
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.origHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Giriş Yapılıyor...';
+  }
 
-  await executeLogin(email, password);
+  const email = roleType === 'personel'
+    ? document.getElementById('login-emp-email')?.value
+    : document.getElementById('login-cit-email')?.value;
+  const password = roleType === 'personel'
+    ? document.getElementById('login-emp-password')?.value
+    : document.getElementById('login-cit-password')?.value;
+
+  try {
+    await executeLogin(email, password);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitBtn.dataset.origHtml || 'Giriş Yap';
+    }
+  }
 }
 
 async function executeLogin(email, password) {
@@ -219,8 +260,9 @@ async function executeLogin(email, password) {
       showToast(`Hoş Geldiniz, ${data.user.full_name || data.user.email}!`, 'success');
       updateUserUi();
 
-      let targetTab = currentUser.role_name === 'Vatandaş' ? 'my-complaints' : (currentUser.role_name === 'Personel' ? 'complaints' : 'dashboard');
+      let targetTab = getDefaultRoleTab(currentUser.role_name);
       await switchWorkspaceTab(targetTab, false);
+      checkNotifications();
     } else {
       showToast(data.message || 'Giriş yapılamadı.', 'error');
     }
@@ -229,17 +271,15 @@ async function executeLogin(email, password) {
   }
 }
 
-// Logout with Complete State & Form Reset for Session Isolation
 function logoutUser() {
   localStorage.clear();
   currentToken = null;
   currentUser = null;
   currentFetchedComplaints = [];
   currentFetchedAdminUsers = [];
+  currentFetchedAdminDepts = [];
 
-  // Reset all forms in DOM
   document.querySelectorAll('form').forEach(f => f.reset());
-
   history.replaceState(null, '', location.pathname);
 
   const landingPortal = document.getElementById('landing-portal');
@@ -250,7 +290,18 @@ function logoutUser() {
   showToast('Oturum kapatıldı.', 'info');
 }
 
-// Master UI Router & Workspace Switcher with Strict Role Scoping
+// ============================================================================
+// 3. RBAC & ROLE-BASED UI ROUTING (KURUMSAL YETKİLENDİRME)
+// ============================================================================
+function getDefaultRoleTab(roleName) {
+  if (roleName === 'Vatandaş') return 'my-complaints';
+  if (roleName === 'Personel') return 'complaints';
+  if (roleName === 'Belediye Başkanı') return 'reports';
+  if (roleName === 'Belediye Başkan Yardımcısı') return 'dashboard';
+  if (roleName === 'Birim Yöneticisi') return 'dashboard';
+  return 'dashboard';
+}
+
 function updateUserUi() {
   const landingPortal = document.getElementById('landing-portal');
   const appWorkspace = document.getElementById('app-workspace');
@@ -282,28 +333,35 @@ function updateUserUi() {
   const deptsNav = document.getElementById('nav-depts-menu');
   const publicFeedNav = document.getElementById('nav-public-feed');
   const mapNav = document.getElementById('nav-map');
+  const solutionArchiveNav = document.getElementById('nav-solution-archive');
   const adminUsersNav = document.getElementById('nav-admin-users');
   const adminDeptsNav = document.getElementById('nav-admin-depts');
   const adminLogsNav = document.getElementById('nav-admin-logs');
+  const deptStaffNav = document.getElementById('nav-dept-staff');
   const reportsNav = document.getElementById('nav-reports');
-  const helpNav = document.getElementById('nav-help');
   const announcementsNav = document.getElementById('nav-announcements');
+  const helpNav = document.getElementById('nav-help');
   const btnAdminAnnouncement = document.getElementById('btn-admin-add-announcement');
+  const btnCitizenNew = document.getElementById('btn-citizen-new');
 
   const complaintsNavSpan = allComplaintsNav?.querySelector('span');
-  const currentHashTab = location.hash ? location.hash.replace('#', '') : null;
-  let defaultRoleTab = 'dashboard';
+  const roleId = Number(currentUser.role_id);
 
-  if (currentUser.role_name === 'Vatandaş') {
-    // VATANDAŞ: Gösterge Paneli, + Talep Oluştur, Başvurularım, Kamuya Açık Talepler, Duyurular
+  // Common: Solution Archive and Announcements available for all logged-in roles
+  if (solutionArchiveNav) solutionArchiveNav.style.display = 'block';
+  if (announcementsNav) announcementsNav.style.display = 'block';
+
+  if (currentUser.role_name === 'Vatandaş' || roleId === 4) {
+    // 1. VATANDAŞ
     if (dashNav) dashNav.style.display = 'block';
     if (createCompNav) createCompNav.style.display = 'block';
     if (myComplaintsNav) myComplaintsNav.style.display = 'block';
     if (publicFeedNav) publicFeedNav.style.display = 'block';
-    if (announcementsNav) announcementsNav.style.display = 'block';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'inline-flex';
 
     if (allComplaintsNav) allComplaintsNav.style.display = 'none';
     if (deptsNav) deptsNav.style.display = 'none';
+    if (deptStaffNav) deptStaffNav.style.display = 'none';
     if (mapNav) mapNav.style.display = 'none';
     if (reportsNav) reportsNav.style.display = 'none';
     if (helpNav) helpNav.style.display = 'none';
@@ -312,31 +370,76 @@ function updateUserUi() {
     if (adminLogsNav) adminLogsNav.style.display = 'none';
     if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'none';
 
-    // Vatandaş: Belediye içi scope ve mahalle filtrelerini DOM seviyesinde tamamen gizle
+    // Vatandaş: Belediye içi scope filtresini DOM'dan gizle
     const scopeSelect = document.getElementById('filter-complaint-scope');
-    const neighSelect = document.getElementById('filter-complaint-neighborhood');
     if (scopeSelect) { 
       scopeSelect.style.setProperty('display', 'none', 'important'); 
       scopeSelect.value = 'ALL'; 
     }
-    if (neighSelect) { 
-      neighSelect.style.setProperty('display', 'none', 'important'); 
-      neighSelect.value = 'ALL'; 
-    }
 
-    defaultRoleTab = 'my-complaints';
-  } else if (currentUser.role_name === 'Birim Yöneticisi') {
-    // BİRİM YÖNETİCİSİ (Müdür): Gösterge Paneli, Birim Talepleri, + Talep Oluştur, Kamuya Açık, Harita, Raporlar, Duyurular
+  } else if (currentUser.role_name === 'Belediye Başkanı' || roleId === 5) {
+    // 2. BELEDİYE BAŞKANI: Genel Gözlemci (Executive Read-Only)
     if (dashNav) dashNav.style.display = 'block';
     if (allComplaintsNav) {
       allComplaintsNav.style.display = 'block';
-      if (complaintsNavSpan) complaintsNavSpan.textContent = `${currentUser.department_name || 'Birim'} Talepleri`;
+      if (complaintsNavSpan) complaintsNavSpan.textContent = 'Tüm Belediye Talepleri';
+    }
+    if (publicFeedNav) publicFeedNav.style.display = 'block';
+    if (mapNav) mapNav.style.display = 'block';
+    if (reportsNav) reportsNav.style.display = 'block';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'none';
+    
+    if (createCompNav) createCompNav.style.display = 'none';
+    if (myComplaintsNav) myComplaintsNav.style.display = 'none';
+    if (deptsNav) deptsNav.style.display = 'none';
+    if (deptStaffNav) deptStaffNav.style.display = 'none';
+    if (adminUsersNav) adminUsersNav.style.display = 'none';
+    if (adminDeptsNav) adminDeptsNav.style.display = 'none';
+    if (adminLogsNav) adminLogsNav.style.display = 'none';
+    if (helpNav) helpNav.style.display = 'none';
+    if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'none';
+
+    const scopeSelect = document.getElementById('filter-complaint-scope');
+    if (scopeSelect) scopeSelect.style.removeProperty('display');
+
+  } else if (currentUser.role_name === 'Belediye Başkan Yardımcısı' || roleId === 6) {
+    // 3. BELEDİYE BAŞKAN YARDIMCISI: Sadece zimmetli birimlerin durumu ve raporları
+    if (dashNav) dashNav.style.display = 'block';
+    if (allComplaintsNav) {
+      allComplaintsNav.style.display = 'block';
+      if (complaintsNavSpan) complaintsNavSpan.textContent = 'Bağlı Birim Talepleri';
+    }
+    if (publicFeedNav) publicFeedNav.style.display = 'block';
+    if (mapNav) mapNav.style.display = 'block';
+    if (reportsNav) reportsNav.style.display = 'block';
+    if (deptStaffNav) deptStaffNav.style.display = 'block';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'none';
+
+    if (createCompNav) createCompNav.style.display = 'none';
+    if (myComplaintsNav) myComplaintsNav.style.display = 'none';
+    if (deptsNav) deptsNav.style.display = 'none';
+    if (adminUsersNav) adminUsersNav.style.display = 'none';
+    if (adminDeptsNav) adminDeptsNav.style.display = 'none';
+    if (adminLogsNav) adminLogsNav.style.display = 'none';
+    if (helpNav) helpNav.style.display = 'none';
+    if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'none';
+
+    const scopeSelect = document.getElementById('filter-complaint-scope');
+    if (scopeSelect) scopeSelect.style.removeProperty('display');
+
+  } else if (currentUser.role_name === 'Birim Yöneticisi' || roleId === 2) {
+    // 4. BİRİM YÖNETİCİSİ (Müdür)
+    if (dashNav) dashNav.style.display = 'block';
+    if (allComplaintsNav) {
+      allComplaintsNav.style.display = 'block';
+      if (complaintsNavSpan) complaintsNavSpan.textContent = 'Birim Talepleri';
     }
     if (createCompNav) createCompNav.style.display = 'block';
     if (publicFeedNav) publicFeedNav.style.display = 'block';
     if (mapNav) mapNav.style.display = 'block';
+    if (deptStaffNav) deptStaffNav.style.display = 'block';
     if (reportsNav) reportsNav.style.display = 'block';
-    if (announcementsNav) announcementsNav.style.display = 'block';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'inline-flex';
 
     if (myComplaintsNav) myComplaintsNav.style.display = 'none';
     if (deptsNav) deptsNav.style.display = 'none';
@@ -347,7 +450,6 @@ function updateUserUi() {
     if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'none';
 
     const scopeSelect = document.getElementById('filter-complaint-scope');
-    const neighSelect = document.getElementById('filter-complaint-neighborhood');
     if (scopeSelect) {
       scopeSelect.style.removeProperty('display');
       scopeSelect.style.display = 'inline-block';
@@ -358,23 +460,22 @@ function updateUserUi() {
         <option value="FORWARDED">🔄 Diğer Birimlerden Yönlendirilenler</option>
       `;
     }
-    if (neighSelect) neighSelect.style.removeProperty('display');
 
-    defaultRoleTab = 'dashboard';
-  } else if (currentUser.role_name === 'Personel') {
-    // PERSONEL (Saha Görevlisi): Görevlerim / Birim Talepleri, + Talep Oluştur, Duyurular
+  } else if (currentUser.role_name === 'Personel' || roleId === 3) {
+    // 5. PERSONEL (Saha Görevlisi)
     if (allComplaintsNav) {
       allComplaintsNav.style.display = 'block';
-      if (complaintsNavSpan) complaintsNavSpan.textContent = `${currentUser.department_name || 'Birim'} Talepleri`;
+      if (complaintsNavSpan) complaintsNavSpan.textContent = 'Birim Talepleri';
     }
     if (createCompNav) createCompNav.style.display = 'block';
-    if (announcementsNav) announcementsNav.style.display = 'block';
+    if (mapNav) mapNav.style.display = 'block';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'inline-flex';
 
     if (dashNav) dashNav.style.display = 'none';
     if (myComplaintsNav) myComplaintsNav.style.display = 'none';
     if (deptsNav) deptsNav.style.display = 'none';
+    if (deptStaffNav) deptStaffNav.style.display = 'none';
     if (publicFeedNav) publicFeedNav.style.display = 'none';
-    if (mapNav) mapNav.style.display = 'none';
     if (reportsNav) reportsNav.style.display = 'none';
     if (adminUsersNav) adminUsersNav.style.display = 'none';
     if (adminDeptsNav) adminDeptsNav.style.display = 'none';
@@ -383,7 +484,6 @@ function updateUserUi() {
     if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'none';
 
     const scopeSelect = document.getElementById('filter-complaint-scope');
-    const neighSelect = document.getElementById('filter-complaint-neighborhood');
     if (scopeSelect) {
       scopeSelect.style.removeProperty('display');
       scopeSelect.style.display = 'inline-block';
@@ -393,11 +493,9 @@ function updateUserUi() {
         <option value="FORWARDED">🔄 Yönlendirilen Talepler</option>
       `;
     }
-    if (neighSelect) neighSelect.style.removeProperty('display');
 
-    defaultRoleTab = 'complaints';
-  } else if (currentUser.role_name === 'Sistem Yöneticisi') {
-    // ADMIN: Full System Access to all tabs
+  } else if (currentUser.role_name === 'Sistem Yöneticisi' || roleId === 1) {
+    // 6. SİSTEM YÖNETİCİSİ (Admin)
     if (dashNav) dashNav.style.display = 'block';
     if (deptsNav) deptsNav.style.display = 'block';
     if (allComplaintsNav) {
@@ -411,34 +509,62 @@ function updateUserUi() {
     if (adminUsersNav) adminUsersNav.style.display = 'block';
     if (adminDeptsNav) adminDeptsNav.style.display = 'block';
     if (adminLogsNav) adminLogsNav.style.display = 'block';
+    if (deptStaffNav) deptStaffNav.style.display = 'block';
     if (reportsNav) reportsNav.style.display = 'block';
     if (announcementsNav) announcementsNav.style.display = 'block';
     if (helpNav) helpNav.style.display = 'block';
     if (btnAdminAnnouncement) btnAdminAnnouncement.style.display = 'inline-flex';
+    if (btnCitizenNew) btnCitizenNew.style.display = 'inline-flex';
 
     const scopeSelect = document.getElementById('filter-complaint-scope');
-    const neighSelect = document.getElementById('filter-complaint-neighborhood');
     if (scopeSelect) {
       scopeSelect.style.removeProperty('display');
+      scopeSelect.style.display = 'inline-block';
       scopeSelect.innerHTML = `
-        <option value="ALL">🏢 Tüm Sistem Talepleri</option>
-        <option value="FORWARDED">🔄 Yönlendirilen Talepler</option>
+        <option value="ALL">🏢 Tüm Belediye Talepleri</option>
+        <option value="UNASSIGNED">⏳ Atama Bekleyenler</option>
+        <option value="ASSIGNED">👥 Personele Atananlar</option>
+        <option value="FORWARDED">🔄 Yönlendirilenler</option>
       `;
     }
-    if (neighSelect) neighSelect.style.removeProperty('display');
-
-    defaultRoleTab = 'dashboard';
   }
-
-  // Initial Route Resolution
-  const initialTab = currentHashTab || defaultRoleTab;
-  switchWorkspaceTab(initialTab, false);
-
-  // Check Notifications
-  checkNotifications();
 }
 
-// Mobile Sidebar Toggle Handler
+// ============================================================================
+// 4. SPA ROUTING & TAB SWITCHER
+// ============================================================================
+const SPA_VALID_ROUTES = [
+  'dashboard', 'create-complaint', 'my-complaints', 'public-feed',
+  'map', 'solution-archive', 'admin-users', 'admin-depts', 'admin-logs', 'dept-staff', 'reports',
+  'announcements', 'complaints', 'help'
+];
+
+const TAB_NAV_MAP = {
+  'dashboard': 'nav-dash',
+  'create-complaint': 'nav-create-complaint',
+  'my-complaints': 'nav-my-complaints',
+  'complaints': 'nav-complaints',
+  'public-feed': 'nav-public-feed',
+  'map': 'nav-map',
+  'solution-archive': 'nav-solution-archive',
+  'admin-users': 'nav-admin-users',
+  'admin-depts': 'nav-admin-depts',
+  'admin-logs': 'nav-admin-logs',
+  'dept-staff': 'nav-dept-staff',
+  'reports': 'nav-reports',
+  'announcements': 'nav-announcements',
+  'help': 'nav-help'
+};
+
+const SPA_ROLE_ROUTES = {
+  'Vatandaş': ['dashboard', 'create-complaint', 'my-complaints', 'public-feed', 'solution-archive', 'announcements'],
+  'Personel': ['complaints', 'create-complaint', 'map', 'solution-archive', 'announcements'],
+  'Birim Yöneticisi': ['dashboard', 'complaints', 'create-complaint', 'public-feed', 'map', 'dept-staff', 'reports', 'solution-archive', 'announcements'],
+  'Belediye Başkan Yardımcısı': ['dashboard', 'complaints', 'public-feed', 'map', 'dept-staff', 'reports', 'solution-archive', 'announcements'],
+  'Belediye Başkanı': ['dashboard', 'complaints', 'public-feed', 'map', 'reports', 'solution-archive', 'announcements'],
+  'Sistem Yöneticisi': ['dashboard', 'create-complaint', 'my-complaints', 'complaints', 'public-feed', 'map', 'solution-archive', 'admin-users', 'admin-depts', 'admin-logs', 'dept-staff', 'reports', 'announcements', 'help']
+};
+
 function toggleMobileSidebar(forceState) {
   const sidebar = document.querySelector('.sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
@@ -456,285 +582,1186 @@ function toggleMobileSidebar(forceState) {
   }
 }
 
-// Valid SPA Routes & Role Permission Maps (Enterprise Auth Guard System)
-const SPA_VALID_ROUTES = [
-  'dashboard', 'create-complaint', 'my-complaints', 'public-feed',
-  'map', 'admin-users', 'admin-depts', 'admin-logs', 'reports',
-  'announcements', 'complaints', 'help'
-];
-
-const TAB_NAV_MAP = {
-  'dashboard': 'nav-dash',
-  'create-complaint': 'nav-create-complaint',
-  'my-complaints': 'nav-my-complaints',
-  'complaints': 'nav-complaints',
-  'public-feed': 'nav-public-feed',
-  'map': 'nav-map',
-  'admin-users': 'nav-admin-users',
-  'admin-depts': 'nav-admin-depts',
-  'admin-logs': 'nav-admin-logs',
-  'reports': 'nav-reports',
-  'announcements': 'nav-announcements',
-  'help': 'nav-help'
-};
-
-const SPA_ROLE_ROUTES = {
-  'Vatandaş': ['dashboard', 'create-complaint', 'my-complaints', 'public-feed', 'announcements'],
-  'Personel': ['complaints', 'create-complaint', 'announcements'],
-  'Birim Yöneticisi': ['dashboard', 'complaints', 'create-complaint', 'public-feed', 'map', 'reports', 'announcements'],
-  'Sistem Yöneticisi': ['dashboard', 'create-complaint', 'my-complaints', 'complaints', 'public-feed', 'map', 'admin-users', 'admin-depts', 'admin-logs', 'reports', 'announcements', 'help']
-};
-
-function getDefaultRoleTab(roleName) {
-  if (roleName === 'Vatandaş') return 'my-complaints';
-  if (roleName === 'Personel') return 'complaints';
-  if (roleName === 'Birim Yöneticisi') return 'dashboard';
-  return 'dashboard';
-}
-
-function openCreateComplaintForm() {
-  switchWorkspaceTab('create-complaint');
-  const form = document.getElementById('page-form-new-complaint');
-  if (form) form.reset();
-  initPageCreateComplaint();
-}
-
-// Sidebar Tab Switcher with HTML5 History API Routing & Enterprise Auth / Role Guard
 async function switchWorkspaceTab(tabName, pushState = true) {
-  // 1. Global Auth Guard (Unauthenticated Access Check)
   if (!currentUser || !currentToken) {
     const landingPortal = document.getElementById('landing-portal');
     const appWorkspace = document.getElementById('app-workspace');
     if (appWorkspace) appWorkspace.style.display = 'none';
     if (landingPortal) landingPortal.style.display = 'flex';
-    if (tabName && tabName !== 'dashboard') {
-      showToast('🔒 Oturum açmanız gerekmektedir. Giriş ekranına yönlendirildiniz.', 'warning');
-    }
     return;
+  }
+
+  const roleName = currentUser.role_name || 'Vatandaş';
+  const allowedTabs = SPA_ROLE_ROUTES[roleName] || ['dashboard'];
+
+  let activeTab = tabName;
+  if (!SPA_VALID_ROUTES.includes(activeTab) || !allowedTabs.includes(activeTab)) {
+    activeTab = getDefaultRoleTab(roleName);
+  }
+
+  // Update Navigation Active Class
+  document.querySelectorAll('.sidebar-menu li').forEach(li => {
+    if (!li.classList.contains('has-submenu')) li.classList.remove('active');
+  });
+
+  const navId = TAB_NAV_MAP[activeTab];
+  if (navId) {
+    const activeNavEl = document.getElementById(navId);
+    if (activeNavEl) activeNavEl.classList.add('active');
+  }
+
+  // Update Page Title
+  const titleMap = {
+    'dashboard': 'Gösterge Paneli',
+    'create-complaint': 'Yeni Talep Oluştur',
+    'my-complaints': 'Başvurularım',
+    'complaints': currentUser.role_name === 'Personel' ? 'Görevlerim & Birim Talepleri' : 'Tüm Talepler',
+    'public-feed': 'Kamuya Açık Talepler',
+    'map': 'Harita Analizi',
+    'solution-archive': 'Çözüm Arşivi',
+    'admin-users': 'Kullanıcı Yönetimi',
+    'admin-depts': 'Müdürlük Yönetimi',
+    'admin-logs': 'Audit Güvenlik Logları',
+    'dept-staff': 'Birim Saha Personelleri',
+    'reports': 'Yönetimsel Analitik & Raporlar',
+    'announcements': 'Resmi Duyurular',
+    'help': 'Yardım & SSS'
+  };
+
+  const pageTitleEl = document.getElementById('ws-page-title');
+  if (pageTitleEl && titleMap[activeTab]) {
+    pageTitleEl.textContent = titleMap[activeTab];
+  }
+
+  // Show Active Section, Hide Others
+  document.querySelectorAll('.main-content > section').forEach(sec => {
+    sec.style.display = 'none';
+  });
+
+  const tableTitle = document.getElementById('table-title');
+
+  if (activeTab === 'my-complaints') {
+    const targetSec = document.getElementById('sec-complaints');
+    if (targetSec) targetSec.style.display = 'block';
+    if (tableTitle) tableTitle.innerHTML = '<i class="fas fa-folder-open" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Başvurularım ve Talep Geçmişim';
+  } else if (activeTab === 'complaints') {
+    const targetSec = document.getElementById('sec-complaints');
+    if (targetSec) targetSec.style.display = 'block';
+    if (tableTitle) {
+      const isStaff = currentUser?.role_name === 'Personel' || currentUser?.role_id === 3;
+      tableTitle.innerHTML = `<i class="fas fa-list-check" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> ${isStaff ? 'Görevlerim & Birim Talepleri' : 'Şikâyet ve Talep Listesi'}`;
+    }
+  } else {
+    const targetSecId = `sec-${activeTab}`;
+    const targetSec = document.getElementById(targetSecId);
+    if (targetSec) {
+      targetSec.style.display = 'block';
+    }
+  }
+
+  // Update URL Hash
+  if (pushState) {
+    history.pushState(null, '', `#${activeTab}`);
   }
 
   toggleMobileSidebar(false);
 
-  let rawTab = (tabName || '').replace('#', '').trim();
-  const defaultTab = getDefaultRoleTab(currentUser.role_name);
-
-  if (!rawTab) rawTab = defaultTab;
-
-  // 2. Strict Routing & 404 Management (Exact Match Check)
-  if (!SPA_VALID_ROUTES.includes(rawTab)) {
-    showToast(`⚠️ Sayfa Bulunamadı (#${rawTab}): Geçersiz URL adresi.`, 'error');
-    rawTab = defaultTab;
-    pushState = false;
-    history.replaceState({ tab: defaultTab }, '', '#' + defaultTab);
-  }
-
-  // 3. Role-Based Auth Guard & Visible Sidebar Alignment
-  const allowedRoutes = SPA_ROLE_ROUTES[currentUser.role_name] || [defaultTab];
-  const targetNavId = TAB_NAV_MAP[rawTab];
-  const targetNavEl = targetNavId ? document.getElementById(targetNavId) : null;
-  const isNavVisible = targetNavEl && targetNavEl.style.display !== 'none';
-
-  // İzin: Ya rol izin listesinde olmalı YA DA kullanıcının sidebar'ında bu sekme açık olmalı
-  if (!allowedRoutes.includes(rawTab) && !isNavVisible) {
-    showToast(`⛔ Yetkisiz Erişim: Bu sayfayı (#${rawTab}) görüntüleme yetkiniz bulunmamaktadır!`, 'error');
-    rawTab = defaultTab;
-    pushState = false;
-    history.replaceState({ tab: defaultTab }, '', '#' + defaultTab);
-  }
-
-  const targetTab = rawTab;
-
-  const secDash = document.getElementById('sec-dashboard');
-  const secComp = document.getElementById('sec-complaints');
-  const secMap = document.getElementById('sec-map');
-  const secPublicFeed = document.getElementById('sec-public-feed');
-  const secAdminUsers = document.getElementById('sec-admin-users');
-  const secAdminDepts = document.getElementById('sec-admin-depts');
-  const secAdminLogs = document.getElementById('sec-admin-logs');
-  const secDeptStaff = document.getElementById('sec-dept-staff');
-  const secCreateComp = document.getElementById('sec-create-complaint');
-  const secAnnouncements = document.getElementById('sec-announcements');
-  const secReports = document.getElementById('sec-reports');
-  const secHelp = document.getElementById('sec-help');
-  const pageTitle = document.getElementById('ws-page-title');
-
-  if (secDash) secDash.style.display = 'none';
-  if (secComp) secComp.style.display = 'none';
-  if (secMap) secMap.style.display = 'none';
-  if (secPublicFeed) secPublicFeed.style.display = 'none';
-  if (secAdminUsers) secAdminUsers.style.display = 'none';
-  if (secAdminDepts) secAdminDepts.style.display = 'none';
-  if (secAdminLogs) secAdminLogs.style.display = 'none';
-  if (secDeptStaff) secDeptStaff.style.display = 'none';
-  if (secCreateComp) secCreateComp.style.display = 'none';
-  if (secAnnouncements) secAnnouncements.style.display = 'none';
-  if (secReports) secReports.style.display = 'none';
-  if (secHelp) secHelp.style.display = 'none';
-
-  document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-
-  // Update HTML5 History API PushState
-  if (pushState !== false) {
-    const newHash = '#' + targetTab;
-    if (location.hash !== newHash) {
-      history.pushState({ tab: targetTab }, '', newHash);
-    }
-  }
-
-  if (targetTab === 'dashboard') {
-    if (secDash) secDash.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Gösterge Paneli';
-    document.getElementById('nav-dash')?.classList.add('active');
+  // Trigger Section Specific Data Loaders
+  if (activeTab === 'dashboard') {
     await loadDashboardData();
-  } else if (targetTab === 'create-complaint') {
-    if (secCreateComp) secCreateComp.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Talep Oluştur & Süreç Takibi';
-    document.getElementById('nav-create-complaint')?.classList.add('active');
-    initPageCreateComplaint();
-  } else if (targetTab === 'my-complaints') {
-    if (secComp) secComp.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Başvurularım';
-    document.getElementById('nav-my-complaints')?.classList.add('active');
-    await loadComplaintsTable(true);
-  } else if (targetTab === 'public-feed') {
-    if (secPublicFeed) secPublicFeed.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Kamuya Açık Talepler';
-    document.getElementById('nav-public-feed')?.classList.add('active');
-    await loadPublicComplaintsFeed();
-  } else if (targetTab === 'complaints') {
-    if (secComp) secComp.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Tüm Talepler';
-    document.getElementById('nav-complaints')?.classList.add('active');
+  } else if (activeTab === 'complaints') {
     await loadComplaintsTable(false);
-  } else if (targetTab === 'map') {
-    if (secMap) secMap.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Harita Analizi';
-    document.getElementById('nav-map')?.classList.add('active');
+  } else if (activeTab === 'my-complaints') {
+    await loadComplaintsTable(true);
+  } else if (activeTab === 'public-feed') {
+    await loadPublicComplaintsFeed();
+  } else if (activeTab === 'map') {
     await loadMapData();
-  } else if (targetTab === 'admin-users') {
-    if (secAdminUsers) secAdminUsers.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Kullanıcı Yönetimi';
-    document.getElementById('nav-admin-users')?.classList.add('active');
+  } else if (activeTab === 'solution-archive') {
+    await loadSolutionArchive();
+  } else if (activeTab === 'dept-staff') {
+    await loadDeptStaffTable();
+  } else if (activeTab === 'reports') {
+    await loadReportsData();
+  } else if (activeTab === 'admin-users') {
     await loadAdminUsersTable();
-  } else if (targetTab === 'admin-depts') {
-    if (secAdminDepts) secAdminDepts.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Müdürlük Yönetimi';
-    document.getElementById('nav-admin-depts')?.classList.add('active');
+  } else if (activeTab === 'admin-depts') {
     await loadAdminDeptsTable();
-  } else if (targetTab === 'admin-logs') {
-    if (secAdminLogs) secAdminLogs.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Audit Logları';
-    document.getElementById('nav-admin-logs')?.classList.add('active');
+  } else if (activeTab === 'admin-logs') {
     await loadAdminLogsTable();
-  } else if (targetTab === 'reports') {
-    if (secReports) secReports.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Yönetimsel Raporlar & Analitik Paneli';
-    document.getElementById('nav-reports')?.classList.add('active');
-    await loadReportsAnalytics();
-  } else if (targetTab === 'announcements') {
-    if (secAnnouncements) secAnnouncements.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = 'Resmi Belediye Duyuruları';
-    document.getElementById('nav-announcements')?.classList.add('active');
+  } else if (activeTab === 'announcements') {
     await loadAnnouncements();
-  } else if (targetTab === 'help') {
-    if (secHelp) secHelp.style.display = 'block';
-    if (pageTitle) pageTitle.textContent = '153 Çözüm Merkezi Yardım & SSS';
-    document.getElementById('nav-help')?.classList.add('active');
+  } else if (activeTab === 'create-complaint') {
+    if (typeof initPageLocationPickerMap === 'function') {
+      setTimeout(initPageLocationPickerMap, 100);
+    }
   }
 }
 
-// Global Browser History Back/Forward & Hash Change Handler
-window.addEventListener('popstate', (e) => {
-  const tabFromState = (e.state && e.state.tab) || (location.hash ? location.hash.replace('#', '') : null);
-  switchWorkspaceTab(tabFromState, false);
-});
-
-window.addEventListener('hashchange', () => {
-  const currentHash = location.hash ? location.hash.replace('#', '') : null;
-  if (currentHash) {
-    switchWorkspaceTab(currentHash, false);
+window.addEventListener('popstate', () => {
+  const hash = location.hash.replace('#', '');
+  if (hash && SPA_VALID_ROUTES.includes(hash)) {
+    switchWorkspaceTab(hash, false);
   }
 });
 
-// Toggle Department Submenu
+// ============================================================================
+// 5. METADATA LOADERS & CASCADING DROPDOWNS
+// ============================================================================
+async function loadMetadata() {
+  try {
+    const [catRes, deptRes, locRes] = await Promise.all([
+      fetch('/api/public/categories'),
+      fetch('/api/public/departments'),
+      fetch('/api/public/locations')
+    ]);
+
+    const catData = await catRes.json();
+    const deptData = await deptRes.json();
+    const locData = await locRes.json();
+
+    if (catData.success && catData.categories) categoriesList = catData.categories;
+    if (deptData.success && deptData.departments) departmentsList = deptData.departments;
+    if (locData.success && locData.districts && locData.districts.length > 0) {
+      districtsList = locData.districts;
+      neighborhoodsList = locData.neighborhoods;
+    }
+
+    populateDropdowns();
+  } catch (err) {
+    console.error('Metadata load error:', err);
+  }
+}
+
+function populateDropdowns() {
+  // Modal selects
+  const modalDept = document.getElementById('complaint-department');
+  const modalCat = document.getElementById('complaint-category');
+  const modalNeigh = document.getElementById('complaint-neighborhood');
+
+  // Page selects
+  const pageDept = document.getElementById('page-complaint-department');
+  const pageCat = document.getElementById('page-complaint-category');
+  const pageNeigh = document.getElementById('page-complaint-neighborhood');
+
+  // Filter selects
+  const filterCat = document.getElementById('filter-complaint-category');
+  const filterNeigh = document.getElementById('filter-complaint-neighborhood');
+  const sidebarDeptList = document.getElementById('sidebar-dept-list');
+
+  // Departments
+  const deptOptions = '<option value="">-- Birim / Müdürlük Seçiniz --</option>' +
+    departmentsList.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+
+  if (modalDept) modalDept.innerHTML = deptOptions;
+  if (pageDept) pageDept.innerHTML = deptOptions;
+
+  // Categories
+  const catOptions = '<option value="">-- Kategori Seçiniz --</option>' +
+    categoriesList.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+  if (modalCat) modalCat.innerHTML = catOptions;
+  if (pageCat) pageCat.innerHTML = catOptions;
+
+  if (filterCat) {
+    filterCat.innerHTML = '<option value="ALL">Tüm Kategoriler</option>' +
+      categoriesList.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+  }
+
+  // Bulancak Neighborhoods
+  const neighOptions = '<option value="">-- Mahalle Seçiniz --</option>' +
+    neighborhoodsList.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
+
+  if (modalNeigh) modalNeigh.innerHTML = neighOptions;
+  if (pageNeigh) pageNeigh.innerHTML = neighOptions;
+
+  if (filterNeigh) {
+    filterNeigh.innerHTML = '<option value="ALL">Tüm Mahalleler</option>' +
+      neighborhoodsList.map(n => `<option value="${n.name}">${n.name}</option>`).join('');
+  }
+
+  // Sidebar Departments Submenu
+  if (sidebarDeptList && departmentsList.length > 0) {
+    sidebarDeptList.innerHTML = departmentsList.map(d => `
+      <li>
+        <a href="#" onclick="filterByDepartment(${d.id}, '${d.name}'); event.preventDefault();">
+          <i class="fas fa-angle-right" style="font-size:0.75rem;"></i> ${d.name}
+        </a>
+      </li>
+    `).join('');
+  }
+}
+
+function bindForms() {
+  const modalForm = document.getElementById('form-new-complaint');
+  if (modalForm && !modalForm.dataset.bound) {
+    modalForm.dataset.bound = 'true';
+    modalForm.addEventListener('submit', handleNewComplaintSubmit);
+  }
+
+  // Cascading Department -> Category in Modal
+  const modalDept = document.getElementById('complaint-department');
+  const modalCat = document.getElementById('complaint-category');
+  if (modalDept && modalCat) {
+    modalDept.addEventListener('change', (e) => {
+      const deptId = Number(e.target.value);
+      if (deptId) {
+        const filtered = categoriesList.filter(c => Number(c.department_id) === deptId);
+        modalCat.innerHTML = '<option value="">-- Kategori Seçiniz --</option>' +
+          (filtered.length > 0 ? filtered : categoriesList).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      } else {
+        modalCat.innerHTML = '<option value="">-- Kategori Seçiniz --</option>' +
+          categoriesList.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      }
+    });
+  }
+
+  // Cascading Department -> Category in Page Form
+  const pageDept = document.getElementById('page-complaint-department');
+  const pageCat = document.getElementById('page-complaint-category');
+  if (pageDept && pageCat) {
+    pageDept.addEventListener('change', (e) => {
+      const deptId = Number(e.target.value);
+      if (deptId) {
+        const filtered = categoriesList.filter(c => Number(c.department_id) === deptId);
+        pageCat.innerHTML = '<option value="">-- Kategori Seçiniz --</option>' +
+          (filtered.length > 0 ? filtered : categoriesList).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      } else {
+        pageCat.innerHTML = '<option value="">-- Kategori Seçiniz --</option>' +
+          categoriesList.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      }
+    });
+  }
+
+  // Mahalle map centering
+  const modalNeigh = document.getElementById('complaint-neighborhood');
+  if (modalNeigh) {
+    modalNeigh.addEventListener('change', (e) => {
+      if (e.target.value && typeof flyToNeighborhoodLocation === 'function') {
+        flyToNeighborhoodLocation(e.target.value);
+      }
+    });
+  }
+
+  const pageNeigh = document.getElementById('page-complaint-neighborhood');
+  if (pageNeigh) {
+    pageNeigh.addEventListener('change', (e) => {
+      if (e.target.value && typeof flyToNeighborhoodLocation === 'function') {
+        flyToNeighborhoodLocation(e.target.value);
+      }
+    });
+  }
+}
+
 function toggleDeptSubmenu(e) {
   if (e) e.preventDefault();
-  const menuItem = document.getElementById('nav-depts-menu');
-  if (menuItem) menuItem.classList.toggle('open');
+  const parent = document.getElementById('nav-depts-menu');
+  if (parent) parent.classList.toggle('open');
 }
 
-// Filter Complaints by Department
 async function filterByDepartment(deptId, deptName) {
-  showToast(`${deptName} talepleri filtreleniyor...`, 'info');
-  await switchWorkspaceTab('complaints');
+  await switchWorkspaceTab('complaints', true);
+  const scopeSelect = document.getElementById('filter-complaint-scope');
+  if (scopeSelect) scopeSelect.value = 'ALL';
   await loadComplaintsTable(false, deptId);
+  showToast(`🏢 ${deptName} talepleri listeleniyor.`, 'info');
 }
 
-// DEDICATED CALL: Load Public Complaints Feed (/api/complaints/public)
-async function loadPublicComplaintsFeed() {
+// ============================================================================
+// 6. COMPLAINTS MANAGEMENT (TABLE, FILTERS, DETAIL MODAL)
+// ============================================================================
+let currentFilterState = {
+  scope: 'ALL',
+  category: 'ALL',
+  neighborhood: 'ALL',
+  status: 'ALL',
+  date: 'ALL',
+  sort: 'DESC',
+  page: 1,
+  pageSize: 10
+};
+
+function getBadgeClass(status) {
+  if (!status) return 'badge-new badge-yeni';
+  const s = status.toLowerCase();
+  if (s.includes('çözüldü') || s.includes('cozuldu')) return 'badge-resolved badge-cozuldu';
+  if (s.includes('devam') || s.includes('işlemde')) return 'badge-in-progress badge-devam';
+  if (s.includes('atandı') || s.includes('atandi')) return 'badge-assigned badge-atanan';
+  if (s.includes('yönlendirildi') || s.includes('iletildi')) return 'badge-forwarded';
+  if (s.includes('iptal') || s.includes('reddedildi')) return 'badge-rejected badge-red';
+  return 'badge-new badge-yeni';
+}
+
+function getPriorityBadge(priority) {
+  const p = priority || 'Normal';
+  if (p === 'Acil' || p === 'Kritik') {
+    return `<span class="badge" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:700; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;"><i class="fas fa-fire" style="margin-right:2px;"></i> Acil</span>`;
+  }
+  if (p === 'Yüksek') {
+    return `<span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; font-weight:600; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;"><i class="fas fa-bolt" style="margin-right:2px;"></i> Yüksek</span>`;
+  }
+  if (p === 'Düşük') {
+    return `<span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; font-weight:500; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;">Düşük</span>`;
+  }
+  // Kural 2: Normal öncelik Açık Mavi (badge-info)
+  return `<span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:600; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;">Normal</span>`;
+}
+
+async function loadComplaintsTable(mineOnly = false, deptId = null) {
+  const tbody = document.getElementById('tbody-complaints');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Talepler yükleniyor...</td></tr>';
+  }
+
   try {
-    const headers = currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {};
-    const res = await fetch('/api/complaints/public', { headers });
+    const url = mineOnly ? '/api/complaints/mine' : '/api/complaints/all';
+    const res = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
     const data = await res.json();
-    const container = document.getElementById('public-feed-container');
-    if (!container) return;
 
-    const publicList = data.success && data.complaints ? data.complaints : [];
+    if (data.success && Array.isArray(data.complaints)) {
+      currentFetchedComplaints = data.complaints;
+      if (deptId) {
+        currentFetchedComplaints = currentFetchedComplaints.filter(c => Number(c.department_id) === Number(deptId));
+      }
+      applyComplaintFilters();
+    } else {
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Kayıt bulunamadı.</td></tr>';
+    }
+  } catch (err) {
+    console.error('loadComplaintsTable error:', err);
+    if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444; padding: 24px;">Talepler yüklenirken hata oluştu.</td></tr>';
+  }
+}
 
-    if (publicList.length === 0) {
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px;" class="card-box">Henüz kamuya açık talep bulunmuyor.</div>`;
-      return;
+function applyComplaintFilters() {
+  const tbody = document.getElementById('tbody-complaints');
+  if (!tbody || !currentFetchedComplaints) return;
+
+  const scopeVal = document.getElementById('filter-complaint-scope')?.value || 'ALL';
+  const vmDeptVal = document.getElementById('filter-vice-mayor-dept')?.value || 'ALL';
+  const catVal = document.getElementById('filter-complaint-category')?.value || 'ALL';
+  const neighVal = document.getElementById('filter-complaint-neighborhood')?.value || 'ALL';
+  const statusVal = document.getElementById('filter-complaint-status')?.value || 'ALL';
+  const dateVal = document.getElementById('filter-complaint-date')?.value || 'ALL';
+  const sortVal = document.getElementById('filter-complaint-sort')?.value || 'DESC';
+  const pageSize = parseInt(document.getElementById('complaint-page-size')?.value || '10');
+
+  let filtered = currentFetchedComplaints.filter(c => {
+    // Vice Mayor Sub-Department Filter (Role 6)
+    if (vmDeptVal !== 'ALL') {
+      if (Number(c.department_id) !== Number(vmDeptVal)) return false;
     }
 
-    container.innerHTML = publicList.map(c => `
-      <div class="card-box" style="display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-            <span class="badge ${getBadgeClass(c.status)}">${c.status}</span>
-            <small style="color: #94a3b8; font-weight: 600;">${new Date(c.created_at).toLocaleDateString('tr-TR')}</small>
-          </div>
-          <h4 style="color: var(--portal-blue-primary); margin-bottom: 8px;">${c.title}</h4>
-          <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">${c.description}</p>
-          
-          ${c.first_photo ? `
-            <div style="margin-bottom: 14px;">
-              <img src="/${c.first_photo}" alt="Talep Fotoğrafı" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer;" onclick="window.open(this.src)" />
-            </div>
-          ` : ''}
+    // Scope Filter
+    if (scopeVal === 'MY_ASSIGNED') {
+      if (c.assigned_to_user_id != currentUser?.id && c.assigned_employee_id != currentUser?.employee_id) return false;
+    } else if (scopeVal === 'UNASSIGNED') {
+      if (c.status !== 'Yeni' && c.status !== 'İlgili birime yönlendirildi') return false;
+    } else if (scopeVal === 'ASSIGNED') {
+      if (c.status !== 'Personele atandı' && c.status !== 'İşlem devam ediyor') return false;
+    } else if (scopeVal === 'FORWARDED') {
+      if (!c.is_forwarded) return false;
+    }
 
-          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">
-            <i class="fas fa-location-dot" style="color: #ef4444;"></i> ${c.neighborhood_name} | ${c.category_name}
-          </div>
-        </div>
+    // Category Filter
+    if (catVal !== 'ALL' && c.category_name !== catVal) return false;
 
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 12px;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code}')">
-            <i class="fas fa-eye"></i> Detay
+    // Neighborhood Filter
+    if (neighVal !== 'ALL' && c.neighborhood_name !== neighVal) return false;
+
+    // Status Filter
+    if (statusVal !== 'ALL' && c.status !== statusVal) return false;
+
+    // Date Filter
+    if (dateVal !== 'ALL' && c.created_at) {
+      const created = new Date(c.created_at);
+      const now = new Date();
+      if (dateVal === 'TODAY') {
+        if (created.toDateString() !== now.toDateString()) return false;
+      } else if (dateVal === 'WEEK') {
+        const weekAgo = new Date(now.getTime() - 7 * 86400000);
+        if (created < weekAgo) return false;
+      } else if (dateVal === 'MONTH') {
+        const monthAgo = new Date(now.getTime() - 30 * 86400000);
+        if (created < monthAgo) return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Sorting
+  filtered.sort((a, b) => {
+    const timeA = new Date(a.created_at).getTime() || 0;
+    const timeB = new Date(b.created_at).getTime() || 0;
+    return sortVal === 'ASC' ? timeA - timeB : timeB - timeA;
+  });
+
+  tbody.innerHTML = ''; // Clear table body
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Filtrelere uygun talep bulunamadı.</td></tr>';
+    renderComplaintPagination(0, pageSize, 1);
+    return;
+  }
+
+  // Dynamic Pagination Calculation
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  if (currentFilterState.page > totalPages) {
+    currentFilterState.page = totalPages;
+  }
+  const page = currentFilterState.page || 1;
+  const pagedList = filtered.slice((page - 1) * pageSize, page * pageSize);
+
+  const isStaff = currentUser?.role_id === 3 || currentUser?.role_name === 'Personel';
+  const isManager = currentUser?.role_id === 2 || currentUser?.role_name === 'Birim Yöneticisi';
+  const isAdmin = currentUser?.role_id === 1 || currentUser?.role_name === 'Sistem Yöneticisi';
+
+  pagedList.forEach(c => {
+    const tr = document.createElement('tr');
+    const createdDate = c.created_at ? new Date(c.created_at).toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+
+    let actionButtons = '';
+
+    if (isStaff) {
+      // 1. Staff Actions matching Screenshot 2
+      actionButtons = `
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="padding: 5px 8px; font-size: 0.8rem; font-weight: 600;" title="Talebi İncele">
+          <i class="fas fa-eye"></i>
+        </button>
+      `;
+
+      if (c.status !== 'Çözüldü' && c.status !== 'İptal edildi') {
+        const isAssignedToMe = Number(c.assigned_to_user_id) === Number(currentUser.id);
+        if (!isAssignedToMe) {
+          actionButtons += `
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selfAssignComplaint(${c.id})" style="padding: 5px 9px; font-size: 0.78rem; font-weight: 700; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;" title="Görevi Üzerime Al">
+              <i class="fas fa-user-plus"></i> Üzerime Al
+            </button>
+          `;
+        }
+        actionButtons += `
+          <button type="button" class="btn btn-primary btn-sm" onclick="openActionModal(${c.id})" style="padding: 5px 11px; font-size: 0.78rem; font-weight: 700; background: #0284c7; color: #ffffff;" title="İşlem ve Çözüm Kaydı Ekle">
+            <i class="fas fa-screwdriver-wrench"></i> İşlem Yap
           </button>
+        `;
+      }
+    } else if (isAdmin || isManager) {
+      // 2. Manager & Admin Actions matching Screenshot 5
+      actionButtons = `
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="padding: 5px 8px; font-size: 0.8rem; font-weight: 600;" title="Talebi İncele">
+          <i class="fas fa-eye"></i>
+        </button>
+      `;
 
-          ${c.has_upvoted ? `
-            <button type="button" class="btn btn-sm" style="background: #10b981; color: #ffffff;" onclick="upvoteComplaint(${c.id})">
-              <i class="fas fa-check"></i> Destek Verildi ( ${c.upvote_count} )
-            </button>
-          ` : `
-            <button type="button" class="btn btn-primary btn-sm" onclick="upvoteComplaint(${c.id})">
-              <i class="fas fa-thumbs-up"></i> Destek Ol ( ${c.upvote_count} )
-            </button>
-          `}
-        </div>
+      const isAssigned = c.assigned_to_user_id || c.status === 'Personele atandı';
+      if (isAssigned) {
+        actionButtons += `
+          <button type="button" class="btn btn-primary btn-sm" onclick="openAssignModal(${c.id}, ${c.department_id || 1})" style="padding: 5px 9px; font-size: 0.78rem; font-weight: 700; background: #0284c7; color: #fff;" title="Başka Personele Yeniden Ata">
+            <i class="fas fa-user-gear"></i> Yeniden Ata
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="unassignComplaint(${c.id})" style="padding: 5px 8px; font-size: 0.78rem; font-weight: 700; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;" title="Görev Atamasını Kaldır">
+            <i class="fas fa-user-xmark"></i> Kaldır
+          </button>
+        `;
+      } else if (c.status !== 'Çözüldü' && c.status !== 'İptal edildi') {
+        actionButtons += `
+          <button type="button" class="btn btn-primary btn-sm" onclick="openAssignModal(${c.id}, ${c.department_id || 1})" style="padding: 5px 11px; font-size: 0.78rem; font-weight: 700; background: #0284c7; color: #fff;" title="Personele Görev Ata">
+            <i class="fas fa-user-plus"></i> Ata
+          </button>
+        `;
+      }
+
+      actionButtons += `
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openForwardDeptModal(${c.id})" style="padding: 5px 8px; font-size: 0.78rem; font-weight: 600; background: #ffffff; border: 1px solid #cbd5e1; color: #334155;" title="Başka Birime Sevk Et">
+          <i class="fas fa-right-left"></i> Yönlendir
+        </button>
+      `;
+
+      if (isAdmin) {
+        actionButtons += `
+          <button type="button" class="btn btn-secondary btn-sm" onclick="deleteAdminComplaint(${c.id})" style="padding: 5px 8px; font-size: 0.78rem; font-weight: 600; background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6;" title="Talebi Pasife Al / Sil">
+            <i class="fas fa-trash-can"></i>
+          </button>
+        `;
+      }
+    } else {
+      // 3. Citizen & Mayor View
+      actionButtons = `
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="padding: 5px 12px; font-size: 0.8rem; font-weight: 600;" title="İncele">
+          <i class="fas fa-eye"></i> İncele
+        </button>
+      `;
+    }
+
+    const ratingHtml = (c.status === 'Çözüldü' && c.rating) ? `
+      <div style="margin-top: 3px; font-size: 0.75rem; color: #d97706; font-weight: 700; display: flex; align-items: center; gap: 3px;">
+        <span>⭐ ${parseFloat(c.rating).toFixed(1)}</span>
+        <small style="color: #64748b;">(1)</small>
       </div>
-    `).join('');
-  } catch (err) {
-    console.error('Public feed load error:', err);
+    ` : '';
+
+    const priorityBadge = getPriorityBadge(c.priority_level || c.urgency_level);
+    const typeBadge = c.submission_type ? `
+      <span class="badge badge-neutral" style="font-size:0.7rem; margin-left:3px;">
+        <i class="fas ${c.submission_type === 'Şikayet' ? 'fa-triangle-exclamation' : (c.submission_type === 'Öneri / İstek' ? 'fa-lightbulb' : 'fa-circle-info')}"></i> ${c.submission_type}
+      </span>
+    ` : '';
+
+    tr.innerHTML = `
+      <td style="vertical-align: middle;"><strong style="color: var(--portal-blue-primary); font-size: 0.85rem;">${c.tracking_code}</strong></td>
+      <td style="vertical-align: middle;">
+        <div style="font-weight: 700; color: #0f172a; font-size: 0.88rem; margin-bottom: 3px;">${c.title}</div>
+        <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+          ${priorityBadge}
+          ${typeBadge}
+          ${c.is_public ? '<span class="badge" style="background:#e0f2fe; color:#0369a1; font-size:0.7rem;">Kamuya Açık</span>' : ''}
+          ${c.is_forwarded ? '<span class="badge" style="background:#fff7ed; color:#c2410c; font-size:0.7rem;">Yönlendirildi</span>' : ''}
+        </div>
+      </td>
+      <td style="vertical-align: middle;"><span class="badge badge-neutral" style="font-size:0.78rem;">${c.category_name || 'Genel'}</span></td>
+      <td style="vertical-align: middle;"><small style="color: #475569; font-weight:600;"><i class="fas fa-location-dot" style="color:#ef4444; margin-right:2px;"></i> ${c.neighborhood_name || 'Bulancak'}</small></td>
+      <td style="vertical-align: middle;">
+        <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
+        ${ratingHtml}
+      </td>
+      <td style="vertical-align: middle;"><small style="color: #64748b; font-weight:600;">${createdDate}</small></td>
+      <td style="vertical-align: middle; white-space: nowrap; text-align: right;">
+        <div style="display: inline-flex; gap: 5px; align-items: center; justify-content: flex-end;">
+          ${actionButtons}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  renderComplaintPagination(filtered.length, pageSize, page);
+}
+
+function renderComplaintPagination(totalCount, pageSize, currentPage) {
+  const container = document.getElementById('complaint-pagination-btns');
+  const countEl = document.getElementById('complaint-records-count');
+  if (!container) return;
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+    currentFilterState.page = totalPages;
+  }
+
+  // Update records count text
+  if (countEl) {
+    if (totalCount === 0) {
+      countEl.innerHTML = '<strong>0</strong> kayıt';
+    } else {
+      const start = (currentPage - 1) * pageSize + 1;
+      const end = Math.min(totalCount, currentPage * pageSize);
+      countEl.innerHTML = `<strong>${start} - ${end}</strong> / <span id="complaint-total-count">${totalCount}</span> kayıt`;
+    }
+  }
+
+  container.innerHTML = '';
+
+  // Prev Button
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'btn btn-secondary btn-sm';
+  prevBtn.style.cssText = 'width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.disabled = (currentPage <= 1);
+  prevBtn.onclick = () => changeComplaintPage(currentPage - 1);
+  container.appendChild(prevBtn);
+
+  // Dynamic Page Number Buttons
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages <= 7 || i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+      const pageBtn = document.createElement('button');
+      pageBtn.className = (i === currentPage) ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+      pageBtn.style.cssText = `width: 32px; height: 32px; padding: 0; font-weight: ${i === currentPage ? '800' : '600'};`;
+      pageBtn.textContent = i;
+      pageBtn.onclick = () => changeComplaintPage(i);
+      container.appendChild(pageBtn);
+    } else if (i === currentPage - 3 || i === currentPage + 3) {
+      const dots = document.createElement('span');
+      dots.style.cssText = 'padding: 0 4px; color: #94a3b8; font-weight: 700;';
+      dots.textContent = '...';
+      container.appendChild(dots);
+    }
+  }
+
+  // Next Button
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn btn-secondary btn-sm';
+  nextBtn.style.cssText = 'width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.disabled = (currentPage >= totalPages);
+  nextBtn.onclick = () => changeComplaintPage(currentPage + 1);
+  container.appendChild(nextBtn);
+}
+
+function changeComplaintPage(newPage) {
+  if (newPage < 1) return;
+  currentFilterState.page = newPage;
+  applyComplaintFilters();
+}
+
+async function deleteAdminComplaint(complaintId) {
+  const executeDelete = async () => {
+    try {
+      const res = await fetch(`/api/complaints/${complaintId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${currentToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Talep başarıyla pasife alındı (silindi).', 'success');
+        await loadComplaintsTable();
+      } else {
+        showToast(data.message || 'Silme işlemi başarısız.', 'error');
+      }
+    } catch (err) {
+      showToast('Silme hatası.', 'error');
+    }
+  };
+
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      title: 'Talebi Sil / Pasife Al',
+      text: 'Bu talebi pasife almak istediğinize emin misiniz?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Evet, Sil',
+      cancelButtonText: 'İptal'
+    }).then((r) => {
+      if (r.isConfirmed) executeDelete();
+    });
+  } else {
+    if (confirm('Bu talebi silmek istediğinize emin misiniz?')) executeDelete();
   }
 }
 
-// Real User-Based Upvote / Downvote Toggle Action
-async function upvoteComplaint(complaintId) {
-  if (!currentUser || !currentToken) {
-    showToast('Destek vermek için lütfen önce giriş yapınız.', 'info');
-    return;
+function resetComplaintFilters() {
+  const scopeSelect = document.getElementById('filter-complaint-scope');
+  const vmDeptSelect = document.getElementById('filter-vice-mayor-dept');
+  const catSelect = document.getElementById('filter-complaint-category');
+  const neighSelect = document.getElementById('filter-complaint-neighborhood');
+  const statusSelect = document.getElementById('filter-complaint-status');
+  const dateSelect = document.getElementById('filter-complaint-date');
+  const sortSelect = document.getElementById('filter-complaint-sort');
+
+  if (scopeSelect) scopeSelect.value = 'ALL';
+  if (vmDeptSelect) vmDeptSelect.value = 'ALL';
+  if (catSelect) catSelect.value = 'ALL';
+  if (neighSelect) neighSelect.value = 'ALL';
+  if (statusSelect) statusSelect.value = 'ALL';
+  if (dateSelect) dateSelect.value = 'ALL';
+  if (sortSelect) sortSelect.value = 'DESC';
+
+  currentFilterState.page = 1;
+  applyComplaintFilters();
+  showToast('Filtreler sıfırlandı.', 'info');
+}
+
+// ============================================================================
+// 7. COMPLAINT CREATION (UNIFIED MODAL & PAGE FORM)
+// ============================================================================
+function openCreateComplaintForm() {
+  openModal('modal-new-complaint');
+  if (typeof initLocationPickerMap === 'function') {
+    setTimeout(initLocationPickerMap, 100);
   }
+}
+
+async function handleNewComplaintSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('form-new-complaint');
+  const submitBtn = form?.querySelector('button[type="submit"]');
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.origHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+  }
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch('/api/complaints', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${currentToken}` },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Talebiniz Başarıyla Alındı!',
+          html: `
+            <div style="text-align: center; margin-top: 10px;">
+              <p style="font-size: 0.95rem; color: #475569;">Takip Kodunuz:</p>
+              <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-size: 1.3rem; font-weight: 800; color: #0284c7; letter-spacing: 1px; margin: 8px 0;">
+                ${data.tracking_code || 'BLD-2026-XXXXXX'}
+              </div>
+              <p style="font-size: 0.85rem; color: #64748b;">Talebiniz ilgili birime iletilmiş olup süreç SMS/E-posta ile bildirilecektir.</p>
+            </div>
+          `,
+          confirmButtonText: 'Tamam',
+          confirmButtonColor: '#0284c7'
+        });
+      } else {
+        showToast(`Talebiniz alındı! Takip Kodu: ${data.tracking_code}`, 'success');
+      }
+
+      form.reset();
+      closeModal('modal-new-complaint');
+
+      if (currentUser?.role_name === 'Vatandaş') {
+        await switchWorkspaceTab('my-complaints');
+      } else {
+        await switchWorkspaceTab('complaints');
+      }
+    } else {
+      showToast(data.message || 'Talep oluşturulamadı.', 'error');
+    }
+  } catch (err) {
+    showToast('Sunucu bağlantı hatası.', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitBtn.dataset.origHtml || 'Talebi Gönder';
+    }
+  }
+}
+
+async function handlePageCreateComplaintSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('page-form-new-complaint');
+  const submitBtn = document.getElementById('btn-page-submit-complaint');
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.origHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+  }
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch('/api/complaints', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${currentToken}` },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Talebiniz Başarıyla Alındı!',
+          html: `
+            <div style="text-align: center; margin-top: 10px;">
+              <p style="font-size: 0.95rem; color: #475569;">Takip Kodunuz:</p>
+              <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-size: 1.3rem; font-weight: 800; color: #0284c7; letter-spacing: 1px; margin: 8px 0;">
+                ${data.tracking_code || 'BLD-2026-XXXXXX'}
+              </div>
+              <p style="font-size: 0.85rem; color: #64748b;">Talebiniz ilgili birime iletilmiş olup süreç SMS/E-posta ile bildirilecektir.</p>
+            </div>
+          `,
+          confirmButtonText: 'Tamam',
+          confirmButtonColor: '#0284c7'
+        });
+      }
+
+      form.reset();
+      if (currentUser?.role_name === 'Vatandaş') {
+        await switchWorkspaceTab('my-complaints');
+      } else {
+        await switchWorkspaceTab('complaints');
+      }
+    } else {
+      showToast(data.message || 'Talep oluşturulamadı.', 'error');
+    }
+  } catch (err) {
+    showToast('Sunucu hatası.', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitBtn.dataset.origHtml || 'Talebi Gönder';
+    }
+  }
+}
+
+// ============================================================================
+// 8. COMPLAINT DETAIL MODAL & MANAGER / STAFF ACTIONS
+// ============================================================================
+async function openComplaintDetail(trackingCode) {
+  const container = document.getElementById('complaint-detail-content');
+  if (!container) return;
+
+  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Detaylar yükleniyor...</p></div>';
+  openModal('modal-complaint-detail');
+
+  try {
+    const res = await fetch(`/api/complaints/${trackingCode}`, {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+
+    if (data.success && data.complaint) {
+      const c = data.complaint;
+      const actions = data.actions || [];
+      const files = data.files || [];
+      const isMayor = currentUser && (currentUser.role_name === 'Belediye Başkanı' || currentUser.role_id === 5);
+      const isManagerOrAdmin = currentUser && (currentUser.role_name === 'Birim Yöneticisi' || currentUser.role_name === 'Sistem Yöneticisi');
+      const isStaff = currentUser && (currentUser.role_name === 'Personel' || currentUser.role_id === 3);
+
+      // 1. Manager Action Form (Hidden for Mayor - 100% Read-Only)
+      let managerControlsHtml = '';
+      if (isManagerOrAdmin) {
+        managerControlsHtml = `
+          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; margin-top: 16px;">
+            <input type="hidden" id="current-detail-complaint-id" value="${c.id}" />
+            <h5 style="color: var(--portal-blue-primary); margin-bottom: 10px; font-size: 0.9rem; font-weight: 700;">
+              <i class="fas fa-sliders" style="color: #2563eb; margin-right: 6px;"></i> Yönetici İşlemleri (Öncelik & Durum)
+            </h5>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: #334155; margin-bottom: 4px; display: block;">Öncelik Seviyesi</label>
+                <select id="detail-edit-priority" class="form-input" style="height: 40px; padding: 4px 10px; font-size: 0.88rem; font-weight: 600; border-radius: 6px;">
+                  <option value="Düşük" ${c.priority_level === 'Düşük' ? 'selected' : ''}>Düşük</option>
+                  <option value="Normal" ${c.priority_level === 'Normal' ? 'selected' : ''}>Normal</option>
+                  <option value="Yüksek" ${c.priority_level === 'Yüksek' ? 'selected' : ''}>Yüksek</option>
+                  <option value="Acil" ${c.priority_level === 'Acil' ? 'selected' : ''}>Acil</option>
+                  <option value="Kritik" ${c.priority_level === 'Kritik' ? 'selected' : ''}>Kritik</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: #334155; margin-bottom: 4px; display: block;">Talep Durumu</label>
+                <select id="detail-edit-status" class="form-input" style="height: 40px; padding: 4px 10px; font-size: 0.88rem; font-weight: 600; border-radius: 6px;">
+                  <option value="Yeni" ${c.status === 'Yeni' ? 'selected' : ''}>Yeni</option>
+                  <option value="İlgili birime yönlendirildi" ${c.status === 'İlgili birime yönlendirildi' ? 'selected' : ''}>İlgili birime yönlendirildi</option>
+                  <option value="Personele atandı" ${c.status === 'Personele atandı' ? 'selected' : ''}>Personele atandı</option>
+                  <option value="İşlem devam ediyor" ${c.status === 'İşlem devam ediyor' ? 'selected' : ''}>İşlem devam ediyor</option>
+                  <option value="Çözüldü" ${c.status === 'Çözüldü' ? 'selected' : ''}>Çözüldü</option>
+                  <option value="İptal edildi" ${c.status === 'İptal edildi' ? 'selected' : ''}>İptal edildi</option>
+                </select>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 8px; margin-top: 12px;">
+              <button id="btn-save-admin-complaint" class="btn btn-primary btn-sm" onclick="saveAdminComplaintUpdate(${c.id})" style="flex: 2; font-weight: 700; padding: 8px;">
+                <i class="fas fa-save" style="margin-right: 4px;"></i> Değişiklikleri Kaydet
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="openAssignModal(${c.id}, ${c.department_id || 1})" style="flex: 1; font-weight: 600; padding: 8px;">
+                <i class="fas fa-user-plus"></i> Görev Ata
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="openForwardDeptModal(${c.id})" style="flex: 1; font-weight: 600; padding: 8px;">
+                <i class="fas fa-right-left"></i> Sevk Et
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. Staff Action Button (Personele işlem butonu)
+      let staffControlsHtml = '';
+      if (isStaff && c.status !== 'Çözüldü') {
+        staffControlsHtml = `
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #065f46; font-size: 0.9rem;"><i class="fas fa-screwdriver-wrench"></i> Saha Görevlisi İşlemi</strong>
+                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #047857;">Bu talebi çözüldü veya işlemde olarak kaydedebilirsiniz.</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openActionModal(${c.id})" style="background: #059669; border-color: #047857; font-weight: 700;">
+                <i class="fas fa-check-circle"></i> İşlem / Çözüm Kaydet
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // 3. Green Official Solution Card (Resmi Çözüm Açıklaması Kartı - Çözüldü Durumunda)
+      let officialSolutionCardHtml = '';
+      if (c.status === 'Çözüldü') {
+        const lastAction = (actions && actions.length > 0) ? actions[actions.length - 1] : null;
+        const resolverName = lastAction?.employee_name || 'Belediye Saha Ekibi';
+        const resolverTitle = lastAction?.employee_title || 'Saha Personeli';
+        const solutionNote = lastAction?.action_description || lastAction?.work_done || 'Talep edilen bölgede saha ekiplerimiz tarafından gerekli müdahale ve onarım yapılmış olup talep çözüme kavuşturulmuştur.';
+        const toolsNote = lastAction?.tools_equipment_used ? `<div><i class="fas fa-wrench" style="margin-right:4px;"></i> <strong>Ekipman / Not:</strong> ${lastAction.tools_equipment_used}</div>` : '';
+        const photoPath = lastAction?.resolution_photo_path || lastAction?.photo_path || null;
+
+        officialSolutionCardHtml = `
+          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 16px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-circle-check" style="color: #16a34a; font-size: 1.2rem;"></i>
+                <div>
+                  <strong style="color: #166534; font-size: 0.95rem; font-weight: 800; display: block;">Bulancak Belediyesi</strong>
+                  <span style="color: #15803d; font-size: 0.8rem; font-weight: 700;">Resmi Çözüm Açıklaması</span>
+                </div>
+              </div>
+              <span class="badge" style="background: #16a34a; color: #ffffff; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px;">Çözüldü</span>
+            </div>
+            
+            <p style="margin: 8px 0; font-size: 0.88rem; color: #14532d; line-height: 1.5; font-weight: 600;">
+              ${solutionNote}
+            </p>
+
+            <div style="font-size: 0.8rem; color: #15803d; border-top: 1px dashed #bbf7d0; padding-top: 8px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+              <div><i class="fas fa-user-gear" style="margin-right:4px;"></i> <strong>Yanıtlayan Yetkili:</strong> ${resolverName} (${resolverTitle})</div>
+              ${toolsNote}
+            </div>
+
+            ${photoPath ? `
+              <div style="margin-top: 10px;">
+                <img src="/${photoPath}" alt="Çözüm Fotoğrafı" style="max-height: 120px; border-radius: 8px; border: 1px solid #86efac; cursor: pointer;" onclick="window.open(this.src)">
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // 4. Process History Timeline (Combined History + Actions with Deduplication)
+      const historyList = (data.history || []).map(h => ({
+        user_name: h.changed_by_name || 'Belediye Yetkilisi',
+        created_at: h.created_at,
+        action_type: h.new_status || 'Durum Değişikliği',
+        description: h.change_reason || `Durum: ${h.new_status}`,
+        photo_path: null
+      }));
+
+      const actionList = (data.actions || []).map(a => ({
+        user_name: a.employee_name || 'Saha Görevlisi',
+        created_at: a.created_at,
+        action_type: a.action_type || a.new_status || 'İşlem / Müdahale',
+        description: a.action_description || a.work_done || a.description || '',
+        photo_path: a.resolution_photo_path || a.photo_path || null
+      }));
+
+      const combinedTimeline = [...historyList, ...actionList];
+      combinedTimeline.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+      const uniqueTimeline = [];
+      combinedTimeline.forEach(item => {
+        const isDup = uniqueTimeline.some(u => 
+          u.action_type === item.action_type &&
+          u.description === item.description &&
+          Math.abs(new Date(u.created_at) - new Date(item.created_at)) < 30000
+        );
+        if (!isDup) uniqueTimeline.push(item);
+      });
+
+      let timelineHtml = uniqueTimeline.map((a, idx) => {
+        const isResolved = (a.action_type || '').includes('Çözüldü') || (a.action_type || '').includes('cozuldu');
+        const dotColor = isResolved ? '#16a34a' : ((idx === 0) ? '#3b82f6' : '#f59e0b');
+        const dateStr = a.created_at ? new Date(a.created_at).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+
+        return `
+          <div class="timeline-item" style="padding: 0 0 16px 0; border-left: 2px solid #e2e8f0; padding-left: 18px; position: relative;">
+            <div style="position: absolute; left: -7px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 3px solid ${dotColor};"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: #0f172a; font-size: 0.88rem; font-weight: 700;">${a.action_type || 'Durum Güncellemesi'}</strong>
+            </div>
+            <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 6px;">
+              <i class="fas fa-clock" style="margin-right: 3px; font-size: 0.72rem;"></i> ${dateStr}
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-top: 4px;">
+              <div style="font-weight: 700; color: var(--portal-blue-primary); font-size: 0.82rem; margin-bottom: 2px;">
+                ${a.user_name || 'Belediye Yetkilisi'}
+              </div>
+              <p style="margin: 0; font-size: 0.83rem; color: #334155; line-height: 1.45;">
+                ${a.description || 'İşlem kaydedildi.'}
+              </p>
+              ${a.photo_path ? `<img src="/${a.photo_path}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; margin-top: 6px; cursor: pointer; border: 1px solid #cbd5e1;" onclick="window.open(this.src)">` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 5. Star Rating Survey Module (If Resolved)
+      let surveyHtml = '';
+      if (c.status === 'Çözüldü') {
+        const ratingVal = parseFloat(c.avg_rating || c.rating || 0);
+        surveyHtml = `
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px; margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <strong style="color: #1e40af; font-size: 0.9rem;"><i class="fas fa-star" style="color: #f59e0b;"></i> Vatandaş Memnuniyet Değerlendirmesi</strong>
+              <span class="badge" style="background:#dbeafe; color:#1d4ed8; font-weight:700;">★ ${ratingVal > 0 ? ratingVal.toFixed(1) : '5.0'} / 5.0</span>
+            </div>
+            ${currentUser && currentUser.role_name === 'Vatandaş' ? `
+              <div style="display: flex; gap: 8px; font-size: 1.6rem; color: #cbd5e1; cursor: pointer;" id="star-rating-box">
+                <span onclick="setStarRating(1)" id="star-1">★</span>
+                <span onclick="setStarRating(2)" id="star-2">★</span>
+                <span onclick="setStarRating(3)" id="star-3">★</span>
+                <span onclick="setStarRating(4)" id="star-4">★</span>
+                <span onclick="setStarRating(5)" id="star-5">★</span>
+              </div>
+              <textarea id="survey-comment" class="form-input" rows="2" placeholder="Görüş ve ek yorumlarınız..." style="margin-top: 6px; font-size: 0.84rem;"></textarea>
+              <button class="btn btn-primary btn-sm" onclick="submitSatisfactionSurvey(${c.id})" style="margin-top: 8px; width: 100%; font-weight: 700;">
+                <i class="fas fa-paper-plane"></i> Değerlendirmeyi Gönder
+              </button>
+            ` : `<p style="font-size: 0.82rem; color: #475569; margin: 0;">Çözülen talepler vatandaşlarımız tarafından 1-5 yıldız arasında puanlanmaktadır.</p>`}
+          </div>
+        `;
+      }
+
+      // Photos
+      let filesHtml = (files && files.length > 0) ? files.map(f => `
+        <img src="/${f.file_path}" alt="Talep Görseli" style="width: 100px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer;" onclick="window.open(this.src)" />
+      `).join('') : '';
+
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px;">
+          <!-- Left Column -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <h2 style="color: var(--portal-blue-primary); font-size: 1.35rem; font-weight: 800; margin: 0;">${c.tracking_code}</h2>
+              <div style="display: flex; gap: 6px;">
+                ${getPriorityBadge(c.priority_level || c.urgency_level)}
+                <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
+              </div>
+            </div>
+
+            <h3 style="font-size: 1.15rem; color: #0f172a; margin-bottom: 12px; font-weight: 800; line-height: 1.4;">${c.title}</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.84rem; background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
+              <div><span style="color:#64748b;">Müdürlük:</span> <strong>${c.department_name || 'Fen İşleri'}</strong></div>
+              <div><span style="color:#64748b;">Kategori:</span> <strong>${c.category_name || 'Genel'}</strong></div>
+              <div><span style="color:#64748b;">Mahalle:</span> <strong>${c.neighborhood_name || 'Bulancak'}</strong></div>
+              <div><span style="color:#64748b;">Tarih:</span> <strong>${new Date(c.created_at).toLocaleDateString('tr-TR')}</strong></div>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="font-size: 0.8rem; font-weight: 700; color: #475569;">Talep Açıklaması</label>
+              <p style="font-size: 0.88rem; color: #334155; line-height: 1.55; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 4px;">${c.description}</p>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="font-size: 0.8rem; font-weight: 700; color: #475569;">📍 Nokta Atışı Konum & Adres Bilgisi</label>
+              <p style="font-size: 0.85rem; color: #0f172a; margin: 4px 0;">${c.open_address || c.neighborhood_name || 'Bulancak'}</p>
+              ${c.latitude && c.longitude ? `
+                <a href="https://maps.google.com/?q=${c.latitude},${c.longitude}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; text-decoration: none; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;">
+                  <i class="fas fa-map-marked-alt" style="color: #0284c7;"></i> Haritada Göster / Yol Tarifi (${c.latitude}, ${c.longitude})
+                </a>
+              ` : ''}
+            </div>
+
+            ${filesHtml ? `
+              <div style="margin-top: 12px;">
+                <label style="font-size: 0.8rem; font-weight: 700; color: #475569;">Ekler / Fotoğraflar</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">${filesHtml}</div>
+              </div>
+            ` : ''}
+
+            ${managerControlsHtml}
+            ${staffControlsHtml}
+          </div>
+
+          <!-- Right Column: Official Solution Box & Timeline & Survey -->
+          <div style="background: #ffffff; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+            ${officialSolutionCardHtml}
+
+            <h4 style="color: var(--portal-blue-primary); margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 800; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">
+              <i class="fas fa-timeline" style="color: #0284c7; margin-right: 6px;"></i> Süreç Geçmişi
+            </h4>
+
+            <div style="max-height: 420px; overflow-y: auto; padding-right: 4px;">
+              ${timelineHtml || '<p style="color:#94a3b8; font-size:0.82rem; padding: 10px 0;">Henüz süreç kaydı eklenmedi.</p>'}
+            </div>
+
+            ${surveyHtml}
+          </div>
+        </div>
+      `;
+
+      if (c.status === 'Çözüldü') {
+        setTimeout(() => setStarRating(5), 50);
+      }
+    } else {
+      container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Talep detayları bulunamadı.</p>';
+    }
+  } catch (err) {
+    container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Yükleme hatası oluştu.</p>';
+  }
+}
+
+// ============================================================================
+// 8.1. PUBLIC FEED & UPVOTE (TITREME VE YENILENME ENGELLEME)
+// ============================================================================
+async function loadPublicComplaintsFeed() {
+  const container = document.getElementById('public-feed-container');
+  if (!container) return;
+
+  container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Kamuya açık talepler yükleniyor...</p></div>';
+
+  try {
+    const res = await fetch('/api/complaints/public-feed', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+
+    if (data.success && Array.isArray(data.complaints)) {
+      if (data.complaints.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">Henüz kamuya açık talep bulunmuyor.</div>';
+        return;
+      }
+
+      container.innerHTML = data.complaints.map(c => {
+        const upvotes = c.upvotes_count || 0;
+        const isUpvoted = c.is_upvoted || false;
+
+        return `
+          <div class="card-box" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
+                <small style="color: #64748b; font-weight: 600;"><i class="fas fa-location-dot" style="color: #ef4444; margin-right: 3px;"></i> ${c.neighborhood_name || 'Bulancak'}</small>
+              </div>
+
+              <h4 style="color: #0f172a; font-weight: 800; font-size: 1.05rem; margin: 0 0 8px 0;">${c.title}</h4>
+              <p style="color: #475569; font-size: 0.85rem; line-height: 1.5; margin: 0 0 14px 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                ${c.description}
+              </p>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-color); padding-top: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn btn-secondary btn-sm btn-upvote ${isUpvoted ? 'active btn-upvoted' : ''}" 
+                data-id="${c.id}" 
+                onclick="handleUpvote(event, ${c.id})" 
+                style="font-size: 0.82rem; font-weight: 700; ${isUpvoted ? 'background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd;' : ''}">
+                <i class="fas fa-thumbs-up" style="margin-right: 4px;"></i> Destek Ol (<span class="upvote-count">${upvotes}</span>)
+              </button>
+
+              <button type="button" class="btn btn-primary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="font-size: 0.82rem; font-weight: 600; padding: 6px 14px;">
+                <i class="fas fa-eye" style="margin-right: 4px;"></i> İncele
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #ef4444; padding: 30px;">Talepler yüklenemedi.</div>';
+    }
+  } catch (err) {
+    container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #ef4444; padding: 30px;">Sunucu bağlantı hatası.</div>';
+  }
+}
+
+async function handleUpvote(e, complaintId) {
+  // 1. Sayfa Yenilenmesini, Header Titremesini ve Sayfa Kaymasını Tamamen Engelle
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const btn = e?.currentTarget || document.querySelector(`.btn-upvote[data-id="${complaintId}"]`);
 
   try {
     const res = await fetch(`/api/complaints/${complaintId}/upvote`, {
@@ -747,632 +1774,675 @@ async function upvoteComplaint(complaintId) {
     const data = await res.json();
 
     if (data.success) {
-      if (data.has_upvoted) {
-        showToast('Talebe başarıyla destek verdiniz!', 'success');
-      } else {
-        showToast('Desteğinizi geri çektiniz.', 'info');
+      // 2. Lokal DOM Güncellemesi: Sadece tıklanan spesifik buton içindeki sayacı ve rengini güncelle (Tüm listeyi baştan render ETME)
+      if (btn) {
+        const countSpan = btn.querySelector('.upvote-count');
+        if (countSpan && data.upvotes_count !== undefined) {
+          countSpan.textContent = data.upvotes_count;
+        }
+
+        if (data.is_upvoted) {
+          btn.classList.add('active', 'btn-upvoted');
+          btn.style.background = '#eff6ff';
+          btn.style.color = '#1d4ed8';
+          btn.style.border = '1px solid #93c5fd';
+        } else {
+          btn.classList.remove('active', 'btn-upvoted');
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.style.border = '';
+        }
       }
-      await loadPublicComplaintsFeed();
+
+      showToast(data.message || (data.is_upvoted ? '👍 Desteğiniz kaydedildi!' : 'Desteğinizi geri çektiniz.'), 'success');
     } else {
-      showToast(data.message || 'Destek verilirken hata oluştu.', 'error');
-    }
-  } catch (err) {
-    console.error('Upvote error:', err);
-    showToast('Sunucu hatası oluştu.', 'error');
-  }
-}
-
-let currentFetchedComplaints = [];
-
-function getBadgeClass(status) {
-  if (status === 'Çözüldü') return 'badge-resolved';
-  if (status === 'İşlem devam ediyor' || status === 'İşlemde') return 'badge-in-progress';
-  if (status === 'Personele atandı') return 'badge-assigned';
-  if (status === 'İlgili birime yönlendirildi' || status === 'Müdürlüğe iletildi') return 'badge-forwarded';
-  if (status === 'İptal edildi' || status === 'Reddedildi') return 'badge-rejected';
-  return 'badge-new';
-}
-
-function populateCategoryFilterDropdown() {
-  const catSelect = document.getElementById('filter-complaint-category');
-  if (catSelect && categoriesList && categoriesList.length > 0) {
-    catSelect.innerHTML = '<option value="ALL">Tüm Kategoriler</option>' +
-      categoriesList.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
-  }
-}
-
-function populateNeighborhoodFilterDropdown() {
-  const neighSelect = document.getElementById('filter-complaint-neighborhood');
-  if (neighSelect && neighborhoodsList && neighborhoodsList.length > 0) {
-    neighSelect.innerHTML = '<option value="ALL">Tüm Mahalleler</option>' +
-      neighborhoodsList.map(n => `<option value="${n.name}">${n.name}</option>`).join('');
-  }
-}
-
-function getCategoryBadge(categoryName) {
-  const name = categoryName || '';
-  if (name.includes('Ulaşım') || name.includes('Yol')) {
-    return `<span style="background: #f3e8ff; color: #7c3aed; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-car-side"></i> ${name}</span>`;
-  }
-  if (name.includes('Çevre') || name.includes('Çöp') || name.includes('Temizlik')) {
-    return `<span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-leaf"></i> ${name}</span>`;
-  }
-  if (name.includes('Altyapı') || name.includes('Asfalt') || name.includes('Su')) {
-    return `<span style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-wrench"></i> ${name}</span>`;
-  }
-  if (name.includes('Park') || name.includes('Bahçe') || name.includes('Ağaç')) {
-    return `<span style="background: #f0fdf4; color: #16a34a; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-tree"></i> ${name}</span>`;
-  }
-  return `<span style="background: #f8fafc; color: #64748b; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-tag"></i> ${name}</span>`;
-}
-
-// DEDICATED CALLS: loadComplaintsTable (Separated /my vs /all routes with Live Filters)
-async function loadComplaintsTable(mineOnly = false, deptId = null) {
-  try {
-    let url = '/api/complaints/all';
-
-    if (mineOnly || (currentUser && currentUser.role_name === 'Vatandaş')) {
-      url = '/api/complaints/my'; // STRICT DEDICATED ROUTE FOR USER'S OWN COMPLAINTS
-    } else if (deptId) {
-      url = `/api/complaints/all?department_id=${deptId}`;
-    }
-
-    const res = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    const tbody = document.getElementById('tbody-complaints');
-    if (!tbody) return;
-
-    if (!data.success || !data.complaints || data.complaints.length === 0) {
-      currentFetchedComplaints = [];
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 24px;">Kayıtlı başvuru bulunmamaktadır.</td></tr>`;
-      return;
-    }
-
-    currentFetchedComplaints = data.complaints;
-    populateCategoryFilterDropdown();
-    populateNeighborhoodFilterDropdown();
-
-    // Ensure role-based visibility enforcement on every table reload
-    const scopeSelect = document.getElementById('filter-complaint-scope');
-    const neighSelect = document.getElementById('filter-complaint-neighborhood');
-    if (currentUser && currentUser.role_name === 'Vatandaş') {
-      if (scopeSelect) {
-        scopeSelect.style.setProperty('display', 'none', 'important');
-        scopeSelect.value = 'ALL';
-      }
-      if (neighSelect) {
-        neighSelect.style.setProperty('display', 'none', 'important');
-        neighSelect.value = 'ALL';
-      }
-    } else {
-      if (scopeSelect) scopeSelect.style.removeProperty('display');
-      if (neighSelect) neighSelect.style.removeProperty('display');
-    }
-
-    applyComplaintFilters();
-
-  } catch (err) {
-    console.error('Complaints load error:', err);
-  }
-}
-
-// Live Filter Engine for Complaints Table
-function applyComplaintFilters() {
-  const tbody = document.getElementById('tbody-complaints');
-  if (!tbody || !currentFetchedComplaints) return;
-
-  const searchQuery = (document.getElementById('filter-complaint-search')?.value || '').toLowerCase().trim();
-  const scopeFilter = document.getElementById('filter-complaint-scope')?.value || 'ALL';
-  const statusFilter = document.getElementById('filter-complaint-status')?.value || 'ALL';
-  const dateFilter = document.getElementById('filter-complaint-date')?.value || 'ALL';
-  const categoryFilter = document.getElementById('filter-complaint-category')?.value || 'ALL';
-  const neighFilter = document.getElementById('filter-complaint-neighborhood')?.value || 'ALL';
-  const sortFilter = document.getElementById('filter-complaint-sort')?.value || 'DESC';
-
-  const now = new Date();
-
-  let filtered = currentFetchedComplaints.filter(c => {
-    // 0. Scope Filter Check
-    if (scopeFilter !== 'ALL') {
-      if (scopeFilter === 'MY_ASSIGNED') {
-        const isAssignedToMe = (c.assigned_to_user_id && String(c.assigned_to_user_id) === String(currentUser.id)) ||
-                               (c.assigned_employee_name && currentUser.full_name && c.assigned_employee_name.includes(currentUser.full_name));
-        if (!isAssignedToMe) return false;
-      } else if (scopeFilter === 'FORWARDED') {
-        if (!c.is_forwarded && c.status !== 'İlgili birime yönlendirildi') return false;
-      } else if (scopeFilter === 'UNASSIGNED') {
-        if (c.assigned_to_user_id || (c.status !== 'Yeni' && c.status !== 'İlgili birime yönlendirildi' && c.status !== 'Müdürlüğe iletildi')) return false;
-      } else if (scopeFilter === 'ASSIGNED') {
-        if (!c.assigned_to_user_id && c.status !== 'Personele atandı' && c.status !== 'İşlem devam ediyor') return false;
-      }
-    }
-
-    // 1. Search Query Filter
-    if (searchQuery) {
-      const trackingCode = (c.tracking_code || '').toLowerCase();
-      const title = (c.title || '').toLowerCase();
-      const neighborhood = (c.neighborhood_name || '').toLowerCase();
-      const category = (c.category_name || '').toLowerCase();
-
-      const matchSearch = trackingCode.includes(searchQuery) ||
-                          title.includes(searchQuery) ||
-                          neighborhood.includes(searchQuery) ||
-                          category.includes(searchQuery);
-
-      if (!matchSearch) return false;
-    }
-
-    // 2. Status Filter
-    if (statusFilter !== 'ALL') {
-      if (statusFilter === 'URGENT') {
-        if (c.urgency_level !== 'Acil' && c.urgency_level !== 'Kritik') return false;
-      } else if (statusFilter === 'Müdürlüğe iletildi') {
-        if (c.status !== 'Müdürlüğe iletildi' && c.status !== 'Birimine Yönlendirildi') return false;
-      } else if (statusFilter === 'İşlem devam ediyor') {
-        if (c.status !== 'İşlem devam ediyor' && c.status !== 'İşlemde') return false;
-      } else {
-        if (c.status !== statusFilter) return false;
-      }
-    }
-
-    // 3. Category Filter
-    if (categoryFilter !== 'ALL') {
-      if (c.category_id != categoryFilter) return false;
-    }
-
-    // 4. Neighborhood Filter
-    if (neighFilter !== 'ALL') {
-      if (! (c.neighborhood_name || '').includes(neighFilter)) return false;
-    }
-
-    // 5. Date Filter
-    if (dateFilter !== 'ALL') {
-      const cDate = new Date(c.created_at);
-      const diffDays = (now - cDate) / (1000 * 60 * 60 * 24);
-
-      if (dateFilter === 'TODAY' && diffDays > 1) return false;
-      if (dateFilter === 'WEEK' && diffDays > 7) return false;
-      if (dateFilter === 'MONTH' && diffDays > 30) return false;
-    }
-
-    return true;
-  });
-
-  // Sort Order
-  filtered.sort((a, b) => {
-    const dateA = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-    return sortFilter === 'ASC' ? dateA - dateB : dateB - dateA;
-  });
-
-  // Update total counts display
-  const totalCountSpan = document.getElementById('complaint-total-count');
-  if (totalCountSpan) totalCountSpan.textContent = filtered.length;
-
-  renderFilteredComplaintsTableRows(filtered);
-}
-
-function renderFilteredComplaintsTableRows(complaintsList) {
-  const tbody = document.getElementById('tbody-complaints');
-  if (!tbody) return;
-
-  if (!complaintsList || complaintsList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 24px;">Filtrelere uygun başvuru bulunamadı.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = complaintsList.map(c => {
-    let subTypeBadge = c.submission_type === 'Soru / Bilgi Talebi'
-      ? '<span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:0.72rem; display:inline-block;"><i class="fas fa-circle-question"></i> Soru / Bilgi Talebi</span>'
-      : (c.submission_type === 'Öneri / İstek'
-          ? '<span class="badge" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; font-size:0.72rem; display:inline-block;"><i class="fas fa-lightbulb"></i> Öneri / İstek</span>'
-          : '<span class="badge" style="background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; font-size:0.72rem; display:inline-block;"><i class="fas fa-triangle-exclamation"></i> Şikâyet</span>');
-
-    const isQuestionOrIdea = c.submission_type === 'Soru / Bilgi Talebi' || c.submission_type === 'Öneri / İstek';
-    const priorityBadgeHtml = getPriorityBadge(c.priority_level || c.urgency_level);
-
-    return `
-    <tr>
-      <td><strong style="color: var(--portal-blue-primary); cursor: pointer;" onclick="openComplaintDetail('${c.tracking_code}')">${c.tracking_code}</strong></td>
-      <td style="font-weight: 600;">
-        <div style="font-size: 0.92rem; color: #1e293b;">${c.title}</div>
-        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 5px;">
-          ${priorityBadgeHtml}
-          ${subTypeBadge}
-        </div>
-      </td>
-      <td>${getCategoryBadge(c.category_name)}</td>
-      <td>${c.neighborhood_name || '-'}</td>
-      <td><span class="badge ${getBadgeClass(c.status)}">${c.status}</span></td>
-      <td><small style="color: #64748b; font-weight: 500;">${new Date(c.created_at).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' })}</small></td>
-      <td style="white-space: nowrap;">
-        <button class="btn btn-secondary btn-icon-action" onclick="openComplaintDetail('${c.tracking_code}')" title="Detay İncele">
-          <i class="fas fa-eye"></i>
-        </button>
-        ${currentUser && (currentUser.role_name === 'Birim Yöneticisi' || currentUser.role_name === 'Sistem Yöneticisi') ? `
-          ${isQuestionOrIdea ? `
-            <button class="btn btn-primary btn-sm" onclick="openActionModal(${c.id})" style="background: linear-gradient(135deg, #0284c7, #0369a1);" title="Cevapla & Bilgilendir">
-              <i class="fas fa-comment-dots"></i> Cevapla
-            </button>
-          ` : `
-            <button class="btn btn-primary btn-sm" onclick="openAssignModal(${c.id}, ${c.department_id})" title="Görev Atayınız">
-              <i class="fas fa-user-plus"></i> ${c.assigned_to_user_id ? 'Yeniden Atayınız' : 'Atayınız'}
-            </button>
-            ${c.assigned_to_user_id ? `
-              <button class="btn btn-secondary btn-sm" onclick="unassignComplaint(${c.id})" style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;" title="Atamayı Kaldır">
-                <i class="fas fa-user-minus"></i> Atamayı Kaldır
-              </button>
-            ` : ''}
-          `}
-          <button class="btn btn-secondary btn-sm" onclick="openForwardDeptModal(${c.id})" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;" title="Başka Birime Yönlendir">
-            <i class="fas fa-right-left"></i> Birim Yönlendir
-          </button>
-        ` : ''}
-        ${currentUser && currentUser.role_name === 'Personel' ? `
-          ${(!c.assigned_to_user_id || c.assigned_to_user_id != currentUser.id) ? `
-            <button class="btn btn-secondary btn-sm" onclick="selfAssignComplaint(${c.id})" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; margin-right: 4px;" title="Görevi Üzerime Al">
-              <i class="fas fa-hand"></i> Görevi Üzerime Al
-            </button>
-          ` : ''}
-          <button class="btn btn-primary btn-sm" onclick="openActionModal(${c.id})">
-            <i class="fas fa-wrench"></i> İşlem Yap
-          </button>
-        ` : ''}
-      </td>
-    </tr>
-  `;
-  }).join('');
-}
-
-function resetComplaintFilters() {
-  if (document.getElementById('filter-complaint-search')) document.getElementById('filter-complaint-search').value = '';
-  if (document.getElementById('filter-complaint-status')) document.getElementById('filter-complaint-status').value = 'ALL';
-  if (document.getElementById('filter-complaint-date')) document.getElementById('filter-complaint-date').value = 'ALL';
-  if (document.getElementById('filter-complaint-category')) document.getElementById('filter-complaint-category').value = 'ALL';
-  if (document.getElementById('filter-complaint-neighborhood')) document.getElementById('filter-complaint-neighborhood').value = 'ALL';
-  if (document.getElementById('filter-complaint-sort')) document.getElementById('filter-complaint-sort').value = 'DESC';
-
-  applyComplaintFilters();
-  showToast('Filtreler temizlendi.', 'info');
-}
-
-// Load Dashboard Data & Charts
-async function loadDashboardData() {
-  try {
-    const res = await fetch('/api/stats/dashboard', {
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-
-    if (data.success && data.kpis) {
-      if (document.getElementById('kpi-total')) document.getElementById('kpi-total').textContent = data.kpis.total;
-      if (document.getElementById('kpi-pending')) document.getElementById('kpi-pending').textContent = data.kpis.pending;
-      if (document.getElementById('kpi-resolved')) document.getElementById('kpi-resolved').textContent = data.kpis.resolved;
-      if (document.getElementById('kpi-avg-days')) document.getElementById('kpi-avg-days').textContent = data.kpis.avg_days;
-      if (document.getElementById('kpi-rate')) document.getElementById('kpi-rate').textContent = data.kpis.resolution_rate;
-
-      renderDashboardCharts(data.charts);
-    }
-  } catch (err) {
-    console.error('Dashboard load error:', err);
-  }
-}
-
-// DEDICATED CALL: Load Map Data (Filtered for Citizen Map Privacy with 100% Dynamic Metrics)
-async function loadMapData() {
-  try {
-    const isCitizen = currentUser && currentUser.role_name === 'Vatandaş';
-    const url = isCitizen ? '/api/complaints/public' : '/api/complaints/all';
-
-    const res = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-
-    if (data.success && data.complaints) {
-      const complaints = data.complaints;
-
-      // 1. Initialize Map
-      initExplorerMap('map-container', complaints);
-
-      // 2. Dynamic KPI Counts
-      const totalCount = complaints.length;
-      const resolvedCount = complaints.filter(c => c.status === 'Çözüldü').length;
-      const pendingCount = complaints.filter(c => ['İlgili birime yönlendirildi', 'Personele atandı', 'İşlem devam ediyor'].includes(c.status)).length;
-      const newCount = complaints.filter(c => c.status === 'Yeni').length;
-      const resRate = totalCount > 0 ? ((resolvedCount / totalCount) * 100).toFixed(1) : '0';
-
-      const totalEl = document.getElementById('map-kpi-total');
-      const resEl = document.getElementById('map-kpi-resolved');
-      const pendEl = document.getElementById('map-kpi-pending');
-      const newEl = document.getElementById('map-kpi-new');
-
-      if (totalEl) totalEl.textContent = totalCount;
-      if (resEl) {
-        resEl.textContent = resolvedCount;
-        const sub = resEl.nextElementSibling;
-        if (sub) sub.textContent = `%${resRate} çözüm oranı`;
-      }
-      if (pendEl) pendEl.textContent = pendingCount;
-      if (newEl) newEl.textContent = newCount;
-
-      // 3. Top Yoğunluklu Bölgeler Widget List
-      const neighCounts = {};
-      complaints.forEach(c => {
-        const name = c.neighborhood_name || 'Hacısıyam Mahallesi';
-        neighCounts[name] = (neighCounts[name] || 0) + 1;
-      });
-
-      const sortedNeighs = Object.keys(neighCounts)
-        .map(name => ({ name, count: neighCounts[name] }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 5);
-
-      const topRegionsListEl = document.getElementById('map-top-regions-list');
-      if (topRegionsListEl && sortedNeighs.length > 0) {
-        const colors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#2563eb'];
-        topRegionsListEl.innerHTML = sortedNeighs.map((n, i) => `
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0;">
-            <span style="display: flex; align-items: center; gap: 8px;"><span style="color: ${colors[i % colors.length]};">●</span> <strong>${n.name}</strong></span>
-            <strong style="color: #0f172a;">${n.count}</strong>
-          </div>
-        `).join('');
-      }
-
-      // 4. Dynamic Category Doughnut Chart
-      const catCounts = {};
-      complaints.forEach(c => {
-        const cat = c.category_name || 'Genel';
-        catCounts[cat] = (catCounts[cat] || 0) + 1;
-      });
-      if (typeof initMapDoughnutChart === 'function') {
-        initMapDoughnutChart(catCounts);
-      }
-    }
-  } catch (err) {
-    console.error('Map load error:', err);
-  }
-}
-
-// =========================================================
-// OFFICIAL ANNOUNCEMENTS MANAGEMENT
-// =========================================================
-async function loadAnnouncements() {
-  try {
-    const res = await fetch('/api/announcements');
-    const data = await res.json();
-    const container = document.getElementById('announcements-container');
-    const addBtn = document.getElementById('btn-admin-add-announcement');
-
-    if (currentUser && currentUser.role_name === 'Sistem Yöneticisi') {
-      if (addBtn) addBtn.style.display = 'inline-flex';
-    } else {
-      if (addBtn) addBtn.style.display = 'none';
-    }
-
-    if (!container) return;
-    const list = data.success && data.announcements ? data.announcements : [];
-
-    // Dynamically update header bell notification badge with announcement count
-    if (typeof checkNotifications === 'function') {
-      checkNotifications();
-    }
-
-    if (list.length === 0) {
-      container.innerHTML = '<div class="card-box" style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">Henüz yayınlanmış bir duyuru bulunmuyor.</div>';
-      return;
-    }
-
-    container.innerHTML = list.map(a => {
-      let categoryBadgeClass = 'badge-yeni';
-      if (a.category && a.category.includes('Su')) categoryBadgeClass = 'badge-urgent';
-      else if (a.category && a.category.includes('Yol')) categoryBadgeClass = 'badge-devam';
-      else if (a.category && a.category.includes('Etkinlik')) categoryBadgeClass = 'badge-cozuldu';
-
-      let dateFormatted = a.created_at ? new Date(a.created_at).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : 'Tarih Belirtilmedi';
-
-      const isAdminUser = currentUser && currentUser.role_name === 'Sistem Yöneticisi';
-
-      return `
-        <div class="card-box" style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-              <span class="badge ${categoryBadgeClass}">${a.category || 'Genel Duyuru'}</span>
-              <span style="font-size: 0.76rem; color: #94a3b8; font-weight: 600;"><i class="fas fa-clock" style="margin-right: 4px;"></i> ${dateFormatted}</span>
-            </div>
-            <h4 style="color: var(--portal-blue-primary); font-size: 1.05rem; margin-bottom: 10px; line-height: 1.4;">${a.title}</h4>
-            <p style="font-size: 0.88rem; color: #475569; line-height: 1.6; margin-bottom: 16px;">${a.content}</p>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #e2e8f0; padding-top: 10px; margin-top: 10px; font-size: 0.8rem; color: #64748b;">
-            <span><i class="fas fa-user-shield" style="color: var(--portal-blue-accent); margin-right: 4px;"></i> ${a.created_by_name || 'Giresun Belediyesi'}</span>
-            ${isAdminUser ? `
-              <button class="btn btn-secondary btn-sm" style="color: #ef4444; padding: 4px 8px; font-size: 0.75rem;" onclick="deleteAnnouncement(${a.id})">
-                <i class="fas fa-trash-can"></i> Sil
-              </button>
-            ` : ''}
-          </div>
-        </div>
-      `;
-    }).join('');
-  } catch (err) {
-    console.error('Load announcements error:', err);
-  }
-}
-
-async function handleCreateAnnouncementSubmit(e) {
-  e.preventDefault();
-  const title = document.getElementById('announcement-title').value.trim();
-  const category = document.getElementById('announcement-category').value;
-  const priority = document.getElementById('announcement-priority').value;
-  const content = document.getElementById('announcement-content').value.trim();
-
-  try {
-    const res = await fetch('/api/announcements', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({ title, category, priority, content })
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('📢 Yeni duyuru başarıyla yayınlandı!', 'success');
-      closeModal('modal-new-announcement');
-      document.getElementById('form-new-announcement').reset();
-      await loadAnnouncements();
-    } else {
-      showToast(data.message || 'Duyuru yayınlanamadı.', 'error');
+      showToast(data.message || 'Destek işlemi gerçekleştirilemedi.', 'error');
     }
   } catch (err) {
     showToast('Sunucu hatası.', 'error');
   }
 }
 
-// =========================================================
-// DEDICATED REPORTS & ANALYTICS DATA CONTROLLER
-// =========================================================
-async function loadReportsAnalytics() {
-  await loadReportsData();
-}
+async function saveAdminComplaintUpdate(complaintId) {
+  const targetId = complaintId || document.getElementById('current-detail-complaint-id')?.value;
+  if (!targetId) {
+    showToast('Güncellenecek talep ID bulunamadı.', 'error');
+    return;
+  }
 
-async function loadReportsData() {
+  const priority = document.getElementById('detail-edit-priority')?.value;
+  const status = document.getElementById('detail-edit-status')?.value;
+
   try {
-    const filterReportDept = document.getElementById('filter-report-dept');
-    if (filterReportDept && filterReportDept.options.length <= 1) {
-      const depts = departmentsList && departmentsList.length > 0 ? departmentsList : [
-        { id: 1, name: 'Fen İşleri Müdürlüğü' },
-        { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-        { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-        { id: 4, name: 'Zabıta Müdürlüğü' },
-        { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' }
-      ];
-      filterReportDept.innerHTML = `<option value="ALL">🏢 Tüm Birimler & Müdürlükler</option>` +
-        depts.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-    }
+    const res = await fetch(`/api/complaints/${targetId}/status-priority`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ complaint_id: targetId, id: targetId, priority_level: priority, status: status })
+    });
 
-    const selectedDeptId = filterReportDept?.value || 'ALL';
-    const selectedPeriod = document.getElementById('filter-report-period')?.value || 'THIS_MONTH';
-
-    const [compRes, usersRes] = await Promise.all([
-      fetch('/api/complaints/all', { headers: { 'Authorization': `Bearer ${currentToken}` } }),
-      fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${currentToken}` } })
-    ]);
-
-    const compData = await compRes.json();
-    const usersData = await usersRes.json();
-
-    let complaints = compData.success && compData.complaints ? compData.complaints : [];
-    let users = usersData.success && usersData.users ? usersData.users : [];
-
-    if (currentUser.role_name === 'Birim Yöneticisi' && currentUser.department_id) {
-      complaints = complaints.filter(c => c.department_id == currentUser.department_id);
-      users = users.filter(u => u.department_id == currentUser.department_id);
-    } else if (selectedDeptId !== 'ALL') {
-      complaints = complaints.filter(c => c.department_id == selectedDeptId);
-      users = users.filter(u => u.department_id == selectedDeptId);
-    }
-
-    const now = new Date();
-    if (selectedPeriod === 'THIS_MONTH') {
-      const thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000);
-      complaints = complaints.filter(c => new Date(c.created_at) >= thirtyDaysAgo);
-    } else if (selectedPeriod === 'LAST_3_MONTHS') {
-      const ninetyDaysAgo = new Date(now.getTime() - 90 * 86400000);
-      complaints = complaints.filter(c => new Date(c.created_at) >= ninetyDaysAgo);
-    }
-
-    const totalCount = complaints.length;
-    const resolvedCount = complaints.filter(c => c.status === 'Çözüldü').length;
-    const rate = totalCount > 0 ? ((resolvedCount / totalCount) * 100).toFixed(1) : '0';
-
-    // Calculate Average Star Rating
-    const ratedComplaints = complaints.filter(c => c.rating && c.rating > 0);
-    const avgStarRating = ratedComplaints.length > 0 
-      ? (ratedComplaints.reduce((sum, c) => sum + Number(c.rating), 0) / ratedComplaints.length).toFixed(1)
-      : '4.8';
-
-    const staffMembers = users.filter(u => u.role_id == 3 || u.role_name === 'Personel');
-
-    const kpiTotal = document.getElementById('report-kpi-total');
-    const kpiRate = document.getElementById('report-kpi-rate');
-    const kpiStaff = document.getElementById('report-kpi-staff-count');
-    const kpiAvgTime = document.getElementById('report-kpi-avg-time');
-
-    if (kpiTotal) kpiTotal.textContent = totalCount;
-    if (kpiRate) kpiRate.textContent = `%${rate}`;
-    if (kpiStaff) kpiStaff.textContent = staffMembers.length;
-    if (kpiAvgTime) kpiAvgTime.textContent = `⭐ ${avgStarRating} / 5.0`;
-
-    const tbody = document.getElementById('table-reports-staff-tbody');
-    if (tbody) {
-      if (staffMembers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Seçilen filtrelere ait kayıtlı saha personeli bulunamadı.</td></tr>`;
-      } else {
-        tbody.innerHTML = staffMembers.map(s => {
-          const assignedList = complaints.filter(c => c.assigned_to_user_id == s.id || (c.assigned_employee_name && c.assigned_employee_name.includes(s.full_name)));
-          const assignedCount = assignedList.length || Math.floor(Math.random() * 4) + 3;
-          const completedCount = assignedList.filter(c => c.status === 'Çözüldü').length || Math.floor(assignedCount * 0.85);
-          const pendingCount = Math.max(0, assignedCount - completedCount);
-          
-          const staffRatings = assignedList.filter(c => c.rating > 0).map(c => Number(c.rating));
-          const staffAvgStar = staffRatings.length > 0 
-            ? (staffRatings.reduce((a,b) => a+b, 0) / staffRatings.length).toFixed(1)
-            : (4.6 + (s.id % 4) * 0.1).toFixed(1);
-
-          let scoreBadge = `<span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0;"><i class="fas fa-star" style="color:#f59e0b;"></i> ⭐ ${staffAvgStar} Mükemmel</span>`;
-          if (parseFloat(staffAvgStar) < 4.0) {
-            scoreBadge = `<span class="badge" style="background:#fff7ed; color:#c2410c; border:1px solid #ffedd5;"><i class="fas fa-star" style="color:#f59e0b;"></i> ⭐ ${staffAvgStar} Geliştirilmeli</span>`;
-          }
-
-          return `
-            <tr>
-              <td style="font-weight: 700; color: var(--portal-blue-primary);">${s.full_name}</td>
-              <td style="font-size: 0.85rem;">${s.email}<br><small style="color:#64748b;">${s.phone || '-'}</small></td>
-              <td><strong>${s.department_name || 'Birim'}</strong></td>
-              <td>${s.employee_title || 'Saha Görevlisi'}</td>
-              <td style="font-weight: 700;">${assignedCount}</td>
-              <td style="font-weight: 700; color: #047857;">${completedCount}</td>
-              <td style="color: #64748b;">${pendingCount}</td>
-              <td>${scoreBadge}</td>
-            </tr>
-          `;
-        }).join('');
-      }
-    }
-
-    if (typeof initReportCharts === 'function') {
-      initReportCharts(complaints);
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Talep durumu ve öncelik seviyesi güncellendi!', 'success');
+      closeModal('modal-complaint-detail');
+      await loadComplaintsTable();
+      await loadDashboardData();
+    } else {
+      showToast(data.message || 'Güncelleme hatası.', 'error');
     }
   } catch (err) {
-    console.error('loadReportsData error:', err);
+    showToast('Sunucu hatası.', 'error');
   }
 }
 
-async function deleteAnnouncement(id) {
-  if (!confirm('Bu duyuruyu silmek istediğinize emin misiniz?')) return;
+function openForwardDeptModal(complaintId) {
+  const fIdInput = document.getElementById('forward-complaint-id');
+  const targetSelect = document.getElementById('forward-target-dept');
+  const reasonInput = document.getElementById('forward-reason');
+
+  if (fIdInput) fIdInput.value = complaintId;
+  if (reasonInput) reasonInput.value = '';
+
+  if (targetSelect) {
+    targetSelect.innerHTML = '<option value="">-- Hedef Müdürlük Seçiniz --</option>' +
+      departmentsList.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+  }
+
+  openModal('modal-forward-dept');
+}
+
+async function handleForwardDeptSubmit(e) {
+  e.preventDefault();
+  const complaintId = document.getElementById('forward-complaint-id')?.value;
+  const targetDeptId = document.getElementById('forward-target-dept')?.value;
+  const reason = document.getElementById('forward-reason')?.value;
+
+  if (!targetDeptId) {
+    showToast('Lütfen hedef müdürlük seçiniz.', 'warning');
+    return;
+  }
+
   try {
-    const res = await fetch(`/api/announcements/${id}`, {
-      method: 'DELETE',
+    const res = await fetch(`/api/complaints/${complaintId}/forward`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ target_department_id: targetDeptId, reason: reason })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      showToast('🔄 Talep başarıyla yeni müdürlüğe sevk edildi!', 'success');
+      closeModal('modal-forward-dept');
+      closeModal('modal-complaint-detail');
+      await loadComplaintsTable();
+    } else {
+      showToast(data.message || 'Yönlendirme başarısız.', 'error');
+    }
+  } catch (err) {
+    showToast('Sunucu hatası.', 'error');
+  }
+}
+
+function openAssignModal(complaintId, deptId) {
+  const cIdInput = document.getElementById('assign-complaint-id');
+  const empSelect = document.getElementById('assign-employee-select');
+  if (cIdInput) cIdInput.value = complaintId;
+
+  if (empSelect) {
+    empSelect.innerHTML = '<option value="">Personeller yükleniyor...</option>';
+    fetch(`/api/assignments/department-employees/${deptId || 1}`, {
       headers: { 'Authorization': `Bearer ${currentToken}` }
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.employees && data.employees.length > 0) {
+          empSelect.innerHTML = '<option value="">-- Saha Personeli Seçiniz --</option>' +
+            data.employees.map(emp => `<option value="${emp.id || emp.user_id}">${emp.full_name} (${emp.title || 'Saha Görevlisi'})</option>`).join('');
+        } else {
+          empSelect.innerHTML = '<option value="">Kayıtlı saha personeli bulunamadı</option>';
+        }
+      })
+      .catch(() => {
+        empSelect.innerHTML = '<option value="">Personel yüklenemedi</option>';
+      });
+  }
+
+  openModal('modal-assign-task');
+}
+
+async function handleAssignTaskSubmit(e) {
+  e.preventDefault();
+  const complaintId = document.getElementById('assign-complaint-id')?.value;
+  const empId = document.getElementById('assign-employee-select')?.value;
+  const desc = document.getElementById('assign-task-desc')?.value;
+
+  if (!empId) {
+    showToast('Lütfen atanacak personeli seçiniz.', 'warning');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/assignments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ complaint_id: complaintId, assigned_to_user_id: empId, instructions: desc })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      showToast('👷 Görev başarıyla personele atandı!', 'success');
+      closeModal('modal-assign-task');
+      closeModal('modal-complaint-detail');
+      await loadComplaintsTable();
+    } else {
+      showToast(data.message || 'Atama yapılamadı.', 'error');
+    }
+  } catch (err) {
+    showToast('Sunucu hatası.', 'error');
+  }
+}
+
+async function selfAssignComplaint(complaintId) {
+  try {
+    const res = await fetch('/api/assignments/self-assign', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ complaint_id: complaintId })
     });
     const data = await res.json();
     if (data.success) {
-      showToast('Duyuru silindi.', 'info');
-      await loadAnnouncements();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Görev Üzerinize Alındı!',
+          text: data.message || 'Görev başarıyla üzerinize atandı.',
+          confirmButtonColor: '#0284c7',
+          confirmButtonText: 'Tamam'
+        });
+      } else {
+        showToast('👷 Görev başarıyla üzerinize alındı!', 'success');
+      }
+      await loadComplaintsTable();
+      await loadDashboardData();
+    } else {
+      showToast(data.message || 'Görev üzerinize alınamadı.', 'error');
     }
   } catch (err) {
-    showToast('Silme hatası.', 'error');
+    showToast('Sunucu hatası.', 'error');
   }
 }
 
-// =========================================================
-// ADMIN USER MANAGEMENT & CONTROL SYSTEM
-// =========================================================
-let currentFetchedAdminUsers = [];
+async function unassignComplaint(complaintId) {
+  const executeUnassign = async () => {
+    try {
+      const res = await fetch('/api/assignments/unassign', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${currentToken}`
+        },
+        body: JSON.stringify({ complaint_id: complaintId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            icon: 'info',
+            title: 'Atama Kaldırıldı',
+            text: 'Görev ataması kaldırıldı. Talep birim havuzuna geri alındı.',
+            confirmButtonColor: '#64748b',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          showToast('ℹ️ Görev ataması kaldırıldı.', 'info');
+        }
+        await loadComplaintsTable();
+        await loadDashboardData();
+      } else {
+        showToast(data.message || 'Atama kaldırılamadı.', 'error');
+      }
+    } catch (err) {
+      showToast('Sunucu hatası.', 'error');
+    }
+  };
+
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      title: 'Görev Atamasını Kaldır',
+      text: 'Bu talebin personel atamasını kaldırmak istediğinize emin misiniz? Talep birim havuzuna geri dönecektir.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Evet, Kaldır',
+      cancelButtonText: 'İptal'
+    }).then(result => {
+      if (result.isConfirmed) executeUnassign();
+    });
+  } else {
+    if (confirm('Görev atamasını kaldırmak istediğinize emin misiniz?')) {
+      executeUnassign();
+    }
+  }
+}
+
+function openActionModal(complaintId) {
+  const cId = Number(complaintId);
+  const cIdInput = document.getElementById('action-complaint-id');
+  if (cIdInput) cIdInput.value = cId;
+
+  // Populate complaint info in modal
+  const c = (currentFetchedComplaints || []).find(item => Number(item.id) === cId);
+  if (c) {
+    const titleEl = document.getElementById('action-complaint-title');
+    const addrEl = document.getElementById('action-complaint-address');
+    const coordsEl = document.getElementById('action-complaint-coords');
+    const mapLinkEl = document.getElementById('action-complaint-map-link');
+
+    if (titleEl) titleEl.textContent = `${c.tracking_code} - ${c.title}`;
+    if (addrEl) addrEl.textContent = `${c.open_address || c.neighborhood_name || 'Bulancak'}`;
+    if (coordsEl) coordsEl.textContent = `📍 ${c.latitude || '40.9385'}, ${c.longitude || '38.2300'}`;
+    if (mapLinkEl) {
+      mapLinkEl.href = `https://maps.google.com/?q=${c.latitude || 40.9385},${c.longitude || 38.2300}`;
+    }
+  }
+
+  openModal('modal-action-task');
+}
+
+async function handleActionTaskSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('form-action-task');
+  const formData = new FormData(form);
+
+  const cId = document.getElementById('action-complaint-id')?.value;
+  if (!formData.get('complaint_id') && cId) {
+    formData.append('complaint_id', cId);
+  }
+
+  try {
+    const res = await fetch('/api/assignments/action', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${currentToken}` },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'İşlem Kaydedildi!',
+          text: 'İşlem kaydı ve çözüm detayları başarıyla kaydedildi.',
+          confirmButtonColor: '#10b981',
+          confirmButtonText: 'Tamam'
+        });
+      } else {
+        showToast('✅ İşlem ve durum kaydı başarıyla kaydedildi!', 'success');
+      }
+      closeModal('modal-action-task');
+      closeModal('modal-complaint-detail');
+      await loadComplaintsTable();
+      await loadDashboardData();
+    } else {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Hata',
+          text: data.message || 'İşlem kaydedilemedi.',
+          confirmButtonColor: '#ef4444'
+        });
+      } else {
+        showToast(data.message || 'İşlem kaydedilemedi.', 'error');
+      }
+    }
+  } catch (err) {
+    showToast('Sunucu hatası.', 'error');
+  }
+}
+
+// Quick Track Modal Form
+async function handleQuickTrackSubmit(e) {
+  e.preventDefault();
+  const codeInput = document.getElementById('track-code-input');
+  const code = codeInput ? codeInput.value.trim().toUpperCase() : '';
+  if (!code) return;
+
+  closeModal('modal-quick-track');
+  openComplaintDetail(code);
+}
+
+// ============================================================================
+// 9. ÇÖZÜM ARŞİVİ YÖNETİCİSİ (ONLY RESOLVED COMPLAINTS)
+// ============================================================================
+async function loadSolutionArchive() {
+  const tbody = document.getElementById('archive-tbody');
+  const neighSelect = document.getElementById('filter-archive-neighborhood');
+  const catSelect = document.getElementById('filter-archive-category');
+
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Çözüm arşivi yükleniyor...</td></tr>';
+  }
+
+  // Populate Filter Dropdowns
+  if (neighSelect && neighSelect.options.length <= 1 && neighborhoodsList) {
+    neighborhoodsList.forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n.name;
+      opt.textContent = `📍 ${n.name}`;
+      neighSelect.appendChild(opt);
+    });
+  }
+
+  if (catSelect && catSelect.options.length <= 1 && categoriesList) {
+    categoriesList.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name;
+      opt.textContent = `📂 ${c.name}`;
+      catSelect.appendChild(opt);
+    });
+  }
+
+  try {
+    const res = await fetch('/api/complaints/all', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+
+    if (data.success && Array.isArray(data.complaints)) {
+      currentArchiveComplaints = data.complaints.filter(c => (c.status || '').toLowerCase().includes('çözüldü') || (c.status || '').toLowerCase().includes('cozuldu'));
+      renderArchiveTable(currentArchiveComplaints);
+    } else {
+      if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 20px;">Arşivde çözülmüş kayıt bulunamadı.</td></tr>';
+    }
+  } catch (err) {
+    if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444; padding: 20px;">Çözüm arşivi yüklenemedi.</td></tr>';
+  }
+}
+
+function applyArchiveFilters() {
+  const searchVal = document.getElementById('filter-archive-search')?.value.toLowerCase().trim() || '';
+  const neighVal = document.getElementById('filter-archive-neighborhood')?.value || 'ALL';
+  const catVal = document.getElementById('filter-archive-category')?.value || 'ALL';
+
+  let filtered = currentArchiveComplaints.filter(c => {
+    if (searchVal) {
+      const titleMatch = (c.title || '').toLowerCase().includes(searchVal);
+      const codeMatch = (c.tracking_code || '').toLowerCase().includes(searchVal);
+      const addrMatch = (c.open_address || '').toLowerCase().includes(searchVal);
+      if (!titleMatch && !codeMatch && !addrMatch) return false;
+    }
+    if (neighVal !== 'ALL' && c.neighborhood_name !== neighVal) return false;
+    if (catVal !== 'ALL' && c.category_name !== catVal) return false;
+    return true;
+  });
+
+  renderArchiveTable(filtered);
+}
+
+function renderArchiveTable(list) {
+  const tbody = document.getElementById('archive-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (!list || list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Kriterlere uygun çözülmüş talep bulunamadı.</td></tr>';
+    return;
+  }
+
+  list.forEach(c => {
+    const tr = document.createElement('tr');
+    const resolvedDate = c.updated_at ? new Date(c.updated_at).toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '-';
+    
+    let ratingStars = '<span style="color:#94a3b8; font-size:0.8rem;">Puanlanmadı</span>';
+    if (c.avg_rating || c.rating) {
+      const rateVal = parseFloat(c.avg_rating || c.rating);
+      const starsHtml = '★'.repeat(Math.round(rateVal)) + '☆'.repeat(5 - Math.round(rateVal));
+      ratingStars = `
+        <span style="color:#f59e0b; font-weight:800; font-size:0.88rem;">${starsHtml}</span>
+        <strong style="font-size:0.8rem; color:#475569; margin-left:4px;">${rateVal.toFixed(1)}</strong>
+      `;
+    }
+
+    tr.innerHTML = `
+      <td><strong style="color: var(--portal-blue-primary); font-size: 0.85rem;">${c.tracking_code}</strong></td>
+      <td>
+        <strong style="color: #0f172a; font-size: 0.88rem;">${c.title}</strong>
+        ${c.is_public ? '<span class="badge" style="background:#e0f2fe; color:#0369a1; margin-left:4px; font-size:0.7rem;">Kamuya Açık</span>' : ''}
+      </td>
+      <td><small style="color: #475569;">📍 ${c.neighborhood_name || 'Bulancak'}</small></td>
+      <td><span class="badge" style="background:#f1f5f9; color:#334155; font-size:0.78rem;">${c.category_name || 'Genel'}</span></td>
+      <td><small style="color: #475569; font-weight:600;">${c.department_name || 'Fen İşleri'}</small></td>
+      <td><small style="color: #15803d; font-weight:700;"><i class="fas fa-check-circle"></i> ${resolvedDate}</small></td>
+      <td>${ratingStars}</td>
+      <td style="text-align: right; padding-right: 14px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="padding: 4px 10px; font-size: 0.78rem; font-weight: 600;">
+          <i class="fas fa-eye"></i> İncele
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================================
+// 10. ÜST DÜZEY YÖNETİCİ RAPORLARI VE ANALİTİK PANELİ
+// ============================================================================
+let currentReportRange = 'this_month';
+let reportTypesChart = null;
+let reportDeptsChart = null;
+
+function setReportTimeRange(range) {
+  currentReportRange = range;
+  document.querySelectorAll('.report-time-btn').forEach(btn => btn.classList.remove('active', 'btn-primary'));
+  document.querySelectorAll('.report-time-btn').forEach(btn => btn.classList.add('btn-secondary'));
+
+  const activeBtn = document.getElementById(`btn-report-${range.replace('_', '-')}`);
+  if (activeBtn) {
+    activeBtn.classList.remove('btn-secondary');
+    activeBtn.classList.add('btn-primary', 'active');
+  }
+
+  const customBox = document.getElementById('report-custom-date-box');
+  if (customBox) customBox.style.display = 'none';
+
+  loadReportsData();
+}
+
+function toggleReportCustomDate() {
+  currentReportRange = 'custom';
+  document.querySelectorAll('.report-time-btn').forEach(btn => btn.classList.remove('active', 'btn-primary'));
+  document.querySelectorAll('.report-time-btn').forEach(btn => btn.classList.add('btn-secondary'));
+
+  const btn = document.getElementById('btn-report-custom');
+  if (btn) {
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-primary', 'active');
+  }
+
+  const customBox = document.getElementById('report-custom-date-box');
+  if (customBox) {
+    customBox.style.display = customBox.style.display === 'none' ? 'flex' : 'none';
+  }
+}
+
+function applyReportCustomDate() {
+  const start = document.getElementById('report-start-date')?.value;
+  if (!start) {
+    showToast('Lütfen başlangıç tarihi seçiniz.', 'warning');
+    return;
+  }
+  loadReportsData();
+}
+
+async function loadReportsData() {
+  let url = `/api/stats/reports?time_range=${currentReportRange}`;
+  if (currentReportRange === 'custom') {
+    const start = document.getElementById('report-start-date')?.value;
+    const end = document.getElementById('report-end-date')?.value;
+    if (start) url += `&start_date=${start}`;
+    if (end) url += `&end_date=${end}`;
+  }
+
+  try {
+    const res = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      renderReportsChartsAndKPIs(data);
+    }
+  } catch (err) {
+    console.error('Reports data load error:', err);
+  }
+}
+
+function renderReportsChartsAndKPIs(data) {
+  // Update KPI Cards
+  const kpiTotal = document.getElementById('report-kpi-total');
+  const kpiResolved = document.getElementById('report-kpi-resolved');
+  const kpiPending = document.getElementById('report-kpi-pending');
+  const kpiRate = document.getElementById('report-kpi-rate');
+  const kpiAvgTime = document.getElementById('report-kpi-avg-time');
+
+  if (kpiTotal && data.kpis) kpiTotal.textContent = data.kpis.total;
+  if (kpiResolved && data.kpis) kpiResolved.textContent = data.kpis.resolved;
+  if (kpiPending && data.kpis) kpiPending.textContent = data.kpis.in_progress;
+  if (kpiRate && data.kpis) kpiRate.textContent = data.kpis.resolution_rate;
+  if (kpiAvgTime && data.kpis) kpiAvgTime.textContent = data.kpis.avg_days;
+
+  // Render Submission Types Pie Chart
+  const typesCanvas = document.getElementById('chart-report-types');
+  if (typesCanvas && data.submission_types) {
+    if (reportTypesChart) reportTypesChart.destroy();
+
+    reportTypesChart = new Chart(typesCanvas, {
+      type: 'pie',
+      data: {
+        labels: data.submission_types.labels || ['Şikâyet/Arıza', 'Soru/Bilgi', 'Öneri/İstek'],
+        datasets: [{
+          data: data.submission_types.data || [0, 0, 0],
+          backgroundColor: ['#ef4444', '#3b82f6', '#10b981'],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { weight: '600', size: 11 } } }
+        }
+      }
+    });
+  }
+
+  // Render Department Performance Bar Chart
+  const deptsCanvas = document.getElementById('chart-report-depts');
+  if (deptsCanvas && data.department_performance) {
+    if (reportDeptsChart) reportDeptsChart.destroy();
+
+    const deptLabels = data.department_performance.map(d => d.name.replace(' Müdürlüğü', ''));
+    const deptRates = data.department_performance.map(d => d.rate);
+
+    reportDeptsChart = new Chart(deptsCanvas, {
+      type: 'bar',
+      data: {
+        labels: deptLabels,
+        datasets: [{
+          label: 'Çözüm Oranı (%)',
+          data: deptRates,
+          backgroundColor: '#0284c7',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => `%${v}` } },
+          x: { ticks: { font: { size: 10 } } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  // Render Department Performance Table
+  const tbody = document.getElementById('report-dept-performance-tbody');
+  if (tbody && data.department_performance) {
+    tbody.innerHTML = '';
+    if (data.department_performance.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 18px;">Seçilen dönemde veri bulunamadı.</td></tr>';
+      return;
+    }
+
+    data.department_performance.forEach(dept => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong style="color: var(--portal-blue-primary);">${dept.name}</strong></td>
+        <td><strong>${dept.total}</strong></td>
+        <td style="color: #047857; font-weight: 700;">${dept.resolved}</td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="flex: 1; background: #e2e8f0; border-radius: 4px; height: 8px; overflow: hidden;">
+              <div style="width: ${dept.rate}%; background: ${dept.rate >= 70 ? '#10b981' : (dept.rate >= 40 ? '#f59e0b' : '#ef4444')}; height: 100%;"></div>
+            </div>
+            <strong style="font-size: 0.82rem; min-width: 45px;">%${dept.rate}</strong>
+          </div>
+        </td>
+        <td>
+          <span class="badge ${dept.rate >= 70 ? 'badge-cozuldu' : 'badge-in-progress'}">
+            ${dept.rate >= 70 ? 'Yüksek Başarı' : 'Takip Ediliyor'}
+          </span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+}
+
+function exportReportsToPdf() {
+  const element = document.getElementById('sec-reports');
+  if (!element) return;
+
+  showToast('Rapor PDF olarak hazırlanıyor...', 'info');
+
+  if (typeof html2pdf !== 'undefined') {
+    const opt = {
+      margin: [8, 8, 8, 8],
+      filename: `Bulancak_Belediyesi_153_Yonetici_Raporu_${new Date().toISOString().slice(0, 10)}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save().then(() => {
+      showToast('📄 PDF başarıyla indirildi.', 'success');
+    }).catch(err => {
+      console.error(err);
+      window.print();
+    });
+  } else {
+    window.print();
+  }
+}
+
+// ============================================================================
+// 11. ADMIN USER MANAGEMENT & CONTROL SYSTEM
+// ============================================================================
 let currentUserTab = 'ALL';
 
 async function loadAdminUsersTable() {
@@ -1383,14 +2453,10 @@ async function loadAdminUsersTable() {
     const data = await res.json();
     if (data.success && data.users) {
       currentFetchedAdminUsers = data.users;
-      
-      // Populate department filter dropdowns
       populateAdminUserDepartmentDropdowns();
-
       applyAdminUserFilters();
     }
   } catch (err) {
-    console.error('loadAdminUsersTable error:', err);
     showToast('Kullanıcı listesi yüklenemedi.', 'error');
   }
 }
@@ -1399,38 +2465,23 @@ function populateAdminUserDepartmentDropdowns() {
   const filterDeptSelect = document.getElementById('filter-user-dept');
   const modalDeptSelect = document.getElementById('admin-user-dept');
 
-  const depts = departmentsList && departmentsList.length > 0 
-    ? departmentsList 
-    : [
-        { id: 1, name: 'Fen İşleri Müdürlüğü' },
-        { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-        { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-        { id: 4, name: 'Zabıta Müdürlüğü' },
-        { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' }
-      ];
-
   if (filterDeptSelect) {
-    const currVal = filterDeptSelect.value;
-    filterDeptSelect.innerHTML = `<option value="ALL">🏢 Tüm Birimler / Müdürlükler</option>` + 
-      depts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
-    filterDeptSelect.value = currVal || 'ALL';
+    filterDeptSelect.innerHTML = `<option value="ALL">🏢 Tüm Birimler / Müdürlükler</option>` +
+      departmentsList.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
   }
 
   if (modalDeptSelect) {
-    modalDeptSelect.innerHTML = depts.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+    modalDeptSelect.innerHTML = departmentsList.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
   }
 }
 
 function switchUserTab(tab) {
   currentUserTab = tab;
   document.querySelectorAll('.user-tab-btn').forEach(btn => btn.classList.remove('active'));
-  
+
   if (tab === 'ALL') document.getElementById('btn-user-tab-all')?.classList.add('active');
   if (tab === 'STAFF') document.getElementById('btn-user-tab-staff')?.classList.add('active');
   if (tab === 'CITIZEN') document.getElementById('btn-user-tab-citizen')?.classList.add('active');
-
-  const roleSelect = document.getElementById('filter-user-role');
-  if (roleSelect) roleSelect.value = 'ALL';
 
   applyAdminUserFilters();
 }
@@ -1438,6 +2489,7 @@ function switchUserTab(tab) {
 function applyAdminUserFilters() {
   const tbody = document.getElementById('admin-users-tbody');
   if (!tbody || !currentFetchedAdminUsers) return;
+  tbody.innerHTML = '';
 
   const searchQuery = (document.getElementById('filter-user-search')?.value || '').trim().toLowerCase();
   const selectedDept = document.getElementById('filter-user-dept')?.value || 'ALL';
@@ -1447,53 +2499,56 @@ function applyAdminUserFilters() {
     const roleName = u.role_name || (u.role_id === 1 ? 'Sistem Yöneticisi' : (u.role_id === 2 ? 'Birim Yöneticisi' : (u.role_id === 3 ? 'Personel' : 'Vatandaş')));
     const deptName = u.department_name || '';
 
-    // 1. Tab category filter
-    if (currentUserTab === 'STAFF') {
-      if (roleName === 'Vatandaş' || u.role_id === 4) return false;
-    } else if (currentUserTab === 'CITIZEN') {
-      if (roleName !== 'Vatandaş' && u.role_id !== 4) return false;
-    }
+    if (currentUserTab === 'STAFF' && (roleName === 'Vatandaş' || u.role_id === 4)) return false;
+    if (currentUserTab === 'CITIZEN' && roleName !== 'Vatandaş' && u.role_id !== 4) return false;
 
-    // 2. Search query filter
     if (searchQuery) {
       const matchName = (u.full_name || '').toLowerCase().includes(searchQuery);
       const matchEmail = (u.email || '').toLowerCase().includes(searchQuery);
       const matchPhone = (u.phone || '').toLowerCase().includes(searchQuery);
-      const matchDept = deptName.toLowerCase().includes(searchQuery);
-      const matchTitle = (u.employee_title || '').toLowerCase().includes(searchQuery);
-      const matchRole = roleName.toLowerCase().includes(searchQuery);
-      if (!matchName && !matchEmail && !matchPhone && !matchDept && !matchTitle && !matchRole) return false;
+      if (!matchName && !matchEmail && !matchPhone) return false;
     }
 
-    // 3. Department filter
     if (selectedDept !== 'ALL') {
-      if (roleName === 'Vatandaş' || u.role_id === 4) return false;
-      const targetDept = selectedDept.toLowerCase();
-      const isMatch = deptName.toLowerCase().includes(targetDept) || String(u.department_id) === String(selectedDept);
-      if (!isMatch) return false;
+      if (roleName === 'Vatandaş') return false;
+      if (!deptName.toLowerCase().includes(selectedDept.toLowerCase())) return false;
     }
 
-    // 4. Role filter
-    if (selectedRole !== 'ALL') {
-      const isRoleMatch = roleName === selectedRole || String(u.role_id) === String(selectedRole);
-      if (!isRoleMatch) return false;
-    }
+    if (selectedRole !== 'ALL' && roleName !== selectedRole) return false;
 
     return true;
   });
 
-  if (filtered.length === 0) {
+  // Strict Deduplication
+  const uniqueUsersMap = new Map();
+  filtered.forEach(u => {
+    if (u && u.id && !uniqueUsersMap.has(Number(u.id))) {
+      uniqueUsersMap.set(Number(u.id), u);
+    }
+  });
+  const uniqueFiltered = Array.from(uniqueUsersMap.values());
+
+  if (uniqueFiltered.length === 0) {
     tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px; font-weight: 600;">Filtrelere uygun kullanıcı bulunamadı.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = filtered.map(u => {
-    const roleName = u.role_name || (u.role_id === 1 ? 'Sistem Yöneticisi' : (u.role_id === 2 ? 'Birim Yöneticisi' : (u.role_id === 3 ? 'Personel' : 'Vatandaş')));
-    let roleBadge = '';
-    if (roleName === 'Sistem Yöneticisi' || u.role_id === 1) roleBadge = '<span class="badge" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca;"><i class="fas fa-crown"></i> Sistem Yöneticisi</span>';
-    else if (roleName === 'Birim Yöneticisi' || u.role_id === 2) roleBadge = '<span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a;"><i class="fas fa-user-tie"></i> Birim Yöneticisi</span>';
-    else if (roleName === 'Personel' || u.role_id === 3) roleBadge = '<span class="badge" style="background:#e0f2fe; color:#075985; border:1px solid #bae6fd;"><i class="fas fa-user-gear"></i> Personel</span>';
-    else roleBadge = '<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;"><i class="fas fa-user"></i> Vatandaş</span>';
+  tbody.innerHTML = uniqueFiltered.map(u => {
+    const numId = Number(u.id);
+    const roleName = u.role_name || 'Vatandaş';
+    
+    let roleBadge = '<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;"><i class="fas fa-user"></i> Vatandaş</span>';
+    if (roleName === 'Sistem Yöneticisi' || u.role_id === 1) {
+      roleBadge = '<span class="badge" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca;"><i class="fas fa-crown"></i> Sistem Yöneticisi</span>';
+    } else if (roleName === 'Belediye Başkanı' || u.role_id === 5) {
+      roleBadge = '<span class="badge" style="background:#f3e8ff; color:#6b21a8; border:1px solid #d8b4fe;"><i class="fas fa-award"></i> Belediye Başkanı</span>';
+    } else if (roleName === 'Belediye Başkan Yardımcısı' || u.role_id === 6) {
+      roleBadge = '<span class="badge" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe;"><i class="fas fa-user-shield"></i> Başkan Yardımcısı</span>';
+    } else if (roleName === 'Birim Yöneticisi' || u.role_id === 2) {
+      roleBadge = '<span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a;"><i class="fas fa-user-tie"></i> Birim Yöneticisi</span>';
+    } else if (roleName === 'Personel' || u.role_id === 3) {
+      roleBadge = '<span class="badge" style="background:#e0f2fe; color:#075985; border:1px solid #bae6fd;"><i class="fas fa-user-gear"></i> Personel</span>';
+    }
 
     const isStaff = roleName !== 'Vatandaş' && u.role_id !== 4;
     const deptTitleStr = isStaff 
@@ -1504,21 +2559,17 @@ function applyAdminUserFilters() {
       ? '<span class="badge badge-cozuldu">Aktif</span>'
       : '<span class="badge badge-iptal">Pasif</span>';
 
-    const isPrimaryAdmin = (u.id == 1 || u.role_id == 1);
-    const actionButtons = isPrimaryAdmin
-      ? `<button class="btn btn-secondary btn-sm" onclick="openEditUserModal(${u.id})" style="margin-right: 4px;" title="Kullanıcıyı Düzenle">
-            <i class="fas fa-pen-to-square"></i> Düzenle
+    const isProtected = (numId === 1 || u.role_id === 1);
+    const actionButtons = isProtected
+      ? `<button class="btn btn-secondary btn-sm" onclick="openEditUserModal(${numId})" style="margin-right: 4px;"><i class="fas fa-pen-to-square"></i> Düzenle</button>
+         <span class="badge" style="background:#f1f5f9; color:#64748b; font-size:0.75rem;"><i class="fas fa-lock"></i> Korumalı</span>`
+      : `<button class="btn btn-secondary btn-sm" onclick="openEditUserModal(${numId})" style="margin-right: 4px;"><i class="fas fa-pen-to-square"></i> Düzenle</button>
+         <button class="btn btn-secondary btn-sm" onclick="toggleAdminUserActive(${numId})" style="margin-right: 4px; background: ${u.is_active ? '#fff7ed' : '#ecfdf5'}; color: ${u.is_active ? '#c2410c' : '#047857'}; border: 1px solid ${u.is_active ? '#ffedd5' : '#a7f3d0'};">
+           <i class="fas ${u.is_active ? 'fa-user-slash' : 'fa-user-check'}"></i> ${u.is_active ? 'Pasife Al' : 'Aktife Al'}
          </button>
-         <span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1; font-size:0.75rem;"><i class="fas fa-lock"></i> Korumalı</span>`
-      : `<button class="btn btn-secondary btn-sm" onclick="openEditUserModal(${u.id})" style="margin-right: 4px;" title="Kullanıcıyı Düzenle">
-            <i class="fas fa-pen-to-square"></i> Düzenle
-          </button>
-          <button class="btn btn-secondary btn-sm" onclick="toggleAdminUserActive(${u.id})" style="margin-right: 4px; background: ${u.is_active ? '#fff7ed' : '#ecfdf5'}; color: ${u.is_active ? '#c2410c' : '#047857'}; border: 1px solid ${u.is_active ? '#ffedd5' : '#a7f3d0'};" title="${u.is_active ? 'Pasife Al' : 'Aktife Al'}">
-            <i class="fas ${u.is_active ? 'fa-user-slash' : 'fa-user-check'}"></i> ${u.is_active ? 'Pasife Al' : 'Aktife Al'}
-          </button>
-          <button class="btn btn-secondary btn-sm" onclick="deleteAdminUser(${u.id})" style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;" title="Kullanıcıyı Sil (Soft Delete)">
-            <i class="fas fa-trash-can"></i> Sil
-          </button>`;
+         <button class="btn btn-secondary btn-sm" onclick="deleteAdminUser(${numId})" style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;">
+           <i class="fas fa-trash-can"></i> Sil
+         </button>`;
 
     return `
       <tr>
@@ -1538,8 +2589,6 @@ function openAddUserModal() {
   document.getElementById('form-admin-user').reset();
   document.getElementById('edit-user-id').value = '';
   document.getElementById('admin-user-email').readOnly = false;
-  document.getElementById('admin-user-email').style.background = '#ffffff';
-
   document.getElementById('modal-user-title').innerHTML = '<i class="fas fa-user-plus" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Yeni Kullanıcı Oluştur';
   document.getElementById('lbl-admin-user-pwd').textContent = 'Şifre * (En az 6 karakter)';
   document.getElementById('hint-admin-user-pwd').style.display = 'none';
@@ -1550,7 +2599,8 @@ function openAddUserModal() {
 }
 
 function openEditUserModal(userId) {
-  const u = currentFetchedAdminUsers.find(usr => usr.id == userId);
+  const numId = Number(userId);
+  const u = currentFetchedAdminUsers.find(usr => Number(usr.id) === numId);
   if (!u) return;
 
   populateAdminUserDepartmentDropdowns();
@@ -1558,9 +2608,6 @@ function openEditUserModal(userId) {
   document.getElementById('edit-user-id').value = u.id;
   document.getElementById('admin-user-fullname').value = u.full_name || '';
   document.getElementById('admin-user-email').value = u.email || '';
-  document.getElementById('admin-user-email').readOnly = false;
-  document.getElementById('admin-user-email').style.background = '#ffffff';
-
   document.getElementById('admin-user-phone').value = u.phone || '';
   document.getElementById('admin-user-role').value = u.role_id || 4;
   document.getElementById('admin-user-password').value = '';
@@ -1575,19 +2622,53 @@ function openEditUserModal(userId) {
   document.getElementById('admin-user-title').value = u.employee_title || '';
 
   handleAdminUserRoleChange();
+
+  // Populate Vice Mayor checkboxes if role is 6
+  if (Number(u.role_id) === 6) {
+    const listContainer = document.getElementById('vice-mayor-dept-checkbox-list');
+    if (listContainer) {
+      listContainer.innerHTML = departmentsList.map(dept => {
+        const isChecked = Number(dept.vice_mayor_user_id) === numId;
+        return `
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+            <input type="checkbox" name="vice_mayor_depts" value="${dept.id}" ${isChecked ? 'checked' : ''}>
+            <span>${dept.name}</span>
+          </label>
+        `;
+      }).join('');
+    }
+  }
+
   openModal('modal-admin-user');
 }
 
 function handleAdminUserRoleChange() {
-  const roleVal = document.getElementById('admin-user-role').value;
+  const roleVal = document.getElementById('admin-user-role')?.value;
   const orgContainer = document.getElementById('container-admin-user-org');
+  const viceMayorContainer = document.getElementById('container-admin-user-vice-mayor-depts');
   const titleInput = document.getElementById('admin-user-title');
 
-  if (roleVal === '4') { // Vatandaş
+  if (roleVal === '4' || roleVal === '5') { // Vatandaş veya Başkan
     if (orgContainer) orgContainer.style.display = 'none';
+    if (viceMayorContainer) viceMayorContainer.style.display = 'none';
+  } else if (roleVal === '6') { // Başkan Yardımcısı
+    if (orgContainer) orgContainer.style.display = 'none';
+    if (viceMayorContainer) {
+      viceMayorContainer.style.display = 'block';
+      const listContainer = document.getElementById('vice-mayor-dept-checkbox-list');
+      if (listContainer && listContainer.children.length === 0) {
+        listContainer.innerHTML = departmentsList.map(dept => `
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+            <input type="checkbox" name="vice_mayor_depts" value="${dept.id}">
+            <span>${dept.name}</span>
+          </label>
+        `).join('');
+      }
+    }
   } else {
     if (orgContainer) orgContainer.style.display = 'block';
-    if (!titleInput.value) {
+    if (viceMayorContainer) viceMayorContainer.style.display = 'none';
+    if (titleInput && !titleInput.value) {
       if (roleVal === '2') titleInput.value = 'Birim Müdürü';
       else if (roleVal === '3') titleInput.value = 'Saha Görevlisi';
       else if (roleVal === '1') titleInput.value = 'Sistem Yöneticisi';
@@ -1597,6 +2678,12 @@ function handleAdminUserRoleChange() {
 
 async function handleAdminUserSubmit(e) {
   e.preventDefault();
+  const submitBtn = document.getElementById('btn-admin-user-submit');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.origHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
+  }
 
   const editId = document.getElementById('edit-user-id').value;
   const full_name = document.getElementById('admin-user-fullname').value.trim();
@@ -1604,27 +2691,14 @@ async function handleAdminUserSubmit(e) {
   const phone = document.getElementById('admin-user-phone').value.trim();
   const role_id = Number(document.getElementById('admin-user-role').value);
   const password = document.getElementById('admin-user-password').value;
-  const department_id = Number(document.getElementById('admin-user-dept').value || 1);
-  const title = document.getElementById('admin-user-title').value.trim();
+  const department_id = Number(document.getElementById('admin-user-dept')?.value || 0);
+  const title = document.getElementById('admin-user-title')?.value.trim() || '';
 
-  // Validation 1: Password length check (min 6 chars)
-  if (!editId && (!password || password.length < 6)) {
-    showToast('⚠️ Şifre en az 6 karakter uzunluğunda olmalıdır!', 'error');
-    return;
-  }
-  if (editId && password && password.length < 6) {
-    showToast('⚠️ Şifre en az 6 karakter uzunluğunda olmalıdır!', 'error');
-    return;
-  }
-
-  // Validation 2: Email conflict check
-  const duplicateUser = currentFetchedAdminUsers.find(u => 
-    u.email.toLowerCase() === email.toLowerCase() && String(u.id) !== String(editId)
-  );
-  if (duplicateUser) {
-    showToast('⚠️ Bu e-posta adresi sistemde zaten başka bir kullanıcıda kayıtlı!', 'error');
-    return;
-  }
+  // Get selected departments for Vice Mayor
+  const selectedDeptIds = [];
+  document.querySelectorAll('input[name="vice_mayor_depts"]:checked').forEach(cb => {
+    selectedDeptIds.push(Number(cb.value));
+  });
 
   const endpoint = editId ? `/api/admin/users/${editId}` : '/api/admin/users';
   const method = editId ? 'PUT' : 'POST';
@@ -1637,13 +2711,14 @@ async function handleAdminUserSubmit(e) {
         'Authorization': `Bearer ${currentToken}`
       },
       body: JSON.stringify({
-        full_name, email, phone, role_id, password, department_id, title
+        full_name, email, phone, role_id, password, department_id, title,
+        assigned_department_ids: selectedDeptIds
       })
     });
     const data = await res.json();
 
     if (data.success) {
-      showToast(editId ? '👤 Kullanıcı başarıyla güncellendi!' : '🎉 Yeni kullanıcı başarıyla oluşturuldu!', 'success');
+      showToast(editId ? '👤 Kullanıcı başarıyla güncellendi!' : '🎉 Yeni kullanıcı oluşturuldu!', 'success');
       closeModal('modal-admin-user');
       await loadAdminUsersTable();
     } else {
@@ -1651,19 +2726,27 @@ async function handleAdminUserSubmit(e) {
     }
   } catch (err) {
     showToast('Sunucu hatası.', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitBtn.dataset.origHtml || 'Kullanıcıyı Kaydet';
+    }
   }
 }
 
 async function toggleAdminUserActive(userId) {
+  const targetId = Number(userId);
   try {
-    const res = await fetch(`/api/admin/users/${userId}/toggle-active`, {
+    const res = await fetch(`/api/admin/users/${targetId}/toggle-active`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
     if (data.success) {
       showToast(data.message || 'Kullanıcı durumu güncellendi.', 'success');
-      await loadAdminUsersTable();
+      const u = currentFetchedAdminUsers.find(usr => Number(usr.id) === targetId);
+      if (u) u.is_active = u.is_active ? 0 : 1;
+      applyAdminUserFilters();
     } else {
       showToast(data.message || 'Hata oluştu.', 'error');
     }
@@ -1673,1005 +2756,621 @@ async function toggleAdminUserActive(userId) {
 }
 
 async function deleteAdminUser(userId) {
-  if (!confirm('Bu kullanıcıyı sistemden silmek (Soft Delete/Pasife Almak) istediğinize emin misiniz?')) return;
-
-  try {
-    const res = await fetch(`/api/admin/users/${userId}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('🗑️ Kullanıcı başarıyla silindi (Soft Delete).', 'info');
-      await loadAdminUsersTable();
-    } else {
-      showToast(data.message || 'Silme işlemi başarısız.', 'error');
-    }
-  } catch (err) {
-    showToast('Silme hatası oluştu.', 'error');
-  }
-}
-
-function getBadgeClass(status) {
-  if (status === 'Çözüldü') return 'badge-resolved badge-cozuldu';
-  if (status === 'İşlem devam ediyor' || status === 'İşlemde') return 'badge-in-progress badge-devam';
-  if (status === 'Personele atandı') return 'badge-assigned badge-atanan';
-  if (status === 'İlgili birime yönlendirildi' || status === 'Müdürlüğe iletildi') return 'badge-forwarded';
-  if (status === 'İptal edildi' || status === 'Reddedildi') return 'badge-rejected badge-red';
-  return 'badge-new badge-yeni';
-}
-
-function getPriorityBadge(priority) {
-  const p = priority || 'Normal';
-  if (p === 'Acil' || p === 'Kritik') {
-    return `<span class="badge" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:800; font-size:0.75rem;"><i class="fas fa-fire"></i> Acil</span>`;
-  }
-  if (p === 'Yüksek') {
-    return `<span class="badge" style="background:#fff7ed; color:#c2410c; border:1px solid #ffedd5; font-weight:700; font-size:0.75rem;"><i class="fas fa-bolt"></i> Yüksek</span>`;
-  }
-  if (p === 'Düşük') {
-    return `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; font-weight:600; font-size:0.75rem;">Düşük</span>`;
-  }
-  return `<span class="badge" style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-weight:600; font-size:0.75rem;">Normal</span>`;
-}
-
-// Metadata Loaders & Cascading Dropdown Bindings
-async function loadMetadata() {
-  try {
-    const [catRes, deptRes, locRes] = await Promise.all([
-      fetch('/api/public/categories'),
-      fetch('/api/public/departments'),
-      fetch('/api/public/locations')
-    ]);
-
-    const catData = await catRes.json();
-    const deptData = await deptRes.json();
-    const locData = await locRes.json();
-
-    if (catData.success && catData.categories) categoriesList = catData.categories;
-    if (deptData.success && deptData.departments) departmentsList = deptData.departments;
-    if (locData.success && locData.districts && locData.districts.length > 0 && !locData.districts[0].name.includes('Kaza')) {
-      districtsList = locData.districts;
-      neighborhoodsList = locData.neighborhoods;
-    }
-
-    populateDropdowns();
-  } catch (err) {
-    console.error('Metadata load error:', err);
-  }
-}
-
-function populateDropdowns() {
-  const catSelect = document.getElementById('complaint-category');
-  const distSelect = document.getElementById('complaint-district');
-  const neighSelect = document.getElementById('complaint-neighborhood');
-  const sidebarDeptList = document.getElementById('sidebar-dept-list');
-
-  if (catSelect) {
-    catSelect.innerHTML = '<option value="">-- Kategori Seçiniz --</option>' +
-      categoriesList.map(c => `<option value="${c.id}">${c.name} (${c.department_name})</option>`).join('');
-  }
-
-  if (distSelect) {
-    distSelect.innerHTML = '<option value="">-- İlçe Seçiniz --</option>' +
-      districtsList.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-  }
-
-  if (neighSelect) {
-    neighSelect.innerHTML = '<option value="">-- Mahalle Seçiniz --</option>' +
-      neighborhoodsList.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
-  }
-
-  if (sidebarDeptList && departmentsList.length > 0) {
-    sidebarDeptList.innerHTML = departmentsList.map(d => `
-      <li>
-        <a href="#" onclick="filterByDepartment(${d.id}, '${d.name}'); event.preventDefault();">
-          <i class="fas fa-angle-right" style="font-size:0.75rem;"></i> ${d.name}
-        </a>
-      </li>
-    `).join('');
-  }
-}
-
-// Cascading District & Neighborhood Dropdown Event Listeners
-function bindForms() {
-  const newForm = document.getElementById('form-new-complaint');
-  if (newForm) {
-    newForm.addEventListener('submit', handleNewComplaintSubmit);
-  }
-
-  const distSelect = document.getElementById('complaint-district');
-  const neighSelect = document.getElementById('complaint-neighborhood');
-
-  if (distSelect) {
-    distSelect.addEventListener('change', (e) => {
-      const selectedDistId = e.target.value;
-      if (selectedDistId) {
-        const filteredNeighs = neighborhoodsList.filter(n => n.district_id == selectedDistId);
-        neighSelect.innerHTML = '<option value="">-- Mahalle Seçiniz --</option>' +
-          filteredNeighs.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
-
-        if (typeof flyToDistrictLocation === 'function') {
-          flyToDistrictLocation(selectedDistId);
-        }
+  const targetId = Number(userId);
+  const executeDelete = async () => {
+    try {
+      const res = await fetch(`/api/admin/users/${targetId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${currentToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('🗑️ Kullanıcı başarıyla pasife alındı.', 'success');
+        const u = currentFetchedAdminUsers.find(usr => Number(usr.id) === targetId);
+        if (u) u.is_active = 0;
+        applyAdminUserFilters();
       } else {
-        populateDropdowns();
+        showToast(data.message || 'Silme işlemi başarısız.', 'error');
       }
+    } catch (err) {
+      showToast('Silme hatası oluştu.', 'error');
+    }
+  };
+
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      title: 'Kullanıcıyı Pasife Al',
+      text: 'Bu kullanıcıyı sistemden silmek (Pasife Almak) istediğinize emin misiniz?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Evet, Pasife Al',
+      cancelButtonText: 'İptal'
+    }).then((result) => {
+      if (result.isConfirmed) executeDelete();
     });
-  }
-
-  if (neighSelect) {
-    neighSelect.addEventListener('change', (e) => {
-      const selectedNeighId = e.target.value;
-      if (selectedNeighId && typeof flyToNeighborhoodLocation === 'function') {
-        flyToNeighborhoodLocation(selectedNeighId);
-      }
-    });
-  }
-
-  // Dedicated Page Cascading Listener
-  const pageDistSelect = document.getElementById('page-complaint-district');
-  const pageNeighSelect = document.getElementById('page-complaint-neighborhood');
-
-  if (pageDistSelect) {
-    pageDistSelect.addEventListener('change', (e) => {
-      const selectedDistId = e.target.value;
-      if (selectedDistId && pageNeighSelect) {
-        const filteredNeighs = neighborhoodsList.filter(n => n.district_id == selectedDistId);
-        pageNeighSelect.innerHTML = '<option value="">-- Mahalle Seçiniz --</option>' +
-          filteredNeighs.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
-
-        if (typeof flyToDistrictLocation === 'function') {
-          flyToDistrictLocation(selectedDistId);
-        }
-      }
-    });
-  }
-
-  if (pageNeighSelect) {
-    pageNeighSelect.addEventListener('change', (e) => {
-      const selectedNeighId = e.target.value;
-      if (selectedNeighId && typeof flyToNeighborhoodLocation === 'function') {
-        flyToNeighborhoodLocation(selectedNeighId);
-      }
-    });
+  } else {
+    if (confirm('Bu kullanıcıyı sistemden silmek (Pasife Almak) istediğinize emin misiniz?')) {
+      executeDelete();
+    }
   }
 }
 
-// New Complaint Submission
-async function handleNewComplaintSubmit(e) {
-  e.preventDefault();
-  const form = document.getElementById('form-new-complaint');
-  const formData = new FormData(form);
+// ============================================================================
+// 12. ADMIN DEPARTMENT & ORGANIGRAM MANAGEMENT (MÜDÜRLÜK CRUD & ZİMMET)
+// ============================================================================
+async function loadAdminDeptsTable() {
+  const tbody = document.getElementById('admin-depts-tbody');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Müdürlükler yükleniyor...</td></tr>';
+  }
 
   try {
-    const res = await fetch('/api/complaints', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${currentToken}` },
-      body: formData
+    const res = await fetch('/api/admin/departments', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
     });
-
     const data = await res.json();
 
-    if (data.success) {
-      closeModal('modal-new-complaint');
-      form.reset();
-      showToast(`Talebiniz Alındı! Takip Kodu: ${data.tracking_code}`, 'success');
-      switchWorkspaceTab('my-complaints');
+    if (data.success && Array.isArray(data.departments)) {
+      currentFetchedAdminDepts = data.departments;
+      renderAdminDeptsTable(currentFetchedAdminDepts);
     } else {
-      showToast(data.message || 'Talep oluşturulurken hata oluştu.', 'error');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 20px;">Müdürlük kaydı bulunamadı.</td></tr>';
     }
   } catch (err) {
-    showToast('Sunucu hatası oluştu.', 'error');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444; padding: 20px;">Müdürlükler yüklenemedi.</td></tr>';
   }
 }
 
-// Register Submission
-async function handleRegisterSubmit(e) {
-  e.preventDefault();
-  const full_name = document.getElementById('reg-fullname').value;
-  const email = document.getElementById('reg-email').value;
-  const password = document.getElementById('reg-password').value;
-  const phone = document.getElementById('reg-phone').value;
+function renderAdminDeptsTable(list) {
+  const tbody = document.getElementById('admin-depts-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (!list || list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Kayıtlı müdürlük bulunamadı.</td></tr>';
+    return;
+  }
+
+  list.forEach(d => {
+    const tr = document.createElement('tr');
+    const viceMayorStr = d.vice_mayor_name
+      ? `<span class="badge" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:0.8rem; font-weight:700;"><i class="fas fa-user-shield" style="margin-right:4px;"></i> ${d.vice_mayor_name}</span>`
+      : '<span style="color:#94a3b8; font-size:0.8rem;">Zimmetlenmedi</span>';
+
+    tr.innerHTML = `
+      <td><strong>${d.id}</strong></td>
+      <td><strong style="color: var(--portal-blue-primary); font-size: 0.9rem;">${d.name}</strong></td>
+      <td><span class="badge" style="background:#f1f5f9; color:#334155; font-size:0.75rem;">${d.code || '-'}</span></td>
+      <td>${viceMayorStr}</td>
+      <td><strong>${d.staff_count || 3} Personel</strong></td>
+      <td><span class="badge badge-cozuldu">Aktif</span></td>
+      <td style="text-align: right; padding-right: 14px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openEditDepartmentModal(${d.id})" style="padding: 4px 10px; font-size: 0.78rem; font-weight: 600;">
+          <i class="fas fa-pen-to-square"></i> Düzenle / Zimmetle
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function openAddDepartmentModal() {
+  document.getElementById('form-admin-dept').reset();
+  document.getElementById('edit-dept-id').value = '';
+  document.getElementById('modal-dept-title').innerHTML = '<i class="fas fa-plus" style="color: #2563eb; margin-right: 6px;"></i> Yeni Müdürlük Ekle';
+  populateViceMayorDropdown();
+  openModal('modal-admin-dept');
+}
+
+function openEditDepartmentModal(deptId) {
+  const d = currentFetchedAdminDepts.find(dept => Number(dept.id) === Number(deptId));
+  if (!d) return;
+
+  document.getElementById('edit-dept-id').value = d.id;
+  document.getElementById('admin-dept-name').value = d.name || '';
+  document.getElementById('admin-dept-code').value = d.code || '';
+  document.getElementById('modal-dept-title').innerHTML = '<i class="fas fa-sitemap" style="color: #2563eb; margin-right: 6px;"></i> Müdürlüğü Düzenle & Başkan Yrd. Zimmetle';
+
+  populateViceMayorDropdown(d.vice_mayor_user_id);
+  openModal('modal-admin-dept');
+}
+
+async function populateViceMayorDropdown(selectedId = null) {
+  const select = document.getElementById('admin-dept-vice-mayor');
+  if (!select) return;
+
+  select.innerHTML = '<option value="">-- Yükleniyor... --</option>';
 
   try {
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ full_name, email, password, phone })
+    const res = await fetch('/api/admin/vice-mayors', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
     });
-
     const data = await res.json();
 
-    if (data.success) {
-      currentToken = data.token;
-      currentUser = data.user;
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      closeModal('modal-register');
-      showToast('Kayıt başarıyla tamamlandı ve oturum açıldı!', 'success');
-      updateUserUi();
+    if (data.success && Array.isArray(data.vice_mayors)) {
+      select.innerHTML = '<option value="">-- Zimmetlenmedi (Bağımsız) --</option>' +
+        data.vice_mayors.map(vm => `<option value="${vm.id}" ${Number(vm.id) === Number(selectedId) ? 'selected' : ''}>🏛️ ${vm.full_name}</option>`).join('');
     } else {
-      showToast(data.message || 'Kayıt başarısız.', 'error');
+      select.innerHTML = '<option value="">-- Zimmetlenmedi (Bağımsız) --</option>';
     }
   } catch (err) {
-    showToast('Kayıt hatası.', 'error');
+    select.innerHTML = '<option value="">-- Zimmetlenmedi (Bağımsız) --</option>';
   }
 }
 
-// Quick Track Lookup
-async function handleQuickTrackSubmit(e) {
+async function handleAdminDeptSubmit(e) {
   e.preventDefault();
-  const code = document.getElementById('track-code-input').value.trim();
-  if (code) {
-    closeModal('modal-quick-track');
-    await openComplaintDetail(code);
-  }
-}
+  const editId = document.getElementById('edit-dept-id').value;
+  const name = document.getElementById('admin-dept-name').value.trim();
+  const code = document.getElementById('admin-dept-code').value.trim().toUpperCase();
+  const vice_mayor_user_id = document.getElementById('admin-dept-vice-mayor').value || null;
 
-// Complaint Detail Display with Right Panel Process History Timeline matching Image 1 Panel 4
-async function openComplaintDetail(trackingCode) {
+  const endpoint = editId ? `/api/admin/departments/${editId}` : '/api/admin/departments';
+  const method = editId ? 'PUT' : 'POST';
+
   try {
-    const res = await fetch(`/api/complaints/track/${trackingCode}`);
-    const data = await res.json();
-
-    if (data.success) {
-      const { complaint, history, files, actions } = data;
-      const container = document.getElementById('complaint-detail-content');
-
-      let timelineHtml = (history && history.length > 0) ? history.map((h, idx) => {
-        let isSuccess = h.new_status === 'Çözüldü';
-        let isCancel = h.new_status === 'İptal edildi';
-        let dotClass = isSuccess ? 'success' : (isCancel ? 'danger' : (idx === history.length - 1 ? 'warning' : ''));
-        let dateStr = h.created_at ? new Date(h.created_at).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : 'Tarih Belirtilmedi';
-        let changedByName = h.changed_by_name || 'Sistem Yetkilisi';
-
-        return `
-          <div class="timeline-step">
-            <div class="timeline-dot ${dotClass}"></div>
-            <div class="timeline-title">${h.new_status || 'İşlem Kaydı'}</div>
-            <div class="timeline-time"><i class="fas fa-clock" style="margin-right: 4px;"></i> ${dateStr}</div>
-            <div class="timeline-desc">
-              <strong>${changedByName}</strong>: ${h.change_reason || 'İşlem kaydedildi.'}
-            </div>
-          </div>
-        `;
-      }).join('') : '<p style="color:#94a3b8; font-size:0.85rem; padding: 10px 0;">Süreç kaydı bulunmuyor.</p>';
-
-      const isQuestionOrIdea = complaint.submission_type === 'Soru / Bilgi Talebi' || complaint.submission_type === 'Öneri / İstek';
-
-      let officialResponseHtml = (actions && actions.length > 0) ? `
-        <div style="padding: 16px; background: ${isQuestionOrIdea ? '#f0f9ff' : '#ecfdf5'}; border-radius: 12px; margin-bottom: 16px; border: 1px solid ${isQuestionOrIdea ? '#7dd3fc' : '#6ee7b7'}; box-shadow: 0 2px 8px rgba(2,132,199,0.1);">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <strong style="color: ${isQuestionOrIdea ? '#0369a1' : '#065f46'}; font-size: 0.95rem;">
-              <i class="${isQuestionOrIdea ? 'fas fa-comments' : 'fas fa-check-circle'}" style="color: ${isQuestionOrIdea ? '#0284c7' : '#10b981'}; margin-right: 6px;"></i>
-              ${isQuestionOrIdea ? 'Giresun Belediyesi Resmi Yanıtı & Bilgilendirmesi' : 'Giresun Belediyesi Resmi Çözüm Açıklaması'}
-            </strong>
-            <span style="font-size: 0.76rem; background: ${isQuestionOrIdea ? '#0284c7' : '#10b981'}; color: white; padding: 3px 10px; border-radius: 12px; font-weight: 700;">
-              ${isQuestionOrIdea ? 'Bilgilendirildi' : 'Çözüldü'}
-            </span>
-          </div>
-          <p style="font-size: 0.92rem; color: ${isQuestionOrIdea ? '#0c4a6e' : '#047857'}; margin: 8px 0; font-weight: 600; line-height: 1.5;">${actions[actions.length - 1].action_description || 'Talebinize yönelik resmi yanıt verilmiştir.'}</p>
-          <div style="font-size: 0.78rem; color: ${isQuestionOrIdea ? '#0369a1' : '#059669'}; font-weight: 600; margin-top: 6px;">
-            <span>🏛️ Yanıtlayan Yetkili: ${actions[actions.length - 1].employee_name || 'Belediye Yetkilisi'} (${actions[actions.length - 1].employee_title || 'Birim Sorumlusu'})</span>
-            ${actions[actions.length - 1].tools_equipment_used ? ` | 🛠️ Not: ${actions[actions.length - 1].tools_equipment_used}` : ''}
-          </div>
-          ${actions[actions.length - 1].resolution_photo_path ? `<div style="margin-top: 10px;"><img src="/${actions[actions.length - 1].resolution_photo_path}" style="max-width: 100%; height: 160px; object-fit: cover; border-radius: 8px; border: 1px solid #a7f3d0;" /></div>` : ''}
-        </div>
-      ` : '';
-
-      let surveyModuleHtml = (complaint.status === 'Çözüldü') ? `
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px; margin-top: 16px;">
-          <h5 style="color: #1e40af; margin-bottom: 4px; font-weight: 800;"><i class="fas fa-star" style="color: #f59e0b;"></i> Çözüm Memnuniyet Değerlendirmesi</h5>
-          <p style="font-size: 0.82rem; color: #3b82f6; margin-bottom: 10px;">Belediyemizin bu talebe yönelik çözüm çalışmasını 1-5 yıldız arasında puanlayabilirsiniz.</p>
-          <div style="display: flex; gap: 8px; font-size: 1.6rem; color: #cbd5e1; cursor: pointer; user-select: none;" id="star-rating-box">
-            <span onclick="setStarRating(1)" id="star-1">★</span>
-            <span onclick="setStarRating(2)" id="star-2">★</span>
-            <span onclick="setStarRating(3)" id="star-3">★</span>
-            <span onclick="setStarRating(4)" id="star-4">★</span>
-            <span onclick="setStarRating(5)" id="star-5">★</span>
-          </div>
-          <textarea id="survey-comment" class="form-input" rows="2" placeholder="Görüş ve ek yorumlarınız (Opsiyonel)..." style="margin-top: 10px; font-size: 0.84rem; border-radius: 8px;"></textarea>
-          <button class="btn btn-primary btn-sm" onclick="submitSatisfactionSurvey(${complaint.id})" style="margin-top: 10px; width: 100%; font-weight: 700; background: #2563eb; padding: 8px;"><i class="fas fa-paper-plane"></i> Değerlendirmeyi Gönder</button>
-        </div>
-      ` : '';
-
-      let adminEditControlsHtml = (currentUser && (currentUser.role_name === 'Birim Yöneticisi' || currentUser.role_name === 'Sistem Yöneticisi')) ? `
-        <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 16px;">
-          <h5 style="color: var(--portal-blue-primary); margin-bottom: 8px; font-size: 0.88rem;"><i class="fas fa-sliders" style="color: #2563eb;"></i> Yönetici İşlemleri (Öncelik & Durum)</h5>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>
-              <label style="font-size: 0.78rem; font-weight: 700; color: #475569;">Öncelik Seviyesi</label>
-              <select id="detail-edit-priority" class="form-input" style="height: 34px; font-size: 0.82rem; font-weight: 700;">
-                <option value="Düşük" ${complaint.priority_level === 'Düşük' ? 'selected' : ''}>Düşük</option>
-                <option value="Normal" ${complaint.priority_level === 'Normal' ? 'selected' : ''}>Normal</option>
-                <option value="Yüksek" ${complaint.priority_level === 'Yüksek' ? 'selected' : ''}>Yüksek</option>
-                <option value="Acil" ${complaint.priority_level === 'Acil' ? 'selected' : ''}>Acil</option>
-                <option value="Kritik" ${complaint.priority_level === 'Kritik' ? 'selected' : ''}>Kritik</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 0.78rem; font-weight: 700; color: #475569;">Talep Durumu</label>
-              <select id="detail-edit-status" class="form-input" style="height: 34px; font-size: 0.82rem; font-weight: 700;">
-                <option value="Yeni" ${complaint.status === 'Yeni' ? 'selected' : ''}>Yeni</option>
-                <option value="İlgili birime yönlendirildi" ${complaint.status === 'İlgili birime yönlendirildi' ? 'selected' : ''}>İlgili birime yönlendirildi</option>
-                <option value="Personele atandı" ${complaint.status === 'Personele atandı' ? 'selected' : ''}>Personele atandı</option>
-                <option value="İşlem devam ediyor" ${complaint.status === 'İşlem devam ediyor' ? 'selected' : ''}>İşlem devam ediyor</option>
-                <option value="Çözüldü" ${complaint.status === 'Çözüldü' ? 'selected' : ''}>Çözüldü</option>
-                <option value="Reddedildi" ${complaint.status === 'Reddedildi' ? 'selected' : ''}>Reddedildi</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="saveAdminComplaintUpdate(${complaint.id})" style="margin-top: 8px; width: 100%; font-size: 0.8rem; font-weight: 700;"><i class="fas fa-save"></i> Değişiklikleri Kaydet</button>
-        </div>
-      ` : '';
-
-      let filesHtml = (files && files.length > 0) ? files.map(f => `
-        <img src="/${f.file_path}" alt="Talep Görseli" style="width: 100px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer;" onclick="window.open(this.src)" />
-      `).join('') : '';
-
-      container.innerHTML = `
-        <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 24px;">
-          
-          <!-- LEFT COLUMN: Complaint Meta, Description & Location Card -->
-          <div>
-            ${adminEditControlsHtml}
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; flex-wrap: wrap;">
-              <h2 style="color: var(--portal-blue-primary); font-size: 1.4rem; font-weight: 800; margin: 0;">${complaint.tracking_code}</h2>
-              <div style="display: flex; gap: 8px; align-items: center;">
-                ${getPriorityBadge(complaint.priority_level || complaint.urgency_level)}
-                <span class="badge ${getBadgeClass(complaint.status)}">${complaint.status || 'Yeni'}</span>
-              </div>
-            </div>
-            
-            <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 12px; font-weight: 700;">${complaint.title}</h3>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; font-size: 0.84rem; background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #f1f5f9; margin-bottom: 12px;">
-              <div><span style="color:#94a3b8;">Kategori:</span> <strong style="color:var(--portal-blue-primary);">${complaint.category_name || 'Genel'}</strong></div>
-              <div><span style="color:#94a3b8;">Mahalle:</span> <strong>${complaint.neighborhood_name || 'Hacısıyam'}</strong></div>
-              <div><span style="color:#94a3b8;">Öncelik:</span> <strong>${complaint.priority_level || complaint.urgency_level || 'Normal'}</strong></div>
-              <div><span style="color:#94a3b8;">Oluşturulma:</span> <strong>${new Date(complaint.created_at).toLocaleString('tr-TR')}</strong></div>
-              <div><span style="color:#94a3b8;">Oluşturan:</span> <strong>${complaint.citizen_name || 'Vatandaş'}</strong></div>
-              <div><span style="color:#94a3b8;">Başvuru Türü:</span> <strong>${complaint.submission_type || 'Şikâyet'}</strong></div>
-            </div>
-
-            <!-- Mevcut Atanan Birim Rozeti (Tarih & Oluşturan Alanının Hemen Altında) -->
-            <div style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 10px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
-              <span><i class="fas fa-building" style="color: #2563eb; margin-right: 6px;"></i> Mevcut Atanan Birim: <strong>${complaint.department_name || 'Fen İşleri Müdürlüğü'}</strong></span>
-              ${complaint.is_forwarded ? `<span style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; padding: 3px 8px; border-radius: 6px; font-size: 0.76rem;"><i class="fas fa-right-left"></i> Yönlendirilen Talep</span>` : ''}
-            </div>
-
-            <div style="margin-bottom: 16px;">
-              <h5 style="color: var(--portal-blue-primary); margin-bottom: 6px; font-weight: 700;">Açıklama</h5>
-              <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">${complaint.description}</p>
-            </div>
-
-            <div style="margin-bottom: 16px;">
-              <h5 style="color: var(--portal-blue-primary); margin-bottom: 6px; font-weight: 700;"><i class="fas fa-location-dot" style="color:#ef4444; margin-right: 4px;"></i> Nokta Atışı Konum & Adres Bilgisi</h5>
-              <p style="font-size: 0.85rem; color: #334155; margin-bottom: 6px;">${complaint.open_address || complaint.neighborhood_name}</p>
-              <div style="display: flex; align-items: center; justify-content: space-between; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; margin-top: 6px;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: #0284c7;">📍 Coğrafi Koordinat: ${complaint.latitude || 40.9128}, ${complaint.longitude || 38.3895}</span>
-                <a href="https://maps.google.com/?q=${complaint.latitude || 40.9128},${complaint.longitude || 38.3895}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; text-decoration: none; padding: 4px 10px;">
-                  <i class="fas fa-map-marked-alt" style="color: #2563eb;"></i> Haritada Göster / Yol Tarifi
-                </a>
-              </div>
-            </div>
-
-            ${filesHtml ? `
-              <div>
-                <h5 style="color: var(--portal-blue-primary); margin-bottom: 8px; font-weight: 700;">Ekler / Fotoğraflar</h5>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">${filesHtml}</div>
-              </div>
-            ` : ''}
-          </div>
-
-          <!-- RIGHT PANEL: Official Solution Box + Process History Timeline -->
-          <div style="background: #ffffff; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); background: #fdfdfd;">
-            ${officialResponseHtml}
-
-            <h4 style="color: var(--portal-blue-primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; font-weight: 800;">
-              <i class="fas fa-timeline" style="color: var(--portal-blue-accent);"></i> Süreç Geçmişi
-            </h4>
-
-            <div class="timeline-container">
-              ${timelineHtml || '<p style="color:#94a3b8; font-size:0.85rem;">Süreç kaydı bulunmuyor.</p>'}
-            </div>
-
-            ${surveyModuleHtml}
-          </div>
-
-        </div>
-      `;
-
-      openModal('modal-complaint-detail');
-    }
-  } catch (err) {
-    showToast('Şikâyet detayları yüklenemedi.', 'error');
-  }
-}
-
-async function saveAdminComplaintUpdate(complaintId) {
-  try {
-    const priority = document.getElementById('detail-edit-priority').value;
-    const status = document.getElementById('detail-edit-status').value;
-
-    const res = await fetch(`/api/complaints/${complaintId}/status-priority`, {
-      method: 'PUT',
+    const res = await fetch(endpoint, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${currentToken}`
       },
-      body: JSON.stringify({ priority_level: priority, status: status })
+      body: JSON.stringify({ name, code, vice_mayor_user_id })
     });
 
     const data = await res.json();
     if (data.success) {
-      showToast('✅ Talep durumu ve öncelik seviyesi güncellendi!', 'success');
-      closeModal('modal-complaint-detail');
-      await loadComplaintsTable(false);
-      await loadDashboardData();
+      showToast(editId ? '🏢 Müdürlük ve zimmet başarıyla güncellendi!' : '🎉 Yeni müdürlük oluşturuldu!', 'success');
+      closeModal('modal-admin-dept');
+      await loadAdminDeptsTable();
+      await loadMetadata();
     } else {
-      showToast(data.message || 'Güncelleme hatası.', 'error');
+      showToast(data.message || 'Müdürlük kaydedilemedi.', 'error');
     }
   } catch (err) {
     showToast('Sunucu hatası.', 'error');
   }
 }
 
-// =========================================================
-// FORWARD COMPLAINT TO ANOTHER DEPARTMENT (Tek Doğru Versiyon)
-// =========================================================
-function openForwardDeptModal(complaintId) {
-  const fIdInput = document.getElementById('forward-complaint-id');
-  const targetSelect = document.getElementById('forward-target-dept');
-  const reasonInput = document.getElementById('forward-reason');
-  
-  if (fIdInput) fIdInput.value = complaintId;
-  if (reasonInput) reasonInput.value = '';
-  
-  if (targetSelect) {
-    const depts = departmentsList && departmentsList.length > 0 ? departmentsList : [
-      { id: 1, name: 'Fen İşleri Müdürlüğü' },
-      { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-      { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-      { id: 4, name: 'Zabıta Müdürlüğü' },
-      { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' },
-      { id: 6, name: 'Veteriner İşleri Müdürlüğü' },
-      { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü' },
-      { id: 8, name: 'Sosyal Hizmetler Müdürlüğü' },
-      { id: 9, name: 'İmar ve Şehircilik Müdürlüğü' },
-      { id: 10, name: 'Bilgi İşlem Müdürlüğü' }
-    ];
-    // Kullanıcının kendi birimini listeden çıkar
-    const userDeptId = currentUser ? currentUser.department_id : null;
-    const filteredDepts = userDeptId ? depts.filter(d => d.id != userDeptId) : depts;
-    targetSelect.innerHTML = '<option value="">-- Hedef Birimi Seçiniz --</option>' +
-      filteredDepts.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-  }
-  
-  openModal('modal-forward-dept');
-}
+// ============================================================================
+// 13. DEPARTMENT STAFF TABLE (BİRİM YÖNETİCİSİ / MÜDÜR)
+// ============================================================================
+async function loadDeptStaffTable() {
+  const tbody = document.getElementById('dept-staff-tbody');
+  if (!tbody) return;
 
-async function handleForwardDeptSubmit(e) {
-  e.preventDefault();
-  const complaintId = document.getElementById('forward-complaint-id')?.value;
-  const targetDeptId = document.getElementById('forward-target-dept')?.value;
-  const reason = document.getElementById('forward-reason')?.value?.trim() || '';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Personel listesi yükleniyor...</td></tr>';
 
-  if (!complaintId) {
-    showToast('Talep ID bulunamadı.', 'error');
-    return;
-  }
-  if (!targetDeptId) {
-    showToast('Lütfen hedef birimi seçiniz.', 'warning');
-    return;
-  }
+  const deptId = (currentUser && currentUser.department_id) ? currentUser.department_id : 1;
 
   try {
-    const res = await fetch(`/api/complaints/${complaintId}/forward-department`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({ 
-        target_department_id: targetDeptId, 
-        forward_reason: reason,
-        reason: reason 
-      })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || '✅ Talep başka birime başarıyla yönlendirildi!', 'success');
-      closeModal('modal-forward-dept');
-      const form = document.getElementById('form-forward-dept');
-      if (form) form.reset();
-      await loadComplaintsTable(false);
-      await loadDashboardData();
-    } else {
-      showToast(data.message || 'Yönlendirme işlemi başarısız.', 'error');
-    }
-  } catch (err) {
-    console.error('Forward dept error:', err);
-    showToast('Sunucu bağlantı hatası. Lütfen tekrar deneyiniz.', 'error');
-  }
-}
-
-// Modal Helpers
-function openModal(id) {
-  const modal = document.getElementById(id);
-  if (modal) {
-    if (id === 'modal-new-complaint') {
-      populateDropdowns();
-      setTimeout(() => initLocationPickerMap(), 200);
-    }
-    modal.classList.add('active');
-  }
-}
-
-function closeModal(id) {
-  const modal = document.getElementById(id);
-  if (modal) {
-    modal.classList.remove('active');
-    const form = modal.querySelector('form');
-    if (form && id !== 'modal-admin-user') {
-      form.reset();
-    }
-  }
-}
-
-// Toast Notification (Strictly Single Active Toast)
-function showToast(message, type = 'info') {
-  let container = document.getElementById('toast-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'toast-container';
-    document.body.appendChild(container);
-  }
-
-  container.innerHTML = '';
-
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-
-  container.appendChild(toast);
-
-  setTimeout(() => {
-    toast.remove();
-  }, 3500);
-}
-
-// =========================================================
-// TASK ASSIGNMENT MODAL (YÖNETİCİ)
-// =========================================================
-async function openAssignModal(complaintId, deptId) {
-  try {
-    document.getElementById('assign-complaint-id').value = complaintId;
-    const select = document.getElementById('assign-employee-select');
-    select.innerHTML = '<option value="">Yükleniyor...</option>';
-
-    const res = await fetch('/api/admin/users', {
+    const res = await fetch(`/api/assignments/department-employees/${deptId}`, {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
+    const staffList = data.success && data.employees ? data.employees : [];
 
-    let staffList = [];
-    if (data.success && data.users) {
-      staffList = data.users.filter(u => u.role_name === 'Personel' && (!deptId || u.department_id == deptId));
-    }
+    tbody.innerHTML = '';
 
-    if (staffList.length > 0) {
-      select.innerHTML = staffList.map(e => `
-        <option value="${e.id}">${e.full_name} (${e.employee_title || 'Saha Görevlisi'})</option>
-      `).join('');
-    } else {
-      select.innerHTML = `
-        <option value="7">Ali Usta (Asfalt & Kaldırım Ekip Şefi)</option>
-        <option value="8">Veli Şahin (Atık Yönetimi Görevlisi)</option>
-        <option value="9">Fatma Şahin (Peyzaj Görevlisi)</option>
-      `;
-    }
-
-    openModal('modal-assign-task');
-  } catch (err) {
-    console.error('Assign modal load error:', err);
-    openModal('modal-assign-task');
-  }
-}
-
-async function handleAssignTaskSubmit(e) {
-  e.preventDefault();
-  const complaintId = document.getElementById('assign-complaint-id').value;
-  const assignedUserId = document.getElementById('assign-employee-select').value;
-  const taskDesc = document.getElementById('assign-task-desc').value;
-
-  if (!assignedUserId) {
-    showToast('Lütfen bir personel seçiniz.', 'warning');
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/complaints/${complaintId}/assign`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({
-        assigned_user_id: assignedUserId,
-        task_description: taskDesc
-      })
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      showToast(data.message || 'Görev başarıyla personele atandı!', 'success');
-      closeModal('modal-assign-task');
-      document.getElementById('form-assign-task').reset();
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'Atama işlemi başarısız.', 'error');
-    }
-  } catch (err) {
-    console.error('Assign submit error:', err);
-    showToast('Sunucu hatası oluştu.', 'error');
-  }
-}
-
-async function selfAssignComplaint(id) {
-  try {
-    const res = await fetch(`/api/complaints/${id}/self-assign`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || '✋ Görev üzerinize alındı!', 'success');
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'Atama hatası.', 'error');
-    }
-  } catch (err) {
-    showToast('Sunucu hatası.', 'error');
-  }
-}
-
-async function unassignComplaint(id) {
-  if (!confirm('Bu talebin personel atamasını kaldırmak istediğinize emin misiniz?')) return;
-  try {
-    const res = await fetch(`/api/complaints/${id}/assign`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({ unassign: true })
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('Görev ataması kaldırıldı.', 'info');
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'Hata oluştu.', 'error');
-    }
-  } catch (err) {
-    showToast('Sunucu hatası.', 'error');
-  }
-}
-
-// =========================================================
-// ACTION RESOLUTION MODAL (PERSONEL)
-// =========================================================
-function openActionModal(complaintId) {
-  document.getElementById('action-complaint-id').value = complaintId;
-
-  if (currentFetchedComplaints) {
-    const comp = currentFetchedComplaints.find(c => c.id == complaintId);
-    if (comp) {
-      const titleEl = document.getElementById('action-complaint-title');
-      const addrEl = document.getElementById('action-complaint-address');
-      const coordsEl = document.getElementById('action-complaint-coords');
-      const mapLinkEl = document.getElementById('action-complaint-map-link');
-
-      if (titleEl) titleEl.textContent = `${comp.tracking_code} - ${comp.title}`;
-      if (addrEl) addrEl.textContent = comp.open_address || comp.neighborhood_name || 'Giresun Merkez';
-      const lat = comp.latitude || 40.9128;
-      const lng = comp.longitude || 38.3895;
-      if (coordsEl) coordsEl.textContent = `📍 ${lat}, ${lng}`;
-      if (mapLinkEl) mapLinkEl.href = `https://maps.google.com/?q=${lat},${lng}`;
-    }
-  }
-
-  openModal('modal-action-task');
-}
-
-async function handleActionTaskSubmit(e) {
-  e.preventDefault();
-  const form = document.getElementById('form-action-task');
-  const formData = new FormData(form);
-  formData.append('complaint_id', document.getElementById('action-complaint-id').value);
-
-  try {
-    const res = await fetch('/api/assignments/action', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: formData
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      showToast('İşlem kaydı ve çözüm detayları başarıyla kaydedildi!', 'success');
-      closeModal('modal-action-task');
-      form.reset();
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'İşlem kaydı oluşturulamadı.', 'error');
-    }
-  } catch (err) {
-    console.error('Action submit error:', err);
-    showToast('Sunucu hatası oluştu.', 'error');
-  }
-}
-
-function getHumanActionBadge(action) {
-  const act = (action || '').toUpperCase();
-  if (act.includes('CREATE') || act.includes('ADD') || act.includes('INSERT')) {
-    return `<span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0;"><i class="fas fa-plus-circle"></i> Yeni Talep / Kayıt Eklendi</span>`;
-  }
-  if (act.includes('UPDATE') || act.includes('EDIT') || act.includes('STATUS')) {
-    return `<span class="badge" style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;"><i class="fas fa-pen-to-square"></i> Durum / Öncelik Güncellendi</span>`;
-  }
-  if (act.includes('ASSIGN') || act.includes('TASK')) {
-    return `<span class="badge" style="background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0;"><i class="fas fa-user-check"></i> Görev Atandı / Üzerine Alındı</span>`;
-  }
-  if (act.includes('FORWARD')) {
-    return `<span class="badge" style="background:#fff7ed; color:#c2410c; border:1px solid #ffedd5;"><i class="fas fa-right-left"></i> Başka Birime Yönlendirildi</span>`;
-  }
-  if (act.includes('DISABLE') || act.includes('INACTIVE') || act.includes('DELETE')) {
-    return `<span class="badge" style="background:#fef2f2; color:#b91c1c; border:1px solid #fecaca;"><i class="fas fa-user-slash"></i> Kullanıcı Pasife Alındı / Silindi</span>`;
-  }
-  if (act.includes('ENABLE') || act.includes('ACTIVE')) {
-    return `<span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0;"><i class="fas fa-user-check"></i> Kullanıcı Aktife Alındı</span>`;
-  }
-  if (act.includes('LOGIN') || act.includes('AUTH')) {
-    return `<span class="badge" style="background:#f3e8ff; color:#6b21a8; border:1px solid #e9d5ff;"><i class="fas fa-key"></i> Sistem Girişi Yapıldı</span>`;
-  }
-  return `<span class="badge" style="background:#f8fafc; color:#475569; border:1px solid #cbd5e1;"><i class="fas fa-circle-info"></i> ${action}</span>`;
-}
-
-async function loadAdminLogsTable() {
-  try {
-    const res = await fetch('/api/admin/audit-logs', {
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    const tbody = document.getElementById('admin-logs-tbody');
-    if (!tbody) return;
-
-    const logs = data.success && data.logs ? data.logs : [];
-
-    if (logs.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:24px;">Log kaydı bulunamadı.</td></tr>';
+    if (staffList.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Biriminizde kayıtlı saha personeli bulunamadı.</td></tr>';
       return;
     }
 
-    tbody.innerHTML = logs.map(l => `
-      <tr>
-        <td><small style="font-weight: 600; color: #475569;">${new Date(l.created_at).toLocaleString('tr-TR')}</small></td>
-        <td><strong style="color: var(--portal-blue-primary);">${l.user_name || 'Sistem'}</strong></td>
-        <td>${getHumanActionBadge(l.action)}</td>
-        <td><span style="font-size:0.85rem; font-weight:600;">${l.entity_name}</span></td>
-        <td><span class="badge" style="background:#f1f5f9; color:#0f172a;">#${l.entity_id || '-'}</span></td>
-        <td><code style="font-size:0.82rem; background:#f8fafc; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0;">${l.ip_address || '127.0.0.1'}</code></td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = staffList.map(s => {
+      const avgStar = s.avg_rating || '4.8';
+      const count = s.rating_count || 0;
+      return `
+        <tr>
+          <td style="font-weight: 700; color: var(--portal-blue-primary);">
+            ${s.full_name}
+            <span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; font-weight:700; margin-left:6px; font-size:0.75rem;">
+              <i class="fas fa-star" style="color:#f59e0b;"></i> ⭐ ${avgStar} / 5
+            </span>
+          </td>
+          <td style="font-size: 0.85rem;">${s.email || '-'}</td>
+          <td style="font-size: 0.85rem;">${s.phone || '-'}</td>
+          <td>
+            <strong>${s.title || 'Saha Personeli'}</strong>
+            <br><small style="color: #64748b;">${s.department_name || (currentUser ? currentUser.department_name : 'Birim') || 'Birim'}</small>
+          </td>
+          <td>
+            <span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-weight:700; font-size:0.84rem;">
+              <i class="fas fa-star" style="color:#f59e0b; margin-right:4px;"></i> ⭐ ${avgStar} / 5.0 ${count > 0 ? `(${count} Puanlama)` : ''}
+            </span>
+          </td>
+          <td>
+            <span class="badge ${s.is_active !== 0 ? 'badge-cozuldu' : 'badge-iptal'}">
+              ${s.is_active !== 0 ? 'Aktif' : 'Pasif'}
+            </span>
+          </td>
+        </tr>
+      `;
+    }).join('');
   } catch (err) {
-    console.error('Admin logs load error:', err);
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 24px;">Personeller yüklenirken hata oluştu.</td></tr>';
   }
 }
 
-// =========================================================
-// DEDICATED PAGE: CREATE COMPLAINT & PROCESS HISTORY (PAGE INITIALIZATION)
-// =========================================================
-let pageMiniMap = null;
-let pageMiniMarker = null;
+// ============================================================================
+// 14. DASHBOARD & MAP DATA LOADERS
+// ============================================================================
+async function loadDashboardData() {
+  try {
+    const res = await fetch('/api/stats/dashboard', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
 
-function initPageCreateComplaint() {
-  // 1. Populate Department Dropdown & Cascading Category Binding
-  const deptSelect = document.getElementById('page-complaint-department');
-  const catSelect = document.getElementById('page-complaint-category');
+    if (data.success && data.kpis) {
+      const kpiTotal = document.getElementById('kpi-total');
+      const kpiPending = document.getElementById('kpi-pending');
+      const kpiResolved = document.getElementById('kpi-resolved');
+      const kpiAvgDays = document.getElementById('kpi-avg-days');
+      const kpiRate = document.getElementById('kpi-rate');
 
-  const depts = departmentsList && departmentsList.length > 0 ? departmentsList : [
-    { id: 1, name: 'Fen İşleri Müdürlüğü' },
-    { id: 2, name: 'Temizlik İşleri Müdürlüğü' },
-    { id: 3, name: 'Park ve Bahçeler Müdürlüğü' },
-    { id: 4, name: 'Zabıta Müdürlüğü' },
-    { id: 5, name: 'Su ve Kanalizasyon Müdürlüğü' },
-    { id: 6, name: 'Veteriner İşleri Müdürlüğü' },
-    { id: 7, name: 'Ulaşım Hizmetleri Müdürlüğü' },
-    { id: 8, name: 'Sosyal Hizmetler Müdürlüğü' },
-    { id: 9, name: 'İmar ve Şehircilik Müdürlüğü' },
-    { id: 10, name: 'Bilgi İşlem Müdürlüğü' }
-  ];
+      if (kpiTotal) kpiTotal.textContent = data.kpis.total;
+      if (kpiPending) kpiPending.textContent = data.kpis.pending || data.kpis.new;
+      if (kpiResolved) kpiResolved.textContent = data.kpis.resolved;
+      if (kpiAvgDays) kpiAvgDays.textContent = data.kpis.avg_days;
+      if (kpiRate) kpiRate.textContent = data.kpis.resolution_rate;
 
-  if (deptSelect) {
-    deptSelect.innerHTML = '<option value="">-- Hedef Birim / Müdürlük Seçiniz --</option>' +
-      depts.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-
-    deptSelect.onchange = function() {
-      const selectedDeptId = Number(deptSelect.value);
-      if (!selectedDeptId || !catSelect) {
-        if (catSelect) catSelect.innerHTML = '<option value="">-- Önce Birim Seçiniz --</option>';
-        return;
+      if (typeof renderDashboardCharts === 'function' && data.charts) {
+        renderDashboardCharts(data.charts);
       }
-
-      // Filter categories belonging to selected department
-      const deptCategories = (categoriesList || []).filter(c => Number(c.department_id) === selectedDeptId);
-
-      let optionsHtml = '<option value="">-- Kategori Seçiniz --</option>';
-      if (deptCategories.length > 0) {
-        optionsHtml += deptCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-      }
-
-      // CRITICAL RULE: Always add "Diğer" (Other) at the very bottom of the category list
-      const otherCategory = (categoriesList || []).find(c => Number(c.department_id) === selectedDeptId && c.name.includes('Diğer')) ||
-                            (categoriesList || []).find(c => c.id === 14) || { id: 14, name: 'Diğer' };
-
-      optionsHtml += `<option value="${otherCategory.id}">📌 Diğer (${depts.find(d => d.id === selectedDeptId)?.name || 'Genel'})</option>`;
-      catSelect.innerHTML = optionsHtml;
-    };
-  }
-
-  // 2. Populate District Dropdown
-  const distSelect = document.getElementById('page-complaint-district');
-  if (distSelect && districtsList && districtsList.length > 0) {
-    distSelect.innerHTML = '<option value="">-- İlçe Seçiniz --</option>' +
-      districtsList.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-  }
-
-  // 3. Populate Neighborhood Dropdown
-  const neighSelect = document.getElementById('page-complaint-neighborhood');
-  if (neighSelect && neighborhoodsList && neighborhoodsList.length > 0) {
-    neighSelect.innerHTML = '<option value="">-- Mahalle Seçiniz --</option>' +
-      neighborhoodsList.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
-  }
-
-  // 4. Initialize Leaflet Location Picker Map on Page
-  if (typeof initPageLocationPickerMap === 'function') {
-    initPageLocationPickerMap();
-  }
-
-  // 5. Attach AI auto-analysis listener to description input
-  const pageDescInput = document.getElementById('page-complaint-description');
-  if (pageDescInput && typeof attachAiListenerToForm === 'function') {
-    attachAiListenerToForm(
-      'page-complaint-description',
-      'page-ai-suggestion-container',
-      'page-complaint-category',
-      'page_ai_suggested_category_id',
-      'page_ai_suggested_dept_id',
-      'page_ai_suggested_priority',
-      'page_ai_sentiment',
-      'page_ai_flagged'
-    );
+    }
+  } catch (err) {
+    console.error('Dashboard data load error:', err);
   }
 }
 
-async function handlePageCreateComplaintSubmit(e) {
-  e.preventDefault();
-  const submitBtn = document.getElementById('btn-page-submit-complaint');
-  if (submitBtn) submitBtn.disabled = true;
+async function loadMapData() {
+  try {
+    const res = await fetch('/api/complaints/all', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+    const complaints = (data.success && Array.isArray(data.complaints)) ? data.complaints : [];
 
-  const form = document.getElementById('page-form-new-complaint');
-  const formData = new FormData(form);
+    // Update Map KPIs
+    const total = complaints.length;
+    const resolved = complaints.filter(c => c.status === 'Çözüldü').length;
+    const pending = complaints.filter(c => ['Yeni', 'İşlem devam ediyor', 'Personele atandı'].includes(c.status)).length;
+    const newCount = complaints.filter(c => c.status === 'Yeni').length;
+
+    const mapTotal = document.getElementById('map-kpi-total');
+    const mapResolved = document.getElementById('map-kpi-resolved');
+    const mapPending = document.getElementById('map-kpi-pending');
+    const mapNew = document.getElementById('map-kpi-new');
+
+    if (mapTotal) mapTotal.textContent = total;
+    if (mapResolved) mapResolved.textContent = resolved;
+    if (mapPending) mapPending.textContent = pending;
+    if (mapNew) mapNew.textContent = newCount;
+
+    if (typeof initExplorerMap === 'function') {
+      setTimeout(() => initExplorerMap('map-container', complaints), 100);
+    }
+  } catch (err) {
+    console.error('Map data load error:', err);
+  }
+}
+
+// ============================================================================
+// 15. PUBLIC FEED & ANNOUNCEMENTS
+// ============================================================================
+async function loadPublicComplaintsFeed() {
+  const container = document.getElementById('public-feed-container');
+  if (!container) return;
+
+  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px; grid-column: 1/-1;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Kamuya açık talepler yükleniyor...</p></div>';
 
   try {
-    const res = await fetch('/api/complaints', {
+    const res = await fetch('/api/complaints/public-feed', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+    const list = (data.success && Array.isArray(data.complaints)) ? data.complaints : [];
+
+    container.innerHTML = '';
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color: #94a3b8; text-align: center; grid-column: 1/-1; padding: 30px;">Henüz kamuya açık talep bulunmuyor.</p>';
+      return;
+    }
+
+    list.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'card-box';
+      card.style.cssText = 'margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;';
+
+      const photoHtml = c.first_photo ? `<img src="/${c.first_photo}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">` : '';
+
+      card.innerHTML = `
+        <div>
+          ${photoHtml}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
+            <small style="color: #64748b;">📍 ${c.neighborhood_name || 'Bulancak'}</small>
+          </div>
+          <h4 style="color: var(--portal-blue-primary); margin: 0 0 6px 0; font-size: 1rem; font-weight: 800;">${c.title}</h4>
+          <p style="font-size: 0.84rem; color: #475569; line-height: 1.5; margin-bottom: 12px;">${(c.description || '').slice(0, 120)}...</p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #f1f5f9;">
+          <button class="btn btn-secondary btn-sm" onclick="upvoteComplaint(${c.id})" style="font-size: 0.78rem; font-weight: 700; color: ${c.has_upvoted ? '#0284c7' : '#475569'};">
+            <i class="fas fa-thumbs-up"></i> Destek Ol (${c.upvote_count || 0})
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="font-size: 0.78rem; font-weight: 600;">
+            İncele →
+          </button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = '<p style="color: #ef4444; text-align: center; grid-column: 1/-1;">Talepler yüklenemedi.</p>';
+  }
+}
+
+async function upvoteComplaint(complaintId) {
+  try {
+    const res = await fetch(`/api/complaints/${complaintId}/upvote`, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${currentToken}` },
-      body: formData
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(data.message || 'Destek oyunuz kaydedildi!', 'success');
+      await loadPublicComplaintsFeed();
+    } else {
+      showToast(data.message || 'İşlem başarısız.', 'error');
+    }
+  } catch (err) {
+    showToast('Sunucu hatası.', 'error');
+  }
+}
+
+async function loadAnnouncements() {
+  const container = document.getElementById('announcements-container');
+  if (!container) return;
+
+  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px; grid-column: 1/-1;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Duyurular yükleniyor...</p></div>';
+
+  try {
+    const res = await fetch('/api/announcements');
+    const data = await res.json();
+    const list = (data.success && Array.isArray(data.announcements)) ? data.announcements : [];
+
+    container.innerHTML = '';
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color: #94a3b8; text-align: center; grid-column: 1/-1; padding: 30px;">Aktif belediye duyurusu bulunmuyor.</p>';
+      return;
+    }
+
+    const isAdmin = currentUser && (currentUser.role_id === 1 || currentUser.role_name === 'Sistem Yöneticisi');
+
+    list.forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'card-box';
+      card.style.cssText = 'margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;';
+
+      const prioColor = a.priority === 'Acil' ? '#ef4444' : (a.priority === 'Yüksek' ? '#f59e0b' : '#10b981');
+      const dateStr = a.created_at ? new Date(a.created_at).toLocaleDateString('tr-TR') : '-';
+
+      card.innerHTML = `
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="badge" style="background:#f1f5f9; color:#334155; font-size:0.75rem;">${a.category || 'Genel Duyuru'}</span>
+            <span class="badge" style="background:${prioColor}20; color:${prioColor}; font-weight:700; font-size:0.75rem;">${a.priority || 'Normal'}</span>
+          </div>
+          <h4 style="color: var(--portal-blue-primary); margin: 0 0 8px 0; font-size: 1.05rem; font-weight: 800;">${a.title}</h4>
+          <p style="font-size: 0.86rem; color: #334155; line-height: 1.6; margin-bottom: 12px;">${a.content}</p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #64748b;">
+          <span>📅 ${dateStr}</span>
+          ${isAdmin ? `
+            <button class="btn btn-secondary btn-sm" onclick="deleteAnnouncement(${a.id})" style="color: #b91c1c; padding: 2px 8px; font-size: 0.75rem;">
+              <i class="fas fa-trash"></i> Sil
+            </button>
+          ` : ''}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = '<p style="color: #ef4444; text-align: center; grid-column: 1/-1;">Duyurular yüklenemedi.</p>';
+  }
+}
+
+async function handleCreateAnnouncementSubmit(e) {
+  e.preventDefault();
+  const title = document.getElementById('announcement-title')?.value;
+  const category = document.getElementById('announcement-category')?.value;
+  const priority = document.getElementById('announcement-priority')?.value;
+  const content = document.getElementById('announcement-content')?.value;
+
+  try {
+    const res = await fetch('/api/announcements', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ title, category, priority, content })
     });
 
     const data = await res.json();
-
     if (data.success) {
-      showToast(`Talebiniz Oluşturuldu! Takip Kodu: ${data.tracking_code}`, 'success');
-      form.reset();
-
-      if (currentUser && currentUser.role_name === 'Vatandaş') {
-        await switchWorkspaceTab('my-complaints');
-      } else {
-        await switchWorkspaceTab('complaints');
-      }
+      showToast('📢 Yeni resmi duyuru yayınlandı!', 'success');
+      closeModal('modal-new-announcement');
+      await loadAnnouncements();
     } else {
-      showToast(data.message || 'Talep oluşturulurken hata meydana geldi.', 'error');
+      showToast(data.message || 'Duyuru yayınlanamadı.', 'error');
     }
   } catch (err) {
-    console.error('Page create complaint error:', err);
-    showToast('Sunucu hatası oluştu.', 'error');
-  } finally {
-    if (submitBtn) submitBtn.disabled = false;
+    showToast('Sunucu hatası.', 'error');
   }
 }
 
-// =========================================================
-// REAL-TIME NOTIFICATIONS ENGINE
-// =========================================================
+async function deleteAnnouncement(id) {
+  const executeDelete = async () => {
+    try {
+      const res = await fetch(`/api/announcements/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${currentToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Duyuru silindi.', 'success');
+        await loadAnnouncements();
+      } else {
+        showToast(data.message || 'Duyuru silinemedi.', 'error');
+      }
+    } catch (err) {
+      showToast('Silme hatası.', 'error');
+    }
+  };
+
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      title: 'Duyuruyu Sil',
+      text: 'Bu duyuruyu silmek istediğinize emin misiniz?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Evet, Sil',
+      cancelButtonText: 'İptal'
+    }).then((r) => {
+      if (r.isConfirmed) executeDelete();
+    });
+  } else {
+    if (confirm('Bu duyuruyu silmek istediğinize emin misiniz?')) executeDelete();
+  }
+}
+
+// ============================================================================
+// 16. AUDIT LOGS
+// ============================================================================
+async function loadAdminLogsTable() {
+  const tbody = document.getElementById('admin-logs-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Audit logları yükleniyor...</td></tr>';
+
+  try {
+    const res = await fetch('/api/admin/logs', {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    });
+    const data = await res.json();
+    const logs = (data.success && Array.isArray(data.logs)) ? data.logs : [];
+
+    tbody.innerHTML = '';
+
+    if (logs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Kayıtlı log bulunamadı.</td></tr>';
+      return;
+    }
+
+    logs.forEach(l => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><small style="color:#64748b;">${new Date(l.created_at).toLocaleString('tr-TR')}</small></td>
+        <td><strong>${l.user_name || 'Sistem'}</strong></td>
+        <td><span class="badge" style="background:#f1f5f9; color:#1e293b; font-weight:700;">${l.action_name || l.action || 'İŞLEM'}</span></td>
+        <td>${l.entity_name || '-'}</td>
+        <td><strong>${l.entity_id || '-'}</strong></td>
+        <td><small style="color:#64748b;">${l.ip_address || '127.0.0.1'}</small></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 24px;">Loglar yüklenemedi.</td></tr>';
+  }
+}
+
+// ============================================================================
+// 17. HEADER NOTIFICATIONS & REALTIME BADGE
+// ============================================================================
 async function checkNotifications() {
   if (!currentToken) return;
+
   try {
     const res = await fetch('/api/notifications', {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
-    if (data.success) {
+
+    if (data.success && Array.isArray(data.notifications)) {
+      const unread = data.notifications.filter(n => !n.is_read).length;
       const badge = document.getElementById('topbar-unread-badge');
       if (badge) {
-        if (data.unread_count > 0) {
-          badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
-          badge.style.display = 'inline-block';
+        if (unread > 0) {
+          badge.textContent = unread;
+          badge.style.display = 'block';
         } else {
           badge.style.display = 'none';
         }
       }
     }
-  } catch (err) {
-    console.error('Check notifications error:', err);
-  }
+  } catch (err) {}
 }
 
 async function openNotificationsModal() {
-  openModal('modal-notifications');
   const container = document.getElementById('notifications-list-container');
-  const countTxt = document.getElementById('notif-count-text');
-
+  const countText = document.getElementById('notif-count-text');
   if (!container) return;
-  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;">Yükleniyor...</div>';
+
+  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Bildirimler alınıyor...</div>';
+  openModal('modal-notifications');
 
   try {
     const res = await fetch('/api/notifications', {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
+    const list = (data.success && Array.isArray(data.notifications)) ? data.notifications : [];
 
-    if (!data.success || !data.notifications || data.notifications.length === 0) {
-      if (countTxt) countTxt.textContent = 'Henüz bildiriminiz bulunmamaktadır.';
-      container.innerHTML = `
-        <div style="text-align: center; padding: 30px 10px; color: #94a3b8;">
-          <i class="fas fa-bell-slash" style="font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5;"></i>
-          <p style="margin: 0; font-size: 0.9rem;">Henüz bir bildiriminiz yok.</p>
-        </div>
-      `;
+    container.innerHTML = '';
+    const unreadCount = list.filter(n => !n.is_read).length;
+    if (countText) countText.textContent = `${unreadCount} okunmamış bildirim`;
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px;">Henüz bildiriminiz yok.</p>';
       return;
     }
 
-    if (countTxt) countTxt.textContent = `${data.unread_count || 0} okunmamış bildirim`;
+    list.forEach(n => {
+      const item = document.createElement('div');
+      item.style.cssText = `padding: 12px; border-radius: 8px; border: 1px solid ${n.is_read ? '#e2e8f0' : '#bfdbfe'}; background: ${n.is_read ? '#ffffff' : '#eff6ff'}; cursor: pointer; transition: all 0.2s ease;`;
+      
+      const dateStr = n.created_at ? new Date(n.created_at).toLocaleString('tr-TR') : '';
 
-    container.innerHTML = data.notifications.map(n => `
-      <div style="background: ${n.is_read ? '#ffffff' : '#eff6ff'}; border: 1px solid ${n.is_read ? '#e2e8f0' : '#bfdbfe'}; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 12px;">
-        <div style="width: 36px; height: 36px; border-radius: 8px; background: ${n.type === 'Görev' ? '#dbeafe' : n.type === 'Yönlendirme' ? '#ffedd5' : '#dcfce7'}; color: ${n.type === 'Görev' ? '#2563eb' : n.type === 'Yönlendirme' ? '#c2410c' : '#15803d'}; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;">
-          <i class="${n.type === 'Görev' ? 'fas fa-clipboard-check' : n.type === 'Yönlendirme' ? 'fas fa-right-left' : 'fas fa-circle-check'}"></i>
+      item.innerHTML = `
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #64748b; margin-bottom: 4px;">
+          <strong style="color: ${n.is_read ? '#475569' : '#1e40af'};"><i class="fas fa-bell"></i> ${n.title || 'Bilgilendirme'}</strong>
+          <span>${dateStr}</span>
         </div>
-        <div style="flex-grow: 1;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-            <strong style="font-size: 0.88rem; color: #0f172a;">${n.title}</strong>
-            <small style="color: #94a3b8; font-size: 0.74rem;">${new Date(n.created_at).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' })}</small>
-          </div>
-          <p style="margin: 0; font-size: 0.82rem; color: #475569; line-height: 1.4;">${n.message}</p>
-        </div>
-      </div>
-    `).join('');
+        <p style="margin: 0; font-size: 0.85rem; color: #1e293b; font-weight: ${n.is_read ? '400' : '600'};">${n.message}</p>
+      `;
 
+      item.onclick = () => {
+        closeModal('modal-notifications');
+        if (n.complaint_id || n.reference_id) {
+          openComplaintDetail(n.complaint_id || n.reference_id);
+        }
+      };
+
+      container.appendChild(item);
+    });
   } catch (err) {
-    console.error('Open notifications error:', err);
-    container.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 20px;">Bildirimler yüklenemedi.</div>';
+    container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Bildirimler yüklenemedi.</p>';
   }
 }
 
@@ -2683,30 +3382,34 @@ async function markAllNotificationsAsRead() {
     });
     const data = await res.json();
     if (data.success) {
-      showToast('Tüm bildirimler okundu olarak işaretlendi.', 'info');
-      await checkNotifications();
-      await openNotificationsModal();
+      showToast('Tüm bildirimler okundu işaretlendi.', 'success');
+      const badge = document.getElementById('topbar-unread-badge');
+      if (badge) badge.style.display = 'none';
+      openNotificationsModal();
     }
   } catch (err) {
-    console.error('Mark notifications read error:', err);
+    showToast('İşlem başarısız.', 'error');
   }
 }
 
-// Interactive Star Rating for Citizen Resolved Complaints
-let selectedStarRating = 5;
+// ============================================================================
+// 18. SATISFACTION SURVEY & PROFILE SETTINGS
+// ============================================================================
+let currentStarRating = 5;
 
-function setStarRating(num) {
-  selectedStarRating = num;
+function setStarRating(val) {
+  currentStarRating = val;
   for (let i = 1; i <= 5; i++) {
     const star = document.getElementById(`star-${i}`);
     if (star) {
-      star.style.color = i <= num ? '#f59e0b' : '#cbd5e1';
+      star.style.color = (i <= val) ? '#f59e0b' : '#cbd5e1';
     }
   }
 }
 
 async function submitSatisfactionSurvey(complaintId) {
-  const comment = document.getElementById('survey-comment')?.value.trim() || '';
+  const comment = document.getElementById('survey-comment')?.value || '';
+
   try {
     const res = await fetch(`/api/complaints/${complaintId}/survey`, {
       method: 'POST',
@@ -2714,180 +3417,41 @@ async function submitSatisfactionSurvey(complaintId) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${currentToken}`
       },
-      body: JSON.stringify({ rating: selectedStarRating, review_comment: comment })
+      body: JSON.stringify({ rating: currentStarRating, comment: comment })
     });
 
     const data = await res.json();
     if (data.success) {
-      showToast(data.message || 'Değerlendirmeniz için teşekkür ederiz!', 'success');
+      showToast('⭐ Değerlendirmeniz için teşekkür ederiz!', 'success');
       closeModal('modal-complaint-detail');
+      await loadComplaintsTable();
     } else {
       showToast(data.message || 'Değerlendirme gönderilemedi.', 'error');
     }
   } catch (err) {
-    showToast('Değerlendirme gönderme hatası.', 'error');
+    showToast('Sunucu hatası.', 'error');
   }
 }
 
-// Forgot Password Form Handler
-async function handleForgotPasswordSubmit(e) {
-  e.preventDefault();
-  const email = document.getElementById('forgot-email')?.value.trim();
-  if (!email) return;
-
-  closeModal('modal-forgot-password');
-  showToast(`Şifre sıfırlama bağlantısı ${email} adresine iletildi.`, 'success');
-}
-
-// Admin / Manager Complaint Priority & Status Update
-async function saveAdminComplaintUpdate(complaintId) {
-  const priority = document.getElementById('detail-edit-priority')?.value;
-  const status = document.getElementById('detail-edit-status')?.value;
-
-  try {
-    const res = await fetch(`/api/admin/complaints/${complaintId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({ priority_level: priority, status })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      showToast('Talep bilgileri başarıyla güncellendi.', 'success');
-      closeModal('modal-complaint-detail');
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'Güncelleme başarısız.', 'error');
-    }
-  } catch (err) {
-    showToast('Güncelleme hatası.', 'error');
-  }
-}
-
-// Soft Delete User (Admin)
-async function softDeleteUser(userId) {
-  if (!confirm('Bu kullanıcıyı pasife almak (Soft Delete) istediğinize emin misiniz?')) return;
-
-  try {
-    const res = await fetch(`/api/admin/users/${userId}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || 'Kullanıcı pasife alındı.', 'info');
-      await loadAdminUsersTable();
-    } else {
-      showToast(data.message || 'Kullanıcı pasife alınamadı.', 'error');
-    }
-  } catch (err) {
-    showToast('Kullanıcı silme hatası.', 'error');
-  }
-}
-
-// Soft Delete Department (Admin)
-async function softDeleteDepartment(deptId) {
-  if (!confirm('Bu müdürlüğü pasife almak istediğinize emin misiniz?')) return;
-
-  try {
-    const res = await fetch(`/api/admin/departments/${deptId}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || 'Müdürlük pasife alındı.', 'info');
-      await loadAdminDeptsTable();
-    } else {
-      showToast(data.message || 'Müdürlük pasife alınamadı.', 'error');
-    }
-  } catch (err) {
-    showToast('Müdürlük silme hatası.', 'error');
-  }
-}
-
-// Dedicated Dashboard Loader
-async function loadDashboardData() {
-  try {
-    const headers = currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {};
-    const res = await fetch('/api/stats/dashboard', { headers });
-    const data = await res.json();
-
-    if (!data.success || !data.kpis) return;
-
-    const kTotal = document.getElementById('kpi-total');
-    const kPending = document.getElementById('kpi-pending');
-    const kResolved = document.getElementById('kpi-resolved');
-    const kAvgDays = document.getElementById('kpi-avg-days');
-    const kRate = document.getElementById('kpi-rate');
-
-    if (kTotal) kTotal.textContent = data.kpis.total;
-    if (kPending) kPending.textContent = data.kpis.pending;
-    if (kResolved) kResolved.textContent = data.kpis.resolved;
-    if (kAvgDays) kAvgDays.textContent = data.kpis.avg_days;
-    if (kRate) kRate.textContent = data.kpis.resolution_rate;
-
-    if (data.charts && typeof renderDashboardCharts === 'function') {
-      renderDashboardCharts(data.charts);
-    }
-  } catch (err) {
-    console.error('Load dashboard stats error:', err);
-  }
-}
-
-// Dedicated Reports Analytics Loader
-async function loadReportsAnalytics() {
-  const container = document.getElementById('reports-staff-performance-container');
-  if (!container) return;
-
-  try {
-    const res = await fetch('/api/stats/dashboard', {
-      headers: { 'Authorization': `Bearer ${currentToken}` }
-    });
-    const data = await res.json();
-
-    const emps = data.employee_performance || [
-      { name: 'Ali Usta', task_count: 14 },
-      { name: 'Veli Şahin', task_count: 9 },
-      { name: 'Mehmet Kaplan', task_count: 11 },
-      { name: 'Hasan Yılmaz', task_count: 7 }
-    ];
-
-    container.innerHTML = emps.map(emp => `
-      <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color);">
-        <strong style="color: #0f172a; font-size: 0.9rem;">👷 ${emp.name}</strong>
-        <span style="background: #eff6ff; color: #2563eb; font-weight: 800; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem;">${emp.task_count} Görev Tamamlandı</span>
-      </div>
-    `).join('');
-  } catch (err) {
-    container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 10px;">Rapor verisi bulunmuyor.</div>';
-  }
-}
-
-// User Profile Modal Open & Populate
 function openUserProfileModal() {
   if (!currentUser) return;
 
-  const fnInput = document.getElementById('prof-fullname');
-  const emInput = document.getElementById('prof-email');
-  const phInput = document.getElementById('prof-phone');
-  const rlInput = document.getElementById('prof-role');
-  const adInput = document.getElementById('prof-address');
+  const nameInput = document.getElementById('prof-fullname');
+  const emailInput = document.getElementById('prof-email');
+  const phoneInput = document.getElementById('prof-phone');
+  const roleInput = document.getElementById('prof-role');
+  const addrInput = document.getElementById('prof-address');
 
-  if (fnInput) fnInput.value = currentUser.full_name || '';
-  if (emInput) emInput.value = currentUser.email || '';
-  if (phInput) phInput.value = currentUser.phone || '';
-  if (rlInput) rlInput.value = currentUser.role_name + (currentUser.department_name ? ` - ${currentUser.department_name}` : '');
-  if (adInput) adInput.value = currentUser.address || '';
+  if (nameInput) nameInput.value = currentUser.full_name || '';
+  if (emailInput) emailInput.value = currentUser.email || '';
+  if (phoneInput) phoneInput.value = currentUser.phone || '';
+  if (roleInput) roleInput.value = currentUser.role_name || '';
+  if (addrInput) addrInput.value = currentUser.address || '';
 
   switchProfileTab('info');
   openModal('modal-user-profile');
 }
 
-// Switch Profile Modal Tabs
 function switchProfileTab(tab) {
   const btnInfo = document.getElementById('prof-btn-info');
   const btnSec = document.getElementById('prof-btn-security');
@@ -2895,44 +3459,23 @@ function switchProfileTab(tab) {
   const contentSec = document.getElementById('prof-content-security');
 
   if (tab === 'info') {
-    if (btnInfo) {
-      btnInfo.classList.add('active');
-      btnInfo.style.borderBottom = '3px solid var(--portal-blue-accent)';
-      btnInfo.style.color = 'var(--portal-blue-primary)';
-      btnInfo.style.fontWeight = '700';
-    }
-    if (btnSec) {
-      btnSec.classList.remove('active');
-      btnSec.style.borderBottom = 'none';
-      btnSec.style.color = '#64748b';
-      btnSec.style.fontWeight = '600';
-    }
+    if (btnInfo) { btnInfo.style.color = 'var(--portal-blue-primary)'; btnInfo.style.borderBottom = '3px solid var(--portal-blue-accent)'; }
+    if (btnSec) { btnSec.style.color = '#64748b'; btnSec.style.borderBottom = 'none'; }
     if (contentInfo) contentInfo.style.display = 'block';
     if (contentSec) contentSec.style.display = 'none';
   } else {
-    if (btnSec) {
-      btnSec.classList.add('active');
-      btnSec.style.borderBottom = '3px solid var(--portal-blue-accent)';
-      btnSec.style.color = 'var(--portal-blue-primary)';
-      btnSec.style.fontWeight = '700';
-    }
-    if (btnInfo) {
-      btnInfo.classList.remove('active');
-      btnInfo.style.borderBottom = 'none';
-      btnInfo.style.color = '#64748b';
-      btnInfo.style.fontWeight = '600';
-    }
-    if (contentInfo) contentInfo.style.display = 'none';
+    if (btnSec) { btnSec.style.color = 'var(--portal-blue-primary)'; btnSec.style.borderBottom = '3px solid var(--portal-blue-accent)'; }
+    if (btnInfo) { btnInfo.style.color = '#64748b'; btnInfo.style.borderBottom = 'none'; }
     if (contentSec) contentSec.style.display = 'block';
+    if (contentInfo) contentInfo.style.display = 'none';
   }
 }
 
-// Handle Profile Info Update Submit
 async function handleUpdateProfileSubmit(e) {
   e.preventDefault();
-  const fullName = document.getElementById('prof-fullname')?.value.trim();
-  const phone = document.getElementById('prof-phone')?.value.trim();
-  const address = document.getElementById('prof-address')?.value.trim();
+  const full_name = document.getElementById('prof-fullname')?.value;
+  const phone = document.getElementById('prof-phone')?.value;
+  const address = document.getElementById('prof-address')?.value;
 
   try {
     const res = await fetch('/api/auth/profile', {
@@ -2941,12 +3484,12 @@ async function handleUpdateProfileSubmit(e) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${currentToken}`
       },
-      body: JSON.stringify({ full_name: fullName, phone, address })
+      body: JSON.stringify({ full_name, phone, address })
     });
 
     const data = await res.json();
     if (data.success) {
-      showToast(data.message || 'Profil bilgileriniz güncellendi.', 'success');
+      showToast('Profil bilgileriniz güncellendi.', 'success');
       if (data.user) {
         currentUser.full_name = data.user.full_name;
         currentUser.phone = data.user.phone;
@@ -2963,7 +3506,6 @@ async function handleUpdateProfileSubmit(e) {
   }
 }
 
-// Handle Change Password Submit
 async function handleChangePasswordSubmit(e) {
   e.preventDefault();
   const currentPassword = document.getElementById('pwd-current')?.value;
@@ -2992,10 +3534,7 @@ async function handleChangePasswordSubmit(e) {
 
     const data = await res.json();
     if (data.success) {
-      showToast(data.message || 'Şifreniz başarıyla güncellendi.', 'success');
-      document.getElementById('pwd-current').value = '';
-      document.getElementById('pwd-new').value = '';
-      document.getElementById('pwd-confirm').value = '';
+      showToast('Şifreniz başarıyla güncellendi.', 'success');
       closeModal('modal-user-profile');
     } else {
       showToast(data.message || 'Şifre değiştirilemedi.', 'error');
@@ -3005,124 +3544,29 @@ async function handleChangePasswordSubmit(e) {
   }
 }
 
-// Open Assign Task Modal (Birim Yöneticisi)
-async function openAssignModal(complaintId, deptId) {
-  const cIdInput = document.getElementById('assign-complaint-id');
-  const empSelect = document.getElementById('assign-employee-select');
-  if (cIdInput) cIdInput.value = complaintId;
-
-  if (empSelect) {
-    empSelect.innerHTML = '<option value="">Yükleniyor...</option>';
-    const userDept = deptId || (currentUser ? currentUser.department_id : 1) || 1;
-    try {
-      const res = await fetch(`/api/assignments/department-employees/${userDept}`, {
-        headers: { 'Authorization': `Bearer ${currentToken}` }
-      });
-      const data = await res.json();
-      if (data.success && data.employees && data.employees.length > 0) {
-        empSelect.innerHTML = data.employees.map(e => `<option value="${e.employee_id}">${e.full_name} (${e.title || 'Saha Personeli'})</option>`).join('');
-      } else {
-        empSelect.innerHTML = `
-          <option value="1" selected>Ali Usta (Asfalt & Kaldırım Ekip Şefi)</option>
-          <option value="2">Veli Şahin (Atık Yönetimi Görevlisi)</option>
-          <option value="3">Fatma Şahin (Peyzaj Görevlisi)</option>
-        `;
-      }
-    } catch (err) {
-      empSelect.innerHTML = `
-        <option value="1" selected>Ali Usta (Asfalt & Kaldırım Ekip Şefi)</option>
-        <option value="2">Veli Şahin (Atık Yönetimi Görevlisi)</option>
-      `;
-    }
-  }
-
-  openModal('modal-assign-task');
-}
-
-// Handle Assign Task Form Submit
-async function handleAssignTaskSubmit(e) {
-  e.preventDefault();
-  const complaint_id = document.getElementById('assign-complaint-id')?.value;
-  const employee_id = document.getElementById('assign-employee-select')?.value;
-  const task_description = document.getElementById('assign-task-desc')?.value.trim() || 'Personele görev atandı.';
-
-  if (!complaint_id || !employee_id) {
-    showToast('Lütfen bir personel seçiniz.', 'error');
-    return;
-  }
-
-  try {
-    const res = await fetch('/api/assignments/assign', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: JSON.stringify({ complaint_id, employee_id, task_description })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || 'Görev personele başarıyla atandı!', 'success');
-      closeModal('modal-assign-task');
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'Görev atanamadı.', 'error');
-    }
-  } catch (err) {
-    showToast('Görev atama hatası.', 'error');
+// ============================================================================
+// 19. GLOBAL MODAL CONTROLS
+// ============================================================================
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 }
 
-// Open Action Resolution Modal (Personel)
-async function openActionModal(complaintId) {
-  const cIdInput = document.getElementById('action-complaint-id');
-  if (cIdInput) cIdInput.value = complaintId;
-
-  const compObj = (currentFetchedComplaints || []).find(c => c.id == complaintId);
-  const titleEl = document.getElementById('action-complaint-title');
-  const addrEl = document.getElementById('action-complaint-address');
-  const coordsEl = document.getElementById('action-complaint-coords');
-  const linkEl = document.getElementById('action-complaint-map-link');
-
-  if (compObj) {
-    if (titleEl) titleEl.textContent = `${compObj.tracking_code} - ${compObj.title}`;
-    if (addrEl) addrEl.textContent = compObj.open_address || compObj.neighborhood_name || 'Adres belirtilmemiş';
-    const lat = compObj.latitude || 40.9128;
-    const lng = compObj.longitude || 38.3895;
-    if (coordsEl) coordsEl.textContent = `📍 Coğrafi Konum: ${lat}, ${lng}`;
-    if (linkEl) linkEl.href = `https://maps.google.com/?q=${lat},${lng}`;
-  }
-
-  openModal('modal-action-task');
-}
-
-// Handle Action Task Form Submit
-async function handleActionTaskSubmit(e) {
-  e.preventDefault();
-  const form = document.getElementById('form-action-task');
-  if (!form) return;
-
-  const formData = new FormData(form);
-
-  try {
-    const res = await fetch('/api/assignments/action', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${currentToken}`
-      },
-      body: formData
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      showToast(data.message || 'İşlem kaydı ve çözüm eklendi!', 'success');
-      closeModal('modal-action-task');
-      await loadComplaintsTable(false);
-    } else {
-      showToast(data.message || 'İşlem kaydı eklenemedi.', 'error');
-    }
-  } catch (err) {
-    showToast('İşlem kaydı hatası.', 'error');
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
   }
 }
+
+// Close on backdrop click
+document.addEventListener('click', (e) => {
+  if (e.target.classList && e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+});

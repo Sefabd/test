@@ -23,21 +23,6 @@ function optionalAuth(req, res, next) {
 
 // Helper: Record Status History Audit Log
 async function recordStatusHistory(complaint_id, changed_by_user_id, old_status, new_status, change_reason, changed_by_name) {
-  const { memData } = require('../config/db');
-  if (memData) {
-    if (!memData.complaint_status_history) memData.complaint_status_history = [];
-    memData.complaint_status_history.push({
-      id: memData.complaint_status_history.length + 1,
-      complaint_id: Number(complaint_id),
-      changed_by_user_id: Number(changed_by_user_id),
-      old_status: old_status || 'Yeni',
-      new_status: new_status,
-      change_reason: change_reason || 'Talep durumu güncellendi.',
-      created_at: new Date().toISOString(),
-      changed_by_name: changed_by_name || 'Kullanıcı'
-    });
-  }
-
   try {
     await pool.query(
       `INSERT INTO complaint_status_history (complaint_id, changed_by_user_id, old_status, new_status, change_reason)
@@ -45,6 +30,47 @@ async function recordStatusHistory(complaint_id, changed_by_user_id, old_status,
       [complaint_id, changed_by_user_id, old_status || 'Yeni', new_status, change_reason || 'Talep durumu güncellendi.']
     );
   } catch (e) {}
+}
+
+// Helper: Enrich Complaint with Satisfaction Rating Stats & User Rating
+function enrichComplaintWithRating(complaint, currentUserId, allSurveys) {
+  const cId = Number(complaint.id);
+  const surveys = (allSurveys || []).filter(s => Number(s.complaint_id) === cId);
+  
+  let avgRating = null;
+  let voteCount = 0;
+  let latestComment = null;
+  let userRating = null;
+  let userComment = null;
+
+  if (surveys.length > 0) {
+    const total = surveys.reduce((sum, s) => sum + Number(s.rating || 0), 0);
+    avgRating = Number((total / surveys.length).toFixed(1));
+    voteCount = surveys.length;
+    const withComment = surveys.filter(s => s.review_comment);
+    if (withComment.length > 0) {
+      latestComment = withComment[withComment.length - 1].review_comment;
+    }
+  }
+
+  if (currentUserId) {
+    const userSurvey = surveys.find(s => Number(s.citizen_id) === Number(currentUserId) || Number(s.user_id) === Number(currentUserId));
+    if (userSurvey) {
+      userRating = Number(userSurvey.rating);
+      userComment = userSurvey.review_comment || '';
+    }
+  }
+
+  // SADECE VE SADECE gerçek vatandaş anketi varsa rating gösterilir, anket yoksa null döner!
+  return {
+    ...complaint,
+    avg_rating: avgRating,
+    rating: avgRating,
+    rating_vote_count: voteCount,
+    rating_comment: latestComment,
+    user_rating: userRating,
+    user_comment: userComment
+  };
 }
 
 // 1. Yeni Şikâyet / Talep Oluştur (Requires Auth)
@@ -56,7 +82,6 @@ router.post(
     body('title').notEmpty().withMessage('Talep başlığı zorunludur.').trim(),
     body('description').notEmpty().withMessage('Açıklama zorunludur.').trim(),
     body('category_id').notEmpty().withMessage('Kategori seçimi zorunludur.'),
-    body('district_id').notEmpty().withMessage('İlçe seçimi zorunludur.'),
     body('neighborhood_id').notEmpty().withMessage('Mahalle seçimi zorunludur.')
   ],
   async (req, res) => {
@@ -66,7 +91,7 @@ router.post(
     }
 
     const {
-      title, description, category_id, district_id, neighborhood_id, department_id: reqDeptId,
+      title, description, category_id, district_id = 1, neighborhood_id, department_id: reqDeptId,
       open_address, latitude, longitude, urgency_level, is_public, contact_preference,
       submission_type
     } = req.body;
@@ -79,12 +104,12 @@ router.post(
       let targetDeptId = reqDeptId ? Number(reqDeptId) : null;
       const [categories] = await conn.query('SELECT department_id, name, default_priority FROM complaint_categories WHERE id = ?', [category_id]);
       
-      let isOtherCategory = Number(category_id) === 14 || (categories && categories.length > 0 && categories[0].name.includes('Diğer'));
-      
-      // Diğer kategorisinde veya birim seçilmediyse otomatik 153 Çözüm Ana Masası (Birim 11) havuzuna düşsün
-      const department_id = isOtherCategory ? 11 : (targetDeptId || ((categories && categories.length > 0) ? categories[0].department_id : 11));
+      const catDeptId = (categories && categories.length > 0 && categories[0].department_id) ? Number(categories[0].department_id) : null;
+
+      // Hedef birim seçildiyse doğrudan hedef birime (örn: Fen İşleri = 1), seçilmediyse kategorinin birimine, o da yoksa 11'e (153 Masası)
+      const department_id = targetDeptId || catDeptId || 11;
       const priority_level = urgency_level || (categories && categories.length > 0 ? categories[0].default_priority : 'Normal');
-      const initialStatus = (isOtherCategory || department_id === 11) ? 'Ön İncelemede' : 'Yeni';
+      const initialStatus = (department_id === 11) ? 'Ön İncelemede' : 'Yeni';
 
       const tracking_code = 'BLD-2026-' + Math.floor(100000 + Math.random() * 900000);
       const isPublicVal = (is_public !== undefined && is_public !== null) ? Number(is_public) : 1;
@@ -155,53 +180,51 @@ router.post(
   }
 );
 
-// 2. Upvote / Downvote Toggle Endpoint (Per-User Tracked with DB/Memory Sync)
-router.post('/:id/upvote', authenticateToken, async (req, res) => {
+
+
+// 3. GET /api/complaints/my, /api/complaints/mine, /api/complaints/my-complaints
+const getMyComplaintsHandler = async (req, res) => {
   try {
-    const complaintId = req.params.id;
-    const userId = req.user.id;
-    const { toggleComplaintUpvote } = require('../config/db');
+    const currentUserId = Number(req.user.id);
+    const currentCitizenId = Number(req.user.citizen_id || req.user.id);
+    const currentUserEmail = (req.user.email || '').toLowerCase();
 
-    const result = await toggleComplaintUpvote(complaintId, userId);
+    let complaints = [];
+    try {
+      const [rows] = await pool.query(
+        `SELECT c.*, cat.name as category_name, d.name as department_name, n.name as neighborhood_name
+         FROM complaints c
+         LEFT JOIN complaint_categories cat ON c.category_id = cat.id
+         LEFT JOIN departments d ON c.department_id = d.id
+         LEFT JOIN neighborhoods n ON c.neighborhood_id = n.id
+         WHERE c.citizen_id = ? OR c.user_id = ? OR c.citizen_id = ?
+         ORDER BY c.id DESC`,
+        [currentUserId, currentUserId, currentCitizenId]
+      );
+      if (rows && rows.length > 0) complaints = rows;
+    } catch (e) {}
 
-    res.json({
-      success: true,
-      message: result.has_upvoted ? 'Talebe başarıyla destek verdiniz!' : 'Desteğinizi geri çektiniz.',
-      has_upvoted: result.has_upvoted,
-      upvote_count: result.upvote_count
-    });
-  } catch (err) {
-    console.error('Upvote error:', err);
-    res.status(500).json({ success: false, message: 'Destek verilirken hata oluştu.' });
-  }
-});
+    const { memData } = require('../config/db');
+    if ((!complaints || complaints.length === 0) && memData && memData.complaints) {
+      complaints = memData.complaints.filter(c => {
+        if (!c) return false;
+        if (Number(c.user_id) === currentUserId || Number(c.citizen_id) === currentUserId || Number(c.citizen_id) === currentCitizenId) return true;
+        if (currentUserEmail.includes('caner') && (Number(c.citizen_id) === 6 || Number(c.user_id) === 6 || Number(c.user_id) === 10)) return true;
+        if (currentUserEmail.includes('sefa') && (Number(c.citizen_id) === 7 || Number(c.user_id) === 7 || Number(c.user_id) === 11)) return true;
+        return false;
+      });
+    }
 
-// 3. GET /api/complaints/my (Strictly User's Own Complaints for "Başvurularım")
-router.get('/my', authenticateToken, async (req, res) => {
-  try {
-    let [complaints] = await pool.query('SELECT * FROM complaints ORDER BY id DESC');
     let [allFiles] = await pool.query('SELECT * FROM complaint_files');
-
-    complaints = Array.isArray(complaints) ? complaints : [];
+    let [allSurveys] = await pool.query('SELECT * FROM satisfaction_surveys');
     allFiles = Array.isArray(allFiles) ? allFiles : [];
+    allSurveys = Array.isArray(allSurveys) && allSurveys.length > 0 ? allSurveys : (memData && memData.satisfaction_surveys ? memData.satisfaction_surveys : []);
 
-    const currentUserId = req.user.id;
-    const currentCitizenId = req.user.citizen_id;
-    const currentUserEmail = req.user.email || '';
-
-    const myComplaints = complaints.filter(c => {
-      if (!c) return false;
-      if (c.user_id && (c.user_id == currentUserId || c.user_id == currentCitizenId)) return true;
-      if (c.citizen_id && (c.citizen_id == currentUserId || c.citizen_id == currentCitizenId)) return true;
-      if (currentUserEmail.includes('caner') && (c.citizen_id == 6 || c.user_id == 6 || c.user_id == 10)) return true;
-      if (currentUserEmail.includes('sefa') && (c.citizen_id == 7 || c.user_id == 7 || c.user_id == 11)) return true;
-      return false;
-    });
-
-    const result = myComplaints.map(c => {
-      const files = allFiles.filter(f => f.complaint_id == c.id);
+    const result = (complaints || []).map(c => {
+      const files = allFiles.filter(f => Number(f.complaint_id) === Number(c.id));
+      const enriched = enrichComplaintWithRating(c, currentUserId, allSurveys);
       return {
-        ...c,
+        ...enriched,
         files: files.map(f => f.file_path),
         first_photo: files.length > 0 ? files[0].file_path : null
       };
@@ -212,33 +235,46 @@ router.get('/my', authenticateToken, async (req, res) => {
     console.error('Kullanıcı talepleri hatası:', err);
     res.status(500).json({ success: false, message: 'Kendi talepleriniz alınamadı.' });
   }
-});
+};
 
-// 4. GET /api/complaints/public (Strictly Public Feed & Citizen Map with Per-User Upvote State)
-router.get('/public', optionalAuth, async (req, res) => {
+router.get('/my', authenticateToken, getMyComplaintsHandler);
+router.get('/mine', authenticateToken, getMyComplaintsHandler);
+router.get('/my-complaints', authenticateToken, getMyComplaintsHandler);
+
+// 4. GET /api/complaints/public & /api/complaints/public-feed
+const getPublicComplaintsHandler = async (req, res) => {
   try {
-    let [complaints] = await pool.query('SELECT * FROM complaints WHERE is_public = 1 ORDER BY id DESC');
-    let [allFiles] = await pool.query('SELECT * FROM complaint_files');
-    const { getUpvotedComplaintIdsForUser } = require('../config/db');
+    let complaints = [];
+    try {
+      const [rows] = await pool.query('SELECT * FROM complaints WHERE is_public = 1 ORDER BY id DESC');
+      if (rows && rows.length > 0) complaints = rows;
+    } catch (e) {}
 
-    complaints = Array.isArray(complaints) ? complaints : [];
+    const { getUpvotedComplaintIdsForUser, memData } = require('../config/db');
+    if ((!complaints || complaints.length === 0) && memData && memData.complaints) {
+      complaints = memData.complaints.filter(c => Number(c.is_public) === 1);
+    }
+
+    let [allFiles] = await pool.query('SELECT * FROM complaint_files');
+    let [allSurveys] = await pool.query('SELECT * FROM satisfaction_surveys');
     allFiles = Array.isArray(allFiles) ? allFiles : [];
+    allSurveys = Array.isArray(allSurveys) && allSurveys.length > 0 ? allSurveys : (memData && memData.satisfaction_surveys ? memData.satisfaction_surveys : []);
 
     const currentUserId = req.user ? req.user.id : null;
     let upvotedSet = new Set();
-
     if (currentUserId) {
       upvotedSet = await getUpvotedComplaintIdsForUser(currentUserId);
     }
 
-    const publicComplaints = complaints.filter(c => Number(c.is_public) === 1);
+    const publicComplaints = complaints.filter(c => Number(c.is_public) === 1 && c.status !== 'passive');
 
     const result = publicComplaints.map(c => {
-      const files = allFiles.filter(f => f.complaint_id == c.id);
+      const files = allFiles.filter(f => Number(f.complaint_id) === Number(c.id));
       const hasUpvoted = currentUserId ? upvotedSet.has(Number(c.id)) : false;
+      const enriched = enrichComplaintWithRating(c, currentUserId, allSurveys);
 
       return {
-        ...c,
+        ...enriched,
         has_upvoted: hasUpvoted,
         upvote_count: c.upvote_count !== undefined ? c.upvote_count : 0,
         files: files.map(f => f.file_path),
@@ -251,7 +287,10 @@ router.get('/public', optionalAuth, async (req, res) => {
     console.error('Kamuya açık talepler hatası:', err);
     res.status(500).json({ success: false, message: 'Kamuya açık talepler alınamadı.' });
   }
-});
+};
+
+router.get('/public', optionalAuth, getPublicComplaintsHandler);
+router.get('/public-feed', optionalAuth, getPublicComplaintsHandler);
 
 // 5. GET /api/complaints/all (Role-Isolated: Manager sees department, Staff sees assigned tasks, Admin sees all)
 router.get('/all', authenticateToken, async (req, res) => {
@@ -259,10 +298,13 @@ router.get('/all', authenticateToken, async (req, res) => {
     let [complaints] = await pool.query('SELECT * FROM complaints ORDER BY id DESC');
     let [allFiles] = await pool.query('SELECT * FROM complaint_files');
     let [allAssignments] = await pool.query('SELECT * FROM complaint_assignments');
+    let [allSurveys] = await pool.query('SELECT * FROM satisfaction_surveys');
+    const { memData } = require('../config/db');
 
     complaints = Array.isArray(complaints) ? complaints : [];
     allFiles = Array.isArray(allFiles) ? allFiles : [];
     allAssignments = Array.isArray(allAssignments) ? allAssignments : [];
+    allSurveys = Array.isArray(allSurveys) && allSurveys.length > 0 ? allSurveys : (memData && memData.satisfaction_surveys ? memData.satisfaction_surveys : []);
 
     const userRole = req.user.role_name;
     const userDeptId = req.user.department_id;
@@ -277,15 +319,28 @@ router.get('/all', authenticateToken, async (req, res) => {
     // Strict Role Isolation Engine (Backend-Driven Filtering)
     if (userRole === 'Vatandaş' || req.user.role_id === 4) {
       complaints = complaints.filter(c => c.citizen_id == req.user.id || c.user_id == req.user.id);
+    } else if (userRole === 'Belediye Başkanı' || req.user.role_id === 5) {
+      // Belediye Başkanı: TÜM talepleri genel gözlemci olarak görebilir (filtre yok)
+    } else if (userRole === 'Belediye Başkan Yardımcısı' || req.user.role_id === 6) {
+      // SADECE Admin tarafından kendisine zimmetlenen/atanan birimlerin durumunu görebilir
+      let assignedDeptIds = Array.isArray(req.user.assigned_department_ids) ? req.user.assigned_department_ids.map(Number) : [];
+      if (memData && memData.departments) {
+        const memAssigned = memData.departments
+          .filter(d => Number(d.vice_mayor_user_id) === Number(req.user.id))
+          .map(d => Number(d.id));
+        assignedDeptIds = [...new Set([...assignedDeptIds, ...memAssigned])];
+      }
+      const deptSet = new Set(assignedDeptIds);
+      complaints = complaints.filter(c => deptSet.has(Number(c.department_id)) || deptSet.has(Number(c.forwarded_from_department_id)));
     } else if (userRole === 'Birim Yöneticisi' || req.user.role_id === 2) {
       complaints = complaints.filter(c => 
-        c.department_id == userDeptId || 
-        c.forwarded_from_department_id == userDeptId
+        Number(c.department_id) === Number(userDeptId) || 
+        Number(c.forwarded_from_department_id) === Number(userDeptId)
       );
     } else if (userRole === 'Personel' || req.user.role_id === 3) {
       complaints = complaints.filter(c => 
-        c.department_id == userDeptId || 
-        c.assigned_to_user_id == req.user.id ||
+        Number(c.department_id) === Number(userDeptId) || 
+        Number(c.assigned_to_user_id) === Number(req.user.id) ||
         myAssignedComplaintIds.has(Number(c.id))
       );
     }
@@ -298,6 +353,8 @@ router.get('/all', authenticateToken, async (req, res) => {
       complaints = complaints.filter(c => c.department_id == department_id);
     }
 
+    const currentUserId = req.user ? req.user.id : null;
+
     const result = complaints.map(c => {
       const files = allFiles.filter(f => f.complaint_id == c.id);
       const isAssignedToMe = myAssignedComplaintIds.has(Number(c.id)) || c.assigned_employee_id == userEmpId;
@@ -306,9 +363,10 @@ router.get('/all', authenticateToken, async (req, res) => {
         c.status === 'Müdürlüğe iletildi' ||
         (c.change_reason && c.change_reason.includes('yönlendirildi'))
       );
+      const enriched = enrichComplaintWithRating(c, currentUserId, allSurveys);
 
       return {
-        ...c,
+        ...enriched,
         is_assigned_to_me: isAssignedToMe ? 1 : 0,
         is_forwarded: isForwarded ? 1 : 0,
         files: files.map(f => f.file_path),
@@ -421,38 +479,109 @@ router.get('/', optionalAuth, async (req, res) => {
   return res.redirect('/api/complaints/all');
 });
 
-// 6. Takip Kodu ile Sorgula (Enriched with user & employee details to eliminate undefined)
-router.get('/track/:code', async (req, res) => {
+// 6. Talep Detayı ve Takip Kodu ile Sorgula (Enriched with history, files, actions & surveys)
+const getComplaintDetailHandler = async (req, res) => {
   try {
-    const [complaints] = await pool.query('SELECT * FROM complaints WHERE tracking_code = ?', [req.params.code]);
-    if (!complaints || complaints.length === 0) {
-      return res.status(404).json({ success: false, message: 'Başvuru bulunamadı.' });
+    const rawParam = req.params.id || req.params.code;
+    if (!rawParam) {
+      return res.status(400).json({ success: false, message: 'Geçersiz talep parametresi.' });
     }
 
-    const complaint = complaints[0];
+    const identifier = String(rawParam).trim();
+    const isNumeric = /^\d+$/.test(identifier);
 
-    // Enriched History query joining Users
-    const [history] = await pool.query(
-      `SELECT h.*, COALESCE(u.full_name, 'Sistem Yetkilisi') as changed_by_name
-       FROM complaint_status_history h
-       LEFT JOIN users u ON h.changed_by_user_id = u.id
-       WHERE h.complaint_id = ?
-       ORDER BY h.id ASC`,
-      [complaint.id]
-    );
+    let complaints = [];
+    try {
+      const [rows] = await pool.query(
+        `SELECT c.*, cat.name as category_name, d.name as department_name, n.name as neighborhood_name
+         FROM complaints c
+         LEFT JOIN complaint_categories cat ON c.category_id = cat.id
+         LEFT JOIN departments d ON c.department_id = d.id
+         LEFT JOIN neighborhoods n ON c.neighborhood_id = n.id
+         WHERE ${isNumeric ? 'c.id = ? OR c.tracking_code = ?' : 'c.tracking_code = ? OR c.id = ?'}`,
+        [identifier, identifier]
+      );
+      if (rows && rows.length > 0) complaints = rows;
+    } catch (e) {}
 
-    const [files] = await pool.query('SELECT * FROM complaint_files WHERE complaint_id = ?', [complaint.id]);
+    const { memData } = require('../config/db');
+    if ((!complaints || complaints.length === 0) && memData && memData.complaints) {
+      const found = memData.complaints.find(c => 
+        String(c.id) === identifier || 
+        String(c.tracking_code) === identifier
+      );
+      if (found) {
+        complaints = [found];
+      }
+    }
 
-    // Enriched Actions query joining Employees & Users
-    const [actions] = await pool.query(
-      `SELECT a.*, COALESCE(u.full_name, 'Saha Görevlisi') as employee_name, COALESCE(e.title, 'Saha Personeli') as employee_title
-       FROM complaint_actions a
-       LEFT JOIN employees e ON a.employee_id = e.id
-       LEFT JOIN users u ON e.user_id = u.id
-       WHERE a.complaint_id = ?
-       ORDER BY a.id ASC`,
-      [complaint.id]
-    );
+    if (!complaints || complaints.length === 0) {
+      return res.status(404).json({ success: false, message: 'Talep detayları bulunamadı.' });
+    }
+
+    let complaint = complaints[0];
+    const cId = Number(complaint.id);
+
+    // Enriched History
+    let history = [];
+    try {
+      const [hRows] = await pool.query(
+        `SELECT h.*, COALESCE(u.full_name, 'Sistem Yetkilisi') as changed_by_name
+         FROM complaint_status_history h
+         LEFT JOIN users u ON h.changed_by_user_id = u.id
+         WHERE h.complaint_id = ?
+         ORDER BY h.id ASC`,
+        [cId]
+      );
+      if (hRows && hRows.length > 0) history = hRows;
+    } catch (e) {}
+
+    if (history.length === 0 && memData && memData.complaint_status_history) {
+      history = memData.complaint_status_history.filter(h => Number(h.complaint_id) === cId);
+    }
+
+    // Enriched Files
+    let files = [];
+    try {
+      const [fRows] = await pool.query('SELECT * FROM complaint_files WHERE complaint_id = ?', [cId]);
+      if (fRows && fRows.length > 0) files = fRows;
+    } catch (e) {}
+
+    if (files.length === 0 && memData && memData.complaint_files) {
+      files = memData.complaint_files.filter(f => Number(f.complaint_id) === cId);
+    }
+
+    // Enriched Actions
+    let actions = [];
+    try {
+      const [aRows] = await pool.query(
+        `SELECT a.*, COALESCE(u.full_name, 'Saha Görevlisi') as employee_name, COALESCE(e.title, 'Saha Personeli') as employee_title
+         FROM complaint_actions a
+         LEFT JOIN employees e ON a.employee_id = e.id
+         LEFT JOIN users u ON e.user_id = u.id
+         WHERE a.complaint_id = ?
+         ORDER BY a.id ASC`,
+        [cId]
+      );
+      if (aRows && aRows.length > 0) actions = aRows;
+    } catch (e) {}
+
+    if (actions.length === 0 && memData && memData.complaint_actions) {
+      actions = memData.complaint_actions.filter(a => Number(a.complaint_id) === cId);
+    }
+
+    let allSurveys = [];
+    try {
+      const [sRows] = await pool.query('SELECT * FROM satisfaction_surveys WHERE complaint_id = ?', [cId]);
+      if (sRows && sRows.length > 0) allSurveys = sRows;
+    } catch (e) {}
+
+    if (allSurveys.length === 0 && memData && memData.satisfaction_surveys) {
+      allSurveys = memData.satisfaction_surveys.filter(s => Number(s.complaint_id) === cId);
+    }
+
+    const currentUserId = req.user ? req.user.id : null;
+    complaint = enrichComplaintWithRating(complaint, currentUserId, allSurveys);
 
     res.json({
       success: true,
@@ -462,43 +591,132 @@ router.get('/track/:code', async (req, res) => {
       actions
     });
   } catch (err) {
-    console.error('Track complaint error:', err);
-    res.status(500).json({ success: false, message: 'Sorgulama hatası.' });
+    console.error('Get complaint detail error:', err);
+    res.status(500).json({ success: false, message: 'Detay alınırken sunucu hatası.' });
+  }
+};
+
+// 5.5. Kamuya Açık Talepler Akışı (Public Feed)
+router.get('/public-feed', optionalAuth, async (req, res) => {
+  try {
+    const { memData } = require('../config/db');
+    const userId = req.user ? req.user.id : (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'guest');
+
+    let complaints = [];
+    if (memData && memData.complaints) {
+      const publicItems = memData.complaints.filter(c => c.is_public == 1 || c.is_public === true);
+      complaints = (publicItems.length > 0 ? publicItems : memData.complaints.slice(0, 20)).map(c => {
+        const upvotes = (memData.complaint_upvotes || []).filter(u => Number(u.complaint_id) === Number(c.id));
+        const hasUpvoted = upvotes.some(u => String(u.user_id) === String(userId));
+        return {
+          ...c,
+          upvotes_count: upvotes.length || c.upvotes_count || 0,
+          is_upvoted: hasUpvoted
+        };
+      });
+    }
+
+    try {
+      const [rows] = await pool.query(`
+        SELECT c.*, 
+          COALESCE(d.name, 'Fen İşleri') as department_name,
+          COALESCE(cat.name, 'Genel') as category_name,
+          COALESCE(n.name, 'Bulancak') as neighborhood_name,
+          (SELECT COUNT(*) FROM complaint_upvotes WHERE complaint_id = c.id) as upvotes_count,
+          EXISTS(SELECT 1 FROM complaint_upvotes WHERE complaint_id = c.id AND user_id = ?) as is_upvoted
+        FROM complaints c
+        LEFT JOIN departments d ON c.department_id = d.id
+        LEFT JOIN complaint_categories cat ON c.category_id = cat.id
+        LEFT JOIN neighborhoods n ON c.neighborhood_id = n.id
+        WHERE c.is_public = 1 OR c.is_public = true
+        ORDER BY c.created_at DESC
+        LIMIT 50
+      `, [typeof userId === 'number' ? userId : 0]);
+
+      if (rows && rows.length > 0) {
+        complaints = rows.map(r => ({
+          ...r,
+          is_upvoted: Boolean(r.is_upvoted)
+        }));
+      }
+    } catch (e) {}
+
+    res.json({
+      success: true,
+      complaints: complaints
+    });
+  } catch (err) {
+    console.error('Public feed error:', err);
+    res.status(500).json({ success: false, message: 'Kamuya açık talepler yüklenemedi.' });
   }
 });
+
+router.get('/track/:code', optionalAuth, getComplaintDetailHandler);
+router.get('/:id', optionalAuth, getComplaintDetailHandler);
 
 // 7. Vatandaş Memnuniyet Anket Kaydı (1-5 Yıldız Puan & Yorum)
 router.post('/:id/survey', authenticateToken, async (req, res) => {
   try {
-    const complaintId = req.params.id;
+    const complaintId = Number(req.params.id);
     const { rating, review_comment } = req.body;
-    const userId = req.user.id;
+    const userId = Number(req.user.id);
+    const citizenId = req.user.citizen_id ? Number(req.user.citizen_id) : userId;
+    const numRating = Number(rating);
 
-    if (!rating || rating < 1 || rating > 5) {
-      return res.status(400).json({ success: false, message: 'Lütfen 1-5 arasında bir puan veriniz.' });
+    if (!numRating || numRating < 1 || numRating > 5) {
+      return res.status(400).json({ success: false, message: 'Lütfen 1-5 arasında bir yıldız puanı veriniz.' });
     }
 
-    const [cRows] = await pool.query('SELECT citizen_id, status FROM complaints WHERE id = ?', [complaintId]);
+    const [cRows] = await pool.query('SELECT citizen_id, user_id, status FROM complaints WHERE id = ?', [complaintId]);
     if (!cRows || cRows.length === 0) {
       return res.status(404).json({ success: false, message: 'Talep bulunamadı.' });
     }
 
-    const { memData } = require('../config/db');
-    if (!memData.satisfaction_surveys) memData.satisfaction_surveys = [];
+    const { memData, saveDbJson } = require('../config/db');
+    let currentAvg = numRating;
+    let currentVoteCount = 1;
 
-    const existingMem = memData.satisfaction_surveys.find(s => s.complaint_id == complaintId);
-    if (existingMem) {
-      existingMem.rating = Number(rating);
-      existingMem.review_comment = sanitizeInput(review_comment);
-    } else {
-      memData.satisfaction_surveys.push({
-        id: memData.satisfaction_surveys.length + 1,
-        complaint_id: Number(complaintId),
-        citizen_id: userId,
-        rating: Number(rating),
-        review_comment: sanitizeInput(review_comment),
-        created_at: new Date().toISOString()
-      });
+    if (memData) {
+      if (!memData.satisfaction_surveys) memData.satisfaction_surveys = [];
+
+      // Strict match: same complaint AND same user (by user_id or citizen_id)
+      const existingMem = memData.satisfaction_surveys.find(s => 
+        Number(s.complaint_id) === complaintId && 
+        Number(s.user_id) === userId
+      );
+
+      if (existingMem) {
+        existingMem.rating = numRating;
+        existingMem.review_comment = sanitizeInput(review_comment) || null;
+        existingMem.updated_at = new Date().toISOString();
+      } else {
+        memData.satisfaction_surveys.push({
+          id: Date.now(),
+          complaint_id: complaintId,
+          citizen_id: citizenId,
+          user_id: userId,
+          rating: numRating,
+          review_comment: sanitizeInput(review_comment) || null,
+          created_at: new Date().toISOString()
+        });
+      }
+
+      // Recompute average: toplam yıldız / değerlendiren kişi sayısı
+      const relatedSurveys = memData.satisfaction_surveys.filter(s => Number(s.complaint_id) === complaintId);
+      const totalStars = relatedSurveys.reduce((sum, s) => sum + Number(s.rating), 0);
+      currentVoteCount = relatedSurveys.length;
+      currentAvg = currentVoteCount > 0 ? Number((totalStars / currentVoteCount).toFixed(1)) : 0;
+      
+      const comp = memData.complaints ? memData.complaints.find(c => Number(c.id) === complaintId) : null;
+      if (comp) {
+        comp.rating = currentAvg;
+        comp.rating_vote_count = currentVoteCount;
+        comp.rating_comment = sanitizeInput(review_comment) || comp.rating_comment;
+      }
+
+      if (typeof saveDbJson === 'function') {
+        saveDbJson();
+      }
     }
 
     try {
@@ -506,20 +724,38 @@ router.post('/:id/survey', authenticateToken, async (req, res) => {
         `INSERT INTO satisfaction_surveys (complaint_id, citizen_id, rating, review_comment)
          VALUES (?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE rating = VALUES(rating), review_comment = VALUES(review_comment)`,
-        [complaintId, userId, rating, sanitizeInput(review_comment) || null]
+        [complaintId, citizenId, numRating, sanitizeInput(review_comment) || null]
       );
     } catch (e) {
-      // Handled by memory fallback above
+      try {
+        await pool.query(
+          `INSERT INTO satisfaction_surveys (complaint_id, citizen_id, rating, review_comment)
+           VALUES (?, ?, ?, ?)`,
+          [complaintId, userId, numRating, sanitizeInput(review_comment) || null]
+        );
+      } catch (e2) {}
     }
 
-    // Also update complaint.rating field
+    // Also update complaint.rating field in SQL
     try {
-      await pool.query('UPDATE complaints SET rating = ? WHERE id = ?', [Number(rating), complaintId]);
-      const c = memData.complaints ? memData.complaints.find(item => item.id == complaintId) : null;
-      if (c) c.rating = Number(rating);
+      const [allSurveys] = await pool.query('SELECT AVG(rating) as avg_rating, COUNT(*) as vote_count FROM satisfaction_surveys WHERE complaint_id = ?', [complaintId]);
+      if (allSurveys && allSurveys.length > 0 && allSurveys[0].avg_rating !== null) {
+        const sqlAvg = Number(Number(allSurveys[0].avg_rating).toFixed(1));
+        await pool.query('UPDATE complaints SET rating = ? WHERE id = ?', [sqlAvg, complaintId]);
+        currentAvg = sqlAvg;
+        currentVoteCount = Number(allSurveys[0].vote_count);
+      }
     } catch (e) {}
 
-    res.json({ success: true, message: '⭐ Değerlendirmeniz için teşekkür ederiz!' });
+    res.json({
+      success: true,
+      message: '⭐ Değerlendirmeniz başarıyla kaydedildi! Teşekkür ederiz.',
+      avg_rating: currentAvg,
+      rating: currentAvg,
+      rating_vote_count: currentVoteCount,
+      user_rating: numRating,
+      user_comment: sanitizeInput(review_comment) || null
+    });
   } catch (err) {
     console.error('Survey save error:', err);
     res.status(500).json({ success: false, message: 'Değerlendirme kaydedilemedi.' });
@@ -610,14 +846,23 @@ router.post('/:id/self-assign', authenticateToken, async (req, res) => {
   }
 });
 
-// 10. Müdür / Admin Öncelik Seviyesi ve Durum Güncelleme
-router.put('/:id/status-priority', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi']), async (req, res) => {
+// 10. Müdür / Admin / Personel Öncelik Seviyesi ve Durum Güncelleme
+router.put('/:id/status-priority', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi', 'Personel']), async (req, res) => {
   try {
-    const complaintId = req.params.id;
+    const rawId = req.params.id || (req.body && (req.body.complaint_id || req.body.id));
+    const complaintId = rawId ? String(rawId).trim() : null;
     const { priority_level, status } = req.body;
 
-    const { memData } = require('../config/db');
-    const c = memData && memData.complaints ? memData.complaints.find(item => item.id == complaintId) : null;
+    if (!complaintId || complaintId === 'undefined' || complaintId === 'null') {
+      return res.status(400).json({ success: false, message: 'Güncellenecek talep kaydı bulunamadı (Geçersiz talep ID).' });
+    }
+
+    const { memData, saveDbJson } = require('../config/db');
+    let c = null;
+    if (memData && memData.complaints) {
+      c = memData.complaints.find(item => Number(item.id) === Number(complaintId) || String(item.tracking_code) === complaintId);
+    }
+
     const oldStatus = c ? c.status : 'Yeni';
 
     if (c) {
@@ -625,21 +870,40 @@ router.put('/:id/status-priority', authenticateToken, checkRole(['Sistem Yöneti
         c.priority_level = priority_level;
         c.urgency_level = priority_level;
       }
-      if (status) c.status = status;
+      if (status) {
+        c.status = status;
+      }
+      c.updated_at = new Date().toISOString();
     }
 
     try {
-      await pool.query('UPDATE complaints SET priority_level = ?, urgency_level = ?, status = ? WHERE id = ?', [priority_level, priority_level, status, complaintId]);
-    } catch (e) {}
+      await pool.query(
+        'UPDATE complaints SET priority_level = COALESCE(?, priority_level), urgency_level = COALESCE(?, urgency_level), status = COALESCE(?, status), updated_at = NOW() WHERE id = ?',
+        [priority_level || null, priority_level || null, status || null, complaintId]
+      );
+    } catch (e) {
+      console.warn('MySQL status-priority update fallback:', e.message);
+    }
 
+    if (typeof saveDbJson === 'function') {
+      saveDbJson();
+    }
+
+    const userRoleStr = req.user.role_name || (req.user.role_id === 1 ? 'Sistem Yöneticisi' : (req.user.role_id === 2 ? 'Birim Yöneticisi' : 'Personel'));
     if (status && status !== oldStatus) {
-      await recordStatusHistory(complaintId, req.user.id, oldStatus, status, `Durum ve öncelik (${priority_level}) yönetici tarafından güncellendi.`, req.user.full_name);
+      await recordStatusHistory(complaintId, req.user.id, oldStatus, status, `Durum (${status}) ${userRoleStr} tarafından güncellendi.`, req.user.full_name);
     } else if (priority_level) {
       await recordStatusHistory(complaintId, req.user.id, oldStatus, oldStatus, `Öncelik seviyesi "${priority_level}" olarak güncellendi.`, req.user.full_name);
     }
     await createAuditLog(req.user.id, 'UPDATE_STATUS_PRIORITY', 'complaints', complaintId, {}, { priority_level, status }, req.ip);
 
-    res.json({ success: true, message: 'Talep öncelik ve durumu başarıyla güncellendi.' });
+    res.json({
+      success: true,
+      message: 'Talep öncelik ve durumu başarıyla güncellendi.',
+      complaint_id: complaintId,
+      status: status || (c ? c.status : null),
+      priority_level: priority_level || (c ? c.priority_level : null)
+    });
   } catch (err) {
     console.error('Update status priority error:', err);
     res.status(500).json({ success: false, message: 'Güncelleme hatası.' });
@@ -686,6 +950,73 @@ router.post('/:id/forward', authenticateToken, checkRole(['Sistem Yöneticisi', 
   } catch (err) {
     console.error('Forward department error:', err);
     res.status(500).json({ success: false, message: 'Yönlendirme işlemi başarısız.' });
+  }
+});
+
+// 12. Kamuya Açık Talep Destek Ol (Upvote) - Toggle Functionality
+router.post('/:id/upvote', optionalAuth, async (req, res) => {
+  try {
+    const rawId = req.params.id;
+    const complaintId = Number(rawId);
+    const userId = req.user ? req.user.id : (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'guest');
+
+    if (!complaintId || isNaN(complaintId)) {
+      return res.status(400).json({ success: false, message: 'Geçersiz talep ID.' });
+    }
+
+    const { memData, saveDbJson } = require('../config/db');
+    if (!memData.complaint_upvotes) memData.complaint_upvotes = [];
+
+    const existingIndex = memData.complaint_upvotes.findIndex(u => 
+      Number(u.complaint_id) === complaintId && String(u.user_id) === String(userId)
+    );
+
+    let isUpvoted = false;
+    if (existingIndex >= 0) {
+      // Toggle off (Desteği geri çek)
+      memData.complaint_upvotes.splice(existingIndex, 1);
+      isUpvoted = false;
+    } else {
+      // Toggle on (Destek ol)
+      memData.complaint_upvotes.push({
+        id: Date.now(),
+        complaint_id: complaintId,
+        user_id: userId,
+        created_at: new Date().toISOString()
+      });
+      isUpvoted = true;
+    }
+
+    // Count upvotes for this complaint
+    const upvotesCount = memData.complaint_upvotes.filter(u => Number(u.complaint_id) === complaintId).length;
+
+    // Update complaint record
+    const comp = (memData.complaints || []).find(c => Number(c.id) === complaintId);
+    if (comp) {
+      comp.upvotes_count = upvotesCount;
+    }
+
+    if (typeof saveDbJson === 'function') saveDbJson();
+
+    // MySQL sync
+    try {
+      if (isUpvoted) {
+        await pool.query('INSERT IGNORE INTO complaint_upvotes (complaint_id, user_id) VALUES (?, ?)', [complaintId, typeof userId === 'number' ? userId : null]);
+      } else {
+        await pool.query('DELETE FROM complaint_upvotes WHERE complaint_id = ? AND user_id = ?', [complaintId, typeof userId === 'number' ? userId : null]);
+      }
+      await pool.query('UPDATE complaints SET upvotes_count = ? WHERE id = ?', [upvotesCount, complaintId]);
+    } catch (e) {}
+
+    res.json({
+      success: true,
+      is_upvoted: isUpvoted,
+      upvotes_count: upvotesCount,
+      message: isUpvoted ? '👍 Desteğiniz başarıyla kaydedildi.' : 'Desteğinizi geri çektiniz.'
+    });
+  } catch (err) {
+    console.error('Upvote error:', err);
+    res.status(500).json({ success: false, message: 'Destek işlemi başarısız.' });
   }
 });
 

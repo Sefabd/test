@@ -19,58 +19,84 @@
       "id": 4,
       "name": "Vatandaş",
       "description": "Sisteme kayıtlı vatandaş"
+    },
+    {
+      "id": 5,
+      "name": "Belediye Başkanı",
+      "description": "Tüm belediye verilerini inceleyen üst düzey gözlemci (Read-Only)"
+    },
+    {
+      "id": 6,
+      "name": "Belediye Başkan Yardımcısı",
+      "description": "Kendisine bağlı birimleri yöneten ve izleyen başkan yardımcısı"
     }
   ],
   "departments": [
     {
       "id": 1,
       "name": "Fen İşleri Müdürlüğü",
-      "code": "FEN"
+      "code": "FEN",
+      "vice_mayor_user_id": 61
     },
     {
       "id": 2,
       "name": "Temizlik İşleri Müdürlüğü",
-      "code": "TEM"
+      "code": "TEM",
+      "vice_mayor_user_id": 61
     },
     {
       "id": 3,
       "name": "Park ve Bahçeler Müdürlüğü",
-      "code": "PARK"
+      "code": "PARK",
+      "vice_mayor_user_id": 62
     },
     {
       "id": 4,
       "name": "Zabıta Müdürlüğü",
-      "code": "ZBT"
+      "code": "ZBT",
+      "vice_mayor_user_id": 62
     },
     {
       "id": 5,
       "name": "Su ve Kanalizasyon Müdürlüğü",
-      "code": "SUK"
+      "code": "SUK",
+      "vice_mayor_user_id": 61
     },
     {
       "id": 6,
       "name": "Veteriner İşleri Müdürlüğü",
-      "code": "VET"
+      "code": "VET",
+      "vice_mayor_user_id": 62
     },
     {
       "id": 7,
       "name": "Ulaşım Hizmetleri Müdürlüğü",
-      "code": "ULS"
+      "code": "ULS",
+      "vice_mayor_user_id": 61
     },
     {
       "id": 8,
       "name": "Sosyal Hizmetler Müdürlüğü",
-      "code": "SHM"
+      "code": "SHM",
+      "vice_mayor_user_id": 62
     },
     {
       "id": 9,
       "name": "İmar ve Şehircilik Müdürlüğü",
-      "code": "IMR"
+      "code": "IMR",
+      "vice_mayor_user_id": 61
     },
     {
       "id": 10,
       "name": "Bilgi İşlem Müdürlüğü",
-      "code": "BIM"
+      "code": "BIM",
+      "vice_mayor_user_id": 62
+    },
+    {
+      "id": 11,
+      "name": "153 Çözüm Koordinasyon Masası",
+      "code": "153-TRIAGE",
+      "vice_mayor_user_id": 61
     }
   ],
   "complaint_categories": [
@@ -1020,6 +1046,185 @@
       "is_active": 1,
       "role_name": "Vatandaş",
       "citizen_id": 7
+    },
+    {
+      "id": 44,
+      "role_id": 1,
+      "full_name": "son",
+      "email": "son@gmail.com",
+      "phone": "05551112233",
+      "password_hash": "$2a$10$9OSpMwowSzBQ7Ld0ye5m2eG4ViaCVxCrVoPUIj6KjCQCBzk1zCR3G",
+      "is_active": 1,
+      "role_name": "Personel"
+    },
+    {
+      "id": 44,
+      "role_id": 1,
+      "role_name": "Sistem Yöneticisi",
+      "full_name": "son",
+      "email": "son@gmail.com",
+      "phone": "05551112233",
+      "password_hash": "$2a$10$9OSpMwowSzBQ7Ld0ye5m2eG4ViaCVxCrVoPUIj6KjCQCBzk1zCR3G",
+      "is_active": 1,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Sistem Yöneticisi"
+    },
+    {
+      "id": 46,
+      "role_id": 4,
+      "full_name": "ilk",
+      "email": "ilk1@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$p4adP.ra.BihBZTD13/g5O1lhHNsuICM9j7VT5jJK9CjIWsLrL3x.",
+      "is_active": 1,
+      "role_name": "Vatandaş",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü"
+    },
+    {
+      "id": 46,
+      "role_id": 4,
+      "role_name": "Vatandaş",
+      "full_name": "ilk",
+      "email": "ilk@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$1iNL4.lu.HbUlIO4U9rqzukAwp4Qbnf/ifX78Yx3kaNaudgZppaLm",
+      "is_active": 1,
+      "department_id": null,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "employee_title": "Saha Görevlisi"
+    },
+    {
+      "id": 48,
+      "role_id": 2,
+      "full_name": "Hakan Kaya (Yeni Temizlik Müdürü)",
+      "email": "hakan.temizlik@belediye.gov.tr",
+      "phone": "05559998877",
+      "password_hash": "$2a$10$m0CLvFvAZU05xAu4GRtrje7Zu96CPsCfEzj72SEhKgNx6bzXHo5dC",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Temizlik İşleri Müdürü"
+    },
+    {
+      "id": 48,
+      "role_id": 2,
+      "role_name": "Birim Yöneticisi",
+      "full_name": "Hakan Kaya (Yeni Temizlik Müdürü)",
+      "email": "hakan.temizlik@belediye.gov.tr",
+      "phone": "05559998877",
+      "password_hash": "$2a$10$m0CLvFvAZU05xAu4GRtrje7Zu96CPsCfEzj72SEhKgNx6bzXHo5dC",
+      "is_active": 1,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Temizlik İşleri Müdürü"
+    },
+    {
+      "id": 50,
+      "role_id": 1,
+      "full_name": "lorem",
+      "email": "lorem@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$Bq/IzoJCBprKw3lQu8w/ou3KAIXG9p52soVWky5iRNKl9HuJARKH6",
+      "is_active": 1,
+      "role_name": "Sistem Yöneticisi"
+    },
+    {
+      "id": 50,
+      "role_id": 1,
+      "role_name": "Sistem Yöneticisi",
+      "full_name": "lorem",
+      "email": "lorem@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$Bq/IzoJCBprKw3lQu8w/ou3KAIXG9p52soVWky5iRNKl9HuJARKH6",
+      "is_active": 1,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Sistem Yöneticisi"
+    },
+    {
+      "id": 52,
+      "role_id": 3,
+      "full_name": "ipsum",
+      "email": "ipsum@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$V/H7eNoDZk0fHoll2.LgoeZnRSOI6KS7/B8x8QVA.gcOZ9D0OxakO",
+      "is_active": 1,
+      "role_name": "Personel",
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü",
+      "employee_title": "Saha Görevlisi"
+    },
+    {
+      "id": 52,
+      "role_id": 3,
+      "role_name": "Personel",
+      "full_name": "ipsum",
+      "email": "ipsum@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$V/H7eNoDZk0fHoll2.LgoeZnRSOI6KS7/B8x8QVA.gcOZ9D0OxakO",
+      "is_active": 1,
+      "department_id": 4,
+      "department_name": "Zabıta Müdürlüğü",
+      "employee_title": "Saha Görevlisi"
+    },
+    {
+      "id": 54,
+      "role_id": 2,
+      "full_name": "sad",
+      "email": "sad@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$o/wNTPasRRz9OiE9ipkMse4qVpQkVjtCeaGDlJtiDzypN8Af.8vPK",
+      "is_active": 1,
+      "role_name": "Birim Yöneticisi",
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Birim Müdürü"
+    },
+    {
+      "id": 54,
+      "role_id": 2,
+      "role_name": "Birim Yöneticisi",
+      "full_name": "sad",
+      "email": "sad@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$o/wNTPasRRz9OiE9ipkMse4qVpQkVjtCeaGDlJtiDzypN8Af.8vPK",
+      "is_active": 1,
+      "department_id": 2,
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "employee_title": "Birim Müdürü"
+    },
+    {
+      "id": 60,
+      "role_id": 5,
+      "full_name": "Necmi Sıbıç (Belediye Başkanı)",
+      "email": "baskan@bulancak.bel.tr",
+      "phone": "05550000001",
+      "password_hash": "$2a$10$VyrYfS1CcqZ7r7zxr5pB.ev9tw4GuVJ97FEGHpBunQbNTC8e7Uoj2",
+      "is_active": 1,
+      "role_name": "Belediye Başkanı"
+    },
+    {
+      "id": 61,
+      "role_id": 6,
+      "full_name": "Reşat Nuri Özdemir (Başkan Yardımcısı)",
+      "email": "baskan.yrd1@bulancak.bel.tr",
+      "phone": "05550000002",
+      "password_hash": "$2a$10$VyrYfS1CcqZ7r7zxr5pB.ev9tw4GuVJ97FEGHpBunQbNTC8e7Uoj2",
+      "is_active": 1,
+      "role_name": "Belediye Başkan Yardımcısı"
+    },
+    {
+      "id": 62,
+      "role_id": 6,
+      "full_name": "Ayşegül Erdoğan (Başkan Yardımcısı)",
+      "email": "baskan.yrd2@bulancak.bel.tr",
+      "phone": "05550000003",
+      "password_hash": "$2a$10$VyrYfS1CcqZ7r7zxr5pB.ev9tw4GuVJ97FEGHpBunQbNTC8e7Uoj2",
+      "is_active": 1,
+      "role_name": "Belediye Başkan Yardımcısı"
     }
   ],
   "citizens": [
@@ -1034,6 +1239,14 @@
       "user_id": 11,
       "identity_number": "98765432109",
       "address": "Giresun Hacısıyam Mah. Gazi Cad. No:44"
+    },
+    {
+      "id": 3,
+      "user_id": 46
+    },
+    {
+      "id": 4,
+      "user_id": 46
     }
   ],
   "employees": [
@@ -1096,16 +1309,332 @@
       "user_id": 41,
       "department_id": 10,
       "title": "Akıllı Şehir & Kamera Şefi"
+    },
+    {
+      "id": 11,
+      "user_id": 48,
+      "department_id": 2,
+      "title": "Temizlik İşleri Müdürü"
+    },
+    {
+      "id": 12,
+      "user_id": 48,
+      "department_id": 2,
+      "title": "Temizlik İşleri Müdürü"
+    },
+    {
+      "id": 13,
+      "user_id": 52,
+      "department_id": 4,
+      "title": "Saha Görevlisi"
+    },
+    {
+      "id": 14,
+      "user_id": 52,
+      "department_id": 4,
+      "title": "Saha Görevlisi"
+    },
+    {
+      "id": 15,
+      "user_id": 54,
+      "department_id": 2,
+      "title": "Birim Müdürü"
+    },
+    {
+      "id": 16,
+      "user_id": 54,
+      "department_id": 2,
+      "title": "Birim Müdürü"
     }
   ],
   "complaints": [
+    {
+      "id": 14,
+      "tracking_code": "BLD-2026-280703",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 2,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 38,
+      "title": "Asfalt naneyi yemiş",
+      "description": "asfalt naneyi yemiş",
+      "open_address": "Ballıca, Ballıca, Bulancak",
+      "latitude": "40.937783",
+      "longitude": "38.22135",
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "SMS",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-14T12:59:08.597Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "İsmetpaşa Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 13,
+      "tracking_code": "BLD-2026-225731",
+      "citizen_id": 2,
+      "user_id": 2,
+      "category_id": 7,
+      "department_id": 5,
+      "district_id": 1,
+      "neighborhood_id": 33,
+      "title": "Boru patladı",
+      "description": "boru patladı",
+      "open_address": "Bahçelievler, Bahçelievler, Bulancak",
+      "latitude": "40.936356",
+      "longitude": "38.21208",
+      "urgency_level": "Kritik",
+      "priority_level": "Kritik",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-14T12:30:04.596Z",
+      "category_name": "Su Kaçağı",
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Ballıca Mahallesi",
+      "citizen_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "id": 12,
+      "tracking_code": "BLD-2026-483744",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 2,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 39,
+      "title": "Asfalt patlamış",
+      "description": "asfalt patlamış",
+      "open_address": "Pazarsuyu Emecen, Pazarsuyu Emecen, Bulancak",
+      "latitude": "40.925",
+      "longitude": "38.21",
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-14T12:18:02.879Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Kızılot Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 11,
+      "tracking_code": "BLD-2026-483589",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 14,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 7,
+      "title": "boru patladı",
+      "description": "su borusu patladı",
+      "open_address": "Sokak, Küçükköy, Giresun Merkez",
+      "latitude": "40.898425",
+      "longitude": "38.433405",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "İlgili birime yönlendirildi",
+      "is_public": 1,
+      "upvote_count": 2,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-14T07:36:35.309Z",
+      "category_name": "Diğer",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Erikliman Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "updated_at": "2026-08-14T13:36:08.667Z",
+      "rating": 4,
+      "rating_vote_count": 2
+    },
+    {
+      "id": 10,
+      "tracking_code": "BLD-2026-368565",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 6,
+      "department_id": 4,
+      "district_id": 2,
+      "neighborhood_id": 43,
+      "title": "tsfg",
+      "description": "zabıta",
+      "open_address": "Sokak, Bahçelievler, Bulancak",
+      "latitude": "40.936707",
+      "longitude": "38.205943",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "İşlem devam ediyor",
+      "is_public": 1,
+      "upvote_count": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-13T09:31:32.299Z",
+      "category_name": "Ruhsatsız İşletme",
+      "department_name": "Zabıta Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Sisin Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "rating": null,
+      "rating_vote_count": 0,
+      "updated_at": "2026-08-14T06:18:38.068Z"
+    },
+    {
+      "id": 9,
+      "tracking_code": "BLD-2026-406791",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 2,
+      "department_id": 2,
+      "district_id": 1,
+      "neighborhood_id": 3,
+      "title": "test",
+      "description": "yol bozuk",
+      "open_address": "Yükselen Sokak, No:54, Seldeğirmeni, Giresun Merkez",
+      "latitude": "40.905",
+      "longitude": "38.382",
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "İlgili birime yönlendirildi",
+      "is_public": 1,
+      "upvote_count": 3,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-13T09:03:25.096Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Çaykara Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "rating": null,
+      "rating_vote_count": 0,
+      "updated_at": "2026-08-14T07:50:19.684Z",
+      "forwarded_from_department_id": 1
+    },
+    {
+      "id": 8,
+      "tracking_code": "BLD-2026-714043",
+      "citizen_id": 46,
+      "user_id": 46,
+      "category_id": 1,
+      "department_id": 2,
+      "district_id": 1,
+      "neighborhood_id": 4,
+      "title": "ilk",
+      "description": "yol bozuk",
+      "open_address": "Fevzi Çakmak, Fevzi Çakmak, Giresun Merkez",
+      "latitude": "40.91",
+      "longitude": "38.383",
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "upvote_count": 2,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-13T08:31:42.269Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Temizlik İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Çınarlar Mahallesi",
+      "citizen_name": "ilk",
+      "assigned_to_user_id": 19,
+      "assigned_employee_name": "Emin Kılıç (Temizlik Ekip Şefi)",
+      "forwarded_from_department_id": 1,
+      "rating": 4,
+      "rating_vote_count": 3,
+      "updated_at": "2026-08-14T13:37:35.816Z",
+      "rating_comment": "VSV",
+      "is_forwarded": 1
+    },
+    {
+      "id": 7,
+      "tracking_code": "BLD-2026-990199",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 2,
+      "neighborhood_id": 30,
+      "title": "adminbtste",
+      "description": "asd",
+      "open_address": "İhsaniye, İhsaniye, Bulancak",
+      "latitude": "40.938",
+      "longitude": "38.229",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 0,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-13T06:27:10.386Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "forwarded_from_department_id": 2,
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "rating": null,
+      "rating_vote_count": 0,
+      "updated_at": "2026-08-14T06:52:04.021Z"
+    },
+    {
+      "id": 6,
+      "tracking_code": "BLD-2026-118133",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 2,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "Admin Tarafindan Acilan Fen Isleri Talebi",
+      "description": "Asfalt yenileme calismasi",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-13T06:25:19.218Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Aksu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
     {
       "id": 5,
       "tracking_code": "BLD-2026-108160",
       "citizen_id": 10,
       "user_id": 10,
-      "category_id": "3",
-      "department_id": 2,
+      "category_id": 5,
+      "department_id": 5,
       "district_id": "3",
       "neighborhood_id": "12",
       "title": "thh",
@@ -1115,16 +1644,21 @@
       "longitude": "38.709",
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "Yeni",
+      "status": "İlgili birime yönlendirildi",
       "is_public": 1,
       "upvote_count": 1,
       "contact_preference": "E-posta",
       "submission_type": "Öneri / İstek",
       "created_at": "2026-08-12T10:40:56.687Z",
-      "category_name": "Çöp ve Çevre Kirliliği",
+      "category_name": "Gürültü Şikâyeti",
       "district_name": "Espiye",
       "neighborhood_name": "Güre Mahallesi",
-      "citizen_name": "Caner Özkan (Vatandaş)"
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "rating": null,
+      "rating_vote_count": 0,
+      "updated_at": "2026-08-13T10:40:38.690Z",
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "forwarded_from_department_id": 2
     },
     {
       "id": 4,
@@ -1142,7 +1676,7 @@
       "longitude": "38.39",
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "Personele atandı",
+      "status": "Çözüldü",
       "is_public": 0,
       "upvote_count": 0,
       "contact_preference": "E-posta",
@@ -1153,7 +1687,11 @@
       "neighborhood_name": "Aksu Mahallesi",
       "citizen_name": "Caner Özkan (Vatandaş)",
       "assigned_to_user_id": 7,
-      "assigned_employee_name": "Ali Usta (Fen İşleri Saha Personeli)"
+      "assigned_employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "updated_at": "2026-08-14T07:30:49.313Z",
+      "rating": null,
+      "rating_vote_count": 0,
+      "rating_comment": null
     },
     {
       "id": 1,
@@ -1171,7 +1709,7 @@
       "longitude": 38.39,
       "urgency_level": "Acil",
       "priority_level": "Acil",
-      "status": "İlgili birime yönlendirildi",
+      "status": "��z�ld�",
       "is_public": 1,
       "base_upvote_count": 0,
       "upvote_count": 1,
@@ -1182,7 +1720,14 @@
       "district_name": "Giresun Merkez",
       "neighborhood_name": "Hacısıyam Mahallesi",
       "citizen_name": "Caner Özkan (Vatandaş)",
-      "forwarded_from_department_id": 3
+      "forwarded_from_department_id": 3,
+      "rating": 2,
+      "rating_comment": "XVX",
+      "rating_vote_count": 2,
+      "updated_at": "2026-08-14T13:49:56.841Z",
+      "assigned_to_user_id": 3,
+      "assigned_employee_name": "Ayşe Kaya (Temizlik Müdürü)",
+      "upvotes_count": 1
     },
     {
       "id": 2,
@@ -1200,7 +1745,7 @@
       "longitude": 38.387,
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "Çözüldü",
+      "status": "İlgili birime yönlendirildi",
       "is_public": 1,
       "base_upvote_count": 0,
       "upvote_count": 0,
@@ -1210,7 +1755,14 @@
       "department_name": "Temizlik İşleri Müdürlüğü",
       "district_name": "Giresun Merkez",
       "neighborhood_name": "Nizamiye Mahallesi",
-      "citizen_name": "Caner Özkan (Vatandaş)"
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "rating": 3,
+      "rating_comment": "test",
+      "rating_vote_count": 1,
+      "updated_at": "2026-08-14T13:49:57.076Z",
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "upvotes_count": 1
     },
     {
       "id": 3,
@@ -1226,12 +1778,12 @@
       "open_address": "Inönü Cad. No:12, Giresun Merkez",
       "latitude": 40.9095,
       "longitude": 38.3915,
-      "urgency_level": "Yüksek",
-      "priority_level": "Yüksek",
-      "status": "İlgili birime yönlendirildi",
+      "urgency_level": "Acil",
+      "priority_level": "Acil",
+      "status": "Çözüldü",
       "is_public": 1,
       "base_upvote_count": 0,
-      "upvote_count": 0,
+      "upvote_count": 1,
       "contact_preference": "E-posta",
       "created_at": "2026-08-12T09:20:09.312Z",
       "category_name": "Çukur veya Asfalt Problemi",
@@ -1239,7 +1791,13 @@
       "district_name": "Giresun Merkez",
       "neighborhood_name": "Hacısıyam Mahallesi",
       "citizen_name": "Sefa Bodur (Vatandaş)",
-      "forwarded_from_department_id": 5
+      "forwarded_from_department_id": 5,
+      "rating": 5,
+      "rating_vote_count": 1,
+      "assigned_to_user_id": 20,
+      "assigned_employee_name": "Ferdi Arslan (Konteyner Ekibi)",
+      "updated_at": "2026-08-14T07:20:04.483Z",
+      "rating_comment": "sdf"
     }
   ],
   "complaint_upvotes": [
@@ -1250,6 +1808,52 @@
     {
       "complaint_id": 1,
       "user_id": 2
+    },
+    {
+      "complaint_id": 9,
+      "user_id": 2
+    },
+    {
+      "complaint_id": 8,
+      "user_id": 10
+    },
+    {
+      "complaint_id": 6,
+      "user_id": 10
+    },
+    {
+      "complaint_id": 10,
+      "user_id": 1
+    },
+    {
+      "complaint_id": 9,
+      "user_id": 1
+    },
+    {
+      "complaint_id": 8,
+      "user_id": 1
+    },
+    {
+      "complaint_id": 9,
+      "user_id": 10
+    },
+    {
+      "complaint_id": 11,
+      "user_id": 10
+    },
+    {
+      "complaint_id": 3,
+      "user_id": 10
+    },
+    {
+      "complaint_id": 11,
+      "user_id": 11
+    },
+    {
+      "id": 1786715397062,
+      "complaint_id": 2,
+      "user_id": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T13:49:57.062Z"
     }
   ],
   "complaint_assignments": [],
@@ -1346,15 +1950,6 @@
       "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
     },
     {
-      "complaint_id": "4",
-      "changed_by_user_id": 7,
-      "old_status": "İptal edildi",
-      "new_status": "Personele atandı",
-      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
-      "created_at": "2026-08-12T10:47:30.180Z",
-      "changed_by_name": "Sistem"
-    },
-    {
       "complaint_id": "1",
       "changed_by_user_id": "Personele atandı",
       "old_status": 2,
@@ -1393,6 +1988,700 @@
       "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: daf",
       "created_at": "2026-08-12T14:08:46.303Z",
       "changed_by_name": "Sistem"
+    },
+    {
+      "id": 17,
+      "complaint_id": 1,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "İşlem devam ediyor",
+      "change_reason": "Durum ve öncelik (Acil) yönetici tarafından güncellendi.",
+      "created_at": "2026-08-13T06:25:19.096Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 6,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-13T06:25:19.218Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-13T06:27:10.386Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "7",
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı",
+      "created_at": "2026-08-13T06:27:24.942Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "7",
+      "changed_by_user_id": 1,
+      "old_status": "Personele atandı",
+      "new_status": "Yeni",
+      "created_at": "2026-08-13T06:27:30.010Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "7",
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı: abi hadi",
+      "created_at": "2026-08-13T06:27:37.413Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "7",
+      "changed_by_user_id": "Personele atandı",
+      "old_status": 1,
+      "new_status": "Talep Temizlik İşleri Müdürlüğü birimine yönlendirildi. Sebeb: admşn",
+      "created_at": "2026-08-13T06:29:07.734Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "complaint_id": "7",
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 3,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: hfdsdf",
+      "created_at": "2026-08-13T06:29:43.124Z",
+      "changed_by_name": "Sistem"
+    },
+    {
+      "id": 26,
+      "complaint_id": 7,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T06:33:18.646Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 1,
+      "changed_by_user_id": 7,
+      "old_status": "İşlem devam ediyor",
+      "new_status": "Çözüldü",
+      "change_reason": "Asfalt cukuru sicak asfalt ile doldurularak yol trafige acilmistir.",
+      "created_at": "2026-08-13T06:49:16.220Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 1,
+      "changed_by_user_id": 7,
+      "old_status": "Çözüldü",
+      "new_status": "Çözüldü",
+      "change_reason": "Sahada asfalt yama islemi yapildi ve alan temizlendi.",
+      "created_at": "2026-08-13T07:22:18.302Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 32,
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı.",
+      "created_at": "2026-08-13T07:36:29.233Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 34,
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "old_status": "Personele atandı",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Burak Yılmaz (Fen İşleri Saha Ekibi) isimli personele atandı.",
+      "created_at": "2026-08-13T07:36:39.817Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 36,
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T07:37:07.776Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 38,
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı.",
+      "created_at": "2026-08-13T07:47:41.161Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 40,
+      "complaint_id": 7,
+      "changed_by_user_id": 1,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T07:47:43.057Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": 46,
+      "created_at": "2026-08-13T08:31:42.270Z",
+      "changed_by_name": "ilk"
+    },
+    {
+      "id": 47,
+      "complaint_id": 8,
+      "changed_by_user_id": 3,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Emin Kılıç (Temizlik Ekip Şefi) isimli personele atandı.",
+      "created_at": "2026-08-13T08:32:01.101Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "id": 49,
+      "complaint_id": 8,
+      "changed_by_user_id": 3,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T08:32:33.565Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 3,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: -",
+      "created_at": "2026-08-13T08:32:37.271Z",
+      "changed_by_name": "Yetkili Personel"
+    },
+    {
+      "id": 52,
+      "complaint_id": 8,
+      "changed_by_user_id": 7,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-13T08:32:51.343Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "işlem tamamö",
+      "created_at": "2026-08-13T08:33:01.168Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 2,
+      "changed_by_user_id": 7,
+      "old_status": "Çözüldü",
+      "new_status": "Çözüldü",
+      "change_reason": "Kaldirim tamirati tamamlandi ve taslar yenilendi.",
+      "created_at": "2026-08-13T08:36:05.966Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 9,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-13T09:03:25.096Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 59,
+      "complaint_id": 8,
+      "changed_by_user_id": 1,
+      "old_status": "Çözüldü",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T09:03:57.774Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 61,
+      "complaint_id": 8,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı.",
+      "created_at": "2026-08-13T09:05:19.931Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 10,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-13T09:31:32.299Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "id": 64,
+      "complaint_id": 10,
+      "changed_by_user_id": 52,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-13T09:31:59.640Z",
+      "changed_by_name": "ipsum"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 52,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "test",
+      "created_at": "2026-08-13T09:32:11.806Z",
+      "changed_by_name": "ipsum"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "asd",
+      "created_at": "2026-08-13T09:33:54.825Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 70,
+      "complaint_id": 8,
+      "changed_by_user_id": 54,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T09:35:29.823Z",
+      "changed_by_name": "sad"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": "İlgili birime yönlendirildi",
+      "old_status": 54,
+      "new_status": "Talep Fen İşleri Müdürlüğü birimine yönlendirildi. Sebeb: asdfa",
+      "created_at": "2026-08-13T09:35:37.903Z",
+      "changed_by_name": "Yetkili Personel"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 52,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "bitti",
+      "created_at": "2026-08-13T10:35:35.126Z",
+      "changed_by_name": "ipsum"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 52,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "sc",
+      "created_at": "2026-08-13T10:35:47.176Z",
+      "changed_by_name": "ipsum"
+    },
+    {
+      "id": 77,
+      "complaint_id": 5,
+      "changed_by_user_id": 3,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum ve öncelik (Normal) yönetici tarafından güncellendi.",
+      "created_at": "2026-08-13T10:39:16.686Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "id": 79,
+      "complaint_id": 7,
+      "changed_by_user_id": 3,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı.",
+      "created_at": "2026-08-13T10:39:29.662Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "id": 81,
+      "complaint_id": 7,
+      "changed_by_user_id": 3,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T10:39:37.334Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "complaint_id": 5,
+      "changed_by_user_id": "Çözüldü",
+      "old_status": 3,
+      "new_status": "Talep Su ve Kanalizasyon Müdürlüğü birimine yönlendirildi. Sebeb: -",
+      "created_at": "2026-08-13T10:40:38.696Z",
+      "changed_by_name": "Yetkili Personel"
+    },
+    {
+      "id": 84,
+      "complaint_id": 7,
+      "changed_by_user_id": 3,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı.",
+      "created_at": "2026-08-13T12:12:06.647Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "id": 86,
+      "complaint_id": 7,
+      "changed_by_user_id": 3,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T12:12:09.885Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "dgsgf",
+      "created_at": "2026-08-13T12:16:15.469Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 90,
+      "complaint_id": 7,
+      "changed_by_user_id": 7,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-13T12:16:29.425Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "dfsdfsf",
+      "created_at": "2026-08-13T12:16:32.927Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "rjvj",
+      "created_at": "2026-08-13T12:16:54.666Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": null,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "df",
+      "created_at": "2026-08-13T12:17:01.123Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 98,
+      "complaint_id": 10,
+      "changed_by_user_id": 1,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-13T12:41:46.191Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 100,
+      "complaint_id": 10,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Yeni",
+      "change_reason": "Durum (Yeni) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-13T12:41:56.332Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 102,
+      "complaint_id": 7,
+      "changed_by_user_id": 50,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Görev ataması yönetici tarafından kaldırıldı.",
+      "created_at": "2026-08-14T06:16:43.335Z",
+      "changed_by_name": "lorem"
+    },
+    {
+      "id": 104,
+      "complaint_id": 3,
+      "changed_by_user_id": 50,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Ferdi Arslan (Konteyner Ekibi) isimli personele atandı.",
+      "created_at": "2026-08-14T06:17:17.998Z",
+      "changed_by_name": "lorem"
+    },
+    {
+      "id": 106,
+      "complaint_id": 10,
+      "changed_by_user_id": 50,
+      "old_status": "Yeni",
+      "new_status": "İşlem devam ediyor",
+      "change_reason": "Durum (İşlem devam ediyor) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-14T06:18:38.082Z",
+      "changed_by_name": "lorem"
+    },
+    {
+      "id": 108,
+      "complaint_id": 3,
+      "changed_by_user_id": 20,
+      "old_status": "Personele atandı",
+      "new_status": "Personele atandı",
+      "change_reason": "Öncelik seviyesi \"Yüksek\" olarak güncellendi.",
+      "created_at": "2026-08-14T06:31:28.935Z",
+      "changed_by_name": "Ferdi Arslan (Konteyner Ekibi)"
+    },
+    {
+      "id": 112,
+      "complaint_id": 3,
+      "changed_by_user_id": 20,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Personel tarafından güncellendi.",
+      "created_at": "2026-08-14T06:31:39.612Z",
+      "changed_by_name": "Ferdi Arslan (Konteyner Ekibi)"
+    },
+    {
+      "id": 114,
+      "complaint_id": 3,
+      "changed_by_user_id": 20,
+      "old_status": "Çözüldü",
+      "new_status": "Personele atandı",
+      "change_reason": "Durum (Personele atandı) Personel tarafından güncellendi.",
+      "created_at": "2026-08-14T06:31:44.462Z",
+      "changed_by_name": "Ferdi Arslan (Konteyner Ekibi)"
+    },
+    {
+      "id": 116,
+      "complaint_id": 3,
+      "changed_by_user_id": 20,
+      "old_status": "Personele atandı",
+      "new_status": "Personele atandı",
+      "change_reason": "Öncelik seviyesi \"Acil\" olarak güncellendi.",
+      "created_at": "2026-08-14T06:31:52.977Z",
+      "changed_by_name": "Ferdi Arslan (Konteyner Ekibi)"
+    },
+    {
+      "complaint_id": 3,
+      "changed_by_user_id": 20,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "bitti",
+      "created_at": "2026-08-14T06:33:54.084Z",
+      "changed_by_name": "Ferdi Arslan (Konteyner Ekibi)"
+    },
+    {
+      "id": 120,
+      "complaint_id": 8,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-14T06:37:50.487Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "test",
+      "created_at": "2026-08-14T06:50:53.016Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 7,
+      "changed_by_user_id": 7,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Çözüldü",
+      "change_reason": "test",
+      "created_at": "2026-08-14T06:52:04.021Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 9,
+      "changed_by_user_id": 7,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "test",
+      "created_at": "2026-08-14T06:52:16.958Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 128,
+      "complaint_id": 4,
+      "changed_by_user_id": 7,
+      "old_status": "Çözüldü",
+      "new_status": "İşlem devam ediyor",
+      "change_reason": "Durum (İşlem devam ediyor) Personel tarafından güncellendi.",
+      "created_at": "2026-08-14T07:00:19.780Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 7,
+      "old_status": "İşlem devam ediyor",
+      "new_status": "Çözüldü",
+      "change_reason": "bitti",
+      "created_at": "2026-08-14T07:00:33.909Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 7,
+      "old_status": "Çözüldü",
+      "new_status": "Çözüldü",
+      "change_reason": "CV",
+      "created_at": "2026-08-14T07:30:49.313Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-14T07:36:35.317Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "Personele atandı",
+      "change_reason": "Görev Cem Sert (Fen İşleri Operatör) isimli personele atandı.",
+      "created_at": "2026-08-14T07:50:03.695Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 9,
+      "changed_by_user_id": "Çözüldü",
+      "old_status": 2,
+      "new_status": "Talep Temizlik İşleri Müdürlüğü birimine yönlendirildi. Sebeb: 1",
+      "created_at": "2026-08-14T07:50:19.692Z",
+      "changed_by_name": "Yetkili Personel"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Personele atandı",
+      "change_reason": "Saha personeli görevi kendi üzerine aldı.",
+      "created_at": "2026-08-14T07:55:38.068Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 12,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-14T12:18:02.879Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "complaint_id": 13,
+      "changed_by_user_id": 2,
+      "created_at": "2026-08-14T12:30:04.603Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 1,
+      "changed_by_user_id": 2,
+      "old_status": "Çözüldü",
+      "new_status": "Görev Ayşe Kaya (Temizlik Müdürü) isimli personele atandı. (Acil asfalt yamasi yapilsin.)",
+      "created_at": "2026-08-14T13:32:15.977Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 1,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "��z�ld�",
+      "change_reason": "Asfalt �ukuru sicak asfaltla kapatildi ve silindirle ezildi.",
+      "created_at": "2026-08-14T13:32:16.015Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 2,
+      "changed_by_user_id": 7,
+      "old_status": "Çözüldü",
+      "new_status": "Ali Usta (Fen İşleri Saha Personeli) görevi kendi üzerine aldı.",
+      "created_at": "2026-08-14T13:32:16.066Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 2,
+      "changed_by_user_id": 2,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "created_at": "2026-08-14T13:32:16.089Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 7,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "test TEST",
+      "created_at": "2026-08-14T13:33:09.078Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 2,
+      "old_status": "Çözüldü",
+      "new_status": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı. (Görev atandı.)",
+      "created_at": "2026-08-14T13:36:06.434Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 2,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "created_at": "2026-08-14T13:36:08.674Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": 2,
+      "old_status": "Çözüldü",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep Temizlik İşleri Müdürlüğü bünyesine yönlendirildi. Not: -",
+      "created_at": "2026-08-14T13:36:17.500Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": 3,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Görev Emin Kılıç (Temizlik Ekip Şefi) isimli personele atandı. (Görev atandı.)",
+      "created_at": "2026-08-14T13:36:50.154Z",
+      "changed_by_name": "Ayşe Kaya (Temizlik Müdürü)"
+    },
+    {
+      "complaint_id": 8,
+      "changed_by_user_id": 19,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "asdf",
+      "created_at": "2026-08-14T13:37:35.816Z",
+      "changed_by_name": "Emin Kılıç (Temizlik Ekip Şefi)"
     }
   ],
   "complaint_actions": [
@@ -1408,17 +2697,885 @@
       "employee_name": "Veli Şahin",
       "employee_title": "Atık Yönetimi Görevlisi",
       "created_at": "2026-08-09T21:20:09.312Z"
+    },
+    {
+      "id": 2,
+      "complaint_id": 1,
+      "employee_id": 7,
+      "action_description": "Asfalt cukuru sicak asfalt ile doldurularak yol trafige acilmistir.",
+      "work_done": "Sicak asfalt serimi yapildi",
+      "tools_equipment_used": "Silindir ve Asfalt Araci",
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T06:49:16.220Z"
+    },
+    {
+      "id": 3,
+      "complaint_id": 1,
+      "employee_id": 7,
+      "action_description": "Asfalt cukuru sicak asfalt ile doldurularak yol trafige acilmistir.",
+      "work_done": "Sicak asfalt serimi yapildi",
+      "tools_equipment_used": "Silindir ve Asfalt Araci",
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T06:49:16.221Z"
+    },
+    {
+      "id": 4,
+      "complaint_id": 1,
+      "employee_id": 7,
+      "action_description": "Sahada asfalt yama islemi yapildi ve alan temizlendi.",
+      "work_done": "Asfalt yama",
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T07:22:18.302Z"
+    },
+    {
+      "id": 5,
+      "complaint_id": 1,
+      "employee_id": 7,
+      "action_description": "Sahada asfalt yama islemi yapildi ve alan temizlendi.",
+      "work_done": "Asfalt yama",
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T07:22:18.302Z"
+    },
+    {
+      "id": 6,
+      "complaint_id": 8,
+      "employee_id": 7,
+      "action_description": "işlem tamamö",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786609981158-836145372.jpg",
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T08:33:01.168Z"
+    },
+    {
+      "id": 7,
+      "complaint_id": 8,
+      "employee_id": 7,
+      "action_description": "işlem tamamö",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786609981158-836145372.jpg",
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T08:33:01.168Z"
+    },
+    {
+      "id": 8,
+      "complaint_id": 2,
+      "employee_id": 7,
+      "action_description": "Kaldirim tamirati tamamlandi ve taslar yenilendi.",
+      "work_done": "Parke tasi dizimi yapildi",
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T08:36:05.966Z"
+    },
+    {
+      "id": 9,
+      "complaint_id": 2,
+      "employee_id": 7,
+      "action_description": "Kaldirim tamirati tamamlandi ve taslar yenilendi.",
+      "work_done": "Parke tasi dizimi yapildi",
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T08:36:05.966Z"
+    },
+    {
+      "id": 10,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786613531767-839860349.jpeg",
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T09:32:11.806Z"
+    },
+    {
+      "id": 11,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786613531767-839860349.jpeg",
+      "employee_name": "ipsum",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T09:32:11.807Z"
+    },
+    {
+      "id": 12,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "asd",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T09:33:54.825Z"
+    },
+    {
+      "id": 13,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "asd",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T09:33:54.825Z"
+    },
+    {
+      "id": 14,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T10:35:35.113Z"
+    },
+    {
+      "id": 15,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "ipsum",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T10:35:35.126Z"
+    },
+    {
+      "id": 16,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "sc",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Uğur Öztürk (Ulaşım Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T10:35:47.161Z"
+    },
+    {
+      "id": 17,
+      "complaint_id": null,
+      "employee_id": 13,
+      "action_description": "sc",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "ipsum",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T10:35:47.177Z"
+    },
+    {
+      "id": 18,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "dgsgf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:15.456Z"
+    },
+    {
+      "id": 19,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "dgsgf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:15.470Z"
+    },
+    {
+      "id": 20,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "dfsdfsf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:32.914Z"
+    },
+    {
+      "id": 21,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "dfsdfsf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:32.927Z"
+    },
+    {
+      "id": 22,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "rjvj",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:54.654Z"
+    },
+    {
+      "id": 23,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "rjvj",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:16:54.666Z"
+    },
+    {
+      "id": 24,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "df",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:17:01.110Z"
+    },
+    {
+      "id": 25,
+      "complaint_id": null,
+      "employee_id": 1,
+      "action_description": "df",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-13T12:17:01.123Z"
+    },
+    {
+      "id": 26,
+      "complaint_id": 3,
+      "employee_id": 20,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ferdi Arslan (Konteyner Ekibi)",
+      "employee_title": "Konteyner Bakım Görevlisi",
+      "created_at": "2026-08-14T06:33:54.077Z"
+    },
+    {
+      "id": 27,
+      "complaint_id": 3,
+      "employee_id": 20,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ferdi Arslan (Konteyner Ekibi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:33:54.085Z"
+    },
+    {
+      "id": 28,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:50:53.008Z"
+    },
+    {
+      "id": 29,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:50:53.016Z"
+    },
+    {
+      "id": 30,
+      "complaint_id": 7,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:52:04.015Z"
+    },
+    {
+      "id": 31,
+      "complaint_id": 7,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:52:04.021Z"
+    },
+    {
+      "id": 32,
+      "complaint_id": 9,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:52:16.952Z"
+    },
+    {
+      "id": 33,
+      "complaint_id": 9,
+      "employee_id": 1,
+      "action_description": "test",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T06:52:16.958Z"
+    },
+    {
+      "id": 34,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T07:00:33.902Z"
+    },
+    {
+      "id": 35,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T07:00:33.909Z"
+    },
+    {
+      "id": 36,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "CV",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T07:30:49.307Z"
+    },
+    {
+      "id": 37,
+      "complaint_id": 4,
+      "employee_id": 1,
+      "action_description": "CV",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T07:30:49.313Z"
+    },
+    {
+      "id": 38,
+      "complaint_id": 1,
+      "employee_id": 1,
+      "action_description": "Asfalt �ukuru sicak asfaltla kapatildi ve silindirle ezildi.",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T13:32:16.007Z"
+    },
+    {
+      "id": 39,
+      "complaint_id": 1,
+      "employee_id": 1,
+      "action_description": "Asfalt �ukuru sicak asfaltla kapatildi ve silindirle ezildi.",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T13:32:16.015Z"
+    },
+    {
+      "id": 40,
+      "complaint_id": 11,
+      "employee_id": 1,
+      "action_description": "test TEST",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786714389039-280314669.jpg",
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T13:33:09.063Z"
+    },
+    {
+      "id": 41,
+      "complaint_id": 11,
+      "employee_id": 1,
+      "action_description": "test TEST",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786714389039-280314669.jpg",
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T13:33:09.078Z"
+    },
+    {
+      "id": 42,
+      "complaint_id": 8,
+      "employee_id": 19,
+      "action_description": "asdf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Emin Kılıç (Temizlik Ekip Şefi)",
+      "employee_title": "Süpürge & Hijyen Şefi",
+      "created_at": "2026-08-14T13:37:35.809Z"
+    },
+    {
+      "id": 43,
+      "complaint_id": 8,
+      "employee_id": 19,
+      "action_description": "asdf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Emin Kılıç (Temizlik Ekip Şefi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-14T13:37:35.816Z"
     }
   ],
-  "complaint_files": [],
+  "complaint_files": [
+    {
+      "id": 1,
+      "complaint_id": 8,
+      "file_path": "uploads/bld-1786609981158-836145372.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 7
+    },
+    {
+      "id": 2,
+      "complaint_id": [
+        "10",
+        "10"
+      ],
+      "file_path": "uploads/bld-1786613531767-839860349.jpeg",
+      "file_name": "WhatsApp Image 2026-08-11 at 11.10.35.jpeg",
+      "file_type": "image/jpeg",
+      "file_size": 67992,
+      "uploaded_by_user_id": 52
+    },
+    {
+      "id": 3,
+      "complaint_id": 11,
+      "file_path": "uploads/bld-1786692995293-554892796.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 10
+    },
+    {
+      "id": 4,
+      "complaint_id": 13,
+      "file_path": "uploads/bld-1786710604586-310823694.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 2
+    },
+    {
+      "id": 5,
+      "complaint_id": 14,
+      "file_path": "uploads/bld-1786712348545-890012634.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 10
+    },
+    {
+      "id": 6,
+      "complaint_id": 11,
+      "file_path": "uploads/bld-1786714389039-280314669.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 7
+    }
+  ],
   "notifications": [
+    {
+      "id": 1786714656525,
+      "user_id": 46,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-714043] - \"ilk\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 8,
+      "created_at": "2026-08-14T13:37:35.823Z"
+    },
+    {
+      "id": 1786714610568,
+      "user_id": 19,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-714043] - \"ilk\" talebi üzerinize atandı: Görev atandı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 8,
+      "created_at": "2026-08-14T13:36:50.154Z"
+    },
+    {
+      "id": 1786714568725,
+      "user_id": 7,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-483589] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 11,
+      "created_at": "2026-08-14T13:36:08.674Z"
+    },
+    {
+      "id": 1786714566493,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-483589] - \"boru patladı\" talebi üzerinize atandı: Görev atandı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 11,
+      "created_at": "2026-08-14T13:36:06.434Z"
+    },
+    {
+      "id": 1786714389670,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-483589] - \"boru patladı\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 11,
+      "created_at": "2026-08-14T13:33:09.086Z"
+    },
+    {
+      "id": 1786714337066,
+      "user_id": 7,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-000102] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 2,
+      "created_at": "2026-08-14T13:32:16.089Z"
+    },
+    {
+      "id": 1786714336389,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" başlıklı talebiniz hakkında işlem yapıldı (��z�ld�).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 1,
+      "created_at": "2026-08-14T13:32:16.023Z"
+    },
+    {
+      "id": 1786714336492,
+      "user_id": 3,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi üzerinize atandı: Acil asfalt yamasi yapilsin.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 1,
+      "created_at": "2026-08-14T13:32:15.978Z"
+    },
+    {
+      "id": 1786693820301,
+      "user_id": null,
+      "department_id": 2,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-406791] - \"test\" talebi Temizlik İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: 1",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "9",
+      "created_at": "2026-08-14T07:50:19.692Z"
+    },
+    {
+      "id": 1786692649346,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-584807] - \"tes\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 4,
+      "created_at": "2026-08-14T07:30:49.320Z"
+    },
+    {
+      "id": 1786690834434,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-584807] - \"tes\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 4,
+      "created_at": "2026-08-14T07:00:33.915Z"
+    },
+    {
+      "id": 1786690337232,
+      "user_id": 1,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-406791] - \"test\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 9,
+      "created_at": "2026-08-14T06:52:16.965Z"
+    },
+    {
+      "id": 1786690324468,
+      "user_id": 1,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-990199] - \"adminbtste\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 7,
+      "created_at": "2026-08-14T06:52:04.028Z"
+    },
+    {
+      "id": 1786690253284,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-584807] - \"tes\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 4,
+      "created_at": "2026-08-14T06:50:53.022Z"
+    },
+    {
+      "id": 1786689234932,
+      "user_id": 11,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-000103] - \"Hacısıyam Mahallesinde Su Kesintisi ve Basınç Düşüklüğü\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 3,
+      "created_at": "2026-08-14T06:33:54.091Z"
+    },
+    {
+      "id": 1786617638909,
+      "user_id": null,
+      "department_id": 5,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-108160] - \"thh\" talebi Su ve Kanalizasyon Müdürlüğü biriminize yönlendirildi. Sebeb: -",
+      "is_read": 0,
+      "type": "Yönlendirme",
+      "reference_id": "5",
+      "created_at": "2026-08-13T10:40:38.697Z"
+    },
+    {
+      "id": 1786613738325,
+      "user_id": null,
+      "department_id": 1,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-714043] - \"ilk\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: asdfa",
+      "is_read": 1,
+      "type": "Yönlendirme",
+      "reference_id": "8",
+      "created_at": "2026-08-13T09:35:37.904Z"
+    },
+    {
+      "id": 1786610166663,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-000102] - \"Gazi Caddesinde Çöp Konteyneri Taşmış Durumda\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 2,
+      "created_at": "2026-08-13T08:36:05.967Z"
+    },
+    {
+      "id": 1786609981956,
+      "user_id": 46,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-714043] - \"ilk\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 8,
+      "created_at": "2026-08-13T08:33:01.168Z"
+    },
+    {
+      "id": 1786609957833,
+      "user_id": null,
+      "department_id": 1,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-714043] - \"ilk\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: -",
+      "is_read": 1,
+      "type": "Yönlendirme",
+      "reference_id": "8",
+      "created_at": "2026-08-13T08:32:37.271Z"
+    },
+    {
+      "id": 1786605738632,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 1,
+      "created_at": "2026-08-13T07:22:18.302Z"
+    },
+    {
+      "id": 1786603756754,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 1,
+      "created_at": "2026-08-13T06:49:16.221Z"
+    },
+    {
+      "id": 1786602583836,
+      "user_id": null,
+      "department_id": 1,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-990199] - \"adminbtste\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: hfdsdf",
+      "is_read": 1,
+      "type": "Yönlendirme",
+      "reference_id": "7",
+      "created_at": "2026-08-13T06:29:43.124Z"
+    },
+    {
+      "id": 1786602548292,
+      "user_id": null,
+      "department_id": 2,
+      "title": "🔄 Biriminize Yönlendirilen Talep",
+      "message": "[BLD-2026-990199] - \"adminbtste\" talebi Temizlik İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: admşn",
+      "is_read": 1,
+      "type": "Yönlendirme",
+      "reference_id": "7",
+      "created_at": "2026-08-13T06:29:07.734Z"
+    },
     {
       "id": 1786543726808,
       "user_id": null,
       "department_id": 1,
       "title": "🔄 Biriminize Yönlendirilen Talep",
       "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: daf",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Yönlendirme",
       "reference_id": "1",
       "created_at": "2026-08-12T14:08:46.303Z"
@@ -1429,7 +3586,7 @@
       "department_id": 2,
       "title": "🔄 Biriminize Yönlendirilen Talep",
       "message": "[BLD-2026-000103] - \"Hacısıyam Mahallesinde Su Kesintisi ve Basınç Düşüklüğü\" talebi Temizlik İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: -",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Yönlendirme",
       "reference_id": "3",
       "created_at": "2026-08-12T14:07:51.513Z"
@@ -1462,7 +3619,7 @@
       "department_id": 2,
       "title": "🔄 Biriminize Yönlendirilen Talep",
       "message": "[BLD-2026-000101] - \"Giresun Atatürk Bulvarında Derin Asfalt Çukuru\" talebi Fen İşleri Müdürlüğü biriminize yönlendirildi. Sebeb: Test yonlendirme",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Yönlendirme",
       "reference_id": "1",
       "created_at": "2026-08-12T13:47:34.761Z"
@@ -1479,7 +3636,95 @@
       "created_at": "2026-08-12T10:46:48.361Z"
     }
   ],
-  "satisfaction_surveys": [],
+  "satisfaction_surveys": [
+    {
+      "id": 1,
+      "complaint_id": 1,
+      "citizen_id": 10,
+      "user_id": 10,
+      "rating": 2,
+      "review_comment": "XVX",
+      "created_at": "2026-08-13T09:01:52.396Z",
+      "updated_at": "2026-08-14T07:30:13.555Z"
+    },
+    {
+      "id": 2,
+      "complaint_id": 2,
+      "citizen_id": 10,
+      "user_id": 10,
+      "rating": 3,
+      "review_comment": "test",
+      "created_at": "2026-08-13T09:07:28.311Z"
+    },
+    {
+      "id": 5,
+      "complaint_id": 3,
+      "citizen_id": 11,
+      "user_id": 11,
+      "rating": 5,
+      "review_comment": "sdf",
+      "created_at": "2026-08-14T07:03:58.455Z"
+    },
+    {
+      "id": 1786692477880,
+      "complaint_id": 8,
+      "citizen_id": 6,
+      "user_id": 10,
+      "rating": 5,
+      "review_comment": "VSV",
+      "created_at": "2026-08-14T07:27:57.880Z",
+      "updated_at": "2026-08-14T07:29:52.757Z"
+    },
+    {
+      "id": 1786692490263,
+      "complaint_id": 8,
+      "citizen_id": 46,
+      "user_id": 46,
+      "rating": 2,
+      "review_comment": "Fena degil",
+      "created_at": "2026-08-14T07:28:10.263Z",
+      "updated_at": "2026-08-14T07:28:10.270Z"
+    },
+    {
+      "id": 1786692501514,
+      "complaint_id": 8,
+      "citizen_id": 7,
+      "user_id": 11,
+      "rating": 5,
+      "review_comment": "Super",
+      "created_at": "2026-08-14T07:28:21.514Z",
+      "updated_at": "2026-08-14T07:28:21.522Z"
+    },
+    {
+      "id": 1786692613562,
+      "complaint_id": 1,
+      "citizen_id": 6,
+      "user_id": 6,
+      "rating": 2,
+      "review_comment": "XVX",
+      "created_at": "2026-08-14T07:30:13.562Z"
+    },
+    {
+      "id": 1786714452244,
+      "complaint_id": 11,
+      "citizen_id": 6,
+      "user_id": 10,
+      "rating": 3,
+      "review_comment": null,
+      "created_at": "2026-08-14T13:34:12.244Z",
+      "updated_at": "2026-08-14T13:34:12.251Z"
+    },
+    {
+      "id": 1786714488121,
+      "complaint_id": 11,
+      "citizen_id": 7,
+      "user_id": 11,
+      "rating": 5,
+      "review_comment": null,
+      "created_at": "2026-08-14T13:34:48.121Z",
+      "updated_at": "2026-08-14T13:34:48.129Z"
+    }
+  ],
   "audit_logs": [
     {
       "id": 1,
@@ -1546,9 +3791,1429 @@
       "new_value": "{\"is_active\":1}",
       "ip_address": "::ffff:172.20.0.1",
       "created_at": "2026-08-12T13:35:01.092Z"
+    },
+    {
+      "id": 7,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "1",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Acil\",\"status\":\"İşlem devam ediyor\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-13T06:25:19.097Z"
+    },
+    {
+      "id": 8,
+      "user_id": 1,
+      "action": "ASSIGN_EMPLOYEE",
+      "entity_name": "complaint_assignments",
+      "entity_id": 1,
+      "old_value": null,
+      "new_value": "{\"complaint_id\":\"7\",\"employee_id\":\"undefined\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T06:27:37.414Z"
+    },
+    {
+      "id": 9,
+      "user_id": 2,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T06:33:18.647Z"
+    },
+    {
+      "id": 10,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 1,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"Sahada asfalt yama islemi yapildi ve alan temizlendi.\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-13T07:22:18.308Z"
+    },
+    {
+      "id": 11,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:23:07.296Z"
+    },
+    {
+      "id": 12,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "2",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:23:08.031Z"
+    },
+    {
+      "id": 13,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "10",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:23:32.418Z"
+    },
+    {
+      "id": 14,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "10",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:23:32.896Z"
+    },
+    {
+      "id": 15,
+      "user_id": 1,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:36:29.233Z"
+    },
+    {
+      "id": 16,
+      "user_id": 1,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":17}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:36:39.817Z"
+    },
+    {
+      "id": 17,
+      "user_id": 1,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:37:07.776Z"
+    },
+    {
+      "id": 18,
+      "user_id": 1,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:47:41.162Z"
+    },
+    {
+      "id": 19,
+      "user_id": 1,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:47:43.057Z"
+    },
+    {
+      "id": 20,
+      "user_id": 1,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:47:44.993Z"
+    },
+    {
+      "id": 21,
+      "user_id": 1,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T07:47:52.092Z"
+    },
+    {
+      "id": 22,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 44,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"son\",\"email\":\"son@gmail.com\",\"role_id\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:26:24.928Z"
+    },
+    {
+      "id": 23,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 46,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"ilk\",\"email\":\"ilk@gmail.com\",\"role_id\":4}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:29:48.447Z"
+    },
+    {
+      "id": 24,
+      "user_id": 3,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":19}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:32:01.102Z"
+    },
+    {
+      "id": 25,
+      "user_id": 3,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:32:33.565Z"
+    },
+    {
+      "id": 26,
+      "user_id": 7,
+      "action": "SELF_ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"self_assigned_by\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:32:51.343Z"
+    },
+    {
+      "id": 27,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 2,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"Kaldirim tamirati tamamlandi ve taslar yenilendi.\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-13T08:36:05.973Z"
+    },
+    {
+      "id": 28,
+      "user_id": 1,
+      "action": "UPDATE_USER",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": null,
+      "new_value": "{\"full_name\":\"ilk\",\"role_id\":4}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T08:39:35.081Z"
+    },
+    {
+      "id": 29,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 48,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"Hakan Kaya (Yeni Temizlik Müdürü)\",\"email\":\"hakan.temizlik@belediye.gov.tr\",\"role_id\":2}",
+      "ip_address": "::1",
+      "created_at": "2026-08-13T09:01:18.846Z"
+    },
+    {
+      "id": 30,
+      "user_id": 1,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:03:57.774Z"
+    },
+    {
+      "id": 31,
+      "user_id": 2,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:05:19.931Z"
+    },
+    {
+      "id": 32,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 50,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"lorem\",\"email\":\"lorem@gmail.com\",\"role_id\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:29:11.756Z"
+    },
+    {
+      "id": 33,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:08.242Z"
+    },
+    {
+      "id": 34,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:09.184Z"
+    },
+    {
+      "id": 35,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:10.105Z"
+    },
+    {
+      "id": 36,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:10.585Z"
+    },
+    {
+      "id": 37,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:11.258Z"
+    },
+    {
+      "id": 38,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:11.755Z"
+    },
+    {
+      "id": 39,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:12.224Z"
+    },
+    {
+      "id": 40,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:12.633Z"
+    },
+    {
+      "id": 41,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:13.105Z"
+    },
+    {
+      "id": 42,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:13.977Z"
+    },
+    {
+      "id": 43,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:16.674Z"
+    },
+    {
+      "id": 44,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:17.362Z"
+    },
+    {
+      "id": 45,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:18.017Z"
+    },
+    {
+      "id": 46,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:18.611Z"
+    },
+    {
+      "id": 47,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:19.443Z"
+    },
+    {
+      "id": 48,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:19.978Z"
+    },
+    {
+      "id": 49,
+      "user_id": 50,
+      "action": "SOFT_DELETE_USER",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:23.204Z"
+    },
+    {
+      "id": 50,
+      "user_id": 50,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "46",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:30:24.594Z"
+    },
+    {
+      "id": 51,
+      "user_id": 50,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 52,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"ipsum\",\"email\":\"ipsum@gmail.com\",\"role_id\":3}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:31:02.428Z"
+    },
+    {
+      "id": 52,
+      "user_id": 52,
+      "action": "SELF_ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "10",
+      "old_value": "{}",
+      "new_value": "{\"self_assigned_by\":52}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:31:59.640Z"
+    },
+    {
+      "id": 53,
+      "user_id": 52,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "10",
+        "10"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:32:11.807Z"
+    },
+    {
+      "id": 54,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "8",
+        "8"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"asd\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:33:54.825Z"
+    },
+    {
+      "id": 55,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 54,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"sad\",\"email\":\"sad@gmail.com\",\"role_id\":2}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:35:07.424Z"
+    },
+    {
+      "id": 56,
+      "user_id": 54,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T09:35:29.823Z"
+    },
+    {
+      "id": 57,
+      "user_id": 1,
+      "action": "SOFT_DELETE_USER",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:32.434Z"
+    },
+    {
+      "id": 58,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:33.850Z"
+    },
+    {
+      "id": 59,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:34.201Z"
+    },
+    {
+      "id": 60,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:34.615Z"
+    },
+    {
+      "id": 61,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:35.039Z"
+    },
+    {
+      "id": 62,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:35.751Z"
+    },
+    {
+      "id": 63,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:33:36.214Z"
+    },
+    {
+      "id": 64,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:35:14.855Z"
+    },
+    {
+      "id": 65,
+      "user_id": 52,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "10",
+        "10"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"bitti\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:35:35.132Z"
+    },
+    {
+      "id": 66,
+      "user_id": 52,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "10",
+        "10"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"sc\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:35:47.184Z"
+    },
+    {
+      "id": 67,
+      "user_id": 3,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "5",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:39:16.686Z"
+    },
+    {
+      "id": 68,
+      "user_id": 3,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:39:29.663Z"
+    },
+    {
+      "id": 69,
+      "user_id": 3,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T10:39:37.334Z"
+    },
+    {
+      "id": 70,
+      "user_id": 3,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:12:06.647Z"
+    },
+    {
+      "id": 71,
+      "user_id": 3,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:12:09.885Z"
+    },
+    {
+      "id": 72,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "3",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:14:32.774Z"
+    },
+    {
+      "id": 73,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "3",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:14:33.303Z"
+    },
+    {
+      "id": 74,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:14:40.041Z"
+    },
+    {
+      "id": 75,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:14:40.519Z"
+    },
+    {
+      "id": 76,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "4",
+        "4"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"dgsgf\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:16:15.478Z"
+    },
+    {
+      "id": 77,
+      "user_id": 7,
+      "action": "SELF_ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"self_assigned_by\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:16:29.425Z"
+    },
+    {
+      "id": 78,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "7",
+        "7"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"dfsdfsf\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:16:32.933Z"
+    },
+    {
+      "id": 79,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "9",
+        "9"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"rjvj\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:16:54.673Z"
+    },
+    {
+      "id": 80,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": [
+        "8",
+        "8"
+      ],
+      "old_value": null,
+      "new_value": "{\"action_description\":\"df\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:17:01.130Z"
+    },
+    {
+      "id": 81,
+      "user_id": 1,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "10",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:41:46.193Z"
+    },
+    {
+      "id": 82,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "10",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Yeni\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-13T12:41:56.333Z"
+    },
+    {
+      "id": 83,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:14:12.561Z"
+    },
+    {
+      "id": 84,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:14:13.480Z"
+    },
+    {
+      "id": 85,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "54",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:14:15.020Z"
+    },
+    {
+      "id": 86,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "54",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:14:15.528Z"
+    },
+    {
+      "id": 87,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "10",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:15:39.619Z"
+    },
+    {
+      "id": 88,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "10",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:15:40.041Z"
+    },
+    {
+      "id": 89,
+      "user_id": 50,
+      "action": "UNASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "7",
+      "old_value": "{}",
+      "new_value": "{\"unassigned\":true}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:16:43.335Z"
+    },
+    {
+      "id": 90,
+      "user_id": 50,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":20}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:17:17.998Z"
+    },
+    {
+      "id": 91,
+      "user_id": 50,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "10",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"İşlem devam ediyor\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:18:38.082Z"
+    },
+    {
+      "id": 92,
+      "user_id": 20,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Personele atandı\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:31:28.935Z"
+    },
+    {
+      "id": 93,
+      "user_id": 20,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Personele atandı\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:31:34.955Z"
+    },
+    {
+      "id": 94,
+      "user_id": 20,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:31:39.612Z"
+    },
+    {
+      "id": 95,
+      "user_id": 20,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Personele atandı\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:31:44.462Z"
+    },
+    {
+      "id": 96,
+      "user_id": 20,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "3",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Acil\",\"status\":\"Personele atandı\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:31:52.977Z"
+    },
+    {
+      "id": 97,
+      "user_id": 20,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 3,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"bitti\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:33:54.098Z"
+    },
+    {
+      "id": 98,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:37:50.487Z"
+    },
+    {
+      "id": 99,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 4,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:50:53.030Z"
+    },
+    {
+      "id": 100,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 7,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:52:04.034Z"
+    },
+    {
+      "id": 101,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 9,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T06:52:16.972Z"
+    },
+    {
+      "id": 102,
+      "user_id": 7,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "4",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"İşlem devam ediyor\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T07:00:19.781Z"
+    },
+    {
+      "id": 103,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 4,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"bitti\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T07:00:33.922Z"
+    },
+    {
+      "id": 104,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 4,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"CV\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T07:30:49.327Z"
+    },
+    {
+      "id": 105,
+      "user_id": 2,
+      "action": "ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "11",
+      "old_value": "{}",
+      "new_value": "{\"assigned_to\":18}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T07:50:03.695Z"
+    },
+    {
+      "id": 106,
+      "user_id": 7,
+      "action": "SELF_ASSIGN_TASK",
+      "entity_name": "complaints",
+      "entity_id": "11",
+      "old_value": "{}",
+      "new_value": "{\"self_assigned_by\":7}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T07:55:38.068Z"
+    },
+    {
+      "id": 107,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "3",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:11:53.694Z"
+    },
+    {
+      "id": 108,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "3",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:11:54.340Z"
+    },
+    {
+      "id": 109,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:50.448Z"
+    },
+    {
+      "id": 110,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:51.005Z"
+    },
+    {
+      "id": 111,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:51.524Z"
+    },
+    {
+      "id": 112,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:51.918Z"
+    },
+    {
+      "id": 113,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:52.539Z"
+    },
+    {
+      "id": 114,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:53.045Z"
+    },
+    {
+      "id": 115,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:53.759Z"
+    },
+    {
+      "id": 116,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:54.190Z"
+    },
+    {
+      "id": 117,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:54.750Z"
+    },
+    {
+      "id": 118,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "52",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:55.246Z"
+    },
+    {
+      "id": 119,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:57.671Z"
+    },
+    {
+      "id": 120,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:58.158Z"
+    },
+    {
+      "id": 121,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:59.159Z"
+    },
+    {
+      "id": 122,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:21:59.614Z"
+    },
+    {
+      "id": 123,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:22:00.336Z"
+    },
+    {
+      "id": 124,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "48",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:22:00.757Z"
+    },
+    {
+      "id": 125,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "8",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:34:47.766Z"
+    },
+    {
+      "id": 126,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "8",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:34:48.577Z"
+    },
+    {
+      "id": 127,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "28",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:35:04.791Z"
+    },
+    {
+      "id": 128,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "28",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T12:35:05.264Z"
+    },
+    {
+      "id": 129,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 1,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"Asfalt �ukuru sicak asfaltla kapatildi ve silindirle ezildi.\",\"new_status\":\"��z�ld�\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T13:32:16.032Z"
+    },
+    {
+      "id": 130,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 11,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test TEST\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T13:33:09.094Z"
+    },
+    {
+      "id": 131,
+      "user_id": 2,
+      "action": "FORWARD_DEPARTMENT",
+      "entity_name": "complaints",
+      "entity_id": "8",
+      "old_value": "{}",
+      "new_value": "{\"target_department_id\":\"2\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T13:36:17.500Z"
+    },
+    {
+      "id": 132,
+      "user_id": 19,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 8,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"asdf\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-14T13:37:35.830Z"
     }
   ],
   "announcements": [
+    {
+      "id": 4,
+      "title": "TEST",
+      "content": "HAYAT BİTTİ",
+      "category": "Genel Duyuru",
+      "priority": "Normal",
+      "created_at": "2026-08-14T06:17:59.697Z",
+      "created_by_user_id": 50,
+      "created_by_name": "lorem"
+    },
     {
       "id": 1,
       "title": "📢 Giresun Belediyesi 153 Çözüm Merkezi Dijital Portalı Hizmete Girdi!",

@@ -38,8 +38,10 @@ CREATE TABLE IF NOT EXISTS departments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL UNIQUE,
   code VARCHAR(20) NOT NULL UNIQUE,
+  vice_mayor_user_id INT NULL,
   is_active TINYINT(1) DEFAULT 1,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (vice_mayor_user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 5. Personel Ek Bilgileri Tablosu
@@ -196,13 +198,13 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- 15. Vatandaş Memnuniyet Anketleri Tablosu
 CREATE TABLE IF NOT EXISTS satisfaction_surveys (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  complaint_id INT NOT NULL UNIQUE,
+  complaint_id INT NOT NULL,
   citizen_id INT NOT NULL,
   rating TINYINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   review_comment TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,
-  FOREIGN KEY (citizen_id) REFERENCES citizens(id) ON DELETE CASCADE
+  UNIQUE KEY unique_complaint_citizen (complaint_id, citizen_id),
+  FOREIGN KEY (complaint_id) REFERENCES complaints(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 16. Audit / Denetim Logları Tablosu
