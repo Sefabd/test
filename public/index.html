@@ -893,7 +893,7 @@
             <p style="color: var(--text-muted);">Diğer vatandaşların kamuya açık ilettiği talepleri inceleyebilir, "Destek Ol" butonuna basarak belediyenin önceliklendirmesine katkıda bulunabilirsiniz.</p>
           </div>
 
-          <div id="public-feed-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
+          <div id="public-feed-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px;">
             <!-- Loaded dynamically -->
           </div>
         </section>
@@ -913,13 +913,16 @@
               </button>
             </div>
 
-            <!-- Sub-Nav Category Tabs (Vatandaş vs Kurum Personeli/Yönetici) -->
-            <div style="display: flex; gap: 10px; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+            <!-- Sub-Nav Category Tabs (Vatandaş vs Kurum Personeli/Yönetici vs Başkan Yardımcıları) -->
+            <div style="display: flex; gap: 10px; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap;">
               <button class="btn btn-secondary btn-sm user-tab-btn active" id="btn-user-tab-all" onclick="switchUserTab('ALL')">
                 <i class="fas fa-list-check"></i> Tüm Kullanıcılar
               </button>
               <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-staff" onclick="switchUserTab('STAFF')">
                 <i class="fas fa-building-user"></i> 🏛️ Kurum Personelleri & Yöneticiler
+              </button>
+              <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-vm" onclick="switchUserTab('VICE_MAYOR')">
+                <i class="fas fa-user-shield"></i> 👔 Başkan Yardımcıları & Bağlı Kadroları
               </button>
               <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-citizen" onclick="switchUserTab('CITIZEN')">
                 <i class="fas fa-user-tag"></i> 👤 Vatandaş Kullanıcıları
@@ -997,13 +1000,168 @@
           </div>
         </section>
 
-        <!-- SECTION 7: DEPARTMENT STAFF LIST (BIRIM YÖNETICISI) -->
+        <!-- SECTION 7: DEPARTMENT STAFF & VICE MAYOR CADRE LIST (ORGANİZASYON VE BAĞLI BİRİMLER) -->
         <section id="sec-dept-staff" style="display: none;">
-          <div class="card-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          
+          <!-- Top Organizational Hierarchy Cards (Hangi Birim Hangi Yardımcının Altında) -->
+          <div id="hierarchy-summary-cards" style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
               <div>
-                <h3 style="color: var(--portal-blue-primary);"><i class="fas fa-users-gear"></i> Birim Saha Personellerim</h3>
-                <p style="color: var(--text-muted); margin: 2px 0 0 0;" id="dept-staff-subtext">Müdürlüğünüze bağlı aktif saha görevlileri ve ortalama vatandaş memnuniyet puanları.</p>
+                <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.25rem;">
+                  <i class="fas fa-sitemap" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Belediye Teşkilat Şeması & Başkan Yardımcısı Sorumluluk Alanları
+                </h3>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Hangi müdürlüklerin hangi başkan yardımcısına bağlı olduğu ve birim kadrolarının dağılımı.</p>
+              </div>
+            </div>
+
+            <!-- Vice Mayors 2-Column Hierarchy Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px;" id="hierarchy-cards-grid">
+              
+              <!-- 1. Başkan Yardımcısı Card -->
+              <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid #2563eb; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 46px; height: 46px; border-radius: 12px; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                      <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">Reşat Nuri Özdemir</h4>
+                      <span class="badge" style="background: #dbeafe; color: #1e40af; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">1. Belediye Başkan Yardımcısı</span>
+                    </div>
+                  </div>
+                  <span class="badge" style="background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 700;">6 Müdürlük</span>
+                </div>
+
+                <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">
+                  <i class="fas fa-envelope" style="margin-right: 4px;"></i> baskan.yrd1@bulancak.bel.tr | <i class="fas fa-phone" style="margin-left: 6px; margin-right: 4px;"></i> 0555 000 0002
+                </p>
+
+                <div style="font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 8px;">🏛️ Bağlı Müdürlükler & Kadro:</div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Fen İşleri Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Mehmet Demir (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Temizlik İşleri Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Ayşe Kaya (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Su ve Kanalizasyon Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Mustafa Çelik (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Ulaşım Hizmetleri Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Uğur Öztürk (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">İmar ve Şehircilik Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: İrfan Yılmaz (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">153 Çözüm Koordinasyon Masası</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Genel Triage ve Başvuru Sevk</div>
+                    </div>
+                    <span class="badge" style="background: #eff6ff; color: #1d4ed8; font-size: 0.72rem;">Koordinasyon</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Başkan Yardımcısı Card -->
+              <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid #7c3aed; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 46px; height: 46px; border-radius: 12px; background: #f3e8ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                      <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">Ayşegül Erdoğan</h4>
+                      <span class="badge" style="background: #ede9fe; color: #6d28d9; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">2. Belediye Başkan Yardımcısı</span>
+                    </div>
+                  </div>
+                  <span class="badge" style="background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 700;">5 Müdürlük</span>
+                </div>
+
+                <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">
+                  <i class="fas fa-envelope" style="margin-right: 4px;"></i> baskan.yrd2@bulancak.bel.tr | <i class="fas fa-phone" style="margin-left: 6px; margin-right: 4px;"></i> 0555 000 0003
+                </p>
+
+                <div style="font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 8px;">🏛️ Bağlı Müdürlükler & Kadro:</div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Park ve Bahçeler Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Kemal Özcan (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Zabıta Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Hasan Yılmaz (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Veteriner İşleri Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Dr. Selin Aydın (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Sosyal Hizmetler Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Zeynep Aksoy (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+
+                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <strong style="color: #1e293b; font-size: 0.85rem;">Bilgi İşlem Müdürlüğü</strong>
+                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Bilal Yalçın (3 Saha Personeli)</div>
+                    </div>
+                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom Staff Data Table -->
+          <div class="card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.15rem;">
+                  <i class="fas fa-users-gear" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Bağlı Birim Saha ve Yönetim Kadrosu
+                </h3>
+                <p style="color: var(--text-muted); margin: 2px 0 0 0; font-size: 0.86rem;" id="dept-staff-subtext">Müdürlük bünyesindeki aktif saha görevlileri, birim müdürleri ve ortalama vatandaş memnuniyet puanları.</p>
               </div>
             </div>
             <div class="table-responsive">
@@ -1013,13 +1171,13 @@
                     <th>AD SOYAD</th>
                     <th>E-POSTA</th>
                     <th>TELEFON</th>
-                    <th>UNVAN / GÖREV</th>
+                    <th>MÜDÜRLÜK & UNVAN</th>
                     <th>ORTALAMA MEMNUNİYET</th>
                     <th>DURUM</th>
                   </tr>
                 </thead>
                 <tbody id="dept-staff-tbody">
-                  <tr><td colspan="6" style="text-align: center; color: #94a3b8;">Yükleniyor...</td></tr>
+                  <tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Yükleniyor...</td></tr>
                 </tbody>
               </table>
             </div>

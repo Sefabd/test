@@ -780,15 +780,35 @@ function populateDropdowns() {
       neighborhoodsList.map(n => `<option value="${n.name}">${n.name}</option>`).join('');
   }
 
-  // Sidebar Departments Submenu
+  // Sidebar Departments Submenu grouped by Vice Mayor
   if (sidebarDeptList && departmentsList.length > 0) {
-    sidebarDeptList.innerHTML = departmentsList.map(d => `
-      <li>
-        <a href="#" onclick="filterByDepartment(${d.id}, '${d.name}'); event.preventDefault();">
-          <i class="fas fa-angle-right" style="font-size:0.75rem;"></i> ${d.name}
-        </a>
-      </li>
-    `).join('');
+    const vm1Depts = departmentsList.filter(d => Number(d.vice_mayor_user_id) === 61 || [1, 2, 5, 7, 9, 11].includes(Number(d.id)));
+    const vm2Depts = departmentsList.filter(d => Number(d.vice_mayor_user_id) === 62 || [3, 4, 6, 8, 10].includes(Number(d.id)));
+
+    let html = '';
+    if (vm1Depts.length > 0) {
+      html += `<li style="padding: 6px 12px; font-size: 0.72rem; color: #93c5fd; font-weight: 800; text-transform: uppercase; background: rgba(30, 58, 138, 0.35); border-radius: 4px; margin: 4px 6px;"><i class="fas fa-user-shield"></i> 1. Bşk. Yrd. (Reşat Nuri Ö.)</li>`;
+      html += vm1Depts.map(d => `
+        <li>
+          <a href="#" onclick="filterByDepartment(${d.id}, '${d.name}'); event.preventDefault();" style="padding-left: 20px;">
+            <i class="fas fa-angle-right" style="font-size:0.75rem;"></i> ${d.name}
+          </a>
+        </li>
+      `).join('');
+    }
+
+    if (vm2Depts.length > 0) {
+      html += `<li style="padding: 6px 12px; font-size: 0.72rem; color: #d8b4fe; font-weight: 800; text-transform: uppercase; background: rgba(88, 28, 135, 0.35); border-radius: 4px; margin: 8px 6px 4px 6px;"><i class="fas fa-user-shield"></i> 2. Bşk. Yrd. (Ayşegül E.)</li>`;
+      html += vm2Depts.map(d => `
+        <li>
+          <a href="#" onclick="filterByDepartment(${d.id}, '${d.name}'); event.preventDefault();" style="padding-left: 20px;">
+            <i class="fas fa-angle-right" style="font-size:0.75rem;"></i> ${d.name}
+          </a>
+        </li>
+      `).join('');
+    }
+
+    sidebarDeptList.innerHTML = html;
   }
 }
 
@@ -1528,20 +1548,30 @@ async function openComplaintDetail(trackingCode) {
         `;
       }
 
-      // 4. Process History Timeline (Combined History + Actions with Deduplication)
-      const historyList = (data.history || []).map(h => ({
-        user_name: h.changed_by_name || 'Belediye Yetkilisi',
-        created_at: h.created_at,
-        action_type: h.new_status || 'Durum Değişikliği',
-        description: h.change_reason || `Durum: ${h.new_status}`,
-        photo_path: null
-      }));
+      // 4. Process History Timeline (Combined History + Actions with Deduplication & Proper Dots)
+      const historyList = (data.history || []).map(h => {
+        let desc = h.change_reason;
+        if (!desc || desc === 'undefined' || desc.includes('undefined')) {
+          if (h.new_status) {
+            desc = `Talep durumu "${h.new_status}" olarak güncellendi.`;
+          } else {
+            desc = 'Talep kaydı oluşturuldu.';
+          }
+        }
+        return {
+          user_name: h.changed_by_name || 'Belediye Yetkilisi',
+          created_at: h.created_at,
+          action_type: h.new_status ? (h.new_status === 'Yeni' ? 'Talep Oluşturuldu' : h.new_status) : 'Durum Güncellemesi',
+          description: desc,
+          photo_path: null
+        };
+      });
 
       const actionList = (data.actions || []).map(a => ({
         user_name: a.employee_name || 'Saha Görevlisi',
         created_at: a.created_at,
         action_type: a.action_type || a.new_status || 'İşlem / Müdahale',
-        description: a.action_description || a.work_done || a.description || '',
+        description: a.action_description || a.work_done || a.description || 'Müdahale yapıldı.',
         photo_path: a.resolution_photo_path || a.photo_path || null
       }));
 
@@ -1564,16 +1594,17 @@ async function openComplaintDetail(trackingCode) {
         const dateStr = a.created_at ? new Date(a.created_at).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
 
         return `
-          <div class="timeline-item" style="padding: 0 0 16px 0; border-left: 2px solid #e2e8f0; padding-left: 18px; position: relative;">
-            <div style="position: absolute; left: -7px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 3px solid ${dotColor};"></div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-              <strong style="color: #0f172a; font-size: 0.88rem; font-weight: 700;">${a.action_type || 'Durum Güncellemesi'}</strong>
+          <div class="timeline-item" style="padding: 0 0 16px 0; border-left: 2px solid #e2e8f0; padding-left: 18px; margin-left: 8px; position: relative;">
+            <div style="position: absolute; left: -7px; top: 3px; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 3px solid ${dotColor};"></div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+              <i class="fas fa-chevron-right" style="color: #f59e0b; font-size: 0.72rem;"></i>
+              <strong style="color: #0f172a; font-size: 0.88rem; font-weight: 800;">${a.action_type || 'Durum Değişikliği'}</strong>
             </div>
-            <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 6px;">
+            <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 6px; padding-left: 14px;">
               <i class="fas fa-clock" style="margin-right: 3px; font-size: 0.72rem;"></i> ${dateStr}
             </div>
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-top: 4px;">
-              <div style="font-weight: 700; color: var(--portal-blue-primary); font-size: 0.82rem; margin-bottom: 2px;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-top: 4px; margin-left: 2px;">
+              <div style="font-weight: 700; color: var(--portal-blue-primary); font-size: 0.84rem; margin-bottom: 2px;">
                 ${a.user_name || 'Belediye Yetkilisi'}
               </div>
               <p style="margin: 0; font-size: 0.83rem; color: #334155; line-height: 1.45;">
@@ -1672,7 +1703,7 @@ async function openComplaintDetail(trackingCode) {
               <i class="fas fa-timeline" style="color: #0284c7; margin-right: 6px;"></i> Süreç Geçmişi
             </h4>
 
-            <div style="max-height: 420px; overflow-y: auto; padding-right: 4px;">
+            <div style="max-height: 420px; overflow-y: auto; padding: 4px 6px 12px 14px;">
               ${timelineHtml || '<p style="color:#94a3b8; font-size:0.82rem; padding: 10px 0;">Henüz süreç kaydı eklenmedi.</p>'}
             </div>
 
@@ -1688,7 +1719,7 @@ async function openComplaintDetail(trackingCode) {
       container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Talep detayları bulunamadı.</p>';
     }
   } catch (err) {
-    container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Yükleme hatası oluştu.</p>';
+    container.innerHTML = '<p style="color: #ef4444; padding: 20px; text-align: center;">Detay yüklenirken sunucu hatası oluştu.</p>';
   }
 }
 
@@ -1714,34 +1745,60 @@ async function loadPublicComplaintsFeed() {
       }
 
       container.innerHTML = data.complaints.map(c => {
-        const upvotes = c.upvotes_count || 0;
-        const isUpvoted = c.is_upvoted || false;
+        const upvotes = (c.upvotes_count !== undefined && c.upvotes_count !== null && c.upvotes_count !== '') ? Number(c.upvotes_count) : Number(c.upvote_count || c.base_upvote_count || 0);
+        const isUpvoted = Boolean(c.is_upvoted);
+        const dateStr = c.created_at ? new Date(c.created_at).toLocaleDateString('tr-TR') : '-';
+        const ratingVal = parseFloat(c.avg_rating || c.rating || 0);
+
+        let ratingBadgeHtml = '';
+        if (c.status === 'Çözüldü' && ratingVal > 0) {
+          ratingBadgeHtml = `<span class="badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fef08a; font-weight:700; font-size:0.75rem; margin-left: 6px;"><i class="fas fa-star" style="color:#eab308; margin-right: 2px;"></i> ★ ${ratingVal.toFixed(1)} (${c.rating_count || 1})</span>`;
+        }
+
+        const upvoteButtonHtml = isUpvoted ? `
+          <button type="button" id="btn-upvote-${c.id}" class="btn btn-sm btn-upvote active" 
+            data-id="${c.id}" 
+            onclick="handleUpvote(event, ${c.id})" 
+            style="background: #059669; border: 1px solid #059669; color: #ffffff; font-size: 0.82rem; font-weight: 700; padding: 6px 14px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;">
+            <i class="fas fa-check"></i> Destek Verildi ( <span class="upvote-count">${upvotes}</span> )
+          </button>
+        ` : `
+          <button type="button" id="btn-upvote-${c.id}" class="btn btn-sm btn-upvote" 
+            data-id="${c.id}" 
+            onclick="handleUpvote(event, ${c.id})" 
+            style="background: #1e40af; border: 1px solid #1e40af; color: #ffffff; font-size: 0.82rem; font-weight: 700; padding: 6px 14px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;">
+            <i class="fas fa-thumbs-up"></i> Destek Ol ( <span class="upvote-count">${upvotes}</span> )
+          </button>
+        `;
 
         return `
-          <div class="card-box" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s;">
+          <div class="card-box" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 18px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; box-shadow: 0 1px 4px rgba(0,0,0,0.04); min-height: 220px; transition: transform 0.2s, box-shadow 0.2s;">
             <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
-                <small style="color: #64748b; font-weight: 600;"><i class="fas fa-location-dot" style="color: #ef4444; margin-right: 3px;"></i> ${c.neighborhood_name || 'Bulancak'}</small>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span class="badge ${getBadgeClass(c.status)}">${c.status || 'Yeni'}</span>
+                  ${ratingBadgeHtml}
+                </div>
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${dateStr}</span>
               </div>
 
-              <h4 style="color: #0f172a; font-weight: 800; font-size: 1.05rem; margin: 0 0 8px 0;">${c.title}</h4>
-              <p style="color: #475569; font-size: 0.85rem; line-height: 1.5; margin: 0 0 14px 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+              <h4 style="color: #0f172a; font-weight: 800; font-size: 0.96rem; margin: 10px 0 6px 0; line-height: 1.35;">${c.title}</h4>
+              <p style="color: #64748b; font-size: 0.84rem; line-height: 1.45; margin: 0 0 10px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                 ${c.description}
               </p>
+
+              <div style="font-size: 0.8rem; color: #ef4444; display: flex; align-items: center; gap: 4px; margin-bottom: 14px;">
+                <i class="fas fa-location-dot" style="color: #ef4444; font-size: 0.78rem;"></i>
+                <span style="color: #64748b;">${c.neighborhood_name || 'Merkez'} | ${c.category_name || 'Genel'}</span>
+              </div>
             </div>
 
-            <div style="border-top: 1px solid var(--border-color); padding-top: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-              <button type="button" class="btn btn-secondary btn-sm btn-upvote ${isUpvoted ? 'active btn-upvoted' : ''}" 
-                data-id="${c.id}" 
-                onclick="handleUpvote(event, ${c.id})" 
-                style="font-size: 0.82rem; font-weight: 700; ${isUpvoted ? 'background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd;' : ''}">
-                <i class="fas fa-thumbs-up" style="margin-right: 4px;"></i> Destek Ol (<span class="upvote-count">${upvotes}</span>)
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: auto; padding-top: 10px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; font-size: 0.82rem; font-weight: 600; padding: 6px 14px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fas fa-eye" style="color: #64748b; font-size: 0.75rem;"></i> Detay
               </button>
 
-              <button type="button" class="btn btn-primary btn-sm" onclick="openComplaintDetail('${c.tracking_code || c.id}')" style="font-size: 0.82rem; font-weight: 600; padding: 6px 14px;">
-                <i class="fas fa-eye" style="margin-right: 4px;"></i> İncele
-              </button>
+              ${upvoteButtonHtml}
             </div>
           </div>
         `;
@@ -1761,7 +1818,7 @@ async function handleUpvote(e, complaintId) {
     e.stopPropagation();
   }
 
-  const btn = e?.currentTarget || document.querySelector(`.btn-upvote[data-id="${complaintId}"]`);
+  const btn = e?.currentTarget || document.getElementById(`btn-upvote-${complaintId}`) || document.querySelector(`.btn-upvote[data-id="${complaintId}"]`);
 
   try {
     const res = await fetch(`/api/complaints/${complaintId}/upvote`, {
@@ -1774,23 +1831,22 @@ async function handleUpvote(e, complaintId) {
     const data = await res.json();
 
     if (data.success) {
-      // 2. Lokal DOM Güncellemesi: Sadece tıklanan spesifik buton içindeki sayacı ve rengini güncelle (Tüm listeyi baştan render ETME)
+      // 2. Lokal DOM Güncellemesi: Sadece tıklanan butonun içeriğini, rengini ve sayacını güncelle (Sayfayı baştan render ETME)
       if (btn) {
-        const countSpan = btn.querySelector('.upvote-count');
-        if (countSpan && data.upvotes_count !== undefined) {
-          countSpan.textContent = data.upvotes_count;
-        }
+        const count = data.upvotes_count !== undefined ? data.upvotes_count : (data.upvote_count || 0);
 
         if (data.is_upvoted) {
-          btn.classList.add('active', 'btn-upvoted');
-          btn.style.background = '#eff6ff';
-          btn.style.color = '#1d4ed8';
-          btn.style.border = '1px solid #93c5fd';
+          btn.classList.add('active');
+          btn.style.background = '#059669';
+          btn.style.borderColor = '#059669';
+          btn.style.color = '#ffffff';
+          btn.innerHTML = `<i class="fas fa-check"></i> Destek Verildi ( <span class="upvote-count">${count}</span> )`;
         } else {
-          btn.classList.remove('active', 'btn-upvoted');
-          btn.style.background = '';
-          btn.style.color = '';
-          btn.style.border = '';
+          btn.classList.remove('active');
+          btn.style.background = '#1e40af';
+          btn.style.borderColor = '#1e40af';
+          btn.style.color = '#ffffff';
+          btn.innerHTML = `<i class="fas fa-thumbs-up"></i> Destek Ol ( <span class="upvote-count">${count}</span> )`;
         }
       }
 
@@ -2481,6 +2537,7 @@ function switchUserTab(tab) {
 
   if (tab === 'ALL') document.getElementById('btn-user-tab-all')?.classList.add('active');
   if (tab === 'STAFF') document.getElementById('btn-user-tab-staff')?.classList.add('active');
+  if (tab === 'VICE_MAYOR') document.getElementById('btn-user-tab-vm')?.classList.add('active');
   if (tab === 'CITIZEN') document.getElementById('btn-user-tab-citizen')?.classList.add('active');
 
   applyAdminUserFilters();
@@ -2500,6 +2557,7 @@ function applyAdminUserFilters() {
     const deptName = u.department_name || '';
 
     if (currentUserTab === 'STAFF' && (roleName === 'Vatandaş' || u.role_id === 4)) return false;
+    if (currentUserTab === 'VICE_MAYOR' && roleName !== 'Belediye Başkan Yardımcısı' && u.role_id !== 6 && roleName !== 'Birim Yöneticisi' && u.role_id !== 2) return false;
     if (currentUserTab === 'CITIZEN' && roleName !== 'Vatandaş' && u.role_id !== 4) return false;
 
     if (searchQuery) {
@@ -2550,10 +2608,14 @@ function applyAdminUserFilters() {
       roleBadge = '<span class="badge" style="background:#e0f2fe; color:#075985; border:1px solid #bae6fd;"><i class="fas fa-user-gear"></i> Personel</span>';
     }
 
-    const isStaff = roleName !== 'Vatandaş' && u.role_id !== 4;
-    const deptTitleStr = isStaff 
-      ? `<strong>${u.department_name || 'Genel Birim'}</strong> ${u.employee_title ? `<br><small style="color: #64748b;">(${u.employee_title})</small>` : ''}`
-      : '-';
+    let deptTitleStr = '-';
+    if (roleName === 'Belediye Başkan Yardımcısı' || u.role_id === 6) {
+      const assignedCount = u.assigned_department_names?.length || (numId === 61 ? 6 : (numId === 62 ? 5 : 0));
+      const deptsList = u.assigned_department_names?.join(', ') || (numId === 61 ? 'Fen, Temizlik, Su, Ulaşım, İmar, 153' : (numId === 62 ? 'Park, Zabıta, Veteriner, Sosyal, Bilgi İşlem' : 'Zimmetli Birimler'));
+      deptTitleStr = `<strong style="color: #1e40af;">🏛️ ${assignedCount} Bağlı Müdürlük</strong><br><small style="color: #64748b;" title="${deptsList}">(${deptsList.length > 35 ? deptsList.slice(0, 32) + '...' : deptsList})</small>`;
+    } else if (roleName !== 'Vatandaş' && u.role_id !== 4) {
+      deptTitleStr = `<strong>${u.department_name || 'Genel Birim'}</strong> ${u.employee_title ? `<br><small style="color: #64748b;">(${u.employee_title})</small>` : ''}`;
+    }
 
     const activeBadge = u.is_active 
       ? '<span class="badge badge-cozuldu">Aktif</span>'
@@ -2936,17 +2998,69 @@ async function handleAdminDeptSubmit(e) {
 }
 
 // ============================================================================
-// 13. DEPARTMENT STAFF TABLE (BİRİM YÖNETİCİSİ / MÜDÜR)
+// 13. DEPARTMENT STAFF TABLE (BİRİM YÖNETİCİSİ & BAŞKAN YARDIMCISI KADROSU)
 // ============================================================================
 async function loadDeptStaffTable() {
   const tbody = document.getElementById('dept-staff-tbody');
+  const subtext = document.getElementById('dept-staff-subtext');
   if (!tbody) return;
 
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Personel listesi yükleniyor...</td></tr>';
-
-  const deptId = (currentUser && currentUser.department_id) ? currentUser.department_id : 1;
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin"></i> Personel ve birim kadrosu yükleniyor...</td></tr>';
 
   try {
+    // If Vice Mayor (Role 6), load all staff & managers across their assigned departments!
+    if (currentUser?.role_id === 6 || currentUser?.role_name === 'Belediye Başkan Yardımcısı') {
+      const res = await fetch('/api/admin/users', {
+        headers: { 'Authorization': `Bearer ${currentToken}` }
+      });
+      const data = await res.json();
+      const staffList = (data.success && data.users) ? data.users.filter(u => u.role_id === 2 || u.role_id === 3) : [];
+
+      if (subtext) {
+        subtext.innerHTML = `Sorumluluğunuzdaki bağlı müdürlükler bünyesinde görev yapan tüm <strong>Birim Müdürleri</strong> ve <strong>Saha Personelleri</strong> (Toplam ${staffList.length} Çalışan).`;
+      }
+
+      tbody.innerHTML = '';
+
+      if (staffList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Bağlı müdürlüklerinizde kayıtlı personel bulunamadı.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = staffList.map(s => {
+        const avgStar = s.avg_rating || '4.8';
+        const count = s.rating_count || 0;
+        const isManager = Number(s.role_id) === 2;
+        return `
+          <tr>
+            <td style="font-weight: 700; color: var(--portal-blue-primary);">
+              ${s.full_name}
+              ${isManager ? '<span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; margin-left:6px; font-size:0.75rem; font-weight:700;"><i class="fas fa-user-tie"></i> Birim Müdürü</span>' : ''}
+            </td>
+            <td style="font-size: 0.85rem;">${s.email || '-'}</td>
+            <td style="font-size: 0.85rem;">${s.phone || '-'}</td>
+            <td>
+              <strong style="color: #0f172a;">${s.employee_title || (isManager ? 'Birim Müdürü' : 'Saha Görevlisi')}</strong>
+              <br><span class="badge" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:0.75rem; margin-top:2px;">🏛️ ${s.department_name || 'Birim'}</span>
+            </td>
+            <td>
+              <span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-weight:700; font-size:0.84rem;">
+                <i class="fas fa-star" style="color:#f59e0b; margin-right:4px;"></i> ⭐ ${avgStar} / 5.0 ${count > 0 ? `(${count} Değerlendirme)` : ''}
+              </span>
+            </td>
+            <td>
+              <span class="badge ${s.is_active !== 0 ? 'badge-cozuldu' : 'badge-iptal'}">
+                ${s.is_active !== 0 ? 'Aktif' : 'Pasif'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      return;
+    }
+
+    // Default Birim Yöneticisi View
+    const deptId = (currentUser && currentUser.department_id) ? currentUser.department_id : 1;
     const res = await fetch(`/api/assignments/department-employees/${deptId}`, {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });

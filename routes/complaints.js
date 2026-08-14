@@ -330,6 +330,10 @@ router.get('/all', authenticateToken, async (req, res) => {
           .map(d => Number(d.id));
         assignedDeptIds = [...new Set([...assignedDeptIds, ...memAssigned])];
       }
+      if (assignedDeptIds.length === 0) {
+        if (Number(req.user.id) === 61) assignedDeptIds = [1, 2, 5, 7, 9, 11];
+        if (Number(req.user.id) === 62) assignedDeptIds = [3, 4, 6, 8, 10];
+      }
       const deptSet = new Set(assignedDeptIds);
       complaints = complaints.filter(c => deptSet.has(Number(c.department_id)) || deptSet.has(Number(c.forwarded_from_department_id)));
     } else if (userRole === 'Birim Yöneticisi' || req.user.role_id === 2) {

@@ -37,8 +37,8 @@ function getEmployeeAverageRating(userId, memData) {
   return { avg_rating: '4.8', rating_count: 0 };
 }
 
-// 1. Kullanıcı Listesi (Admin ve Birim Yöneticisi Raporları İçin - Kesin Tekil Liste & Puanlar)
-router.get('/users', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi']), async (req, res) => {
+// 1. Kullanıcı Listesi (Admin, Birim Yöneticisi ve Başkan Yardımcıları İçin - Bağlı Personel & Müdürler)
+router.get('/users', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim Yöneticisi', 'Belediye Başkanı', 'Belediye Başkan Yardımcısı']), async (req, res) => {
   try {
     const { memData } = require('../config/db');
     let userList = [];
@@ -125,10 +125,110 @@ router.get('/users', authenticateToken, checkRole(['Sistem Yöneticisi', 'Birim 
       result = result.filter(u => Number(u.department_id) === Number(req.user.department_id));
     }
 
+    // Eğer Belediye Başkan Yardımcısı ise (role_id: 6) kendisine bağlı tüm müdürlüklerin personellerini ve müdürlerini görsün
+    if (req.user.role_id === 6 || req.user.role_name === 'Belediye Başkan Yardımcısı') {
+      const assignedDeptIds = (memData.departments || [])
+        .filter(d => Number(d.vice_mayor_user_id) === Number(req.user.id))
+        .map(d => Number(d.id));
+
+      result = result.filter(u => assignedDeptIds.includes(Number(u.department_id)));
+    }
+
     res.json({ success: true, users: result });
   } catch (err) {
     console.error('Kullanıcı listesi hatası:', err);
     res.status(500).json({ success: false, message: 'Sunucu hatası.' });
+  }
+});
+
+// 1.1. Belediye Teşkilat & Başkan Yardımcısı Hiyerarşi Ağacı (Vice Mayor Organization Tree)
+router.get('/organization-hierarchy', authenticateToken, async (req, res) => {
+  try {
+    const { memData } = require('../config/db');
+    
+    // Get Vice Mayors (role_id: 6)
+    const viceMayors = (memData.users || []).filter(u => Number(u.role_id) === 6);
+    const mayor = (memData.users || []).find(u => Number(u.role_id) === 5) || {
+      id: 60,
+      full_name: 'Necmi Sıbıç',
+      employee_title: 'Belediye Başkanı',
+      email: 'baskan@bulancak.bel.tr',
+      phone: '05550000001'
+    };
+
+    const tree = viceMayors.map(vm => {
+      const assignedDepts = (memData.departments || []).filter(d => Number(d.vice_mayor_user_id) === Number(vm.id));
+      
+      const deptsWithStaff = assignedDepts.map(dept => {
+        // Find Manager for this dept
+        const manager = (memData.users || []).find(u => Number(u.role_id) === 2 && Number(u.department_id) === Number(dept.id));
+        // Find all staff for this dept
+        const staff = (memData.users || []).filter(u => Number(u.role_id) === 3 && Number(u.department_id) === Number(dept.id)).map(s => {
+          const ratingInfo = getEmployeeAverageRating(s.id, memData);
+          return {
+            id: s.id,
+            full_name: s.full_name,
+            email: s.email,
+            phone: s.phone,
+            employee_title: s.employee_title || 'Saha Görevlisi',
+            avg_rating: ratingInfo.avg_rating,
+            rating_count: ratingInfo.rating_count,
+            is_active: s.is_active !== undefined ? s.is_active : 1
+          };
+        });
+
+        // Complaints stats for this dept
+        const deptComplaints = (memData.complaints || []).filter(c => Number(c.department_id) === Number(dept.id));
+        const resolvedCount = deptComplaints.filter(c => (c.status || '').toLowerCase().includes('çözüldü')).length;
+
+        return {
+          id: dept.id,
+          name: dept.name,
+          code: dept.code,
+          manager: manager ? {
+            id: manager.id,
+            full_name: manager.full_name,
+            email: manager.email,
+            phone: manager.phone,
+            employee_title: manager.employee_title || 'Birim Müdürü'
+          } : null,
+          staff_count: staff.length,
+          staff: staff,
+          total_complaints: deptComplaints.length,
+          resolved_complaints: resolvedCount
+        };
+      });
+
+      const totalStaffUnderVm = deptsWithStaff.reduce((sum, d) => sum + d.staff_count + (d.manager ? 1 : 0), 0);
+      const totalComplaintsUnderVm = deptsWithStaff.reduce((sum, d) => sum + d.total_complaints, 0);
+
+      return {
+        id: vm.id,
+        full_name: vm.full_name,
+        email: vm.email,
+        phone: vm.phone,
+        role_name: 'Belediye Başkan Yardımcısı',
+        total_departments: deptsWithStaff.length,
+        total_staff: totalStaffUnderVm,
+        total_complaints: totalComplaintsUnderVm,
+        departments: deptsWithStaff
+      };
+    });
+
+    res.json({
+      success: true,
+      mayor: {
+        id: mayor.id,
+        full_name: mayor.full_name,
+        employee_title: 'Belediye Başkanı',
+        email: mayor.email,
+        phone: mayor.phone
+      },
+      vice_mayors: tree
+    });
+  } catch (err) {
+    console.error('Hierarchy error:', err);
+    res.status(500).json({ success: false, message: 'Organizasyon şeması yüklenemedi.' });
   }
 });
 
