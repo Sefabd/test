@@ -92,6 +92,18 @@ const assignTaskHandler = async (req, res) => {
       reference_id: cId
     });
 
+    // Send Notification to Citizen Creator
+    const citizenUserId = c ? (c.citizen_id || c.user_id) : null;
+    if (citizenUserId) {
+      await createSystemNotification({
+        user_id: citizenUserId,
+        title: '👷 Talebiniz Ekiplere Atandı!',
+        message: `[${tracking_code}] - "${tTitle}" talebiniz ${assignedStaffName} isimli saha görevlisine atanmıştır.`,
+        type: 'Durum',
+        reference_id: tracking_code || cId
+      });
+    }
+
     await conn.commit();
     res.json({ success: true, message: `Görev başarıyla ${assignedStaffName} isimli personele atandı.` });
   } catch (err) {
@@ -411,7 +423,7 @@ router.post('/actions', authenticateToken, checkRole(['Personel', 'Birim Yöneti
 
 // Helper to compute staff satisfaction rating
 function calculateStaffPerformanceRating(userId, memData) {
-  if (!memData || !memData.complaints) return { avg_rating: '4.8', rating_count: 0 };
+  if (!memData || !memData.complaints) return { avg_rating: null, rating_count: 0 };
   
   const staffComplaints = memData.complaints.filter(c => 
     Number(c.assigned_to_user_id) === Number(userId) ||
@@ -438,7 +450,7 @@ function calculateStaffPerformanceRating(userId, memData) {
     };
   }
 
-  return { avg_rating: '4.8', rating_count: 0 };
+  return { avg_rating: null, rating_count: 0 };
 }
 
 // 3. Birimdeki Personel Listesi (Dinamik, Birime Özel ve Memnuniyet Puanlı)
@@ -481,7 +493,7 @@ router.get('/department-employees/:deptId', authenticateToken, async (req, res) 
           ...r,
           id: Number(r.id),
           user_id: Number(r.id),
-          avg_rating: '4.8',
+          avg_rating: null,
           rating_count: 0
         }));
       } catch (e) {}

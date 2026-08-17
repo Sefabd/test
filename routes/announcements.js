@@ -7,8 +7,8 @@ const { authenticateToken, checkRole } = require('../middleware/auth');
 const DEFAULT_ANNOUNCEMENTS = [
   {
     id: 1,
-    title: '📢 Giresun Belediyesi 153 Çözüm Merkezi Dijital Portalı Hizmete Girdi!',
-    content: 'Vatandaşlarımızın belediye hizmetlerine 7/24 daha hızlı erişebilmesi, talep ve şikâyetlerini yapay zekâ desteğiyle iletebilmesi amacıyla yeni çözüm merkezimiz yayına alınmıştır.',
+    title: '📢 Bulancak Belediyesi 153 Çözüm Merkezi Dijital Portalı Hizmete Girdi!',
+    content: 'Bulancaklı hemşehrilerimizin belediye hizmetlerine 7/24 daha hızlı erişebilmesi, talep ve şikâyetlerini anlık iletebilmesi amacıyla yeni çözüm merkezimiz yayına alınmıştır.',
     category: 'Genel Duyuru',
     priority: 'Yüksek',
     created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
@@ -16,8 +16,8 @@ const DEFAULT_ANNOUNCEMENTS = [
   },
   {
     id: 2,
-    title: '💧 Hacısıyam ve Nizamiye Mahallelerinde Planlı Su Kesintisi',
-    content: 'Ana isale hattı yenileme çalışmaları sebebiyle 12 Ağustos Salı günü 09:00 - 16:00 saatleri arasında su kesintisi yaşanacaktır. Vatandaşlarımızın tedbirli olması rica olunur.',
+    title: '💧 Ballıca ve İhsaniye Mahallelerinde Planlı Su Şebekesi İyileştirmesi',
+    content: 'Su ve Kanalizasyon Müdürlüğümüz tarafından ana iletim hattı bakım çalışmaları sebebiyle perşembe günü 09:00 - 15:00 saatleri arasında kısmi su kesintisi yaşanacaktır.',
     category: 'Altyapı & Su Kesintisi',
     priority: 'Acil',
     created_at: new Date(Date.now() - 86400000 * 1).toISOString(),
@@ -25,8 +25,8 @@ const DEFAULT_ANNOUNCEMENTS = [
   },
   {
     id: 3,
-    title: '🚧 Atatürk Caddesi Asfalt Yenileme Çalışmaları Başladı',
-    content: 'Fen İşleri Müdürlüğümüz tarafından Atatürk Caddesi genelinde asfalt serme ve kaldırım düzenleme çalışmaları başlatılmıştır. Sürücülerin alternatif güzergâhları kullanması önemle duyurulur.',
+    title: '🚧 Bulancak Sahil Caddesi Yol ve Kaldırım Yenileme Çalışmaları Başladı',
+    content: 'Fen İşleri Müdürlüğümüz tarafından sahil bandı ve bağlantı yollarında asfalt serim ve çevre düzenleme çalışmaları başlatılmıştır.',
     category: 'Yol Çalışması',
     priority: 'Normal',
     created_at: new Date().toISOString(),

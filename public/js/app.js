@@ -66,22 +66,36 @@ let districtsList = [
 ];
 
 let neighborhoodsList = [
-  { id: 1, district_id: 1, name: 'İhsaniye Mahallesi', lat: 40.9350, lng: 38.2250 },
-  { id: 2, district_id: 1, name: 'Ballıca Mahallesi', lat: 40.9380, lng: 38.2300 },
-  { id: 3, district_id: 1, name: 'Sanayi Mahallesi', lat: 40.9400, lng: 38.2400 },
-  { id: 4, district_id: 1, name: 'Toprakdeğirmeni Mahallesi', lat: 40.9390, lng: 38.2350 },
-  { id: 5, district_id: 1, name: 'Acısu Mahallesi', lat: 40.9320, lng: 38.2200 },
-  { id: 6, district_id: 1, name: 'Bahçelievler Mahallesi', lat: 40.9360, lng: 38.2280 },
-  { id: 7, district_id: 1, name: 'Bulgurlu Mahallesi', lat: 40.9290, lng: 38.2150 },
-  { id: 8, district_id: 1, name: 'Güzelyalı Mahallesi', lat: 40.9420, lng: 38.2450 },
-  { id: 9, district_id: 1, name: 'İsmetpaşa Mahallesi', lat: 40.9370, lng: 38.2270 },
-  { id: 10, district_id: 1, name: 'Kızılot Mahallesi', lat: 40.9250, lng: 38.2100 },
-  { id: 11, district_id: 1, name: 'Pazarsuyu Mahallesi', lat: 40.9450, lng: 38.2600 },
-  { id: 12, district_id: 1, name: 'Saraçlı Mahallesi', lat: 40.9310, lng: 38.2230 },
-  { id: 13, district_id: 1, name: 'Sisorta Mahallesi', lat: 40.9200, lng: 38.2000 },
-  { id: 14, district_id: 1, name: 'Şemsettin Mahallesi', lat: 40.9330, lng: 38.2210 },
-  { id: 15, district_id: 1, name: 'Talipli Mahallesi', lat: 40.9430, lng: 38.2520 },
-  { id: 16, district_id: 1, name: 'Yalıköy Mahallesi', lat: 40.9410, lng: 38.2480 }
+  { id: 1, district_id: 1, name: 'Acısu Mahallesi', lat: 40.9320, lng: 38.2250 },
+  { id: 2, district_id: 1, name: 'Ahurlu Mahallesi', lat: 40.9260, lng: 38.2190 },
+  { id: 3, district_id: 1, name: 'Alibey Mahallesi', lat: 40.9300, lng: 38.2310 },
+  { id: 4, district_id: 1, name: 'Arifli Mahallesi', lat: 40.9280, lng: 38.2210 },
+  { id: 5, district_id: 1, name: 'Aydınlar Mahallesi', lat: 40.9340, lng: 38.2400 },
+  { id: 6, district_id: 1, name: 'Bahçelievler Mahallesi', lat: 40.9360, lng: 38.2380 },
+  { id: 7, district_id: 1, name: 'Ballıca Mahallesi', lat: 40.9380, lng: 38.2300 },
+  { id: 8, district_id: 1, name: 'Bulancak Mahallesi', lat: 40.9378, lng: 38.2294 },
+  { id: 9, district_id: 1, name: 'Derecikalan Mahallesi', lat: 40.9240, lng: 38.2150 },
+  { id: 10, district_id: 1, name: 'Duacıoğlu Mahallesi', lat: 40.9310, lng: 38.2350 },
+  { id: 11, district_id: 1, name: 'Düz Mahallesi', lat: 40.9350, lng: 38.2280 },
+  { id: 12, district_id: 1, name: 'Güney Mahallesi', lat: 40.9210, lng: 38.2200 },
+  { id: 13, district_id: 1, name: 'Güzelyalı Mahallesi', lat: 40.9410, lng: 38.2450 },
+  { id: 14, district_id: 1, name: 'Güzelyurt Mahallesi', lat: 40.9290, lng: 38.2390 },
+  { id: 15, district_id: 1, name: 'İhsaniye Mahallesi', lat: 40.9350, lng: 38.2250 },
+  { id: 16, district_id: 1, name: 'İsmet Paşa Mahallesi', lat: 40.9390, lng: 38.2320 },
+  { id: 17, district_id: 1, name: 'Kızılot Mahallesi', lat: 40.9250, lng: 38.2180 },
+  { id: 18, district_id: 1, name: 'Merkez Mahallesi', lat: 40.9375, lng: 38.2285 },
+  { id: 19, district_id: 1, name: 'Pazarsuyu Mahallesi', lat: 40.9450, lng: 38.2600 },
+  { id: 20, district_id: 1, name: 'Pazarsuyu Emecen Mahallesi', lat: 40.9470, lng: 38.2650 },
+  { id: 21, district_id: 1, name: 'Sanayi Mahallesi', lat: 40.9400, lng: 38.2400 },
+  { id: 22, district_id: 1, name: 'Saraçlı Mahallesi', lat: 40.9340, lng: 38.2310 },
+  { id: 23, district_id: 1, name: 'Şemsettin Mahallesi', lat: 40.9200, lng: 38.2280 },
+  { id: 24, district_id: 1, name: 'Sisin Mahallesi', lat: 40.9220, lng: 38.2300 },
+  { id: 25, district_id: 1, name: 'Sofulu Mahallesi', lat: 40.9270, lng: 38.2100 },
+  { id: 26, district_id: 1, name: 'Soğuksu Mahallesi', lat: 40.9330, lng: 38.2150 },
+  { id: 27, district_id: 1, name: 'Toprakdeğirmeni Mahallesi', lat: 40.9370, lng: 38.2210 },
+  { id: 28, district_id: 1, name: 'Uçarlı Mahallesi', lat: 40.9190, lng: 38.2350 },
+  { id: 29, district_id: 1, name: 'Yeni Mahallesi', lat: 40.9385, lng: 38.2355 },
+  { id: 30, district_id: 1, name: 'Yunuslu Mahallesi', lat: 40.9230, lng: 38.2420 }
 ];
 
 let currentFetchedComplaints = [];
@@ -89,6 +103,8 @@ let currentFetchedAdminUsers = [];
 let currentFetchedAdminDepts = [];
 let currentArchiveComplaints = [];
 let isAppInitialized = false;
+let isCreateMode = false;
+let currentViewingComplaintId = null;
 
 // ============================================================================
 // 1. APPLICATION INITIALIZATION & SESSION VERIFICATION
@@ -144,11 +160,12 @@ async function initApp() {
 
       updateUserUi();
 
-      const hashTab = location.hash ? location.hash.replace('#', '') : null;
-      let targetTab = hashTab || getDefaultRoleTab(currentUser.role_name);
+      const hashTab = (location.hash && location.hash !== '#' && location.hash !== '#/') ? location.hash.replace('#', '') : null;
+      let targetTab = hashTab || 'map';
 
       await switchWorkspaceTab(targetTab, false);
       setInterval(checkNotifications, 30000);
+      requestNotificationPermission();
     } else {
       if (appWorkspace) appWorkspace.style.display = 'none';
       if (landingPortal) landingPortal.style.display = 'flex';
@@ -260,9 +277,10 @@ async function executeLogin(email, password) {
       showToast(`Hoş Geldiniz, ${data.user.full_name || data.user.email}!`, 'success');
       updateUserUi();
 
-      let targetTab = getDefaultRoleTab(currentUser.role_name);
+      let targetTab = 'map';
       await switchWorkspaceTab(targetTab, false);
       checkNotifications();
+      requestNotificationPermission();
     } else {
       showToast(data.message || 'Giriş yapılamadı.', 'error');
     }
@@ -294,12 +312,8 @@ function logoutUser() {
 // 3. RBAC & ROLE-BASED UI ROUTING (KURUMSAL YETKİLENDİRME)
 // ============================================================================
 function getDefaultRoleTab(roleName) {
-  if (roleName === 'Vatandaş') return 'my-complaints';
-  if (roleName === 'Personel') return 'complaints';
-  if (roleName === 'Belediye Başkanı') return 'reports';
-  if (roleName === 'Belediye Başkan Yardımcısı') return 'dashboard';
-  if (roleName === 'Birim Yöneticisi') return 'dashboard';
-  return 'dashboard';
+  // Varsayılan Açılış Sayfası = Harita Analizi (#map)
+  return 'map';
 }
 
 function updateUserUi() {
@@ -682,6 +696,12 @@ async function switchWorkspaceTab(tabName, pushState = true) {
     await loadPublicComplaintsFeed();
   } else if (activeTab === 'map') {
     await loadMapData();
+    renderMapAnnouncementsBanner();
+    setTimeout(() => {
+      if (typeof explorerMap !== 'undefined' && explorerMap) {
+        explorerMap.invalidateSize();
+      }
+    }, 200);
   } else if (activeTab === 'archive' || activeTab === 'solution-archive') {
     await renderArchiveView();
   } else if (activeTab === 'dept-staff') {
@@ -698,6 +718,26 @@ async function switchWorkspaceTab(tabName, pushState = true) {
   } else if (activeTab === 'announcements') {
     await loadAnnouncements();
   } else if (activeTab === 'create-complaint') {
+    // 1 & 3. isCreateMode Koruması & CSS ile Hard-Hide
+    isCreateMode = true;
+    currentViewingComplaintId = null;
+
+    closeModal('modal-complaint-detail');
+    const detailCont = document.getElementById('complaint-detail-content');
+    if (detailCont) {
+      detailCont.innerHTML = '';
+      detailCont.classList.add('d-none', 'timeline-hidden');
+      detailCont.style.display = 'none';
+    }
+
+    const form = document.getElementById('page-form-new-complaint');
+    if (form) form.reset();
+    const aiBox = document.getElementById('page-ai-suggestion-container');
+    if (aiBox) {
+      aiBox.style.display = 'none';
+      aiBox.innerHTML = '';
+    }
+
     if (typeof initPageLocationPickerMap === 'function') {
       setTimeout(initPageLocationPickerMap, 100);
     }
@@ -948,18 +988,14 @@ function getBadgeClass(status) {
 }
 
 function getPriorityBadge(priority) {
-  const p = priority || 'Normal';
-  if (p === 'Acil' || p === 'Kritik') {
-    return `<span class="badge" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:700; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;"><i class="fas fa-fire" style="margin-right:2px;"></i> Acil</span>`;
-  }
-  if (p === 'Yüksek') {
-    return `<span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; font-weight:600; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;"><i class="fas fa-bolt" style="margin-right:2px;"></i> Yüksek</span>`;
+  const p = (priority || 'Normal').trim();
+  if (p === 'Acil' || p === 'Kritik' || p === 'Yüksek') {
+    return `<span class="badge" style="background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; font-weight:700; font-size:0.74rem; padding: 2px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; border-radius:50%; background:#ef4444;"></span> Acil</span>`;
   }
   if (p === 'Düşük') {
-    return `<span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; font-weight:500; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;">Düşük</span>`;
+    return `<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; font-weight:700; font-size:0.74rem; padding: 2px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; border-radius:50%; background:#64748b;"></span> Düşük</span>`;
   }
-  // Kural 2: Normal öncelik Açık Mavi (badge-info)
-  return `<span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:600; font-size:0.74rem; padding: 2px 7px; border-radius: 4px;">Normal</span>`;
+  return `<span class="badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-weight:700; font-size:0.74rem; padding: 2px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; border-radius:50%; background:#eab308;"></span> Normal</span>`;
 }
 
 let activeSidebarDepartmentId = null;
@@ -1413,6 +1449,27 @@ function resetComplaintFilters() {
 // 7. COMPLAINT CREATION (UNIFIED MODAL & PAGE FORM)
 // ============================================================================
 function openCreateComplaintForm() {
+  // 1 & 3. isCreateMode Koruması & CSS ile Hard-Hide
+  isCreateMode = true;
+  currentViewingComplaintId = null;
+
+  closeModal('modal-complaint-detail');
+  const detailCont = document.getElementById('complaint-detail-content');
+  if (detailCont) {
+    detailCont.innerHTML = '';
+    detailCont.classList.add('d-none', 'timeline-hidden');
+    detailCont.style.display = 'none';
+  }
+
+  // 2. Reset form & AI suggestion container
+  const form = document.getElementById('form-new-complaint');
+  if (form) form.reset();
+  const aiBox = document.getElementById('ai-suggestion-container');
+  if (aiBox) {
+    aiBox.style.display = 'none';
+    aiBox.innerHTML = '';
+  }
+
   openModal('modal-new-complaint');
   if (typeof initLocationPickerMap === 'function') {
     setTimeout(initLocationPickerMap, 100);
@@ -1545,22 +1602,42 @@ async function handlePageCreateComplaintSubmit(e) {
 // 8. COMPLAINT DETAIL MODAL & MANAGER / STAFF ACTIONS
 // ============================================================================
 async function openComplaintDetail(trackingCode) {
+  // Görüntüleme moduna geç, oluşturma modunu kapat
+  isCreateMode = false;
+
   const container = document.getElementById('complaint-detail-content');
   if (!container) return;
 
-  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Detaylar yükleniyor...</p></div>';
+  container.classList.remove('d-none', 'timeline-hidden');
+  container.style.display = 'block';
+
+  // 1. DOM/State Temizliği (Reset) - Önceki talepten kalan tüm içerik ve logları derhal temizle
+  container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 10px;">Detaylar ve süreç geçmişi yükleniyor...</p></div>';
   openModal('modal-complaint-detail');
 
   try {
-    const res = await fetch(`/api/complaints/${trackingCode}`, {
+    const res = await fetch(`/api/complaints/${encodeURIComponent(trackingCode)}`, {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
 
+    if (isCreateMode) {
+      // Eğer kullanıcı bu istek sürerken oluşturma moduna geçtiyse DOM'u kirletme
+      container.innerHTML = '';
+      container.classList.add('d-none', 'timeline-hidden');
+      return;
+    }
+
     if (data.success && data.complaint) {
       const c = data.complaint;
-      const actions = data.actions || [];
-      const files = data.files || [];
+      const cId = Number(c.id);
+      currentViewingComplaintId = cId;
+
+      // 3. Doğru ID ile İzolasyon - Sadece ve sadece bu talebe ait logları filtrele
+      const actions = (data.actions || []).filter(a => Number(a.complaint_id) === cId);
+      const files = (data.files || []).filter(f => Number(f.complaint_id) === cId);
+      const rawHistory = (data.history || []).filter(h => Number(h.complaint_id) === cId);
+
       const isMayor = currentUser && (currentUser.role_name === 'Belediye Başkanı' || currentUser.role_id === 5);
       const isManagerOrAdmin = currentUser && (currentUser.role_name === 'Birim Yöneticisi' || currentUser.role_name === 'Sistem Yöneticisi');
       const isStaff = currentUser && (currentUser.role_name === 'Personel' || currentUser.role_id === 3);
@@ -1576,13 +1653,11 @@ async function openComplaintDetail(trackingCode) {
             </h5>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
               <div>
-                <label style="font-size: 0.8rem; font-weight: 700; color: #334155; margin-bottom: 4px; display: block;">Öncelik Seviyesi</label>
+                <label style="font-size: 0.8rem; font-weight: 700; color: #334155; margin-bottom: 4px; display: block;">Öncelik / Aciliyet Seviyesi</label>
                 <select id="detail-edit-priority" class="form-input" style="height: 40px; padding: 4px 10px; font-size: 0.88rem; font-weight: 600; border-radius: 6px;">
-                  <option value="Düşük" ${c.priority_level === 'Düşük' ? 'selected' : ''}>Düşük</option>
-                  <option value="Normal" ${c.priority_level === 'Normal' ? 'selected' : ''}>Normal</option>
-                  <option value="Yüksek" ${c.priority_level === 'Yüksek' ? 'selected' : ''}>Yüksek</option>
-                  <option value="Acil" ${c.priority_level === 'Acil' ? 'selected' : ''}>Acil</option>
-                  <option value="Kritik" ${c.priority_level === 'Kritik' ? 'selected' : ''}>Kritik</option>
+                  <option value="Acil" ${(c.priority_level === 'Acil' || c.priority_level === 'Kritik' || c.priority_level === 'Yüksek') ? 'selected' : ''}>🔴 Acil</option>
+                  <option value="Normal" ${(c.priority_level === 'Normal' || !c.priority_level) ? 'selected' : ''}>🟡 Normal</option>
+                  <option value="Düşük" ${c.priority_level === 'Düşük' ? 'selected' : ''}>⚫ Düşük</option>
                 </select>
               </div>
               <div>
@@ -1672,26 +1747,35 @@ async function openComplaintDetail(trackingCode) {
         `;
       }
 
-      // 4. Process History Timeline (Combined History + Actions with Deduplication & Proper Dots)
-      const historyList = (data.history || []).map(h => {
+      // 4. Process History Timeline (Strictly scoped to this specific complaint)
+      const compCreatedTime = new Date(c.created_at).getTime();
+      const creatorName = c.citizen_name || c.user_name || 'Vatandaş';
+
+      const validRawHistory = rawHistory.filter(h => {
+        const hTime = new Date(h.created_at).getTime();
+        return isNaN(hTime) || isNaN(compCreatedTime) || hTime >= compCreatedTime - 10000;
+      });
+
+      const historyList = validRawHistory.map(h => {
+        const isInitial = h.old_status === 'Yok' || h.new_status === 'Yeni' || (!h.old_status && !h.new_status);
         let desc = h.change_reason;
         if (!desc || desc === 'undefined' || desc.includes('undefined')) {
-          if (h.new_status) {
+          if (h.new_status && h.new_status !== 'Yeni') {
             desc = `Talep durumu "${h.new_status}" olarak güncellendi.`;
           } else {
-            desc = 'Talep kaydı oluşturuldu.';
+            desc = 'Talep kaydı başarıyla oluşturuldu.';
           }
         }
         return {
-          user_name: h.changed_by_name || 'Belediye Yetkilisi',
+          user_name: isInitial ? (h.changed_by_name || creatorName) : (h.changed_by_name || 'Belediye Yetkilisi'),
           created_at: h.created_at,
-          action_type: h.new_status ? (h.new_status === 'Yeni' ? 'Talep Oluşturuldu' : h.new_status) : 'Durum Güncellemesi',
+          action_type: (h.new_status === 'Yeni' || isInitial) ? 'Talep Oluşturuldu' : (h.new_status || 'Durum Güncellemesi'),
           description: desc,
           photo_path: null
         };
       });
 
-      const actionList = (data.actions || []).map(a => ({
+      const actionList = actions.map(a => ({
         user_name: a.employee_name || 'Saha Görevlisi',
         created_at: a.created_at,
         action_type: a.action_type || a.new_status || 'İşlem / Müdahale',
@@ -1711,6 +1795,17 @@ async function openComplaintDetail(trackingCode) {
         );
         if (!isDup) uniqueTimeline.push(item);
       });
+
+      // If brand new with no logs yet, show single initial record
+      if (uniqueTimeline.length === 0) {
+        uniqueTimeline.push({
+          user_name: c.user_name || 'Vatandaş',
+          created_at: c.created_at || new Date().toISOString(),
+          action_type: 'Talep Oluşturuldu',
+          description: 'Talep kaydı başarıyla oluşturuldu.',
+          photo_path: null
+        });
+      }
 
       let timelineHtml = uniqueTimeline.map((a, idx) => {
         const isResolved = (a.action_type || '').includes('Çözüldü') || (a.action_type || '').includes('cozuldu');
@@ -1743,17 +1838,25 @@ async function openComplaintDetail(trackingCode) {
       // 5. Star Rating Survey Module (If Resolved)
       let surveyHtml = '';
       if (c.status === 'Çözüldü') {
-        const ratingVal = parseFloat(c.avg_rating || c.rating || 4.8);
-        const ratingCount = Number(c.rating_vote_count || c.rating_count || 1);
+        const ratingVal = (c.avg_rating !== null && c.avg_rating !== undefined) ? parseFloat(c.avg_rating) : (c.rating ? parseFloat(c.rating) : null);
+        const ratingCount = Number(c.rating_vote_count || c.rating_count || 0);
+        const hasRating = ratingVal !== null && !isNaN(ratingVal) && ratingCount > 0;
+
+        const ratingBadgeHtml = hasRating
+          ? `<span class="badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fef08a; font-weight:800; font-size:0.82rem;">
+               ★ ${ratingVal.toFixed(1)} / 5.0 (${ratingCount} Değerlendirme)
+             </span>`
+          : `<span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; font-weight:600; font-size:0.8rem;">
+               Henüz Değerlendirilmedi
+             </span>`;
+
         surveyHtml = `
           <div style="background: linear-gradient(135deg, #fefce8 0%, #eff6ff 100%); border: 1px solid #fde047; border-radius: 12px; padding: 16px; margin-top: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
               <strong style="color: #854d0e; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
                 <i class="fas fa-award" style="color: #eab308; font-size: 1.1rem;"></i> Vatandaş Memnuniyet Değerlendirmesi
               </strong>
-              <span class="badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fef08a; font-weight:800; font-size:0.82rem;">
-                ★ ${ratingVal.toFixed(1)} / 5.0 (${ratingCount} Değerlendirme)
-              </span>
+              ${ratingBadgeHtml}
             </div>
             ${currentUser && currentUser.role_name === 'Vatandaş' ? `
               <div style="display: flex; justify-content: center; gap: 12px; font-size: 2rem; color: #facc15; cursor: pointer; margin: 8px 0; text-shadow: 0 1px 3px rgba(0,0,0,0.1);" id="star-rating-box">
@@ -1767,7 +1870,7 @@ async function openComplaintDetail(trackingCode) {
               <button class="btn btn-primary btn-sm" onclick="submitSatisfactionSurvey(${c.id})" style="margin-top: 10px; width: 100%; font-weight: 700; background: #0284c7; padding: 8px;">
                 <i class="fas fa-paper-plane"></i> Değerlendirmeyi Kaydet
               </button>
-            ` : `<p style="font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.45;">Bu talep çözüme kavuşturulmuş olup vatandaşımızın değerlendirmesine sunulmuştur.</p>`}
+            ` : `<p style="font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.45;">${hasRating ? `Bu talep için ${ratingCount} adet vatandaş memnuniyet değerlendirmesi yapılmıştır.` : 'Bu talep çözüme kavuşturulmuş olup henüz vatandaş değerlendirmesi yapılmamıştır.'}</p>`}
           </div>
         `;
       }
@@ -2187,9 +2290,46 @@ function applyArchiveFilters() {
   }).join('');
 }
 
+// ============================================================================
+// REAL-TIME MULTI-VIEW REFRESHER (Sayfayı F5 Yapmadan Harita, Tablo ve Arşivi Canlı Günceller)
+// ============================================================================
+async function refreshAllApplicationViews() {
+  const currentTab = location.hash.replace('#', '') || 'dashboard';
+
+  // 1. Dashboard istatistiklerini arka planda tazele
+  loadDashboardData();
+
+  // 2. Harita Analizi sekmesi veya Leaflet haritası varsa anında F5'siz yeniden çiz
+  const mapSec = document.getElementById('sec-map');
+  if (mapSec && (mapSec.style.display !== 'none' || currentTab === 'map' || rawMapComplaints.length > 0)) {
+    await loadMapData();
+  }
+
+  // 3. Şikayet ve Talep Tablosunu canlı tazele
+  const compSec = document.getElementById('sec-complaints');
+  if (compSec && (compSec.style.display !== 'none' || currentTab === 'complaints' || currentTab === 'my-complaints')) {
+    await loadComplaintsTable(currentTab === 'my-complaints');
+  }
+
+  // 4. Çözüm Arşivini canlı tazele
+  const archSec = document.getElementById('archive-view') || document.getElementById('sec-solution-archive');
+  if (archSec && (archSec.style.display !== 'none' || currentTab === 'archive' || currentTab === 'solution-archive')) {
+    await renderArchiveView();
+  }
+
+  // 5. Kamuya Açık Akışı canlı tazele
+  const feedSec = document.getElementById('sec-public-feed');
+  if (feedSec && (feedSec.style.display !== 'none' || currentTab === 'public-feed')) {
+    await loadPublicComplaintsFeed();
+  }
+}
+
 async function saveAdminComplaintUpdate(complaintId) {
-  const targetId = complaintId || document.getElementById('current-detail-complaint-id')?.value;
-  if (!targetId) {
+  // 1 & 2. isCreateMode Koruması: Yeni talep oluşturma modundaysak işlem yapma
+  if (isCreateMode) return;
+
+  const targetId = complaintId || currentViewingComplaintId || document.getElementById('current-detail-complaint-id')?.value;
+  if (!targetId || targetId === 'null' || targetId === 'undefined') {
     showToast('Güncellenecek talep ID bulunamadı.', 'error');
     return;
   }
@@ -2211,8 +2351,7 @@ async function saveAdminComplaintUpdate(complaintId) {
     if (data.success) {
       showToast('✅ Talep durumu ve öncelik seviyesi güncellendi!', 'success');
       closeModal('modal-complaint-detail');
-      await loadComplaintsTable();
-      await loadDashboardData();
+      await refreshAllApplicationViews();
     } else {
       showToast(data.message || 'Güncelleme hatası.', 'error');
     }
@@ -2263,7 +2402,7 @@ async function handleForwardDeptSubmit(e) {
       showToast('🔄 Talep başarıyla yeni müdürlüğe sevk edildi!', 'success');
       closeModal('modal-forward-dept');
       closeModal('modal-complaint-detail');
-      await loadComplaintsTable();
+      await refreshAllApplicationViews();
     } else {
       showToast(data.message || 'Yönlendirme başarısız.', 'error');
     }
@@ -2325,7 +2464,7 @@ async function handleAssignTaskSubmit(e) {
       showToast('👷 Görev başarıyla personele atandı!', 'success');
       closeModal('modal-assign-task');
       closeModal('modal-complaint-detail');
-      await loadComplaintsTable();
+      await refreshAllApplicationViews();
     } else {
       showToast(data.message || 'Atama yapılamadı.', 'error');
     }
@@ -2357,8 +2496,7 @@ async function selfAssignComplaint(complaintId) {
       } else {
         showToast('👷 Görev başarıyla üzerinize alındı!', 'success');
       }
-      await loadComplaintsTable();
-      await loadDashboardData();
+      await refreshAllApplicationViews();
     } else {
       showToast(data.message || 'Görev üzerinize alınamadı.', 'error');
     }
@@ -2391,8 +2529,7 @@ async function unassignComplaint(complaintId) {
         } else {
           showToast('ℹ️ Görev ataması kaldırıldı.', 'info');
         }
-        await loadComplaintsTable();
-        await loadDashboardData();
+        await refreshAllApplicationViews();
       } else {
         showToast(data.message || 'Atama kaldırılamadı.', 'error');
       }
@@ -2477,8 +2614,7 @@ async function handleActionTaskSubmit(e) {
       }
       closeModal('modal-action-task');
       closeModal('modal-complaint-detail');
-      await loadComplaintsTable();
-      await loadDashboardData();
+      await refreshAllApplicationViews();
     } else {
       if (typeof Swal !== 'undefined') {
         Swal.fire({
@@ -3499,7 +3635,7 @@ async function renderViceMayorHierarchyCards() {
   if (!container) return;
 
   // 1. Strict Container Reset & Loading state
-  container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 8px;">Teşkilat şeması ve başkan yardımcıları yükleniyor...</p></div>';
+  container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-spinner fa-spin fa-2x"></i><p style="margin-top: 8px;">Teşkilat şeması yükleniyor...</p></div>';
 
   try {
     const res = await fetch('/api/admin/vice-mayors', {
@@ -3517,22 +3653,13 @@ async function renderViceMayorHierarchyCards() {
     });
     const uniqueVMList = Array.from(uniqueVMsMap.values());
 
-    // Update Tab Counts
+    // Only display active Vice Mayors for pure organization schema
     const activeVMs = uniqueVMList.filter(vm => vm.is_active !== 0);
-    const passiveVMs = uniqueVMList.filter(vm => vm.is_active === 0);
-
-    const activeCountEl = document.getElementById('count-vm-active');
-    const passiveCountEl = document.getElementById('count-vm-passive');
-    if (activeCountEl) activeCountEl.innerText = activeVMs.length;
-    if (passiveCountEl) passiveCountEl.innerText = passiveVMs.length;
-
-    // Filter according to current active/passive tab
-    const displayList = currentVmFilterTab === 'ACTIVE' ? activeVMs : passiveVMs;
 
     container.innerHTML = '';
 
-    if (displayList.length === 0) {
-      container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 28px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;"><i class="fas fa-user-shield fa-2x" style="margin-bottom: 8px; display: block; opacity: 0.5;"></i>${currentVmFilterTab === 'ACTIVE' ? 'Sistemde aktif Başkan Yardımcısı bulunamadı.' : 'Sistemde pasif durumda Başkan Yardımcısı bulunmuyor.'}</div>`;
+    if (activeVMs.length === 0) {
+      container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 28px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;"><i class="fas fa-user-shield fa-2x" style="margin-bottom: 8px; display: block; opacity: 0.5;"></i>Sistemde kayıtlı Başkan Yardımcısı bulunamadı.</div>`;
       return;
     }
 
@@ -3543,14 +3670,11 @@ async function renderViceMayorHierarchyCards() {
       { border: '#d97706', bg: '#fffbeb', text: '#d97706', badgeBg: '#fef3c7', badgeText: '#92400e' }
     ];
 
-    const isAdmin = currentUser?.role_id === 1 || currentUser?.role_name === 'Sistem Yöneticisi';
-
-    container.innerHTML = displayList.map((vm, index) => {
+    container.innerHTML = activeVMs.map((vm, index) => {
       const palette = colorPalettes[index % colorPalettes.length];
       const attachedDepts = vm.departments || [];
       const deptCount = attachedDepts.length;
       const totalStaff = vm.total_staff_count || (deptCount * 4);
-      const isPassive = vm.is_active === 0;
 
       let deptsChipsHtml = '';
       if (attachedDepts.length === 0) {
@@ -3569,42 +3693,18 @@ async function renderViceMayorHierarchyCards() {
         `).join('');
       }
 
-      let actionsHtml = '';
-      if (isAdmin) {
-        if (!isPassive) {
-          actionsHtml = `
-            <div style="display: flex; gap: 8px; margin-top: 14px;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="openAssignDeptsModal(${vm.id}, '${(vm.full_name || '').replace(/'/g, "\\'")}')" style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; font-weight: 700; border-radius: 6px; flex: 1; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; font-size: 0.82rem;">
-                <i class="fas fa-sitemap"></i> Birim Atamalarını Düzenle
-              </button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="toggleViceMayorActiveStatus(${vm.id}, 0)" style="background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; font-weight: 700; border-radius: 6px; display: flex; justify-content: center; align-items: center; gap: 4px; padding: 8px 12px; font-size: 0.82rem;" title="Başkan Yardımcısını Pasife Al">
-                <i class="fas fa-user-slash"></i> Pasife Al
-              </button>
-            </div>
-          `;
-        } else {
-          actionsHtml = `
-            <div style="display: flex; gap: 8px; margin-top: 14px;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="toggleViceMayorActiveStatus(${vm.id}, 1)" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-weight: 700; border-radius: 6px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; font-size: 0.82rem;">
-                <i class="fas fa-user-check"></i> Başkan Yardımcısını Aktife Al
-              </button>
-            </div>
-          `;
-        }
-      }
-
       return `
-        <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid ${isPassive ? '#94a3b8' : palette.border}; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); display: flex; flex-direction: column; justify-content: space-between; ${isPassive ? 'opacity: 0.85;' : ''}">
+        <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid ${palette.border}; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); display: flex; flex-direction: column; justify-content: space-between; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
               <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 46px; height: 46px; border-radius: 12px; background: ${isPassive ? '#f1f5f9' : palette.bg}; color: ${isPassive ? '#64748b' : palette.text}; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                <div style="width: 46px; height: 46px; border-radius: 12px; background: ${palette.bg}; color: ${palette.text}; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
                   <i class="fas fa-user-shield"></i>
                 </div>
                 <div>
                   <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">${vm.full_name}</h4>
-                  <span class="badge" style="background: ${isPassive ? '#fee2e2' : palette.badgeBg}; color: ${isPassive ? '#b91c1c' : palette.badgeText}; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">
-                    ${isPassive ? '🚫 Pasif Yönetici' : `${index + 1}. Belediye Başkan Yardımcısı`}
+                  <span class="badge" style="background: ${palette.badgeBg}; color: ${palette.badgeText}; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">
+                    ${index + 1}. Belediye Başkan Yardımcısı
                   </span>
                 </div>
               </div>
@@ -3620,8 +3720,6 @@ async function renderViceMayorHierarchyCards() {
               ${deptsChipsHtml}
             </div>
           </div>
-
-          ${actionsHtml}
         </div>
       `;
     }).join('');
@@ -3765,8 +3863,9 @@ async function loadDeptStaffTable() {
       }
 
       tbody.innerHTML = staffList.map(s => {
-        const avgStar = s.avg_rating || '4.8';
-        const count = s.rating_count || 0;
+        const hasRating = s.avg_rating !== null && s.avg_rating !== undefined && Number(s.rating_count) > 0;
+        const avgStar = hasRating ? parseFloat(s.avg_rating).toFixed(1) : null;
+        const count = Number(s.rating_count || 0);
         const isManager = Number(s.role_id) === 2;
         return `
           <tr>
@@ -3781,9 +3880,15 @@ async function loadDeptStaffTable() {
               <br><span class="badge" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:0.75rem; margin-top:2px;">🏛️ ${s.department_name || 'Birim'}</span>
             </td>
             <td>
-              <span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-weight:700; font-size:0.84rem;">
-                <i class="fas fa-star" style="color:#f59e0b; margin-right:4px;"></i> ⭐ ${avgStar} / 5.0 ${count > 0 ? `(${count} Değerlendirme)` : ''}
-              </span>
+              ${hasRating ? `
+                <span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-weight:700; font-size:0.84rem;">
+                  <i class="fas fa-star" style="color:#f59e0b; margin-right:4px;"></i> ⭐ ${avgStar} / 5.0 (${count} Değerlendirme)
+                </span>
+              ` : `
+                <span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; font-size:0.75rem; font-weight:500;">
+                  <i class="far fa-star"></i> Puan Yok
+                </span>
+              `}
             </td>
             <td>
               <span class="badge ${s.is_active !== 0 ? 'badge-cozuldu' : 'badge-iptal'}">
@@ -3812,15 +3917,22 @@ async function loadDeptStaffTable() {
     }
 
     tbody.innerHTML = staffList.map(s => {
-      const avgStar = s.avg_rating || '4.8';
-      const count = s.rating_count || 0;
+      const hasRating = s.avg_rating !== null && s.avg_rating !== undefined && Number(s.rating_count) > 0;
+      const avgStar = hasRating ? parseFloat(s.avg_rating).toFixed(1) : null;
+      const count = Number(s.rating_count || 0);
       return `
         <tr>
           <td style="font-weight: 700; color: var(--portal-blue-primary);">
             ${s.full_name}
-            <span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; font-weight:700; margin-left:6px; font-size:0.75rem;">
-              <i class="fas fa-star" style="color:#f59e0b;"></i> ⭐ ${avgStar} / 5
-            </span>
+            ${hasRating ? `
+              <span class="badge" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; font-weight:700; margin-left:6px; font-size:0.75rem;">
+                <i class="fas fa-star" style="color:#f59e0b;"></i> ⭐ ${avgStar} / 5
+              </span>
+            ` : `
+              <span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; font-size:0.75rem; margin-left:6px; font-weight:500;">
+                <i class="far fa-star"></i> Puan Yok
+              </span>
+            `}
           </td>
           <td style="font-size: 0.85rem;">${s.email || '-'}</td>
           <td style="font-size: 0.85rem;">${s.phone || '-'}</td>
@@ -3878,36 +3990,304 @@ async function loadDashboardData() {
   }
 }
 
+// ============================================================================
+// 14. DUAL-MODE MAP ANALYTICS & REACTIVE SYNC ENGINE
+// ============================================================================
+
+let rawMapComplaints = [];
+let mapDoughnutChartInstance = null;
+
 async function loadMapData() {
   try {
     const res = await fetch('/api/complaints/all', {
       headers: { 'Authorization': `Bearer ${currentToken}` }
     });
     const data = await res.json();
-    const complaints = (data.success && Array.isArray(data.complaints)) ? data.complaints : [];
+    rawMapComplaints = (data.success && Array.isArray(data.complaints)) ? data.complaints : [];
 
-    // Update Map KPIs
-    const total = complaints.length;
-    const resolved = complaints.filter(c => c.status === 'Çözüldü').length;
-    const pending = complaints.filter(c => ['Yeni', 'İşlem devam ediyor', 'Personele atandı'].includes(c.status)).length;
-    const newCount = complaints.filter(c => c.status === 'Yeni').length;
+    // Populate Neighborhoods & Categories Dropdowns if empty
+    populateMapFilterDropdowns(rawMapComplaints);
 
-    const mapTotal = document.getElementById('map-kpi-total');
-    const mapResolved = document.getElementById('map-kpi-resolved');
-    const mapPending = document.getElementById('map-kpi-pending');
-    const mapNew = document.getElementById('map-kpi-new');
+    // Update KPI Counters
+    updateMapKpis(rawMapComplaints);
 
-    if (mapTotal) mapTotal.textContent = total;
-    if (mapResolved) mapResolved.textContent = resolved;
-    if (mapPending) mapPending.textContent = pending;
-    if (mapNew) mapNew.textContent = newCount;
-
-    if (typeof initExplorerMap === 'function') {
-      setTimeout(() => initExplorerMap('map-container', complaints), 100);
-    }
+    // Apply Live Filters and Render Leaflet Map
+    applyMapFilters();
   } catch (err) {
     console.error('Map data load error:', err);
   }
+}
+
+function updateMapKpis(complaints) {
+  const total = complaints.length;
+  const resolved = complaints.filter(c => c.status === 'Çözüldü').length;
+  const pending = complaints.filter(c => ['Yeni', 'İşlem devam ediyor', 'Personele atandı', 'İşlemde'].includes(c.status)).length;
+  const newCount = complaints.filter(c => c.status === 'Yeni').length;
+  const rate = total > 0 ? Math.round((resolved / total) * 100) : 0;
+
+  const mapTotal = document.getElementById('map-kpi-total');
+  const mapResolved = document.getElementById('map-kpi-resolved');
+  const mapPending = document.getElementById('map-kpi-pending');
+  const mapNew = document.getElementById('map-kpi-new');
+  const mapRate = document.getElementById('map-kpi-rate');
+
+  if (mapTotal) mapTotal.textContent = total;
+  if (mapResolved) mapResolved.textContent = resolved;
+  if (mapPending) mapPending.textContent = pending;
+  if (mapNew) mapNew.textContent = newCount;
+  if (mapRate) mapRate.textContent = `%${rate} çözüm oranı`;
+}
+
+function populateMapFilterDropdowns(complaints) {
+  const nSelect = document.getElementById('map-filter-neighborhood');
+  const cSelect = document.getElementById('map-filter-category');
+
+  if (nSelect && nSelect.options.length <= 1) {
+    const list = (neighborhoodsList && neighborhoodsList.length > 0) ? neighborhoodsList : [];
+    list.forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n.name;
+      opt.textContent = `📍 ${n.name}`;
+      nSelect.appendChild(opt);
+    });
+  }
+
+  if (cSelect && cSelect.options.length <= 1) {
+    const cNames = [...new Set(complaints.map(c => c.category_name).filter(Boolean))].sort();
+    cNames.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = `🏷️ ${cat}`;
+      cSelect.appendChild(opt);
+    });
+  }
+}
+
+function applyMapFilters() {
+  const statusFilter = document.getElementById('map-filter-status')?.value || 'ACTIVE';
+  const urgencyFilter = document.getElementById('map-filter-urgency')?.value || 'ALL';
+  const neighborhoodFilter = document.getElementById('map-filter-neighborhood')?.value || 'ALL';
+  const categoryFilter = document.getElementById('map-filter-category')?.value || 'ALL';
+
+  let filtered = [...rawMapComplaints];
+  let mode = 'URGENCY'; // Default mode
+
+  // 1. Durum Filtresi & Mod Belirleme
+  if (statusFilter === 'ACTIVE') {
+    // Varsayılan Mod: Sadece Çözülmemiş / Aktif talepler (Aciliyet Modu)
+    mode = 'URGENCY';
+    filtered = filtered.filter(c => c.status !== 'Çözüldü' && c.status !== 'İptal edildi' && c.status !== 'passive');
+  } else if (statusFilter === 'ALL') {
+    // Filtreli Mod: Tüm talepler (Durum Modu)
+    mode = 'STATUS';
+  } else if (statusFilter === 'Yeni') {
+    mode = 'STATUS';
+    filtered = filtered.filter(c => c.status === 'Yeni');
+  } else if (statusFilter === 'İşlemde') {
+    mode = 'STATUS';
+    filtered = filtered.filter(c => ['İşlemde', 'İşlem devam ediyor', 'Personele atandı', 'Ön İncelemede', 'İlgili birime yönlendirildi'].includes(c.status));
+  } else if (statusFilter === 'Çözüldü') {
+    mode = 'STATUS';
+    filtered = filtered.filter(c => c.status === 'Çözüldü');
+  } else if (statusFilter === 'İptal edildi') {
+    mode = 'STATUS';
+    filtered = filtered.filter(c => c.status === 'İptal edildi' || c.status === 'passive' || c.status === 'Reddedildi');
+  }
+
+  // 2. Aciliyet Filtresi
+  if (urgencyFilter !== 'ALL') {
+    if (urgencyFilter === 'Acil') {
+      filtered = filtered.filter(c => ['Acil', 'Kritik', 'Yüksek'].includes(c.urgency_level || c.priority_level));
+    } else {
+      filtered = filtered.filter(c => (c.urgency_level || c.priority_level) === urgencyFilter);
+    }
+  }
+
+  // 3. Mahalle Filtresi
+  if (neighborhoodFilter !== 'ALL') {
+    filtered = filtered.filter(c => c.neighborhood_name === neighborhoodFilter);
+  }
+
+  // 4. Kategori Filtresi
+  if (categoryFilter !== 'ALL') {
+    filtered = filtered.filter(c => c.category_name === categoryFilter);
+  }
+
+  // Update Pin Count
+  const pinCountEl = document.getElementById('map-pin-count');
+  if (pinCountEl) pinCountEl.textContent = filtered.length;
+
+  // Render Dynamic Legend
+  renderMapLegend(mode, filtered);
+
+  // Render Leaflet Map (Dual-Mode)
+  if (typeof renderExplorerMap === 'function') {
+    renderExplorerMap('map-container', filtered, mode);
+  } else if (typeof initExplorerMap === 'function') {
+    initExplorerMap('map-container', filtered);
+  }
+
+  // Render Side Widgets (Top Regions & Category Doughnut)
+  renderMapSideWidgets(filtered);
+}
+
+function renderMapLegend(mode, currentComplaints) {
+  const legendContainer = document.getElementById('map-mode-legend');
+  if (!legendContainer) return;
+
+  if (mode === 'URGENCY') {
+    const acilCount = currentComplaints.filter(c => ['Acil', 'Kritik', 'Yüksek'].includes(c.urgency_level || c.priority_level)).length;
+    const normalCount = currentComplaints.filter(c => (c.urgency_level || c.priority_level || 'Normal') === 'Normal').length;
+    const dusukCount = currentComplaints.filter(c => (c.urgency_level || c.priority_level) === 'Düşük').length;
+
+    legendContainer.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="badge" style="background: #fee2e2; color: #991b1b; font-weight: 800; font-size: 0.78rem; padding: 5px 10px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fas fa-bolt"></i> ACİLİYET MODU (Aktif Talepler)
+          </span>
+          <span style="font-size: 0.82rem; color: #64748b;">Pin renkleri aciliyet derecesine göre belirlenmiştir:</span>
+        </div>
+
+        <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #ef4444; display: inline-block;"></span>
+            <span>🔴 Acil / Kritik <strong>(${acilCount})</strong></span>
+          </div>
+
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #eab308; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #eab308; display: inline-block;"></span>
+            <span>🟡 Normal <strong>(${normalCount})</strong></span>
+          </div>
+
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #64748b; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #64748b; display: inline-block;"></span>
+            <span>⚫ Düşük <strong>(${dusukCount})</strong></span>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    const yeniCount = currentComplaints.filter(c => c.status === 'Yeni').length;
+    const islemdeCount = currentComplaints.filter(c => ['İşlemde', 'İşlem devam ediyor', 'Personele atandı', 'Ön İncelemede', 'İlgili birime yönlendirildi'].includes(c.status)).length;
+    const cozulduCount = currentComplaints.filter(c => c.status === 'Çözüldü').length;
+    const iptalCount = currentComplaints.filter(c => ['İptal edildi', 'passive', 'Reddedildi'].includes(c.status)).length;
+
+    legendContainer.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="badge" style="background: #dbeafe; color: #1e40af; font-weight: 800; font-size: 0.78rem; padding: 5px 10px; border-radius: 6px; border: 1px solid #bfdbfe; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fas fa-list-check"></i> DURUM MODU (İş Akışı)
+          </span>
+          <span style="font-size: 0.82rem; color: #64748b;">Pin renkleri talebin güncel durumuna göre ayrılmıştır:</span>
+        </div>
+
+        <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #2563eb; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #2563eb; display: inline-block;"></span>
+            <span>🔵 Yeni <strong>(${yeniCount})</strong></span>
+          </div>
+
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #f97316; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #f97316; display: inline-block;"></span>
+            <span>🟠 İşlemde / Atandı <strong>(${islemdeCount})</strong></span>
+          </div>
+
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #10b981; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #10b981; display: inline-block;"></span>
+            <span>🟢 Çözüldü <strong>(${cozulduCount})</strong></span>
+          </div>
+
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background: #64748b; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #64748b; display: inline-block;"></span>
+            <span>⚫ İptal <strong>(${iptalCount})</strong></span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderMapSideWidgets(complaints) {
+  // Widget 1: Top Regions List
+  const topRegionsEl = document.getElementById('map-top-regions-list');
+  if (topRegionsEl) {
+    const counts = {};
+    complaints.forEach(c => {
+      const n = c.neighborhood_name || 'İhsaniye Mahallesi';
+      counts[n] = (counts[n] || 0) + 1;
+    });
+
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 4);
+
+    if (sorted.length === 0) {
+      topRegionsEl.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 12px 0;">Kayıt bulunamadı.</div>';
+    } else {
+      topRegionsEl.innerHTML = sorted.map(([name, count], i) => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <span style="font-size: 0.85rem; font-weight: 600; color: #1e293b;">${i+1}. ${name}</span>
+          <span class="badge" style="background: #e0e7ff; color: #3730a3; font-weight: 800; font-size: 0.78rem;">${count} Talep</span>
+        </div>
+      `).join('');
+    }
+  }
+
+  // Widget 2: Category Doughnut Chart
+  const doughnutCanvas = document.getElementById('map-widget-doughnut');
+  if (doughnutCanvas && typeof Chart !== 'undefined') {
+    const catCounts = {};
+    complaints.forEach(c => {
+      const cat = c.category_name || 'Genel';
+      catCounts[cat] = (catCounts[cat] || 0) + 1;
+    });
+
+    const labels = Object.keys(catCounts).slice(0, 5);
+    const values = labels.map(l => catCounts[l]);
+
+    if (mapDoughnutChartInstance) {
+      mapDoughnutChartInstance.destroy();
+      mapDoughnutChartInstance = null;
+    }
+
+    if (labels.length > 0) {
+      mapDoughnutChartInstance = new Chart(doughnutCanvas, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 10, font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+  }
+}
+
+function resetMapFilters() {
+  const s = document.getElementById('map-filter-status');
+  const u = document.getElementById('map-filter-urgency');
+  const n = document.getElementById('map-filter-neighborhood');
+  const c = document.getElementById('map-filter-category');
+
+  if (s) s.value = 'ACTIVE';
+  if (u) u.value = 'ALL';
+  if (n) n.value = 'ALL';
+  if (c) c.value = 'ALL';
+
+  applyMapFilters();
 }
 
 // ============================================================================
@@ -4054,30 +4434,128 @@ async function loadAdminLogsTable() {
     tbody.innerHTML = '';
 
     if (logs.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Kayıtlı log bulunamadı.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;"><i class="fas fa-clipboard-list fa-2x" style="display:block; margin-bottom:8px; opacity:0.5;"></i>Kayıtlı sistem logu bulunamadı.</td></tr>';
       return;
     }
 
-    logs.forEach(l => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><small style="color:#64748b;">${new Date(l.created_at).toLocaleString('tr-TR')}</small></td>
-        <td><strong>${l.user_name || 'Sistem'}</strong></td>
-        <td><span class="badge" style="background:#f1f5f9; color:#1e293b; font-weight:700;">${l.action_name || l.action || 'İŞLEM'}</span></td>
-        <td>${l.entity_name || '-'}</td>
-        <td><strong>${l.entity_id || '-'}</strong></td>
-        <td><small style="color:#64748b;">${l.ip_address || '127.0.0.1'}</small></td>
+    tbody.innerHTML = logs.map(l => {
+      const actionStr = (l.action_name || l.action || 'İŞLEM').toUpperCase();
+      let badgeStyle = 'background:#f1f5f9; color:#334155;';
+      let icon = 'fa-info-circle';
+
+      if (actionStr.includes('DELETE') || actionStr.includes('PASIF') || actionStr.includes('CANCEL')) {
+        badgeStyle = 'background:#fee2e2; color:#b91c1c; border:1px solid #fecaca;';
+        icon = 'fa-trash-alt';
+      } else if (actionStr.includes('CREATE') || actionStr.includes('ADD') || actionStr.includes('INSERT')) {
+        badgeStyle = 'background:#dcfce7; color:#15803d; border:1px solid #bbf7d0;';
+        icon = 'fa-plus-circle';
+      } else if (actionStr.includes('UPDATE') || actionStr.includes('EDIT') || actionStr.includes('STATUS') || actionStr.includes('ASSIGN')) {
+        badgeStyle = 'background:#e0e7ff; color:#4338ca; border:1px solid #c7d2fe;';
+        icon = 'fa-pen';
+      } else if (actionStr.includes('TOGGLE') || actionStr.includes('ACTIVE')) {
+        badgeStyle = 'background:#fef3c7; color:#b45309; border:1px solid #fde68a;';
+        icon = 'fa-toggle-on';
+      } else if (actionStr.includes('LOGIN') || actionStr.includes('AUTH')) {
+        badgeStyle = 'background:#f3e8ff; color:#7e22ce; border:1px solid #e9d5ff;';
+        icon = 'fa-key';
+      }
+
+      const dateDisplay = l.created_at ? new Date(l.created_at).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'medium' }) : '-';
+
+      return `
+        <tr>
+          <td><small style="color:#64748b; font-weight:600;"><i class="far fa-clock" style="margin-right:4px;"></i>${dateDisplay}</small></td>
+          <td><strong style="color:#0f172a;"><i class="fas fa-user-circle" style="color:#94a3b8; margin-right:4px;"></i>${l.user_name || 'Sistem Yöneticisi'}</strong></td>
+          <td><span class="badge" style="${badgeStyle} font-weight:700; font-size:0.75rem; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fas ${icon}"></i> ${l.action || 'İŞLEM'}</span></td>
+          <td><code style="background:#f8fafc; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; font-size:0.8rem; color:#475569;">${l.entity_name || '-'}</code></td>
+          <td><strong style="color:#334155;">#${l.entity_id || '-'}</strong></td>
+          <td><small style="color:#64748b; font-family:monospace;"><i class="fas fa-network-wired" style="margin-right:4px;"></i>${l.ip_address || '127.0.0.1'}</small></td>
+        </tr>
       `;
-      tbody.appendChild(tr);
-    });
+    }).join('');
   } catch (err) {
-    if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 24px;">Loglar yüklenemedi.</td></tr>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 24px;">Loglar yüklenirken bağlantı hatası oluştu.</td></tr>';
   }
 }
 
 // ============================================================================
-// 17. HEADER NOTIFICATIONS & REALTIME BADGE
+// 15.1 MAP ANNOUNCEMENTS MARQUEE BANNER
 // ============================================================================
+async function renderMapAnnouncementsBanner() {
+  const banner = document.getElementById('map-announcements-banner');
+  if (!banner) return;
+
+  try {
+    const res = await fetch('/api/announcements');
+    const data = await res.json();
+    const announcements = (data.success && Array.isArray(data.announcements)) ? data.announcements : [];
+
+    if (announcements.length === 0) {
+      banner.style.display = 'none';
+      return;
+    }
+
+    const latest = announcements.slice(0, 3);
+    const itemsHtml = latest.map((a) => `
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #1e293b; white-space: nowrap; margin-right: 24px;">
+        <span class="badge" style="background: ${a.priority === 'Acil' ? '#fee2e2' : '#e0f2fe'}; color: ${a.priority === 'Acil' ? '#dc2626' : '#0369a1'}; font-weight: 700; font-size: 0.72rem; padding: 2px 8px; border-radius: 6px;">${a.category || 'Duyuru'}</span>
+        <strong style="color: var(--portal-blue-primary); cursor: pointer;" onclick="switchWorkspaceTab('announcements')">${a.title}</strong>
+      </div>
+    `).join('');
+
+    banner.style.display = 'block';
+    banner.innerHTML = `
+      <div style="background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); animation: fadeIn 0.3s ease;">
+        <div style="display: flex; align-items: center; gap: 12px; overflow: hidden; flex: 1;">
+          <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; color: #1d4ed8; font-size: 0.86rem; white-space: nowrap;">
+            <i class="fas fa-bullhorn fa-bounce" style="color: #2563eb;"></i> Belediye Duyuruları:
+          </div>
+          <div style="display: flex; overflow-x: auto; scrollbar-width: none; flex: 1; align-items: center;">
+            ${itemsHtml}
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="switchWorkspaceTab('announcements')" style="height: 28px; padding: 0 10px; font-size: 0.75rem; font-weight: 700; border-radius: 6px; white-space: nowrap;">
+            Tümünü Gör
+          </button>
+          <button type="button" onclick="document.getElementById('map-announcements-banner').style.display='none'" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 0.9rem; padding: 2px 6px; border-radius: 4px;" title="Kapat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    banner.style.display = 'none';
+  }
+}
+
+// ============================================================================
+// 17. HEADER NOTIFICATIONS & REALTIME WEB PUSH ENGINE
+// ============================================================================
+let knownNotificationIds = new Set();
+let isNotificationPermissionRequested = false;
+
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default' && !isNotificationPermissionRequested) {
+    isNotificationPermissionRequested = true;
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        showToast('🔔 Canlı cihaz bildirimleri aktif edildi!', 'success');
+        if (currentUser) {
+          const welcomeNotif = new Notification('Bulancak Belediyesi 153 Çözüm Merkezi', {
+            body: `Hoş Geldiniz Sayın ${currentUser.full_name}. Taleplerinizin durumu anlık olarak bildirilecektir.`,
+            icon: '/favicon.ico',
+            badge: '/favicon.ico'
+          });
+          setTimeout(() => welcomeNotif.close(), 5000);
+        }
+      }
+    } catch (e) {}
+  }
+}
+
 async function checkNotifications() {
   if (!currentToken) return;
 
@@ -4098,11 +4576,41 @@ async function checkNotifications() {
           badge.style.display = 'none';
         }
       }
+
+      // Canlı Cihaz Bildirimi Gönderimi (Web Push API)
+      if ('Notification' in window && Notification.permission === 'granted') {
+        data.notifications.forEach(n => {
+          if (!n.is_read && !knownNotificationIds.has(n.id)) {
+            knownNotificationIds.add(n.id);
+            try {
+              const browserNotif = new Notification(n.title || 'Bulancak Belediyesi 153', {
+                body: n.message,
+                icon: '/favicon.ico',
+                badge: '/favicon.ico',
+                data: { tracking_code: n.reference_id || n.complaint_id || n.tracking_code }
+              });
+
+              browserNotif.onclick = function() {
+                window.focus();
+                const tCode = this.data?.tracking_code;
+                if (tCode) {
+                  openComplaintDetail(tCode);
+                }
+                this.close();
+              };
+            } catch (err) {}
+          }
+        });
+      } else {
+        data.notifications.forEach(n => knownNotificationIds.add(n.id));
+      }
     }
   } catch (err) {}
 }
 
 async function openNotificationsModal() {
+  requestNotificationPermission();
+
   const container = document.getElementById('notifications-list-container');
   const countText = document.getElementById('notif-count-text');
   if (!container) return;
@@ -4211,7 +4719,7 @@ async function submitSatisfactionSurvey(complaintId) {
     if (data.success) {
       showToast('⭐ Değerlendirmeniz için teşekkür ederiz!', 'success');
       closeModal('modal-complaint-detail');
-      await loadComplaintsTable();
+      await refreshAllApplicationViews();
     } else {
       showToast(data.message || 'Değerlendirme gönderilemedi.', 'error');
     }
@@ -4347,6 +4855,12 @@ function closeModal(id) {
   if (modal) {
     modal.classList.remove('active');
     document.body.style.overflow = 'auto';
+
+    // 1. DOM/State Temizliği (Reset): Detay modalı kapandığında süreci ve detay container'ını derhal sıfırla
+    if (id === 'modal-complaint-detail') {
+      const container = document.getElementById('complaint-detail-content');
+      if (container) container.innerHTML = '';
+    }
   }
 }
 
@@ -4355,5 +4869,10 @@ document.addEventListener('click', (e) => {
   if (e.target.classList && e.target.classList.contains('modal-overlay')) {
     e.target.classList.remove('active');
     document.body.style.overflow = 'auto';
+
+    if (e.target.id === 'modal-complaint-detail') {
+      const container = document.getElementById('complaint-detail-content');
+      if (container) container.innerHTML = '';
+    }
   }
 });

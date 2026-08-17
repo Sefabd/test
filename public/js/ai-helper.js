@@ -120,7 +120,11 @@ function applyAiSuggestionsDirect(title, deptId, catId, priority, isPage = false
       catSelect.dispatchEvent(new Event('change'));
     }
     if (urgencySelect && priority) {
-      urgencySelect.value = priority;
+      let normalizedPrio = priority;
+      if (['Acil', 'Kritik', 'Yüksek'].includes(priority)) normalizedPrio = 'Acil';
+      else if (['Düşük', 'Dusuk'].includes(priority)) normalizedPrio = 'Düşük';
+      else normalizedPrio = 'Normal';
+      urgencySelect.value = normalizedPrio;
     }
   }, 100);
 }

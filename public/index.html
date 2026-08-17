@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="/images/giresun-153-logo.png">
 
   <!-- CSS & Fonts -->
-  <link rel="stylesheet" href="/css/style.css?v=56.0.0">
+  <link rel="stylesheet" href="/css/style.css?v=65.0.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- SweetAlert2 Modern Alert & Toast Library -->
@@ -592,29 +592,77 @@
         <!-- SECTION 3: MAP VIEW (DESIGN MATCHING IMAGE 2) -->
         <section id="sec-map" style="display: none;">
           
-          <!-- Top Subtitle & Filter Header -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;"><i class="fas fa-map-location-dot" style="color: var(--portal-blue-accent);"></i> Harita Analizi</h3>
-              <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Taleplerin konumsal dağılımını ve yoğunluklarını görüntüleyin.</p>
-            </div>
-            
-            <div style="display: flex; gap: 10px; align-items: center;">
-              <div style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 6px 14px; font-size: 0.85rem; font-weight: 600; color: #475569;">
-                <i class="fas fa-calendar-days" style="color: #94a3b8; margin-right: 6px;"></i> 01.08.2026 - 10.08.2026
+          <!-- Belediye Duyuruları Bantı (Dismissible Marquee Banner) -->
+          <div id="map-announcements-banner" style="display: none; margin-bottom: 16px;"></div>
+
+          <!-- Top Subtitle & Live Filter Toolbar -->
+          <div class="card-box" style="padding: 16px 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.25rem;">
+                  <i class="fas fa-map-location-dot" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Harita Analizi & Konumsal Dağılım
+                </h3>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.86rem;">Taleplerin konumlarını, aciliyet yoğunluklarını ve mahalle bazlı durumlarını interaktif harita üzerinde inceleyin.</p>
               </div>
-              <button class="btn btn-secondary btn-sm" onclick="loadMapData(); showToast('Harita verileri ve filtreler güncellendi.', 'info');" style="height: 38px; border-radius: 8px;"><i class="fas fa-filter"></i> Filtrele</button>
+              
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="btn btn-secondary btn-sm" onclick="resetMapFilters()" style="height: 36px; border-radius: 8px; font-weight: 600;">
+                  <i class="fas fa-rotate-left"></i> Filtreleri Sıfırla
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="loadMapData(); showToast('Harita verileri anlık güncellendi.', 'success');" style="height: 36px; border-radius: 8px; font-weight: 700;">
+                  <i class="fas fa-sync-alt"></i> Haritayı Yenile
+                </button>
+              </div>
+            </div>
+
+            <!-- Live Filter Inputs Grid -->
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 12px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+              <div>
+                <label style="font-size: 0.76rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">🎯 Talep Durumu & Mod Seçimi</label>
+                <select id="map-filter-status" onchange="applyMapFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px; font-weight: 600;">
+                  <option value="ACTIVE" selected>⚡ Çözülmemiş / Aktif Talepler (Aciliyet Modu)</option>
+                  <option value="ALL">🌐 Tüm Talepler (Durum Modu)</option>
+                  <option value="Yeni">&nbsp;&nbsp;&nbsp;&nbsp;↳ 🔵 Sadece Yeni Talepler</option>
+                  <option value="İşlemde">&nbsp;&nbsp;&nbsp;&nbsp;↳ 🟠 Sadece İşlemde / Atananlar</option>
+                  <option value="Çözüldü">&nbsp;&nbsp;&nbsp;&nbsp;↳ 🟢 Sadece Çözülenler (Arşiv)</option>
+                  <option value="İptal edildi">&nbsp;&nbsp;&nbsp;&nbsp;↳ ⚫ İptal Edilenler</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.76rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">⚡ Aciliyet Durumu</label>
+                <select id="map-filter-urgency" onchange="applyMapFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>Tüm Aciliyetler</option>
+                  <option value="Acil">🔴 Acil / Kritik</option>
+                  <option value="Normal">🟡 Normal</option>
+                  <option value="Düşük">⚫ Düşük</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.76rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">📍 Bulancak Mahallesi</label>
+                <select id="map-filter-neighborhood" onchange="applyMapFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>Tüm Mahalleler</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.76rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">🏷️ Kategori</label>
+                <select id="map-filter-category" onchange="applyMapFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>Tüm Kategoriler</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <!-- 4 KPI Summary Cards Grid Matching Image 2 -->
+          <!-- 4 KPI Summary Cards Grid -->
           <div class="kpi-grid-5" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
             <div class="kpi-card">
               <div class="kpi-icon-box kpi-blue"><i class="fas fa-inbox"></i></div>
               <div>
                 <div class="kpi-lbl">Toplam Talep</div>
                 <div class="kpi-val" id="map-kpi-total">0</div>
-                <div class="kpi-sub">Tüm talepler</div>
+                <div class="kpi-sub">Sistemdeki tüm kayıtlar</div>
               </div>
             </div>
 
@@ -623,7 +671,7 @@
               <div>
                 <div class="kpi-lbl">Çözülen Talep</div>
                 <div class="kpi-val" id="map-kpi-resolved">0</div>
-                <div class="kpi-sub" style="color: #059669; font-weight: 700;">%0 çözüm oranı</div>
+                <div class="kpi-sub" id="map-kpi-rate" style="color: #059669; font-weight: 700;">%0 çözüm oranı</div>
               </div>
             </div>
 
@@ -632,7 +680,7 @@
               <div>
                 <div class="kpi-lbl">İncelenen Talep</div>
                 <div class="kpi-val" id="map-kpi-pending">0</div>
-                <div class="kpi-sub">İnceleme aşamasında</div>
+                <div class="kpi-sub">İşlemde / Atandı</div>
               </div>
             </div>
 
@@ -641,32 +689,31 @@
               <div>
                 <div class="kpi-lbl">Yeni Talep</div>
                 <div class="kpi-val" id="map-kpi-new">0</div>
-                <div class="kpi-sub">Son 7 gün</div>
+                <div class="kpi-sub">Bekleyen yeni başvurular</div>
               </div>
             </div>
           </div>
 
-          <!-- Main 2-Column Grid (Left: Map, Right: Density & Category Widgets) -->
+          <!-- Main 2-Column Grid (Left: Map & Dynamic Legend, Right: Density & Category Widgets) -->
           <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
             
-            <!-- Left Column: Density Map Card -->
+            <!-- Left Column: Density Map Card & Dual-Mode Legend -->
             <div class="card-box" style="margin-bottom: 0; padding: 20px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                <h4 style="font-weight: 700; color: var(--portal-blue-primary); margin: 0;"><i class="fas fa-fire-flame-curved" style="color: #ef4444;"></i> Taleplerin Yoğunluk Haritası</h4>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <h4 style="font-weight: 700; color: var(--portal-blue-primary); margin: 0;">
+                  <i class="fas fa-layer-group" style="color: var(--portal-blue-accent); margin-right: 4px;"></i> Bulancak İnteraktif Analiz Haritası
+                </h4>
+                <div id="map-active-count-badge" style="font-size: 0.8rem; font-weight: 700; color: #475569; background: #f1f5f9; padding: 4px 10px; border-radius: 20px;">
+                  📍 <span id="map-pin-count">0</span> Talep Gösteriliyor
+                </div>
               </div>
 
-              <div id="map-container" style="height: 480px; border-radius: 12px; position: relative;"></div>
+              <!-- Leaflet Map Canvas -->
+              <div id="map-container" style="height: 480px; border-radius: 12px; position: relative; border: 1px solid var(--border-color); overflow: hidden;"></div>
 
-              <!-- Map Density Legend Bar at Bottom Left -->
-              <div class="heatmap-legend-card" style="margin-top: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                  <span style="font-weight: 700; font-size: 0.82rem; color: var(--portal-blue-primary);">Yoğunluk Seviyesi:</span>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 0.78rem; color: #10b981; font-weight: 600;">Düşük</span>
-                    <div class="heatmap-legend-strip" style="width: 140px; height: 10px;"></div>
-                    <span style="font-size: 0.78rem; color: #ef4444; font-weight: 600;">Yüksek</span>
-                  </div>
-                </div>
+              <!-- DYNAMIC DUAL-MODE LEJANT (LEGEND) BAR -->
+              <div id="map-mode-legend" style="margin-top: 14px; background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <!-- Populated dynamically by applyMapFilters() in app.js -->
               </div>
             </div>
 
@@ -772,7 +819,7 @@
 
                 <div>
                   <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Talep Başlığı *</label>
-                  <input type="text" id="page-complaint-title" name="title" required placeholder="Örn: Hacısıyam Mahallesinde Bozuk Asfalt ve Çukur" class="form-input" style="height: 42px; border-radius: 8px;">
+                  <input type="text" id="page-complaint-title" name="title" required placeholder="Örn: Ballıca Mahallesinde Bozuk Asfalt ve Çukur" class="form-input" style="height: 42px; border-radius: 8px;">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
@@ -792,12 +839,10 @@
 
                   <div>
                     <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Aciliyet Seviyesi</label>
-                    <select id="page-complaint-urgency" name="urgency_level" class="form-input" style="height: 42px; border-radius: 8px;">
-                      <option value="Düşük">Düşük</option>
-                      <option value="Normal" selected>Normal</option>
-                      <option value="Yüksek">Yüksek</option>
-                      <option value="Acil">Acil</option>
-                      <option value="Kritik">Kritik</option>
+                    <select id="page-complaint-urgency" name="urgency_level" class="form-input" style="height: 42px; border-radius: 8px; font-weight: 600;">
+                      <option value="Acil">🔴 Acil</option>
+                      <option value="Normal" selected>🟡 Normal</option>
+                      <option value="Düşük">⚫ Düşük</option>
                     </select>
                   </div>
                 </div>
@@ -823,8 +868,13 @@
                 </div>
 
                 <div>
-                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
-                  <div id="page-complaint-picker-map" style="height: 240px; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 6px;"></div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                    <label style="font-weight: 700; font-size: 0.88rem; margin: 0;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="getUserCurrentLocation(true)" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; cursor: pointer;">
+                      <i class="fas fa-location-crosshairs" style="color: #2563eb; margin-right: 4px;"></i> 📍 Mevcut Konumumu Kullan
+                    </button>
+                  </div>
+                  <div id="page-complaint-picker-map" style="height: 240px; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; margin-top: 4px;"></div>
                   <input type="hidden" id="page-complaint-lat" name="latitude">
                   <input type="hidden" id="page-complaint-lng" name="longitude">
                 </div>
@@ -1007,22 +1057,12 @@
           
           <!-- Top Organizational Hierarchy Cards (Hangi Birim Hangi Yardımcının Altında) -->
           <div id="hierarchy-summary-cards" style="margin-bottom: 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
               <div>
                 <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800; font-size: 1.25rem;">
                   <i class="fas fa-sitemap" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Belediye Teşkilat Şeması & Başkan Yardımcısı Sorumluluk Alanları
                 </h3>
                 <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Hangi müdürlüklerin hangi başkan yardımcısına bağlı olduğu ve birim kadrolarının dağılımı.</p>
-              </div>
-
-              <!-- Sleek Vice Mayor Active / Passive Filter Tabs -->
-              <div style="display: flex; gap: 8px; background: #f1f5f9; padding: 4px; border-radius: 10px; border: 1px solid #cbd5e1;">
-                <button type="button" class="btn btn-sm vm-status-tab active" id="btn-vm-filter-active" onclick="switchViceMayorFilterTab('ACTIVE')" style="padding: 6px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 7px; background: #ffffff; color: #1e40af; border: 1px solid #bfdbfe; box-shadow: 0 1px 2px rgba(0,0,0,0.06); cursor: pointer; transition: all 0.2s;">
-                  <i class="fas fa-user-check" style="color: #10b981; margin-right: 4px;"></i> Aktif Başkan Yardımcıları (<span id="count-vm-active">0</span>)
-                </button>
-                <button type="button" class="btn btn-sm vm-status-tab" id="btn-vm-filter-passive" onclick="switchViceMayorFilterTab('PASSIVE')" style="padding: 6px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 7px; background: transparent; color: #64748b; border: 1px solid transparent; cursor: pointer; transition: all 0.2s;">
-                  <i class="fas fa-user-slash" style="color: #ef4444; margin-right: 4px;"></i> Pasif Başkan Yardımcıları (<span id="count-vm-passive">0</span>)
-                </button>
               </div>
             </div>
 
@@ -1419,12 +1459,10 @@
 
             <div>
               <label style="font-weight: 600; font-size: 0.9rem;">Aciliyet Seviyesi</label>
-              <select id="complaint-urgency" name="urgency_level" class="form-input">
-                <option value="Düşük">Düşük</option>
-                <option value="Normal" selected>Normal</option>
-                <option value="Yüksek">Yüksek</option>
-                <option value="Acil">Acil</option>
-                <option value="Kritik">Kritik</option>
+              <select id="complaint-urgency" name="urgency_level" class="form-input" style="height: 40px; border-radius: 8px; font-weight: 600;">
+                <option value="Acil">🔴 Acil</option>
+                <option value="Normal" selected>🟡 Normal</option>
+                <option value="Düşük">⚫ Düşük</option>
               </select>
             </div>
           </div>
@@ -1442,8 +1480,13 @@
           </div>
 
           <div>
-            <label style="font-weight: 600; font-size: 0.9rem;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
-            <div id="complaint-picker-map" style="height: 220px; border-radius: 8px; margin-top: 6px; border: 1px solid #cbd5e1;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+              <label style="font-weight: 600; font-size: 0.9rem; margin: 0;">📍 Bulancak Haritası Üzerinden Konum Seçiniz (Geofencing Aktif)</label>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="getUserCurrentLocation(false)" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-location-crosshairs" style="color: #2563eb; margin-right: 4px;"></i> 📍 Mevcut Konumumu Kullan
+              </button>
+            </div>
+            <div id="complaint-picker-map" style="height: 220px; border-radius: 8px; margin-top: 4px; border: 1px solid #cbd5e1;"></div>
             <input type="hidden" id="complaint-lat" name="latitude">
             <input type="hidden" id="complaint-lng" name="longitude">
           </div>
@@ -1982,9 +2025,9 @@
   </div>
 
   <!-- App Scripts -->
-  <script src="/js/leaflet-map.js?v=59.0.0"></script>
-  <script src="/js/charts.js?v=59.0.0"></script>
-  <script src="/js/ai-helper.js?v=59.0.0"></script>
-  <script src="/js/app.js?v=59.0.0"></script>
+  <script src="/js/leaflet-map.js?v=71.0.0"></script>
+  <script src="/js/charts.js?v=71.0.0"></script>
+  <script src="/js/ai-helper.js?v=71.0.0"></script>
+  <script src="/js/app.js?v=71.0.0"></script>
 </body>
 </html>

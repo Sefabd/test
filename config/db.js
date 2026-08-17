@@ -725,7 +725,15 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('FROM AUDIT_LOGS')) {
-        return [memData.audit_logs];
+        let list = (memData.audit_logs || []).map(l => {
+          const u = (memData.users || []).find(usr => Number(usr.id) === Number(l.user_id));
+          return {
+            ...l,
+            user_name: u ? u.full_name : (l.user_name || 'Sistem Yöneticisi')
+          };
+        });
+        list.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        return [list.slice(0, 200)];
       }
 
       return [[]];
@@ -819,13 +827,30 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('INTO COMPLAINTS')) {
-        const maxId = memData.complaints.reduce((max, c) => Math.max(max, Number(c.id || 0)), 0);
-        const newId = maxId + 1;
+        const maxComplaintsId = (memData.complaints || []).reduce((max, c) => Math.max(max, Number(c.id || 0)), 0);
+        const maxHistoryId = (memData.complaint_status_history || []).reduce((max, h) => Math.max(max, Number(h.complaint_id || 0)), 0);
+        const maxActionsId = (memData.complaint_actions || []).reduce((max, a) => Math.max(max, Number(a.complaint_id || 0)), 0);
+        const newId = Math.max(maxComplaintsId, maxHistoryId, maxActionsId) + 1;
+
+        // Wipe any legacy lingering records for newId just in case
+        if (Array.isArray(memData.complaint_status_history)) {
+          memData.complaint_status_history = memData.complaint_status_history.filter(h => Number(h.complaint_id) !== newId);
+        }
+        if (Array.isArray(memData.complaint_actions)) {
+          memData.complaint_actions = memData.complaint_actions.filter(a => Number(a.complaint_id) !== newId);
+        }
+        if (Array.isArray(memData.complaint_files)) {
+          memData.complaint_files = memData.complaint_files.filter(f => Number(f.complaint_id) !== newId);
+        }
+        if (Array.isArray(memData.satisfaction_surveys)) {
+          memData.satisfaction_surveys = memData.satisfaction_surveys.filter(s => Number(s.complaint_id) !== newId);
+        }
+
         const targetDeptId = Number(params[3]) || 1;
         const cat = memData.complaint_categories.find(c => c.id == params[2]) || { name: 'Genel', department_name: 'Fen İşleri Müdürlüğü' };
         const deptObj = memData.departments.find(d => Number(d.id) === targetDeptId) || { name: cat.department_name || 'Fen İşleri Müdürlüğü' };
-        const neigh = memData.neighborhoods.find(n => n.id == params[5]) || { name: 'Hacısıyam Mahallesi' };
-        const dist = memData.districts.find(d => d.id == params[4]) || { name: 'Giresun Merkez' };
+        const neigh = memData.neighborhoods.find(n => n.id == params[5]) || { name: 'Bulancak Mahallesi' };
+        const dist = memData.districts.find(d => d.id == params[4]) || { name: 'Bulancak' };
         const isPublicVal = (params[14] !== undefined && params[14] !== null) ? Number(params[14]) : 1;
         const creatorId = Number(params[1]) || 6;
         const creatorObj = memData.users.find(u => u.id == creatorId);
@@ -864,13 +889,13 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('INTO COMPLAINT_STATUS_HISTORY')) {
-        const userObj = memData.users.find(u => u.id == params[1]) || { full_name: 'Yetkili Personel' };
+        const userObj = (memData.users || []).find(u => u.id == params[1]) || { full_name: 'Yetkili Personel' };
         memData.complaint_status_history.push({
           complaint_id: Number(params[0]),
           changed_by_user_id: params[1],
-          old_status: params[2],
-          new_status: params[3],
-          change_reason: params[4],
+          old_status: params[2] || 'Yok',
+          new_status: params[3] || 'Yeni',
+          change_reason: params[4] || 'Talep durumu güncellendi.',
           created_at: new Date().toISOString(),
           changed_by_name: userObj.full_name
         });

@@ -7,7 +7,7 @@ const { createAuditLog, sanitizeInput } = require('../middleware/security');
 
 // Helper function to calculate employee rating
 function getEmployeeAverageRating(userId, memData) {
-  if (!memData || !memData.complaints) return { avg_rating: '4.8', rating_count: 0 };
+  if (!memData || !memData.complaints) return { avg_rating: null, rating_count: 0 };
   
   const staffComplaints = memData.complaints.filter(c => 
     Number(c.assigned_to_user_id) === Number(userId) ||
@@ -34,7 +34,7 @@ function getEmployeeAverageRating(userId, memData) {
     };
   }
 
-  return { avg_rating: '4.8', rating_count: 0 };
+  return { avg_rating: null, rating_count: 0 };
 }
 
 // 1. Kullanıcı Listesi (Admin, Birim Yöneticisi ve Başkan Yardımcıları İçin - Bağlı Personel & Müdürler)
@@ -861,19 +861,43 @@ router.put('/complaints/:id', authenticateToken, checkRole(['Sistem Yöneticisi'
   }
 });
 
-// 6. Audit Logları Göster
-router.get('/audit-logs', authenticateToken, requireAdmin, async (req, res) => {
+// 6. Audit Güvenlik Logları Göster (Hem /logs hem /audit-logs rotaları)
+const getAuditLogsHandler = async (req, res) => {
   try {
-    const [logs] = await pool.query(
-      `SELECT a.*, u.full_name as user_name
-       FROM audit_logs a
-       LEFT JOIN users u ON a.user_id = u.id
-       ORDER BY a.created_at DESC LIMIT 100`
-    );
+    const { memData } = require('../config/db');
+    let logs = [];
+    try {
+      const [rows] = await pool.query(
+        `SELECT a.*, COALESCE(u.full_name, 'Sistem Yöneticisi') as user_name
+         FROM audit_logs a
+         LEFT JOIN users u ON a.user_id = u.id
+         ORDER BY a.created_at DESC LIMIT 200`
+      );
+      if (rows && rows.length > 0) {
+        logs = rows;
+      }
+    } catch (e) {
+      console.warn('MySQL audit_logs query error:', e.message);
+    }
+
+    if (logs.length === 0 && memData && Array.isArray(memData.audit_logs)) {
+      logs = memData.audit_logs.map(l => {
+        const u = (memData.users || []).find(usr => Number(usr.id) === Number(l.user_id));
+        return {
+          ...l,
+          user_name: u ? u.full_name : (l.user_name || 'Sistem Yöneticisi')
+        };
+      }).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)).slice(0, 200);
+    }
+
     res.json({ success: true, logs });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Sunucu hatası.' });
+    console.error('Audit logs error:', err);
+    res.status(500).json({ success: false, message: 'Audit logları yüklenemedi.' });
   }
-});
+};
+
+router.get('/audit-logs', authenticateToken, requireAdmin, getAuditLogsHandler);
+router.get('/logs', authenticateToken, requireAdmin, getAuditLogsHandler);
 
 module.exports = router;
