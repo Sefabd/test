@@ -64,23 +64,37 @@ const memData = {
     { id: 1, name: 'Bulancak' }
   ],
   neighborhoods: [
-    // BULANCAK İLÇESİ MAHALLELERİ (16 Resmi Mahalle)
+    // BULANCAK İLÇESİ RESMİ MAHALLELERİ (30 Mahalle)
     { id: 1, district_id: 1, name: 'Acısu Mahallesi' },
-    { id: 2, district_id: 1, name: 'Arifli Mahallesi' },
-    { id: 3, district_id: 1, name: 'Bahçelievler Mahallesi' },
-    { id: 4, district_id: 1, name: 'Ballıca Mahallesi' },
-    { id: 5, district_id: 1, name: 'Bulancak Mahallesi' },
-    { id: 6, district_id: 1, name: 'Duacıoğlu Mahallesi' },
-    { id: 7, district_id: 1, name: 'Güzelyalı Mahallesi' },
-    { id: 8, district_id: 1, name: 'İhsaniye Mahallesi' },
-    { id: 9, district_id: 1, name: 'İsmetpaşa Mahallesi' },
-    { id: 10, district_id: 1, name: 'Kızılot Mahallesi' },
-    { id: 11, district_id: 1, name: 'Pazarsuyu Mahallesi' },
-    { id: 12, district_id: 1, name: 'Sanayi Mahallesi' },
-    { id: 13, district_id: 1, name: 'Saraçlı Mahallesi' },
-    { id: 14, district_id: 1, name: 'Sisin Mahallesi' },
-    { id: 15, district_id: 1, name: 'Şemsettin Mahallesi' },
-    { id: 16, district_id: 1, name: 'Toprakdeğirmeni Mahallesi' }
+    { id: 2, district_id: 1, name: 'Ahurlu Mahallesi' },
+    { id: 3, district_id: 1, name: 'Alibey Mahallesi' },
+    { id: 4, district_id: 1, name: 'Arifli Mahallesi' },
+    { id: 5, district_id: 1, name: 'Aydınlar Mahallesi' },
+    { id: 6, district_id: 1, name: 'Bahçelievler Mahallesi' },
+    { id: 7, district_id: 1, name: 'Ballıca Mahallesi' },
+    { id: 8, district_id: 1, name: 'Bulancak Mahallesi' },
+    { id: 9, district_id: 1, name: 'Derecikalan Mahallesi' },
+    { id: 10, district_id: 1, name: 'Duacıoğlu Mahallesi' },
+    { id: 11, district_id: 1, name: 'Düz Mahallesi' },
+    { id: 12, district_id: 1, name: 'Güney Mahallesi' },
+    { id: 13, district_id: 1, name: 'Güzelyalı Mahallesi' },
+    { id: 14, district_id: 1, name: 'Güzelyurt Mahallesi' },
+    { id: 15, district_id: 1, name: 'İhsaniye Mahallesi' },
+    { id: 16, district_id: 1, name: 'İsmet Paşa Mahallesi' },
+    { id: 17, district_id: 1, name: 'Kızılot Mahallesi' },
+    { id: 18, district_id: 1, name: 'Merkez Mahallesi' },
+    { id: 19, district_id: 1, name: 'Pazarsuyu Mahallesi' },
+    { id: 20, district_id: 1, name: 'Pazarsuyu Emecen Mahallesi' },
+    { id: 21, district_id: 1, name: 'Sanayi Mahallesi' },
+    { id: 22, district_id: 1, name: 'Saraçlı Mahallesi' },
+    { id: 23, district_id: 1, name: 'Şemsettin Mahallesi' },
+    { id: 24, district_id: 1, name: 'Sisin Mahallesi' },
+    { id: 25, district_id: 1, name: 'Sofulu Mahallesi' },
+    { id: 26, district_id: 1, name: 'Soğuksu Mahallesi' },
+    { id: 27, district_id: 1, name: 'Toprakdeğirmeni Mahallesi' },
+    { id: 28, district_id: 1, name: 'Uçarlı Mahallesi' },
+    { id: 29, district_id: 1, name: 'Yeni Mahallesi' },
+    { id: 30, district_id: 1, name: 'Yunuslu Mahallesi' }
   ],
   users: [
     // 1. SİSTEM YÖNETİCİSİ (ADMIN)
@@ -296,6 +310,43 @@ function loadDbJson() {
         }
 
         Object.assign(memData, loaded);
+
+        // Always guarantee Bulancak and 30 official neighborhoods
+        memData.districts = [
+          { id: 1, name: 'Bulancak' }
+        ];
+        memData.neighborhoods = [
+          { id: 1, district_id: 1, name: 'Acısu Mahallesi' },
+          { id: 2, district_id: 1, name: 'Ahurlu Mahallesi' },
+          { id: 3, district_id: 1, name: 'Alibey Mahallesi' },
+          { id: 4, district_id: 1, name: 'Arifli Mahallesi' },
+          { id: 5, district_id: 1, name: 'Aydınlar Mahallesi' },
+          { id: 6, district_id: 1, name: 'Bahçelievler Mahallesi' },
+          { id: 7, district_id: 1, name: 'Ballıca Mahallesi' },
+          { id: 8, district_id: 1, name: 'Bulancak Mahallesi' },
+          { id: 9, district_id: 1, name: 'Derecikalan Mahallesi' },
+          { id: 10, district_id: 1, name: 'Duacıoğlu Mahallesi' },
+          { id: 11, district_id: 1, name: 'Düz Mahallesi' },
+          { id: 12, district_id: 1, name: 'Güney Mahallesi' },
+          { id: 13, district_id: 1, name: 'Güzelyalı Mahallesi' },
+          { id: 14, district_id: 1, name: 'Güzelyurt Mahallesi' },
+          { id: 15, district_id: 1, name: 'İhsaniye Mahallesi' },
+          { id: 16, district_id: 1, name: 'İsmet Paşa Mahallesi' },
+          { id: 17, district_id: 1, name: 'Kızılot Mahallesi' },
+          { id: 18, district_id: 1, name: 'Merkez Mahallesi' },
+          { id: 19, district_id: 1, name: 'Pazarsuyu Mahallesi' },
+          { id: 20, district_id: 1, name: 'Pazarsuyu Emecen Mahallesi' },
+          { id: 21, district_id: 1, name: 'Sanayi Mahallesi' },
+          { id: 22, district_id: 1, name: 'Saraçlı Mahallesi' },
+          { id: 23, district_id: 1, name: 'Şemsettin Mahallesi' },
+          { id: 24, district_id: 1, name: 'Sisin Mahallesi' },
+          { id: 25, district_id: 1, name: 'Sofulu Mahallesi' },
+          { id: 26, district_id: 1, name: 'Soğuksu Mahallesi' },
+          { id: 27, district_id: 1, name: 'Toprakdeğirmeni Mahallesi' },
+          { id: 28, district_id: 1, name: 'Uçarlı Mahallesi' },
+          { id: 29, district_id: 1, name: 'Yeni Mahallesi' },
+          { id: 30, district_id: 1, name: 'Yunuslu Mahallesi' }
+        ];
 
         // Guarantee all 6 roles exist
         if (!memData.roles) memData.roles = [];
@@ -768,7 +819,8 @@ const resilientPool = {
       }
 
       if (sqlUpper.includes('INTO COMPLAINTS')) {
-        const newId = memData.complaints.length + 1;
+        const maxId = memData.complaints.reduce((max, c) => Math.max(max, Number(c.id || 0)), 0);
+        const newId = maxId + 1;
         const targetDeptId = Number(params[3]) || 1;
         const cat = memData.complaint_categories.find(c => c.id == params[2]) || { name: 'Genel', department_name: 'Fen İşleri Müdürlüğü' };
         const deptObj = memData.departments.find(d => Number(d.id) === targetDeptId) || { name: cat.department_name || 'Fen İşleri Müdürlüğü' };

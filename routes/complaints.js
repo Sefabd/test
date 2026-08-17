@@ -51,6 +51,9 @@ function enrichComplaintWithRating(complaint, currentUserId, allSurveys) {
     if (withComment.length > 0) {
       latestComment = withComment[withComment.length - 1].review_comment;
     }
+  } else if (complaint.avg_rating && Number(complaint.rating_count) > 0) {
+    avgRating = parseFloat(complaint.avg_rating);
+    voteCount = Number(complaint.rating_count);
   }
 
   if (currentUserId) {
@@ -66,6 +69,7 @@ function enrichComplaintWithRating(complaint, currentUserId, allSurveys) {
     ...complaint,
     avg_rating: avgRating,
     rating: avgRating,
+    rating_count: voteCount,
     rating_vote_count: voteCount,
     rating_comment: latestComment,
     user_rating: userRating,
@@ -143,7 +147,8 @@ router.post(
         ]
       );
 
-      const complaintId = result ? (result.insertId || result[0]?.insertId || Date.now()) : Date.now();
+      const insertId = (result && result.insertId) ? Number(result.insertId) : ((result && result[0] && result[0].insertId) ? Number(result[0].insertId) : Date.now());
+      const complaintId = insertId;
 
       if (req.files && req.files.length > 0) {
         for (const file of req.files) {
@@ -163,6 +168,9 @@ router.post(
       );
 
       await conn.commit();
+
+      const { saveDbJson } = require('../config/db');
+      if (typeof saveDbJson === 'function') saveDbJson();
 
       res.status(201).json({
         success: true,
@@ -244,39 +252,70 @@ router.get('/my-complaints', authenticateToken, getMyComplaintsHandler);
 // 4. GET /api/complaints/public & /api/complaints/public-feed
 const getPublicComplaintsHandler = async (req, res) => {
   try {
-    let complaints = [];
-    try {
-      const [rows] = await pool.query('SELECT * FROM complaints WHERE is_public = 1 ORDER BY id DESC');
-      if (rows && rows.length > 0) complaints = rows;
-    } catch (e) {}
-
     const { getUpvotedComplaintIdsForUser, memData } = require('../config/db');
-    if ((!complaints || complaints.length === 0) && memData && memData.complaints) {
-      complaints = memData.complaints.filter(c => Number(c.is_public) === 1);
-    }
+    const currentUserId = req.user ? req.user.id : null;
 
     let [allFiles] = await pool.query('SELECT * FROM complaint_files');
     let [allSurveys] = await pool.query('SELECT * FROM satisfaction_surveys');
     allFiles = Array.isArray(allFiles) ? allFiles : [];
     allSurveys = Array.isArray(allSurveys) && allSurveys.length > 0 ? allSurveys : (memData && memData.satisfaction_surveys ? memData.satisfaction_surveys : []);
 
-    const currentUserId = req.user ? req.user.id : null;
     let upvotedSet = new Set();
     if (currentUserId) {
       upvotedSet = await getUpvotedComplaintIdsForUser(currentUserId);
     }
 
-    const publicComplaints = complaints.filter(c => Number(c.is_public) === 1 && c.status !== 'passive');
+    const compMap = new Map();
+    if (memData && Array.isArray(memData.complaints)) {
+      memData.complaints.forEach(c => compMap.set(Number(c.id), { ...c }));
+    }
+
+    try {
+      const [rows] = await pool.query(`
+        SELECT c.*, 
+          COALESCE(d.name, 'Fen İşleri') as department_name,
+          COALESCE(cat.name, 'Genel') as category_name,
+          COALESCE(n.name, 'Bulancak') as neighborhood_name
+        FROM complaints c
+        LEFT JOIN departments d ON c.department_id = d.id
+        LEFT JOIN complaint_categories cat ON c.category_id = cat.id
+        LEFT JOIN neighborhoods n ON c.neighborhood_id = n.id
+        WHERE c.status != 'passive'
+        ORDER BY c.id DESC
+      `);
+      if (rows && rows.length > 0) {
+        rows.forEach(r => {
+          const existing = compMap.get(Number(r.id));
+          if (existing) existing.status = r.status;
+          compMap.set(Number(r.id), { ...(existing || {}), ...r, status: r.status });
+        });
+      }
+    } catch (e) {}
+
+    // Kamuya Açık Akış: SADECE is_public = 1 VE status !== 'Çözüldü' VE status !== 'İptal edildi'
+    const publicComplaints = Array.from(compMap.values()).filter(c => {
+      const isPub = Number(c.is_public) === 1;
+      const statusStr = (c.status || '').trim();
+      const isResolved = statusStr === 'Çözüldü' || statusStr.toLowerCase() === 'çözüldü' || statusStr.toLowerCase() === 'cozuldu';
+      const isCancelled = statusStr === 'İptal edildi' || statusStr.toLowerCase() === 'iptal edildi' || statusStr === 'passive';
+      return isPub && !isResolved && !isCancelled;
+    });
 
     const result = publicComplaints.map(c => {
-      const files = allFiles.filter(f => Number(f.complaint_id) === Number(c.id));
-      const hasUpvoted = currentUserId ? upvotedSet.has(Number(c.id)) : false;
+      const cId = Number(c.id);
+      const upvotes = (memData?.complaint_upvotes || []).filter(u => Number(u.complaint_id) === cId);
+      const hasUpvotedMem = upvotes.some(u => String(u.user_id) === String(currentUserId));
+      const files = allFiles.filter(f => Number(f.complaint_id) === cId);
+      const hasUpvoted = currentUserId ? (upvotedSet.has(cId) || hasUpvotedMem) : false;
       const enriched = enrichComplaintWithRating(c, currentUserId, allSurveys);
 
       return {
+        ...c,
         ...enriched,
         has_upvoted: hasUpvoted,
-        upvote_count: c.upvote_count !== undefined ? c.upvote_count : 0,
+        is_upvoted: hasUpvoted,
+        upvote_count: Math.max(upvotes.length, c.upvote_count || 0),
+        upvotes_count: Math.max(upvotes.length, c.upvote_count || 0),
         files: files.map(f => f.file_path),
         first_photo: files.length > 0 ? files[0].file_path : null
       };
@@ -600,58 +639,169 @@ const getComplaintDetailHandler = async (req, res) => {
   }
 };
 
-// 5.5. Kamuya Açık Talepler Akışı (Public Feed)
-router.get('/public-feed', optionalAuth, async (req, res) => {
+// 5.6. GET /api/complaints/archive & /api/complaints/solution-archive
+// SADECE status = 'Çözüldü' olan veriler, Role-Based SQL İzolasyonu ve Gerçek Vatandaş Puanları
+const getArchiveComplaintsHandler = async (req, res) => {
   try {
-    const { memData } = require('../config/db');
-    const userId = req.user ? req.user.id : (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'guest');
+    const { getUpvotedComplaintIdsForUser, memData } = require('../config/db');
+    const user = req.user;
+    const currentUserId = user ? user.id : null;
+    const roleName = user ? user.role_name : 'Guest';
 
-    let complaints = [];
-    if (memData && memData.complaints) {
-      const publicItems = memData.complaints.filter(c => c.is_public == 1 || c.is_public === true);
-      complaints = (publicItems.length > 0 ? publicItems : memData.complaints.slice(0, 20)).map(c => {
-        const upvotes = (memData.complaint_upvotes || []).filter(u => Number(u.complaint_id) === Number(c.id));
-        const hasUpvoted = upvotes.some(u => String(u.user_id) === String(userId));
-        return {
-          ...c,
-          upvotes_count: upvotes.length || c.upvotes_count || 0,
-          is_upvoted: hasUpvoted
-        };
-      });
+    let [allFiles] = await pool.query('SELECT * FROM complaint_files');
+    let [allSurveys] = await pool.query('SELECT * FROM satisfaction_surveys');
+    let [allActions] = await pool.query('SELECT * FROM complaint_actions ORDER BY id ASC');
+    allFiles = Array.isArray(allFiles) ? allFiles : [];
+    allSurveys = Array.isArray(allSurveys) && allSurveys.length > 0 ? allSurveys : (memData && memData.satisfaction_surveys ? memData.satisfaction_surveys : []);
+    allActions = Array.isArray(allActions) && allActions.length > 0 ? allActions : (memData && memData.complaint_actions ? memData.complaint_actions : []);
+
+    let upvotedSet = new Set();
+    if (currentUserId) {
+      upvotedSet = await getUpvotedComplaintIdsForUser(currentUserId);
+    }
+
+    const compMap = new Map();
+    if (memData && Array.isArray(memData.complaints)) {
+      memData.complaints.forEach(c => compMap.set(Number(c.id), { ...c }));
     }
 
     try {
       const [rows] = await pool.query(`
         SELECT c.*, 
-          COALESCE(d.name, 'Fen İşleri') as department_name,
+          COALESCE(d.name, 'Fen İşleri Müdürlüğü') as department_name,
           COALESCE(cat.name, 'Genel') as category_name,
-          COALESCE(n.name, 'Bulancak') as neighborhood_name,
-          (SELECT COUNT(*) FROM complaint_upvotes WHERE complaint_id = c.id) as upvotes_count,
-          EXISTS(SELECT 1 FROM complaint_upvotes WHERE complaint_id = c.id AND user_id = ?) as is_upvoted
+          COALESCE(n.name, 'Bulancak') as neighborhood_name
         FROM complaints c
         LEFT JOIN departments d ON c.department_id = d.id
         LEFT JOIN complaint_categories cat ON c.category_id = cat.id
         LEFT JOIN neighborhoods n ON c.neighborhood_id = n.id
-        WHERE c.is_public = 1 OR c.is_public = true
-        ORDER BY c.created_at DESC
-        LIMIT 50
-      `, [typeof userId === 'number' ? userId : 0]);
-
+        ORDER BY c.updated_at DESC, c.id DESC
+      `);
       if (rows && rows.length > 0) {
-        complaints = rows.map(r => ({
-          ...r,
-          is_upvoted: Boolean(r.is_upvoted)
-        }));
+        rows.forEach(r => {
+          const existing = compMap.get(Number(r.id));
+          if (existing) existing.status = r.status;
+          compMap.set(Number(r.id), { ...(existing || {}), ...r, status: r.status });
+        });
       }
     } catch (e) {}
 
+    // SADECE status === 'Çözüldü' olan talepler
+    const archiveComplaints = Array.from(compMap.values()).filter(c => {
+      const statusStr = (c.status || '').trim();
+      const isResolved = statusStr === 'Çözüldü' || statusStr.toLowerCase() === 'çözüldü' || statusStr.toLowerCase() === 'cozuldu';
+      if (!isResolved) return false;
+
+      // Rol Bazlı İzolasyon
+      if (!user || roleName === 'Vatandaş') {
+        if (user) return Number(c.is_public) === 1 || Number(c.citizen_id) === Number(user.id) || Number(c.user_id) === Number(user.id);
+        return Number(c.is_public) === 1;
+      } else if (roleName === 'Belediye Başkan Yardımcısı' || user.role_id === 6) {
+        let assignedDeptIds = Array.isArray(user.assigned_department_ids) ? user.assigned_department_ids.map(Number) : [];
+        if (memData && memData.departments) {
+          const memAssigned = memData.departments
+            .filter(d => Number(d.vice_mayor_user_id) === Number(user.id))
+            .map(d => Number(d.id));
+          assignedDeptIds = [...new Set([...assignedDeptIds, ...memAssigned])];
+        }
+        if (assignedDeptIds.length === 0) {
+          if (Number(user.id) === 61) assignedDeptIds = [1, 2, 5, 7, 9, 11];
+          if (Number(user.id) === 62) assignedDeptIds = [3, 4, 6, 8, 10];
+        }
+        return assignedDeptIds.length === 0 || assignedDeptIds.includes(Number(c.department_id)) || assignedDeptIds.includes(Number(c.forwarded_from_department_id));
+      } else if (roleName === 'Birim Yöneticisi' || user.role_id === 2) {
+        if (user.department_id) {
+          return Number(c.department_id) === Number(user.department_id) || Number(c.forwarded_from_department_id) === Number(user.department_id);
+        }
+      } else if (roleName === 'Personel' || user.role_id === 3) {
+        if (user.department_id) {
+          return Number(c.department_id) === Number(user.department_id) || Number(c.assigned_to_user_id) === Number(user.id);
+        }
+      }
+      return true;
+    });
+
+    const result = archiveComplaints.map(c => {
+      const cId = Number(c.id);
+      const upvotes = (memData?.complaint_upvotes || []).filter(u => Number(u.complaint_id) === cId);
+      const hasUpvotedMem = upvotes.some(u => String(u.user_id) === String(currentUserId));
+      const files = allFiles.filter(f => Number(f.complaint_id) === cId);
+      const actions = allActions.filter(a => Number(a.complaint_id) === cId);
+      const hasUpvoted = currentUserId ? (upvotedSet.has(cId) || hasUpvotedMem) : false;
+      const enriched = enrichComplaintWithRating(c, currentUserId, allSurveys);
+
+      const lastAction = actions.length > 0 ? actions[actions.length - 1] : null;
+      const solutionNote = lastAction?.action_description || lastAction?.work_done || c.resolution_note || c.official_solution || 'Talep edilen bölgede saha ekiplerimiz tarafından gerekli onarım ve müdahale yapılmış olup talep başarıyla çözüme kavuşturulmuştur.';
+
+      return {
+        ...c,
+        ...enriched,
+        status: 'Çözüldü',
+        has_upvoted: hasUpvoted,
+        is_upvoted: hasUpvoted,
+        upvote_count: Math.max(upvotes.length, c.upvote_count || 0),
+        upvotes_count: Math.max(upvotes.length, c.upvote_count || 0),
+        official_solution: solutionNote,
+        solution_note: solutionNote,
+        files: files.map(f => f.file_path),
+        first_photo: files.length > 0 ? files[0].file_path : (lastAction?.resolution_photo_path || null)
+      };
+    });
+
     res.json({
       success: true,
-      complaints: complaints
+      complaints: result
     });
   } catch (err) {
-    console.error('Public feed error:', err);
-    res.status(500).json({ success: false, message: 'Kamuya açık talepler yüklenemedi.' });
+    console.error('Archive endpoint error:', err);
+    res.status(500).json({ success: false, message: 'Çözüm arşivi yüklenemedi.' });
+  }
+};
+
+router.get('/archive', optionalAuth, getArchiveComplaintsHandler);
+router.get('/solution-archive', optionalAuth, getArchiveComplaintsHandler);
+
+// 5.7. Upvote (Destek Ol / Beğen) Endpoint
+router.post('/:id/upvote', optionalAuth, async (req, res) => {
+  const complaintId = Number(req.params.id);
+  const userId = req.user ? req.user.id : (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'guest');
+
+  try {
+    const { toggleComplaintUpvote, memData, saveDbJson } = require('../config/db');
+    let result = { has_upvoted: true, upvote_count: 1 };
+
+    if (typeof toggleComplaintUpvote === 'function') {
+      result = await toggleComplaintUpvote(complaintId, userId);
+    } else {
+      if (memData) {
+        if (!memData.complaint_upvotes) memData.complaint_upvotes = [];
+        const idx = memData.complaint_upvotes.findIndex(u => Number(u.complaint_id) === complaintId && String(u.user_id) === String(userId));
+        let isUpvoted = false;
+        if (idx >= 0) {
+          memData.complaint_upvotes.splice(idx, 1);
+          isUpvoted = false;
+        } else {
+          memData.complaint_upvotes.push({ complaint_id: complaintId, user_id: userId });
+          isUpvoted = true;
+        }
+        const count = memData.complaint_upvotes.filter(u => Number(u.complaint_id) === complaintId).length;
+        const comp = (memData.complaints || []).find(c => Number(c.id) === complaintId);
+        if (comp) comp.upvote_count = count;
+        if (typeof saveDbJson === 'function') saveDbJson();
+        result = { has_upvoted: isUpvoted, upvote_count: count };
+      }
+    }
+
+    res.json({
+      success: true,
+      is_upvoted: result.has_upvoted,
+      upvotes_count: result.upvote_count,
+      upvote_count: result.upvote_count,
+      message: result.has_upvoted ? '👍 Talebe desteğiniz kaydedildi!' : 'Desteğinizi geri çektiniz.'
+    });
+  } catch (err) {
+    console.error('Upvote error:', err);
+    res.status(500).json({ success: false, message: 'Destek işlemi kaydedilemedi.' });
   }
 });
 

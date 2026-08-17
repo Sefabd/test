@@ -310,8 +310,8 @@
           </a>
         </li>
 
-        <li id="nav-solution-archive">
-          <a href="#" onclick="switchWorkspaceTab('solution-archive'); event.preventDefault();">
+        <li id="nav-archive">
+          <a href="#archive" onclick="switchWorkspaceTab('archive'); event.preventDefault();">
             <i class="fas fa-box-archive"></i> <span>Çözüm Arşivi</span>
           </a>
         </li>
@@ -417,22 +417,23 @@
         <!-- SECTION 1: DASHBOARD VIEW -->
         <section id="sec-dashboard">
           <!-- 5 KPI Summary Row -->
-          <div class="kpi-grid-5">
+          <!-- 4x4 KPI Summary Row Matching Specification -->
+          <div class="kpi-grid-5" style="grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 24px;">
             <div class="kpi-card">
               <div class="kpi-icon-box kpi-blue"><i class="fas fa-inbox"></i></div>
               <div>
                 <div class="kpi-lbl">Toplam Talep</div>
-                <div class="kpi-val" id="kpi-total">1.248</div>
-                <div class="kpi-sub">Bu ay</div>
+                <div class="kpi-val" id="kpi-total">0</div>
+                <div class="kpi-sub">Sistem geneli</div>
               </div>
             </div>
 
             <div class="kpi-card">
               <div class="kpi-icon-box kpi-amber"><i class="fas fa-file-circle-plus"></i></div>
               <div>
-                <div class="kpi-lbl">Yeni Talepler</div>
-                <div class="kpi-val" id="kpi-pending">156</div>
-                <div class="kpi-sub">Bu ay</div>
+                <div class="kpi-lbl">Yeni & Bekleyen</div>
+                <div class="kpi-val" id="kpi-pending">0</div>
+                <div class="kpi-sub">İşlem sırasındaki talepler</div>
               </div>
             </div>
 
@@ -440,26 +441,17 @@
               <div class="kpi-icon-box kpi-green"><i class="fas fa-circle-check"></i></div>
               <div>
                 <div class="kpi-lbl">Çözülen Talepler</div>
-                <div class="kpi-val" id="kpi-resolved">982</div>
-                <div class="kpi-sub">Bu ay</div>
+                <div class="kpi-val" id="kpi-resolved">0</div>
+                <div class="kpi-sub" style="color: #059669; font-weight: 700;">Başarıyla tamamlandı</div>
               </div>
             </div>
 
             <div class="kpi-card">
-              <div class="kpi-icon-box kpi-purple"><i class="fas fa-clock"></i></div>
-              <div>
-                <div class="kpi-lbl">Ortalama Çözüm Süresi</div>
-                <div class="kpi-val" id="kpi-avg-days">3,6 gün</div>
-                <div class="kpi-sub">Bu ay</div>
-              </div>
-            </div>
-
-            <div class="kpi-card">
-              <div class="kpi-icon-box kpi-cyan"><i class="fas fa-percent"></i></div>
+              <div class="kpi-icon-box kpi-cyan"><i class="fas fa-chart-line"></i></div>
               <div>
                 <div class="kpi-lbl">Çözüm Oranı</div>
-                <div class="kpi-val" id="kpi-rate">%78,9</div>
-                <div class="kpi-sub">Bu ay</div>
+                <div class="kpi-val" id="kpi-rate">%0</div>
+                <div class="kpi-sub" id="kpi-avg-days">Ort. 2,4 gün</div>
               </div>
             </div>
           </div>
@@ -771,17 +763,17 @@
               <div style="display: flex; flex-direction: column; gap: 18px;">
 
                 <div>
-                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Talep Başlığı *</label>
-                  <input type="text" id="page-complaint-title" name="title" required placeholder="Örn: Hacısıyam Mahallesinde Bozuk Asfalt ve Çukur" class="form-input" style="height: 42px; border-radius: 8px;">
-                </div>
-
-                <div>
                   <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Talep Detaylı Açıklaması *</label>
-                  <textarea id="page-complaint-description" name="description" rows="4" required placeholder="Sorunu detaylıca açıklayınız. Yapay zekâ metninizi otomatik analiz edecektir..." class="form-input" style="border-radius: 8px;"></textarea>
+                  <textarea id="page-complaint-description" name="description" rows="4" required placeholder="Sorunu detaylıca açıklayınız. Yapay zekâ metninizi otomatik analiz ederek başlık, birim ve kategoriyi dolduracaktır..." class="form-input" style="border-radius: 8px;"></textarea>
                 </div>
 
                 <!-- AI Assistant Suggestion Box -->
                 <div id="page-ai-suggestion-container" style="display: none;"></div>
+
+                <div>
+                  <label style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 6px;">Talep Başlığı *</label>
+                  <input type="text" id="page-complaint-title" name="title" required placeholder="Örn: Hacısıyam Mahallesinde Bozuk Asfalt ve Çukur" class="form-input" style="height: 42px; border-radius: 8px;">
+                </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
                   <div>
@@ -893,10 +885,12 @@
             <p style="color: var(--text-muted);">Diğer vatandaşların kamuya açık ilettiği talepleri inceleyebilir, "Destek Ol" butonuna basarak belediyenin önceliklendirmesine katkıda bulunabilirsiniz.</p>
           </div>
 
-          <div id="public-feed-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px;">
+          <div id="public-feed-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;">
             <!-- Loaded dynamically -->
           </div>
         </section>
+
+
 
         <!-- SECTION 4: ADMIN USERS -->
         <section id="sec-admin-users" style="display: none;">
@@ -904,16 +898,21 @@
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
               <div>
                 <h3 style="color: var(--portal-blue-primary); font-weight: 800; margin: 0; font-size: 1.25rem;">
-                  <i class="fas fa-users-gear" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Kullanıcı Yönetimi
+                  <i class="fas fa-users-gear" style="color: var(--portal-blue-accent); margin-right: 6px;"></i> Kullanıcı ve Birim Yönetimi
                 </h3>
-                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Sistemdeki yöneticiler, birim saha çalışanları ve kayıtlı vatandaşlar.</p>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Sistemdeki yöneticiler, birim saha çalışanları, müdürlükler ve kayıtlı vatandaşlar.</p>
               </div>
-              <button class="btn btn-primary" onclick="openAddUserModal()" style="font-weight: 700; border-radius: 8px;">
-                <i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle
-              </button>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary" onclick="openAddDeptModal()" style="font-weight: 700; border-radius: 8px;">
+                  <i class="fas fa-plus"></i> Yeni Birim Ekle
+                </button>
+                <button class="btn btn-primary" onclick="openAddUserModal()" style="font-weight: 700; border-radius: 8px;">
+                  <i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle
+                </button>
+              </div>
             </div>
 
-            <!-- Sub-Nav Category Tabs (Vatandaş vs Kurum Personeli/Yönetici vs Başkan Yardımcıları) -->
+            <!-- Sub-Nav Category Tabs (Vatandaş vs Kurum Personeli/Yönetici vs Başkan Yardımcıları vs Müdürlükler) -->
             <div style="display: flex; gap: 10px; margin-bottom: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap;">
               <button class="btn btn-secondary btn-sm user-tab-btn active" id="btn-user-tab-all" onclick="switchUserTab('ALL')">
                 <i class="fas fa-list-check"></i> Tüm Kullanıcılar
@@ -923,6 +922,9 @@
               </button>
               <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-vm" onclick="switchUserTab('VICE_MAYOR')">
                 <i class="fas fa-user-shield"></i> 👔 Başkan Yardımcıları & Bağlı Kadroları
+              </button>
+              <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-depts" onclick="switchUserTab('DEPTS')">
+                <i class="fas fa-sitemap"></i> 🏢 Müdürlük / Birim Yönetimi
               </button>
               <button class="btn btn-secondary btn-sm user-tab-btn" id="btn-user-tab-citizen" onclick="switchUserTab('CITIZEN')">
                 <i class="fas fa-user-tag"></i> 👤 Vatandaş Kullanıcıları
@@ -1012,145 +1014,21 @@
                 </h3>
                 <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Hangi müdürlüklerin hangi başkan yardımcısına bağlı olduğu ve birim kadrolarının dağılımı.</p>
               </div>
+
+              <!-- Sleek Vice Mayor Active / Passive Filter Tabs -->
+              <div style="display: flex; gap: 8px; background: #f1f5f9; padding: 4px; border-radius: 10px; border: 1px solid #cbd5e1;">
+                <button type="button" class="btn btn-sm vm-status-tab active" id="btn-vm-filter-active" onclick="switchViceMayorFilterTab('ACTIVE')" style="padding: 6px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 7px; background: #ffffff; color: #1e40af; border: 1px solid #bfdbfe; box-shadow: 0 1px 2px rgba(0,0,0,0.06); cursor: pointer; transition: all 0.2s;">
+                  <i class="fas fa-user-check" style="color: #10b981; margin-right: 4px;"></i> Aktif Başkan Yardımcıları (<span id="count-vm-active">0</span>)
+                </button>
+                <button type="button" class="btn btn-sm vm-status-tab" id="btn-vm-filter-passive" onclick="switchViceMayorFilterTab('PASSIVE')" style="padding: 6px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 7px; background: transparent; color: #64748b; border: 1px solid transparent; cursor: pointer; transition: all 0.2s;">
+                  <i class="fas fa-user-slash" style="color: #ef4444; margin-right: 4px;"></i> Pasif Başkan Yardımcıları (<span id="count-vm-passive">0</span>)
+                </button>
+              </div>
             </div>
 
-            <!-- Vice Mayors 2-Column Hierarchy Grid -->
+            <!-- Vice Mayors Dynamic Hierarchy Grid (Strict Grid Structure) -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px;" id="hierarchy-cards-grid">
-              
-              <!-- 1. Başkan Yardımcısı Card -->
-              <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid #2563eb; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 46px; height: 46px; border-radius: 12px; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-                      <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div>
-                      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">Reşat Nuri Özdemir</h4>
-                      <span class="badge" style="background: #dbeafe; color: #1e40af; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">1. Belediye Başkan Yardımcısı</span>
-                    </div>
-                  </div>
-                  <span class="badge" style="background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 700;">6 Müdürlük</span>
-                </div>
-
-                <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">
-                  <i class="fas fa-envelope" style="margin-right: 4px;"></i> baskan.yrd1@bulancak.bel.tr | <i class="fas fa-phone" style="margin-left: 6px; margin-right: 4px;"></i> 0555 000 0002
-                </p>
-
-                <div style="font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 8px;">🏛️ Bağlı Müdürlükler & Kadro:</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Fen İşleri Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Mehmet Demir (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Temizlik İşleri Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Ayşe Kaya (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Su ve Kanalizasyon Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Mustafa Çelik (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Ulaşım Hizmetleri Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Uğur Öztürk (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">İmar ve Şehircilik Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: İrfan Yılmaz (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">153 Çözüm Koordinasyon Masası</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Genel Triage ve Başvuru Sevk</div>
-                    </div>
-                    <span class="badge" style="background: #eff6ff; color: #1d4ed8; font-size: 0.72rem;">Koordinasyon</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 2. Başkan Yardımcısı Card -->
-              <div class="card-box" style="margin-bottom: 0; padding: 20px; border-top: 4px solid #7c3aed; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 46px; height: 46px; border-radius: 12px; background: #f3e8ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-                      <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div>
-                      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;">Ayşegül Erdoğan</h4>
-                      <span class="badge" style="background: #ede9fe; color: #6d28d9; font-size: 0.76rem; font-weight: 700; margin-top: 2px;">2. Belediye Başkan Yardımcısı</span>
-                    </div>
-                  </div>
-                  <span class="badge" style="background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 700;">5 Müdürlük</span>
-                </div>
-
-                <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">
-                  <i class="fas fa-envelope" style="margin-right: 4px;"></i> baskan.yrd2@bulancak.bel.tr | <i class="fas fa-phone" style="margin-left: 6px; margin-right: 4px;"></i> 0555 000 0003
-                </p>
-
-                <div style="font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 8px;">🏛️ Bağlı Müdürlükler & Kadro:</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Park ve Bahçeler Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Kemal Özcan (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Zabıta Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Hasan Yılmaz (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Veteriner İşleri Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Dr. Selin Aydın (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Sosyal Hizmetler Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Zeynep Aksoy (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-
-                  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <strong style="color: #1e293b; font-size: 0.85rem;">Bilgi İşlem Müdürlüğü</strong>
-                      <div style="font-size: 0.75rem; color: #64748b;">Müdür: Bilal Yalçın (3 Saha Personeli)</div>
-                    </div>
-                    <span class="badge" style="background: #ecfdf5; color: #047857; font-size: 0.72rem;">4 Çalışan</span>
-                  </div>
-                </div>
-              </div>
-
+              <!-- Loaded dynamically via renderViceMayorHierarchyCards() -->
             </div>
           </div>
 
@@ -1219,22 +1097,32 @@
             </div>
           </div>
 
-          <!-- Dynamic Time Range Buttons Bar -->
-          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; background: #ffffff; padding: 14px 18px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <!-- Dynamic Time Range & Neighborhood Filter Bar -->
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; background: #ffffff; padding: 14px 18px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-              <span style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-right: 4px;">📅 Zaman Filtresi:</span>
+              <span style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-right: 4px;"><i class="fas fa-calendar-days" style="color: var(--portal-blue-accent);"></i> Dönem:</span>
               <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-this-week" onclick="setReportTimeRange('this_week')">Bu Hafta</button>
               <button type="button" class="btn btn-primary btn-sm report-time-btn active" id="btn-report-this-month" onclick="setReportTimeRange('this_month')">Bu Ay</button>
               <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-last-month" onclick="setReportTimeRange('last_month')">Geçen Ay</button>
               <button type="button" class="btn btn-secondary btn-sm report-time-btn" id="btn-report-custom" onclick="toggleReportCustomDate()">Özel Tarih Aralığı</button>
             </div>
 
-            <!-- Custom Date Inputs (hidden by default) -->
-            <div id="report-custom-date-box" style="display: none; align-items: center; gap: 8px;">
-              <input type="date" id="report-start-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
-              <span style="color: #64748b; font-weight: 600;">-</span>
-              <input type="date" id="report-end-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="applyReportCustomDate()" style="height: 36px; padding: 0 12px;">Uygula</button>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+              <!-- Neighborhood Filter Dropdown -->
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: #475569;"><i class="fas fa-location-dot" style="color: #ef4444;"></i> Mahalle:</span>
+                <select id="report-filter-neighborhood" onchange="applyReportNeighborhoodFilter()" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.84rem; border-radius: 6px; min-width: 190px; font-weight: 600;">
+                  <option value="ALL">📍 Tüm Mahalleler</option>
+                </select>
+              </div>
+
+              <!-- Custom Date Inputs (hidden by default) -->
+              <div id="report-custom-date-box" style="display: none; align-items: center; gap: 8px;">
+                <input type="date" id="report-start-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
+                <span style="color: #64748b; font-weight: 600;">-</span>
+                <input type="date" id="report-end-date" class="form-input" style="height: 36px; padding: 4px 10px; font-size: 0.82rem; border-radius: 6px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="applyReportCustomDate()" style="height: 36px; padding: 0 12px;">Uygula</button>
+              </div>
             </div>
           </div>
 
@@ -1337,13 +1225,13 @@
           </div>
         </section>
 
-        <!-- SECTION 11: ÇÖZÜM ARŞİVİ SEKİSİ (ONLY RESOLVED COMPLAINTS) -->
-        <section id="sec-solution-archive" style="display: none;">
+        <!-- SECTION 11: ÇÖZÜM ARŞİVİ (ARCHIVE VIEW - RESOLVED COMPLAINTS) -->
+        <section id="archive-view" style="display: none;">
           <div class="card-box">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
               <div>
                 <h3 style="color: #047857; font-weight: 800; margin: 0; font-size: 1.25rem;">
-                  <i class="fas fa-box-archive" style="color: #10b981; margin-right: 6px;"></i> Bulancak Belediyesi Çözüm Arşivi
+                  <i class="fas fa-box-archive" style="color: #10b981; margin-right: 6px;"></i> Bulancak Belediyesi Çözüm Arşivi & Başarı Kayıtları
                 </h3>
                 <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 0.88rem;">Saha personellerimiz ve müdürlüklerimiz tarafından başarıyla çözülen tüm taleplerin resmi arşivi.</p>
               </div>
@@ -1359,37 +1247,33 @@
               </div>
 
               <div style="flex: 1; min-width: 170px;">
+                <select id="filter-archive-category" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>📂 Tüm Kategoriler</option>
+                </select>
+              </div>
+
+              <div style="flex: 1; min-width: 170px;">
                 <select id="filter-archive-neighborhood" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
                   <option value="ALL" selected>📍 Tüm Mahalleler</option>
                 </select>
               </div>
 
-              <div style="flex: 1; min-width: 170px;">
-                <select id="filter-archive-category" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
-                  <option value="ALL" selected>📂 Tüm Kategoriler</option>
+              <div style="flex: 1; min-width: 150px;">
+                <select id="filter-archive-date" onchange="applyArchiveFilters()" class="form-input" style="height: 38px; font-size: 0.85rem; border-radius: 6px;">
+                  <option value="ALL" selected>📅 Tüm Zamanlar</option>
+                  <option value="THIS_MONTH">Bu Ay Çözülenler</option>
+                  <option value="LAST_MONTH">Geçen Ay Çözülenler</option>
+                  <option value="THIS_YEAR">Bu Yıl Çözülenler</option>
                 </select>
               </div>
             </div>
 
-            <!-- Archive Data Table -->
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>TAKİP KODU</th>
-                    <th>BAŞLIK & KONU</th>
-                    <th>MAHALLE & ADRES</th>
-                    <th>KATEGORİ</th>
-                    <th>BİRİM</th>
-                    <th>ÇÖZÜM TARİHİ</th>
-                    <th>VATANDAŞ MEMNUNİYETİ</th>
-                    <th style="text-align: right; padding-right: 14px;">DETAY</th>
-                  </tr>
-                </thead>
-                <tbody id="archive-tbody">
-                  <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Çözüm arşivi yükleniyor...</td></tr>
-                </tbody>
-              </table>
+            <!-- Archive Cards Container -->
+            <div id="archive-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+              <div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top: 10px;">Çözüm arşivi yükleniyor...</p>
+              </div>
             </div>
           </div>
         </section>
@@ -1417,6 +1301,7 @@
                     <th>ID</th>
                     <th>MÜDÜRLÜK ADI</th>
                     <th>KOD</th>
+                    <th>BİRİM MÜDÜRÜ</th>
                     <th>BAĞLI OLDUĞU BAŞKAN YARDIMCISI</th>
                     <th>PERSONEL SAYISI</th>
                     <th>DURUM</th>
@@ -1424,10 +1309,11 @@
                   </tr>
                 </thead>
                 <tbody id="admin-depts-tbody">
-                  <tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Müdürlükler yükleniyor...</td></tr>
+                  <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Müdürlükler yükleniyor...</td></tr>
                 </tbody>
               </table>
             </div>
+          </div>
         </section>
 
         <!-- SECTION 11: DEDICATED HELP & FAQ CENTER SECTION -->
@@ -1810,9 +1696,45 @@
             </select>
           </div>
 
-          <button type="submit" class="btn-portal-submit" style="margin-top: 8px;">
+          <button type="submit" id="btn-admin-dept-submit" class="btn-portal-submit" style="margin-top: 8px;">
             <i class="fas fa-save"></i> Müdürlüğü Kaydet
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ASSIGN DEPARTMENTS TO VICE MAYOR (ADMIN) -->
+  <div class="modal-overlay" id="modal-assign-depts">
+    <div class="modal-container" style="max-width: 580px;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+        <h3 style="color: var(--portal-blue-primary); margin: 0; font-weight: 800;" id="modal-assign-depts-title">
+          <i class="fas fa-sitemap" style="color: #2563eb; margin-right: 6px;"></i> Birim Atamalarını Düzenle
+        </h3>
+        <button class="close-btn" onclick="closeModal('modal-assign-depts')">&times;</button>
+      </div>
+
+      <form id="form-assign-depts" onsubmit="handleSaveViceMayorDepts(event)">
+        <input type="hidden" id="assign-vm-id" value="">
+        <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 12px;">
+          <p style="font-size: 0.86rem; color: #64748b; margin: 0;">
+            Seçtiğiniz müdürlükler bu Başkan Yardımcısına bağlanacak, seçimi kaldırılanlar ise bağımsız hale getirilecektir.
+          </p>
+
+          <div style="font-weight: 700; font-size: 0.88rem; color: #1e293b; margin-top: 4px;">
+            Müdürlük / Birim Seçimi:
+          </div>
+
+          <div id="assign-depts-checkbox-list" style="max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <!-- Checkboxes loaded dynamically -->
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-assign-depts')" style="font-weight: 600;">İptal</button>
+            <button type="submit" id="btn-save-vm-depts" class="btn btn-primary" style="font-weight: 700;">
+              <i class="fas fa-save"></i> Atamaları Kaydet
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -2060,9 +1982,9 @@
   </div>
 
   <!-- App Scripts -->
-  <script src="/js/leaflet-map.js?v=56.0.0"></script>
-  <script src="/js/charts.js?v=56.0.0"></script>
-  <script src="/js/ai-helper.js?v=56.0.0"></script>
-  <script src="/js/app.js?v=56.0.0"></script>
+  <script src="/js/leaflet-map.js?v=59.0.0"></script>
+  <script src="/js/charts.js?v=59.0.0"></script>
+  <script src="/js/ai-helper.js?v=59.0.0"></script>
+  <script src="/js/app.js?v=59.0.0"></script>
 </body>
 </html>

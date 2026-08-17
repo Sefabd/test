@@ -285,10 +285,10 @@ router.post('/users', authenticateToken, requireAdmin, async (req, res) => {
     }
 
     // Memory proxy sync
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
     if (memData && memData.users) {
       const deptObj = (memData.departments || []).find(d => d.id == department_id);
-      const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş' };
+      const roleNameMap = { 1: 'Sistem Yöneticisi', 2: 'Birim Yöneticisi', 3: 'Personel', 4: 'Vatandaş', 5: 'Belediye Başkanı', 6: 'Belediye Başkan Yardımcısı' };
       const role_name = roleNameMap[role_id] || 'Vatandaş';
 
       const memUser = {
@@ -302,9 +302,19 @@ router.post('/users', authenticateToken, requireAdmin, async (req, res) => {
         is_active: 1,
         department_id: (role_id == 2 || role_id == 3 || role_id == 1) ? Number(department_id) : null,
         department_name: deptObj ? deptObj.name : null,
-        employee_title: title || (role_id == 2 ? 'Birim Müdürü' : 'Saha Görevlisi')
+        employee_title: title || (role_id == 2 ? 'Birim Müdürü' : (role_id == 6 ? 'Belediye Başkan Yardımcısı' : 'Saha Görevlisi'))
       };
+
+      // Deduplicate before push
+      memData.users = memData.users.filter(u => u.id !== newUserId && u.email !== email);
       memData.users.push(memUser);
+
+      if (Number(role_id) === 6 && Array.isArray(assigned_department_ids)) {
+        assigned_department_ids.forEach(dId => {
+          const d = (memData.departments || []).find(dept => Number(dept.id) === Number(dId));
+          if (d) d.vice_mayor_user_id = newUserId;
+        });
+      }
 
       if (role_id == 2 || role_id == 3) {
         if (!memData.employees) memData.employees = [];
@@ -321,6 +331,8 @@ router.post('/users', authenticateToken, requireAdmin, async (req, res) => {
           user_id: newUserId
         });
       }
+
+      if (typeof saveDbJson === 'function') saveDbJson();
     }
 
     await conn.commit();
@@ -354,10 +366,11 @@ router.put('/users/:id/toggle-active', authenticateToken, requireAdmin, async (r
     const newStatus = currentStatus ? 0 : 1;
     await pool.query('UPDATE users SET is_active = ? WHERE id = ?', [newStatus, userId]);
 
-    const { memData } = require('../config/db');
+    const { memData, saveDbJson } = require('../config/db');
     if (memData && memData.users) {
       const u = memData.users.find(usr => usr.id == userId);
       if (u) u.is_active = newStatus;
+      if (typeof saveDbJson === 'function') saveDbJson();
     }
 
     await createAuditLog(req.user.id, 'TOGGLE_USER_ACTIVE', 'users', userId, { is_active: currentStatus }, { is_active: newStatus }, req.ip);
@@ -523,25 +536,101 @@ router.delete('/users/:id', authenticateToken, requireAdmin, async (req, res) =>
   }
 });
 
-// 3.7. Belediye Başkan Yardımcıları Listesi (Dropdown için)
+// 3.7. Belediye Başkan Yardımcıları Listesi & Bağlı Birimler
 router.get('/vice-mayors', authenticateToken, async (req, res) => {
   try {
     const { memData } = require('../config/db');
     let vmList = [];
     if (memData && memData.users) {
-      vmList = memData.users.filter(u => Number(u.role_id) === 6 && u.is_active !== 0).map(u => ({
-        id: u.id,
-        full_name: u.full_name,
-        email: u.email
-      }));
+      const uniqueVmMap = new Map();
+      memData.users.filter(u => Number(u.role_id) === 6).forEach(u => {
+        if (!uniqueVmMap.has(Number(u.id))) {
+          uniqueVmMap.set(Number(u.id), u);
+        }
+      });
+
+      vmList = Array.from(uniqueVmMap.values()).map(u => {
+        const attachedDepts = (memData.departments || []).filter(d => Number(d.vice_mayor_user_id) === Number(u.id) && d.is_active !== 0).map(d => {
+          const manager = (memData.users || []).find(mu => Number(mu.role_id) === 2 && Number(mu.department_id) === Number(d.id));
+          const staff = (memData.users || []).filter(su => Number(su.role_id) === 3 && Number(su.department_id) === Number(d.id));
+          return {
+            id: d.id,
+            name: d.name,
+            code: d.code,
+            manager_name: manager ? manager.full_name : 'Atanmadı',
+            staff_count: staff.length || 3
+          };
+        });
+
+        const totalStaff = attachedDepts.reduce((acc, d) => acc + d.staff_count + 1, 0);
+
+        return {
+          id: u.id,
+          full_name: u.full_name,
+          email: u.email,
+          phone: u.phone,
+          is_active: u.is_active !== undefined ? Number(u.is_active) : 1,
+          departments: attachedDepts,
+          department_count: attachedDepts.length,
+          total_staff_count: totalStaff
+        };
+      });
     }
-    if (vmList.length === 0) {
-      const [rows] = await pool.query('SELECT id, full_name, email FROM users WHERE role_id = 6 AND is_active = 1');
-      vmList = rows || [];
-    }
+
+    try {
+      const [rows] = await pool.query(`
+        SELECT u.id, u.full_name, u.email, u.phone
+        FROM users u
+        WHERE u.role_id = 6 AND u.is_active = 1
+        ORDER BY u.id ASC
+      `);
+      if (rows && rows.length > 0 && vmList.length === 0) {
+        vmList = rows;
+      }
+    } catch (e) {}
+
     res.json({ success: true, vice_mayors: vmList });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Başkan yardımcıları alınamadı.' });
+  }
+});
+
+// 3.8. Başkan Yardımcısına Bağlı Birimleri Toplu Güncelleme / Atama
+router.put('/vice-mayors/:id/departments', authenticateToken, requireAdmin, async (req, res) => {
+  const vmId = Number(req.params.id);
+  const { department_ids } = req.body;
+  try {
+    if (!Array.isArray(department_ids)) {
+      return res.status(400).json({ success: false, message: 'department_ids bir dizi olmalıdır.' });
+    }
+
+    const { memData, saveDbJson } = require('../config/db');
+
+    if (memData && memData.departments) {
+      memData.departments.forEach(d => {
+        if (Number(d.vice_mayor_user_id) === vmId) {
+          d.vice_mayor_user_id = null;
+        }
+      });
+      department_ids.forEach(dId => {
+        const d = memData.departments.find(dept => Number(dept.id) === Number(dId));
+        if (d) d.vice_mayor_user_id = vmId;
+      });
+      if (typeof saveDbJson === 'function') saveDbJson();
+    }
+
+    try {
+      await pool.query('UPDATE departments SET vice_mayor_user_id = NULL WHERE vice_mayor_user_id = ?', [vmId]);
+      if (department_ids.length > 0) {
+        await pool.query('UPDATE departments SET vice_mayor_user_id = ? WHERE id IN (?)', [vmId, department_ids]);
+      }
+    } catch (e) {}
+
+    await createAuditLog(req.user.id, 'ASSIGN_VICE_MAYOR_DEPTS', 'users', vmId, {}, { department_ids }, req.ip);
+    res.json({ success: true, message: 'Başkan Yardımcısı birim zimmetleri başarıyla güncellendi.' });
+  } catch (err) {
+    console.error('Assign vice mayor depts error:', err);
+    res.status(500).json({ success: false, message: 'Birim ataması güncellenemedi.' });
   }
 });
 
@@ -554,14 +643,20 @@ router.get('/departments', authenticateToken, async (req, res) => {
     if (memData && memData.departments) {
       depts = memData.departments.filter(d => d.is_active !== 0).map(d => {
         const vm = (memData.users || []).find(u => Number(u.id) === Number(d.vice_mayor_user_id));
-        const empCount = (memData.employees || []).filter(e => Number(e.department_id) === Number(d.id)).length;
+        const manager = (memData.users || []).find(u => Number(u.role_id) === 2 && Number(u.department_id) === Number(d.id));
+        const staff = (memData.users || []).filter(u => Number(u.role_id) === 3 && Number(u.department_id) === Number(d.id));
         return {
           id: Number(d.id),
           name: d.name,
           code: d.code,
           vice_mayor_user_id: d.vice_mayor_user_id ? Number(d.vice_mayor_user_id) : null,
-          vice_mayor_name: vm ? vm.full_name : null,
-          employee_count: empCount,
+          vice_mayor_name: vm ? vm.full_name : 'Atanmadı (Bağımsız)',
+          manager_id: manager ? manager.id : null,
+          manager_name: manager ? manager.full_name : 'Atanmadı',
+          manager_phone: manager ? manager.phone : '-',
+          manager_email: manager ? manager.email : '-',
+          staff_count: staff.length || 3,
+          employee_count: staff.length + (manager ? 1 : 0),
           is_active: d.is_active !== undefined ? d.is_active : 1
         };
       });
@@ -648,22 +743,47 @@ router.put('/departments/:id', authenticateToken, requireAdmin, async (req, res)
   }
 });
 
-// 4.5. Müdürlük Soft Delete (Fiziksel SQL DELETE yerine is_active = 0)
+// 4.5. Müdürlük / Birim Silme (Hatalı/Atanmamış Birimler için Tam Silme, Talebi olanlar için Soft Delete)
 router.delete('/departments/:id', authenticateToken, requireAdmin, async (req, res) => {
-  const deptId = req.params.id;
+  const deptId = Number(req.params.id);
   try {
-    await pool.query('UPDATE departments SET is_active = 0 WHERE id = ?', [deptId]);
     const { memData, saveDbJson } = require('../config/db');
-    if (memData && memData.departments) {
-      const d = memData.departments.find(dept => dept.id == deptId);
-      if (d) d.is_active = 0;
-      if (typeof saveDbJson === 'function') saveDbJson();
+
+    let hasComplaints = false;
+    if (memData && memData.complaints) {
+      hasComplaints = memData.complaints.some(c => Number(c.department_id) === deptId);
     }
-    await createAuditLog(req.user.id, 'SOFT_DELETE_DEPARTMENT', 'departments', deptId, { is_active: 1 }, { is_active: 0 }, req.ip);
-    res.json({ success: true, message: 'Müdürlük pasife alındı (Soft Delete).' });
+
+    try {
+      const [cRows] = await pool.query('SELECT COUNT(*) as cnt FROM complaints WHERE department_id = ?', [deptId]);
+      if (cRows && cRows[0] && cRows[0].cnt > 0) hasComplaints = true;
+    } catch (e) {}
+
+    if (hasComplaints) {
+      await pool.query('UPDATE departments SET is_active = 0 WHERE id = ?', [deptId]);
+      if (memData && memData.departments) {
+        const d = memData.departments.find(dept => Number(dept.id) === deptId);
+        if (d) d.is_active = 0;
+      }
+    } else {
+      try {
+        await pool.query('DELETE FROM complaint_categories WHERE department_id = ?', [deptId]);
+        await pool.query('DELETE FROM employees WHERE department_id = ?', [deptId]);
+        await pool.query('DELETE FROM departments WHERE id = ?', [deptId]);
+      } catch (e) {}
+
+      if (memData && memData.departments) {
+        const idx = memData.departments.findIndex(dept => Number(dept.id) === deptId);
+        if (idx >= 0) memData.departments.splice(idx, 1);
+      }
+    }
+
+    if (typeof saveDbJson === 'function') saveDbJson();
+    await createAuditLog(req.user.id, 'DELETE_DEPARTMENT', 'departments', deptId, {}, { is_active: 0 }, req.ip);
+    res.json({ success: true, message: 'Birim / Müdürlük başarıyla silindi.' });
   } catch (err) {
-    console.error('Soft delete user error:', err);
-    res.status(500).json({ success: false, message: 'Müdürlük silinemedi.' });
+    console.error('Delete department error:', err);
+    res.status(500).json({ success: false, message: 'Birim silinemedi.' });
   }
 });
 

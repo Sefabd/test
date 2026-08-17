@@ -230,10 +230,10 @@ router.get('/dashboard', optionalAuth, async (req, res) => {
   }
 });
 
-// 4. GET /api/stats/reports - Executive & Multi-Role Detailed Analytics with Date Range Filter
+// 4. GET /api/stats/reports - Executive & Multi-Role Detailed Analytics with Date Range & Neighborhood Filter
 router.get('/reports', optionalAuth, async (req, res) => {
   try {
-    const { time_range = 'this_month', start_date, end_date } = req.query;
+    const { time_range = 'this_month', start_date, end_date, neighborhood_id, neighborhood_name } = req.query;
     const { memData } = require('../config/db');
     let complaints = [];
 
@@ -294,9 +294,23 @@ router.get('/reports', optionalAuth, async (req, res) => {
     }
 
     const filteredComplaints = complaints.filter(c => {
-      if (!c.created_at) return true;
-      const cDate = new Date(c.created_at);
-      return cDate >= filterStart && cDate <= filterEnd;
+      // 1. Time filter
+      if (c.created_at) {
+        const cDate = new Date(c.created_at);
+        if (cDate < filterStart || cDate > filterEnd) return false;
+      }
+
+      // 2. Neighborhood filter
+      if (neighborhood_id && neighborhood_id !== 'ALL') {
+        if (String(c.neighborhood_id) !== String(neighborhood_id)) return false;
+      }
+      if (neighborhood_name && neighborhood_name !== 'ALL') {
+        const cNeigh = (c.neighborhood_name || '').toLowerCase().trim();
+        const targetNeigh = String(neighborhood_name).toLowerCase().trim();
+        if (cNeigh !== targetNeigh && !cNeigh.includes(targetNeigh)) return false;
+      }
+
+      return true;
     });
 
     const totalCount = filteredComplaints.length;

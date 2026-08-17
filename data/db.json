@@ -90,13 +90,13 @@
       "id": 10,
       "name": "Bilgi İşlem Müdürlüğü",
       "code": "BIM",
-      "vice_mayor_user_id": 62
+      "vice_mayor_user_id": 59
     },
     {
       "id": 11,
       "name": "153 Çözüm Koordinasyon Masası",
       "code": "153-TRIAGE",
-      "vice_mayor_user_id": 61
+      "vice_mayor_user_id": 59
     }
   ],
   "complaint_categories": [
@@ -188,280 +188,159 @@
   "districts": [
     {
       "id": 1,
-      "name": "Giresun Merkez"
-    },
-    {
-      "id": 2,
       "name": "Bulancak"
-    },
-    {
-      "id": 3,
-      "name": "Espiye"
-    },
-    {
-      "id": 4,
-      "name": "Görele"
-    },
-    {
-      "id": 5,
-      "name": "Tirebolu"
     }
   ],
   "neighborhoods": [
     {
       "id": 1,
       "district_id": 1,
-      "name": "Aksu Mahallesi"
+      "name": "Acısu Mahallesi"
     },
     {
       "id": 2,
       "district_id": 1,
-      "name": "Aydınlar Mahallesi"
+      "name": "Ahurlu Mahallesi"
     },
     {
       "id": 3,
       "district_id": 1,
-      "name": "Çaykara Mahallesi"
+      "name": "Alibey Mahallesi"
     },
     {
       "id": 4,
       "district_id": 1,
-      "name": "Çınarlar Mahallesi"
+      "name": "Arifli Mahallesi"
     },
     {
       "id": 5,
       "district_id": 1,
-      "name": "Çıtlakkale Mahallesi"
+      "name": "Aydınlar Mahallesi"
     },
     {
       "id": 6,
       "district_id": 1,
-      "name": "Cumhuriyet Mahallesi"
+      "name": "Bahçelievler Mahallesi"
     },
     {
       "id": 7,
       "district_id": 1,
-      "name": "Erikliman Mahallesi"
+      "name": "Ballıca Mahallesi"
     },
     {
       "id": 8,
       "district_id": 1,
-      "name": "Fevzi Çakmak Mahallesi"
+      "name": "Bulancak Mahallesi"
     },
     {
       "id": 9,
       "district_id": 1,
-      "name": "Gaziler Mahallesi"
+      "name": "Derecikalan Mahallesi"
     },
     {
       "id": 10,
       "district_id": 1,
-      "name": "Gedikkaya Mahallesi"
+      "name": "Duacıoğlu Mahallesi"
     },
     {
       "id": 11,
       "district_id": 1,
-      "name": "Gemilerçekeği Mahallesi"
+      "name": "Düz Mahallesi"
     },
     {
       "id": 12,
       "district_id": 1,
-      "name": "Güre Mahallesi"
+      "name": "Güney Mahallesi"
     },
     {
       "id": 13,
       "district_id": 1,
-      "name": "Hacı Hüseyin Mahallesi"
+      "name": "Güzelyalı Mahallesi"
     },
     {
       "id": 14,
       "district_id": 1,
-      "name": "Hacımiktat Mahallesi"
+      "name": "Güzelyurt Mahallesi"
     },
     {
       "id": 15,
       "district_id": 1,
-      "name": "Hacısiyam Mahallesi"
+      "name": "İhsaniye Mahallesi"
     },
     {
       "id": 16,
       "district_id": 1,
-      "name": "Kale Mahallesi"
+      "name": "İsmet Paşa Mahallesi"
     },
     {
       "id": 17,
       "district_id": 1,
-      "name": "Kapu Mahallesi"
+      "name": "Kızılot Mahallesi"
     },
     {
       "id": 18,
       "district_id": 1,
-      "name": "Kavaklar Mahallesi"
+      "name": "Merkez Mahallesi"
     },
     {
       "id": 19,
       "district_id": 1,
-      "name": "Kayadibi Mahallesi"
+      "name": "Pazarsuyu Mahallesi"
     },
     {
       "id": 20,
       "district_id": 1,
-      "name": "Küçükköy Mahallesi"
+      "name": "Pazarsuyu Emecen Mahallesi"
     },
     {
       "id": 21,
       "district_id": 1,
-      "name": "Konacık Mahallesi"
+      "name": "Sanayi Mahallesi"
     },
     {
       "id": 22,
       "district_id": 1,
-      "name": "Nizamiye Mahallesi"
+      "name": "Saraçlı Mahallesi"
     },
     {
       "id": 23,
       "district_id": 1,
-      "name": "Osmaniye Mahallesi"
+      "name": "Şemsettin Mahallesi"
     },
     {
       "id": 24,
       "district_id": 1,
-      "name": "Seldeğirmeni Mahallesi"
+      "name": "Sisin Mahallesi"
     },
     {
       "id": 25,
       "district_id": 1,
-      "name": "Şeyhkeramettin Mahallesi"
+      "name": "Sofulu Mahallesi"
     },
     {
       "id": 26,
       "district_id": 1,
-      "name": "Sultan Selim Mahallesi"
+      "name": "Soğuksu Mahallesi"
     },
     {
       "id": 27,
       "district_id": 1,
-      "name": "Tekke Mahallesi"
+      "name": "Toprakdeğirmeni Mahallesi"
     },
     {
       "id": 28,
       "district_id": 1,
-      "name": "Teyyaredüzü Mahallesi"
+      "name": "Uçarlı Mahallesi"
     },
     {
       "id": 29,
       "district_id": 1,
-      "name": "Yalı Mahallesi"
+      "name": "Yeni Mahallesi"
     },
     {
       "id": 30,
-      "district_id": 2,
-      "name": "Acısu Mahallesi"
-    },
-    {
-      "id": 31,
-      "district_id": 2,
-      "name": "Arifli Mahallesi"
-    },
-    {
-      "id": 32,
-      "district_id": 2,
-      "name": "Bahçelievler Mahallesi"
-    },
-    {
-      "id": 33,
-      "district_id": 2,
-      "name": "Ballıca Mahallesi"
-    },
-    {
-      "id": 34,
-      "district_id": 2,
-      "name": "Bulancak Mahallesi"
-    },
-    {
-      "id": 35,
-      "district_id": 2,
-      "name": "Duacıoğlu Mahallesi"
-    },
-    {
-      "id": 36,
-      "district_id": 2,
-      "name": "Güzelyalı Mahallesi"
-    },
-    {
-      "id": 37,
-      "district_id": 2,
-      "name": "İhsaniye Mahallesi"
-    },
-    {
-      "id": 38,
-      "district_id": 2,
-      "name": "İsmetpaşa Mahallesi"
-    },
-    {
-      "id": 39,
-      "district_id": 2,
-      "name": "Kızılot Mahallesi"
-    },
-    {
-      "id": 40,
-      "district_id": 2,
-      "name": "Pazarsuyu Mahallesi"
-    },
-    {
-      "id": 41,
-      "district_id": 2,
-      "name": "Sanayi Mahallesi"
-    },
-    {
-      "id": 42,
-      "district_id": 2,
-      "name": "Saraçlı Mahallesi"
-    },
-    {
-      "id": 43,
-      "district_id": 2,
-      "name": "Sisin Mahallesi"
-    },
-    {
-      "id": 44,
-      "district_id": 2,
-      "name": "Şemsettin Mahallesi"
-    },
-    {
-      "id": 45,
-      "district_id": 2,
-      "name": "Toprakdeğirmeni Mahallesi"
-    },
-    {
-      "id": 46,
-      "district_id": 3,
-      "name": "Çam Mahallesi"
-    },
-    {
-      "id": 47,
-      "district_id": 3,
-      "name": "Esentepe Mahallesi"
-    },
-    {
-      "id": 48,
-      "district_id": 4,
-      "name": "Sayfiye Mahallesi"
-    },
-    {
-      "id": 49,
-      "district_id": 4,
-      "name": "Hendekbaşı Mahallesi"
-    },
-    {
-      "id": 50,
-      "district_id": 5,
-      "name": "Demirci Mahallesi"
-    },
-    {
-      "id": 51,
-      "district_id": 5,
-      "name": "Yeniköy Mahallesi"
+      "district_id": 1,
+      "name": "Yunuslu Mahallesi"
     }
   ],
   "users": [
@@ -1207,16 +1086,6 @@
       "role_name": "Belediye Başkanı"
     },
     {
-      "id": 61,
-      "role_id": 6,
-      "full_name": "Reşat Nuri Özdemir (Başkan Yardımcısı)",
-      "email": "baskan.yrd1@bulancak.bel.tr",
-      "phone": "05550000002",
-      "password_hash": "$2a$10$VyrYfS1CcqZ7r7zxr5pB.ev9tw4GuVJ97FEGHpBunQbNTC8e7Uoj2",
-      "is_active": 1,
-      "role_name": "Belediye Başkan Yardımcısı"
-    },
-    {
       "id": 62,
       "role_id": 6,
       "full_name": "Ayşegül Erdoğan (Başkan Yardımcısı)",
@@ -1225,6 +1094,42 @@
       "password_hash": "$2a$10$VyrYfS1CcqZ7r7zxr5pB.ev9tw4GuVJ97FEGHpBunQbNTC8e7Uoj2",
       "is_active": 1,
       "role_name": "Belediye Başkan Yardımcısı"
+    },
+    {
+      "id": 59,
+      "role_id": 6,
+      "full_name": "test başkanyrd",
+      "email": "test@yardimci.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$ZkXM1fzCmTepPNdWKsIVQOGjl5njj2fws4gJdAhaRz/Ki1.jA.g72",
+      "is_active": 1,
+      "role_name": "Vatandaş"
+    },
+    {
+      "id": 59,
+      "role_id": 6,
+      "role_name": "Vatandaş",
+      "full_name": "test başkanyrd",
+      "email": "test@yardimci.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$ZkXM1fzCmTepPNdWKsIVQOGjl5njj2fws4gJdAhaRz/Ki1.jA.g72",
+      "is_active": 1,
+      "department_id": null,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "employee_title": "Saha Görevlisi"
+    },
+    {
+      "id": 61,
+      "role_id": 6,
+      "role_name": "Belediye Başkan Yardımcısı",
+      "full_name": "Reşat Nuri Özdemir",
+      "email": "resat@gmail.com",
+      "phone": "05555555555",
+      "password_hash": "$2a$10$tRXfsP8nh9edCAQ4JlOZtuMi3LU6kVhWeLeGV88lONGE7MYts4IBi",
+      "is_active": 1,
+      "department_id": 10,
+      "department_name": "Bilgi İşlem Müdürlüğü",
+      "employee_title": "Birim Müdürü"
     }
   ],
   "citizens": [
@@ -1345,9 +1250,473 @@
       "user_id": 54,
       "department_id": 2,
       "title": "Birim Müdürü"
+    },
+    {
+      "id": 17,
+      "user_id": 61,
+      "department_id": 10,
+      "title": "Birim Müdürü"
+    },
+    {
+      "id": 18,
+      "user_id": 61,
+      "department_id": 10,
+      "title": "Birim Müdürü"
     }
   ],
   "complaints": [
+    {
+      "id": 28,
+      "tracking_code": "BLD-2026-594298",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:27:31.889Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "updated_at": "2026-08-17T09:27:31.929Z"
+    },
+    {
+      "id": 27,
+      "tracking_code": "BLD-2026-923321",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:55.148Z",
+      "updated_at": "2026-08-17T09:25:55.178Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 27,
+      "tracking_code": "BLD-2026-923321",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:55.147Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 25,
+      "tracking_code": "BLD-2026-701366",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "Debug 1",
+      "description": "test",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:39.585Z",
+      "updated_at": "2026-08-17T09:25:39.608Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 25,
+      "tracking_code": "BLD-2026-701366",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "Debug 1",
+      "description": "test",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:39.584Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 23,
+      "tracking_code": "BLD-2026-791302",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:09.848Z",
+      "updated_at": "2026-08-17T09:25:09.926Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 23,
+      "tracking_code": "BLD-2026-791302",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:25:09.848Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 21,
+      "tracking_code": "BLD-2026-524889",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:24:38.678Z",
+      "updated_at": "2026-08-17T09:24:38.708Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 21,
+      "tracking_code": "BLD-2026-524889",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:24:38.678Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 19,
+      "tracking_code": "BLD-2026-106612",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:23:51.029Z",
+      "updated_at": "2026-08-17T09:24:10.042Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 19,
+      "tracking_code": "BLD-2026-106612",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:23:51.028Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 17,
+      "tracking_code": "BLD-2026-730605",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_id": 1,
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "neighborhood_name": "Acısu Mahallesi",
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:23:08.710Z",
+      "updated_at": "2026-08-17T09:23:08.743Z",
+      "upvote_count": 0,
+      "upvotes_count": 0,
+      "avg_rating": null,
+      "rating": null,
+      "rating_count": 0,
+      "rating_vote_count": 0
+    },
+    {
+      "id": 17,
+      "tracking_code": "BLD-2026-730605",
+      "citizen_id": 1,
+      "user_id": 1,
+      "category_id": 1,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 1,
+      "title": "İzolasyon ve Puanlama Doğrulama Talebi",
+      "description": "Bu talep sistemin yeni açılan taleplerde sahte puan göstermediğini test eder.",
+      "open_address": null,
+      "latitude": 40.9128,
+      "longitude": 38.3895,
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:23:08.710Z",
+      "category_name": "Yol ve Kaldırım Sorunu",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Acısu Mahallesi",
+      "citizen_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "id": 16,
+      "tracking_code": "BLD-2026-239794",
+      "citizen_id": 2,
+      "user_id": 2,
+      "category_id": 14,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 7,
+      "title": "Arşiv...",
+      "description": "arşiv",
+      "open_address": "Ballıca, Ballıca, Bulancak",
+      "latitude": "40.937317",
+      "longitude": "38.217037",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T09:14:45.011Z",
+      "category_name": "Diğer",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Ballıca Mahallesi",
+      "citizen_name": "Mehmet Demir (Fen İşleri Müdürü)",
+      "updated_at": "2026-08-17T09:14:51.457Z"
+    },
+    {
+      "id": 15,
+      "tracking_code": "BLD-2026-544114",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 7,
+      "department_id": 5,
+      "district_id": 1,
+      "neighborhood_id": 40,
+      "title": "Boru patladı",
+      "description": "boru patladı",
+      "open_address": "Toprakdeğirmeni, Toprakdeğirmeni, Bulancak",
+      "latitude": "40.942342",
+      "longitude": "38.254888",
+      "urgency_level": "Kritik",
+      "priority_level": "Kritik",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-17T07:56:45.149Z",
+      "category_name": "Su Kaçağı",
+      "department_name": "Su ve Kanalizasyon Müdürlüğü",
+      "district_name": "Giresun Merkez",
+      "neighborhood_name": "Pazarsuyu Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "updated_at": "2026-08-17T09:13:11.907Z",
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "rating": 2,
+      "rating_vote_count": 2,
+      "upvotes_count": 0
+    },
     {
       "id": 14,
       "tracking_code": "BLD-2026-280703",
@@ -1364,9 +1733,9 @@
       "longitude": "38.22135",
       "urgency_level": "Yüksek",
       "priority_level": "Yüksek",
-      "status": "Yeni",
+      "status": "Çözüldü",
       "is_public": 1,
-      "upvote_count": 0,
+      "upvote_count": 2,
       "contact_preference": "SMS",
       "submission_type": "Şikâyet",
       "created_at": "2026-08-14T12:59:08.597Z",
@@ -1374,7 +1743,9 @@
       "department_name": "Fen İşleri Müdürlüğü",
       "district_name": "Giresun Merkez",
       "neighborhood_name": "İsmetpaşa Mahallesi",
-      "citizen_name": "Caner Özkan (Vatandaş)"
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "upvotes_count": 1,
+      "updated_at": "2026-08-17T09:13:28.361Z"
     },
     {
       "id": 13,
@@ -1394,7 +1765,7 @@
       "priority_level": "Kritik",
       "status": "Yeni",
       "is_public": 1,
-      "upvote_count": 0,
+      "upvote_count": 1,
       "contact_preference": "E-posta",
       "submission_type": "Şikâyet",
       "created_at": "2026-08-14T12:30:04.596Z",
@@ -1402,7 +1773,9 @@
       "department_name": "Su ve Kanalizasyon Müdürlüğü",
       "district_name": "Giresun Merkez",
       "neighborhood_name": "Ballıca Mahallesi",
-      "citizen_name": "Mehmet Demir (Fen İşleri Müdürü)"
+      "citizen_name": "Mehmet Demir (Fen İşleri Müdürü)",
+      "upvotes_count": 1,
+      "updated_at": "2026-08-17T07:48:12.654Z"
     },
     {
       "id": 12,
@@ -1420,7 +1793,7 @@
       "longitude": "38.21",
       "urgency_level": "Yüksek",
       "priority_level": "Yüksek",
-      "status": "Yeni",
+      "status": "Çözüldü",
       "is_public": 1,
       "upvote_count": 0,
       "contact_preference": "E-posta",
@@ -1432,7 +1805,7 @@
       "neighborhood_name": "Kızılot Mahallesi",
       "citizen_name": "Caner Özkan (Vatandaş)",
       "upvotes_count": 1,
-      "updated_at": "2026-08-14T14:10:16.531Z"
+      "updated_at": "2026-08-17T08:52:42.378Z"
     },
     {
       "id": 11,
@@ -1450,7 +1823,7 @@
       "longitude": "38.433405",
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "İlgili birime yönlendirildi",
+      "status": "Çözüldü",
       "is_public": 1,
       "upvote_count": 2,
       "contact_preference": "E-posta",
@@ -1463,9 +1836,10 @@
       "citizen_name": "Caner Özkan (Vatandaş)",
       "assigned_to_user_id": null,
       "assigned_employee_name": null,
-      "updated_at": "2026-08-14T13:36:08.667Z",
-      "rating": 4,
-      "rating_vote_count": 2
+      "updated_at": "2026-08-17T07:45:29.392Z",
+      "rating": 3,
+      "rating_vote_count": 2,
+      "upvotes_count": 3
     },
     {
       "id": 10,
@@ -1483,7 +1857,7 @@
       "longitude": "38.205943",
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "İşlem devam ediyor",
+      "status": "Çözüldü",
       "is_public": 1,
       "upvote_count": 1,
       "contact_preference": "E-posta",
@@ -1498,7 +1872,7 @@
       "assigned_employee_name": null,
       "rating": null,
       "rating_vote_count": 0,
-      "updated_at": "2026-08-14T06:18:38.068Z"
+      "updated_at": "2026-08-17T08:52:19.238Z"
     },
     {
       "id": 9,
@@ -1562,9 +1936,9 @@
       "assigned_to_user_id": 19,
       "assigned_employee_name": "Emin Kılıç (Temizlik Ekip Şefi)",
       "forwarded_from_department_id": 1,
-      "rating": 4,
+      "rating": 2.3,
       "rating_vote_count": 3,
-      "updated_at": "2026-08-14T14:10:18.872Z",
+      "updated_at": "2026-08-17T06:38:12.000Z",
       "rating_comment": "VSV",
       "is_forwarded": 1,
       "upvotes_count": 2
@@ -1669,7 +2043,7 @@
       "citizen_id": 10,
       "user_id": 10,
       "category_id": "14",
-      "department_id": 1,
+      "department_id": 3,
       "district_id": "1",
       "neighborhood_id": "1",
       "title": "tes",
@@ -1677,8 +2051,8 @@
       "open_address": "Kavaklar, Kavaklar, Giresun Merkez",
       "latitude": "40.911",
       "longitude": "38.39",
-      "urgency_level": "Normal",
-      "priority_level": "Normal",
+      "urgency_level": "Yüksek",
+      "priority_level": "Yüksek",
       "status": "Çözüldü",
       "is_public": 0,
       "upvote_count": 0,
@@ -1689,12 +2063,14 @@
       "district_name": "Giresun Merkez",
       "neighborhood_name": "Aksu Mahallesi",
       "citizen_name": "Caner Özkan (Vatandaş)",
-      "assigned_to_user_id": 7,
-      "assigned_employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
-      "updated_at": "2026-08-14T07:30:49.313Z",
-      "rating": null,
-      "rating_vote_count": 0,
-      "rating_comment": null
+      "assigned_to_user_id": 9,
+      "assigned_employee_name": "Fatma Şahin (Park Saha Personeli)",
+      "updated_at": "2026-08-17T07:45:21.392Z",
+      "rating": 5,
+      "rating_vote_count": 1,
+      "rating_comment": null,
+      "department_name": "Park ve Bahçeler Müdürlüğü",
+      "is_forwarded": 1
     },
     {
       "id": 1,
@@ -1710,9 +2086,9 @@
       "open_address": "Atatürk Bulvarı No:45 Önü, Giresun Merkez",
       "latitude": 40.911,
       "longitude": 38.39,
-      "urgency_level": "Acil",
-      "priority_level": "Acil",
-      "status": "��z�ld�",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Yeni",
       "is_public": 1,
       "base_upvote_count": 0,
       "upvote_count": 1,
@@ -1727,7 +2103,7 @@
       "rating": 2,
       "rating_comment": "XVX",
       "rating_vote_count": 2,
-      "updated_at": "2026-08-14T13:49:56.841Z",
+      "updated_at": "2026-08-17T07:47:53.949Z",
       "assigned_to_user_id": 3,
       "assigned_employee_name": "Ayşe Kaya (Temizlik Müdürü)",
       "upvotes_count": 1
@@ -1748,7 +2124,7 @@
       "longitude": 38.387,
       "urgency_level": "Normal",
       "priority_level": "Normal",
-      "status": "İlgili birime yönlendirildi",
+      "status": "Çözüldü",
       "is_public": 1,
       "base_upvote_count": 0,
       "upvote_count": 0,
@@ -1762,7 +2138,7 @@
       "rating": 3,
       "rating_comment": "test",
       "rating_vote_count": 1,
-      "updated_at": "2026-08-14T13:49:57.076Z",
+      "updated_at": "2026-08-17T09:14:07.457Z",
       "assigned_to_user_id": null,
       "assigned_employee_name": null,
       "upvotes_count": 1
@@ -1829,19 +2205,11 @@
       "user_id": 1
     },
     {
-      "complaint_id": 9,
-      "user_id": 1
-    },
-    {
       "complaint_id": 8,
       "user_id": 1
     },
     {
       "complaint_id": 9,
-      "user_id": 10
-    },
-    {
-      "complaint_id": 11,
       "user_id": 10
     },
     {
@@ -1863,6 +2231,38 @@
       "complaint_id": 12,
       "user_id": 61,
       "created_at": "2026-08-14T14:10:16.515Z"
+    },
+    {
+      "id": 1786947064428,
+      "complaint_id": 11,
+      "user_id": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:11:04.428Z"
+    },
+    {
+      "id": 1786947338781,
+      "complaint_id": 14,
+      "user_id": 61,
+      "created_at": "2026-08-17T06:15:38.781Z"
+    },
+    {
+      "id": 1786948469506,
+      "complaint_id": 13,
+      "user_id": 11,
+      "created_at": "2026-08-17T06:34:29.506Z"
+    },
+    {
+      "id": 1786950159375,
+      "complaint_id": 11,
+      "user_id": 10,
+      "created_at": "2026-08-17T07:02:39.375Z"
+    },
+    {
+      "complaint_id": 14,
+      "user_id": 1
+    },
+    {
+      "complaint_id": 9,
+      "user_id": 1
     }
   ],
   "complaint_assignments": [],
@@ -2691,6 +3091,299 @@
       "change_reason": "asdf",
       "created_at": "2026-08-14T13:37:35.816Z",
       "changed_by_name": "Emin Kılıç (Temizlik Ekip Şefi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 1,
+      "old_status": "Çözüldü",
+      "new_status": "İlgili birime yönlendirildi",
+      "created_at": "2026-08-17T06:24:09.352Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Öncelik seviyesi \"Yüksek\" olarak güncellendi.",
+      "created_at": "2026-08-17T06:24:21.545Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep Park ve Bahçeler Müdürlüğü bünyesine yönlendirildi. Not: -",
+      "created_at": "2026-08-17T06:25:06.922Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Görev Fatma Şahin (Park Saha Personeli) isimli personele atandı. (test2)",
+      "created_at": "2026-08-17T06:25:40.966Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 4,
+      "changed_by_user_id": 9,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "test3",
+      "created_at": "2026-08-17T06:26:45.867Z",
+      "changed_by_name": "Fatma Şahin (Park Saha Personeli)"
+    },
+    {
+      "complaint_id": 1,
+      "changed_by_user_id": 2,
+      "old_status": "��z�ld�",
+      "new_status": "Yeni",
+      "change_reason": "Durum (Yeni) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T06:35:39.877Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 11,
+      "changed_by_user_id": 7,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Çözüldü",
+      "change_reason": "yrtszf",
+      "created_at": "2026-08-17T06:40:34.094Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 10,
+      "created_at": "2026-08-17T07:56:45.149Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 6,
+      "old_status": "Yeni",
+      "new_status": "Görev Nihat Aydoğan (Su Arıza Ekip Şefi) isimli personele atandı. (Görev atandı.)",
+      "created_at": "2026-08-17T07:58:06.784Z",
+      "changed_by_name": "Mustafa Çelik (Su Müdürü)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 26,
+      "old_status": "Personele atandı",
+      "new_status": "Çözüldü",
+      "change_reason": "okeyto",
+      "created_at": "2026-08-17T07:58:28.299Z",
+      "changed_by_name": "Nihat Aydoğan (Su Arıza Ekip Şefi)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 1,
+      "old_status": "Çözüldü",
+      "new_status": "İlgili birime yönlendirildi",
+      "created_at": "2026-08-17T08:49:16.557Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 1,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T08:50:48.142Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 1,
+      "old_status": "Çözüldü",
+      "new_status": "Yeni",
+      "change_reason": "Durum (Yeni) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T08:50:48.192Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 10,
+      "changed_by_user_id": 1,
+      "old_status": "İşlem devam ediyor",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T08:52:19.252Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 12,
+      "changed_by_user_id": 7,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "sontest",
+      "created_at": "2026-08-17T08:52:42.378Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:03:15.714Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 1,
+      "old_status": "Çözüldü",
+      "new_status": "Yeni",
+      "change_reason": "Durum (Yeni) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:03:15.767Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 15,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:13:11.921Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 14,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:13:28.375Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 2,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:14:07.471Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 16,
+      "changed_by_user_id": 2,
+      "created_at": "2026-08-17T09:14:45.011Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 16,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:14:51.475Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 17,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:23:08.710Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 17,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:23:08.763Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 19,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:23:51.029Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 19,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:23:51.090Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 21,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:24:38.678Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 21,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:24:38.723Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 23,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:25:09.848Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 23,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:25:09.943Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 25,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:25:39.585Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 25,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:25:39.628Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 27,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:25:55.147Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 27,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:25:55.194Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 28,
+      "changed_by_user_id": 1,
+      "created_at": "2026-08-17T09:27:31.889Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 28,
+      "changed_by_user_id": 1,
+      "old_status": "Yeni",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-17T09:27:31.952Z",
+      "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
     }
   ],
   "complaint_actions": [
@@ -3252,6 +3945,110 @@
       "employee_name": "Emin Kılıç (Temizlik Ekip Şefi)",
       "employee_title": "Saha Görevlisi",
       "created_at": "2026-08-14T13:37:35.816Z"
+    },
+    {
+      "id": 44,
+      "complaint_id": 4,
+      "employee_id": 3,
+      "action_description": "test3",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786948005795-673885524.jpg",
+      "employee_name": "Ayşe Kaya (Temizlik Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T06:26:45.849Z"
+    },
+    {
+      "id": 45,
+      "complaint_id": 4,
+      "employee_id": 3,
+      "action_description": "test3",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786948005795-673885524.jpg",
+      "employee_name": "Fatma Şahin (Park Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T06:26:45.868Z"
+    },
+    {
+      "id": 46,
+      "complaint_id": 11,
+      "employee_id": 1,
+      "action_description": "yrtszf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T06:40:34.087Z"
+    },
+    {
+      "id": 47,
+      "complaint_id": 11,
+      "employee_id": 1,
+      "action_description": "yrtszf",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T06:40:34.094Z"
+    },
+    {
+      "id": 48,
+      "complaint_id": 15,
+      "employee_id": 5,
+      "action_description": "okeyto",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786953508151-967102097.png",
+      "employee_name": "Hasan Yılmaz (Zabıta Müdürü)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T07:58:28.287Z"
+    },
+    {
+      "id": 49,
+      "complaint_id": 15,
+      "employee_id": 5,
+      "action_description": "okeyto",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": "uploads/bld-1786953508151-967102097.png",
+      "employee_name": "Nihat Aydoğan (Su Arıza Ekip Şefi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T07:58:28.299Z"
+    },
+    {
+      "id": 50,
+      "complaint_id": 12,
+      "employee_id": 1,
+      "action_description": "sontest",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T08:52:42.366Z"
+    },
+    {
+      "id": 51,
+      "complaint_id": 12,
+      "employee_id": 1,
+      "action_description": "sontest",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-17T08:52:42.378Z"
     }
   ],
   "complaint_files": [
@@ -3311,9 +4108,115 @@
       "file_type": "image/jpeg",
       "file_size": 86539,
       "uploaded_by_user_id": 7
+    },
+    {
+      "id": 7,
+      "complaint_id": 4,
+      "file_path": "uploads/bld-1786948005795-673885524.jpg",
+      "file_name": "f6b54fd8-4b87-4c72-98a7-d3eeb43c32f3.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 86539,
+      "uploaded_by_user_id": 9
+    },
+    {
+      "id": 8,
+      "complaint_id": 15,
+      "file_path": "uploads/bld-1786953508151-967102097.png",
+      "file_name": "ChatGPT Image 10 AÄu 2026 15_02_43.png",
+      "file_type": "image/png",
+      "file_size": 1686062,
+      "uploaded_by_user_id": 26
     }
   ],
   "notifications": [
+    {
+      "id": 1786956762921,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-483744] - \"Asfalt patlamış\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 12,
+      "created_at": "2026-08-17T08:52:42.384Z"
+    },
+    {
+      "id": 1786956556915,
+      "user_id": 26,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-544114] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 15,
+      "created_at": "2026-08-17T08:49:16.557Z"
+    },
+    {
+      "id": 1786953508989,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-544114] - \"Boru patladı\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 15,
+      "created_at": "2026-08-17T07:58:28.305Z"
+    },
+    {
+      "id": 1786953487698,
+      "user_id": 26,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-544114] - \"Boru patladı\" talebi üzerinize atandı: Görev atandı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 15,
+      "created_at": "2026-08-17T07:58:06.784Z"
+    },
+    {
+      "id": 1786948834497,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-483589] - \"boru patladı\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 11,
+      "created_at": "2026-08-17T06:40:34.101Z"
+    },
+    {
+      "id": 1786948005995,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-584807] - \"tes\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 1,
+      "type": "Çözüm",
+      "reference_id": 4,
+      "created_at": "2026-08-17T06:26:45.875Z"
+    },
+    {
+      "id": 1786947941219,
+      "user_id": 9,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-584807] - \"tes\" talebi üzerinize atandı: test2",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 4,
+      "created_at": "2026-08-17T06:25:40.967Z"
+    },
+    {
+      "id": 1786947849775,
+      "user_id": 7,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-584807] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 1,
+      "type": "Görev",
+      "reference_id": 4,
+      "created_at": "2026-08-17T06:24:09.352Z"
+    },
     {
       "id": 1786714656525,
       "user_id": 46,
@@ -3353,7 +4256,7 @@
       "department_id": null,
       "title": "📌 Yeni Görev Atandı",
       "message": "[BLD-2026-483589] - \"boru patladı\" talebi üzerinize atandı: Görev atandı.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Görev",
       "reference_id": 11,
       "created_at": "2026-08-14T13:36:06.434Z"
@@ -3485,7 +4388,7 @@
       "department_id": 5,
       "title": "🔄 Biriminize Yönlendirilen Talep",
       "message": "[BLD-2026-108160] - \"thh\" talebi Su ve Kanalizasyon Müdürlüğü biriminize yönlendirildi. Sebeb: -",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Yönlendirme",
       "reference_id": "5",
       "created_at": "2026-08-13T10:40:38.697Z"
@@ -3679,10 +4582,10 @@
       "complaint_id": 8,
       "citizen_id": 6,
       "user_id": 10,
-      "rating": 5,
-      "review_comment": "VSV",
+      "rating": 4,
+      "review_comment": null,
       "created_at": "2026-08-14T07:27:57.880Z",
-      "updated_at": "2026-08-14T07:29:52.757Z"
+      "updated_at": "2026-08-17T06:38:11.993Z"
     },
     {
       "id": 1786692490263,
@@ -3699,10 +4602,10 @@
       "complaint_id": 8,
       "citizen_id": 7,
       "user_id": 11,
-      "rating": 5,
-      "review_comment": "Super",
+      "rating": 1,
+      "review_comment": null,
       "created_at": "2026-08-14T07:28:21.514Z",
-      "updated_at": "2026-08-14T07:28:21.522Z"
+      "updated_at": "2026-08-17T06:37:52.534Z"
     },
     {
       "id": 1786692613562,
@@ -3718,10 +4621,10 @@
       "complaint_id": 11,
       "citizen_id": 6,
       "user_id": 10,
-      "rating": 3,
+      "rating": 1,
       "review_comment": null,
       "created_at": "2026-08-14T13:34:12.244Z",
-      "updated_at": "2026-08-14T13:34:12.251Z"
+      "updated_at": "2026-08-17T07:45:29.385Z"
     },
     {
       "id": 1786714488121,
@@ -3732,6 +4635,36 @@
       "review_comment": null,
       "created_at": "2026-08-14T13:34:48.121Z",
       "updated_at": "2026-08-14T13:34:48.129Z"
+    },
+    {
+      "id": 1786948035540,
+      "complaint_id": 4,
+      "citizen_id": 6,
+      "user_id": 10,
+      "rating": 5,
+      "review_comment": null,
+      "created_at": "2026-08-17T06:27:15.540Z",
+      "updated_at": "2026-08-17T07:45:21.385Z"
+    },
+    {
+      "id": 1786953569121,
+      "complaint_id": 15,
+      "citizen_id": 6,
+      "user_id": 10,
+      "rating": 3,
+      "review_comment": null,
+      "created_at": "2026-08-17T07:59:29.121Z",
+      "updated_at": "2026-08-17T07:59:29.127Z"
+    },
+    {
+      "id": 1786953598937,
+      "complaint_id": 15,
+      "citizen_id": 7,
+      "user_id": 11,
+      "rating": 1,
+      "review_comment": null,
+      "created_at": "2026-08-17T07:59:58.937Z",
+      "updated_at": "2026-08-17T07:59:58.945Z"
     }
   ],
   "audit_logs": [
@@ -5210,6 +6143,765 @@
       "new_value": "{\"action_description\":\"asdf\",\"new_status\":\"Çözüldü\"}",
       "ip_address": "::ffff:172.20.0.1",
       "created_at": "2026-08-14T13:37:35.830Z"
+    },
+    {
+      "id": 133,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "4",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"İlgili birime yönlendirildi\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:24:21.546Z"
+    },
+    {
+      "id": 134,
+      "user_id": 1,
+      "action": "FORWARD_DEPARTMENT",
+      "entity_name": "complaints",
+      "entity_id": "4",
+      "old_value": "{}",
+      "new_value": "{\"target_department_id\":\"3\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:25:06.922Z"
+    },
+    {
+      "id": 135,
+      "user_id": 9,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 4,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"test3\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:26:45.884Z"
+    },
+    {
+      "id": 136,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "1",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Yeni\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:35:39.878Z"
+    },
+    {
+      "id": 137,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 11,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"yrtszf\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T06:40:34.107Z"
+    },
+    {
+      "id": 138,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 59,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"test başkanyrd\",\"email\":\"test@yardimci.com\",\"role_id\":6}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:28:55.285Z"
+    },
+    {
+      "id": 139,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,2,5,7,9,11]}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T07:44:41.338Z"
+    },
+    {
+      "id": 140,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,2,5,7,9,11]}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T07:45:54.370Z"
+    },
+    {
+      "id": 141,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,2,5,7,9,11]}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T07:46:29.513Z"
+    },
+    {
+      "id": 142,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,2,5,7,9,11]}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T07:47:02.258Z"
+    },
+    {
+      "id": 143,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 62,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[3,4,6,8,10]}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T07:47:02.299Z"
+    },
+    {
+      "id": 144,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 59,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,12]}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:48:25.581Z"
+    },
+    {
+      "id": 145,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[1,2,5,7,9,11]}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:48:30.298Z"
+    },
+    {
+      "id": 146,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:48:53.638Z"
+    },
+    {
+      "id": 147,
+      "user_id": 1,
+      "action": "SOFT_DELETE_USER",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:49:05.354Z"
+    },
+    {
+      "id": 148,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:49:07.732Z"
+    },
+    {
+      "id": 149,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 59,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[]}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:49:25.466Z"
+    },
+    {
+      "id": 150,
+      "user_id": 1,
+      "action": "DELETE_DEPARTMENT",
+      "entity_name": "departments",
+      "entity_id": 12,
+      "old_value": "{}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:49:51.513Z"
+    },
+    {
+      "id": 151,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 59,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[11]}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:49:56.766Z"
+    },
+    {
+      "id": 152,
+      "user_id": 26,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 15,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"okeyto\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T07:58:28.312Z"
+    },
+    {
+      "id": 153,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:11:06.851Z"
+    },
+    {
+      "id": 154,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:11:06.916Z"
+    },
+    {
+      "id": 155,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:12:39.981Z"
+    },
+    {
+      "id": 156,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:12:40.026Z"
+    },
+    {
+      "id": 157,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:13:42.695Z"
+    },
+    {
+      "id": 158,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:13:42.725Z"
+    },
+    {
+      "id": 159,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:15:25.503Z"
+    },
+    {
+      "id": 160,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:15:25.536Z"
+    },
+    {
+      "id": 161,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:16:35.313Z"
+    },
+    {
+      "id": 162,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:16:35.343Z"
+    },
+    {
+      "id": 163,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:23:57.698Z"
+    },
+    {
+      "id": 164,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:24:38.929Z"
+    },
+    {
+      "id": 165,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:24:48.924Z"
+    },
+    {
+      "id": 166,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:24:52.860Z"
+    },
+    {
+      "id": 167,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:25:03.808Z"
+    },
+    {
+      "id": 168,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:25:22.620Z"
+    },
+    {
+      "id": 169,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:25:39.254Z"
+    },
+    {
+      "id": 170,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:25:39.818Z"
+    },
+    {
+      "id": 171,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:47:41.177Z"
+    },
+    {
+      "id": 172,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:47:48.343Z"
+    },
+    {
+      "id": 173,
+      "user_id": 1,
+      "action": "SOFT_DELETE_USER",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:48:04.326Z"
+    },
+    {
+      "id": 174,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:48:05.872Z"
+    },
+    {
+      "id": 175,
+      "user_id": 1,
+      "action": "ASSIGN_VICE_MAYOR_DEPTS",
+      "entity_name": "users",
+      "entity_id": 59,
+      "old_value": "{}",
+      "new_value": "{\"department_ids\":[10,11]}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:48:42.732Z"
+    },
+    {
+      "id": 176,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "15",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:50:48.143Z"
+    },
+    {
+      "id": 177,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "15",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Yeni\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T08:50:48.192Z"
+    },
+    {
+      "id": 178,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "10",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:52:19.253Z"
+    },
+    {
+      "id": 179,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 12,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"sontest\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:52:42.390Z"
+    },
+    {
+      "id": 180,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:53:34.381Z"
+    },
+    {
+      "id": 181,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "59",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T08:53:43.930Z"
+    },
+    {
+      "id": 182,
+      "user_id": 1,
+      "action": "CREATE_USER",
+      "entity_name": "users",
+      "entity_id": 61,
+      "old_value": null,
+      "new_value": "{\"full_name\":\"Muhammed Aydın\",\"email\":\"muhammed@gmail.com\",\"role_id\":2}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:00:39.008Z"
+    },
+    {
+      "id": 183,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:02:53.291Z"
+    },
+    {
+      "id": 184,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "15",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:03:15.714Z"
+    },
+    {
+      "id": 185,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "15",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Yeni\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:03:15.767Z"
+    },
+    {
+      "id": 186,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:03:43.077Z"
+    },
+    {
+      "id": 187,
+      "user_id": 1,
+      "action": "UPDATE_USER",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": null,
+      "new_value": "{\"full_name\":\"Reşat Nuri Özdemir\",\"role_id\":6}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:06:25.987Z"
+    },
+    {
+      "id": 188,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":1}",
+      "new_value": "{\"is_active\":0}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:06:43.796Z"
+    },
+    {
+      "id": 189,
+      "user_id": 1,
+      "action": "TOGGLE_USER_ACTIVE",
+      "entity_name": "users",
+      "entity_id": "61",
+      "old_value": "{\"is_active\":0}",
+      "new_value": "{\"is_active\":1}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:06:49.913Z"
+    },
+    {
+      "id": 190,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "15",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Kritik\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:13:11.921Z"
+    },
+    {
+      "id": 191,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "14",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Yüksek\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:13:28.375Z"
+    },
+    {
+      "id": 192,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "2",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:14:07.471Z"
+    },
+    {
+      "id": 193,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "16",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-17T09:14:51.475Z"
+    },
+    {
+      "id": 194,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "17",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:23:08.764Z"
+    },
+    {
+      "id": 195,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "19",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:23:51.091Z"
+    },
+    {
+      "id": 196,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "19",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:24:10.061Z"
+    },
+    {
+      "id": 197,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "21",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:24:38.724Z"
+    },
+    {
+      "id": 198,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "23",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:25:09.944Z"
+    },
+    {
+      "id": 199,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "25",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:25:39.629Z"
+    },
+    {
+      "id": 200,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "27",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:25:55.194Z"
+    },
+    {
+      "id": 201,
+      "user_id": 1,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "28",
+      "old_value": "{}",
+      "new_value": "{\"status\":\"Çözüldü\"}",
+      "ip_address": "::1",
+      "created_at": "2026-08-17T09:27:31.953Z"
     }
   ],
   "announcements": [
