@@ -23,7 +23,7 @@ const assignTaskHandler = async (req, res) => {
   try {
     await conn.beginTransaction();
 
-    const [cRows] = await conn.query('SELECT tracking_code, title, department_id, status FROM complaints WHERE id = ?', [cId]);
+    const [cRows] = await conn.query('SELECT tracking_code, title, department_id, status, citizen_id, user_id FROM complaints WHERE id = ?', [cId]);
     if (!cRows || cRows.length === 0) {
       await conn.rollback();
       return res.status(404).json({ success: false, message: 'Talep bulunamadı.' });
@@ -62,8 +62,9 @@ const assignTaskHandler = async (req, res) => {
 
     // Update Memory Cache
     const { memData, saveDbJson } = require('../config/db');
+    let compMem = null;
     if (memData && memData.complaints) {
-      const compMem = memData.complaints.find(c => Number(c.id) === cId || String(c.tracking_code) === String(tracking_code));
+      compMem = memData.complaints.find(c => Number(c.id) === cId || String(c.tracking_code) === String(tracking_code));
       if (compMem) {
         compMem.status = 'Personele atandı';
         compMem.assigned_to_user_id = targetStaffId;
@@ -93,7 +94,7 @@ const assignTaskHandler = async (req, res) => {
     });
 
     // Send Notification to Citizen Creator
-    const citizenUserId = c ? (c.citizen_id || c.user_id) : null;
+    const citizenUserId = (cRows && cRows[0] && (cRows[0].citizen_id || cRows[0].user_id)) || (compMem && (compMem.citizen_id || compMem.user_id)) || null;
     if (citizenUserId) {
       await createSystemNotification({
         user_id: citizenUserId,

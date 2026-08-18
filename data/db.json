@@ -1200,6 +1200,68 @@
   ],
   "complaints": [
     {
+      "id": 38,
+      "tracking_code": "BLD-2026-883331",
+      "citizen_id": 10,
+      "user_id": 10,
+      "category_id": 2,
+      "department_id": 1,
+      "district_id": 1,
+      "neighborhood_id": 7,
+      "title": "Yolda çukur var",
+      "description": "yolda çukur var",
+      "open_address": "Ballıca, Ballıca, Bulancak",
+      "latitude": "40.934184",
+      "longitude": "38.215599",
+      "urgency_level": "Acil",
+      "priority_level": "Acil",
+      "status": "Personele atandı",
+      "is_public": 1,
+      "upvote_count": 0,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-18T06:18:03.531Z",
+      "category_name": "Çukur veya Asfalt Problemi",
+      "department_name": "Fen İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Ballıca Mahallesi",
+      "citizen_name": "Caner Özkan (Vatandaş)",
+      "updated_at": "2026-08-18T06:24:31.526Z",
+      "assigned_to_user_id": 7,
+      "assigned_employee_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "id": 37,
+      "tracking_code": "BLD-2026-438363",
+      "citizen_id": 11,
+      "user_id": 11,
+      "category_id": 9,
+      "department_id": 6,
+      "district_id": 1,
+      "neighborhood_id": 7,
+      "title": "Başıboş köpek",
+      "description": "başıboş köpek",
+      "open_address": "Ballıca, Ballıca, Bulancak",
+      "latitude": "40.935716",
+      "longitude": "38.215384",
+      "urgency_level": "Normal",
+      "priority_level": "Normal",
+      "status": "Çözüldü",
+      "is_public": 1,
+      "upvote_count": 1,
+      "contact_preference": "E-posta",
+      "submission_type": "Şikâyet",
+      "created_at": "2026-08-18T06:10:52.312Z",
+      "category_name": "Başıboş Hayvan",
+      "department_name": "Veteriner İşleri Müdürlüğü",
+      "district_name": "Bulancak",
+      "neighborhood_name": "Ballıca Mahallesi",
+      "citizen_name": "Sefa Bodur (Vatandaş)",
+      "updated_at": "2026-08-18T06:15:20.966Z",
+      "assigned_to_user_id": 29,
+      "assigned_employee_name": "Recep Yavuz (Sokak Canları Ekibi)"
+    },
+    {
       "id": 36,
       "tracking_code": "BLD-2026-725242",
       "citizen_id": 11,
@@ -1226,7 +1288,9 @@
       "district_name": "Bulancak",
       "neighborhood_name": "Alibey Mahallesi",
       "citizen_name": "Sefa Bodur (Vatandaş)",
-      "updated_at": "2026-08-17T14:59:23.152Z"
+      "updated_at": "2026-08-18T06:05:16.906Z",
+      "rating": 4,
+      "rating_vote_count": 2
     },
     {
       "id": 35,
@@ -1234,7 +1298,7 @@
       "citizen_id": 10,
       "user_id": 10,
       "category_id": 9,
-      "department_id": 6,
+      "department_id": 1,
       "district_id": 1,
       "neighborhood_id": 1,
       "title": "Başıboş köpek",
@@ -1244,20 +1308,21 @@
       "longitude": "38.240812",
       "urgency_level": "Acil",
       "priority_level": "Acil",
-      "status": "Personele atandı",
+      "status": "İlgili birime yönlendirildi",
       "is_public": 1,
       "upvote_count": 0,
       "contact_preference": "E-posta",
       "submission_type": "Şikâyet",
       "created_at": "2026-08-17T13:58:49.816Z",
       "category_name": "Başıboş Hayvan",
-      "department_name": "Veteriner İşleri Müdürlüğü",
+      "department_name": "Fen İşleri Müdürlüğü",
       "district_name": "Bulancak",
       "neighborhood_name": "Acısu Mahallesi",
       "citizen_name": "Caner Özkan (Vatandaş)",
-      "updated_at": "2026-08-17T13:59:17.175Z",
-      "assigned_to_user_id": 29,
-      "assigned_employee_name": "Recep Yavuz (Sokak Canları Ekibi)"
+      "updated_at": "2026-08-18T06:14:06.018Z",
+      "assigned_to_user_id": null,
+      "assigned_employee_name": null,
+      "is_forwarded": 1
     },
     {
       "id": 34,
@@ -1948,6 +2013,10 @@
     {
       "complaint_id": 13,
       "user_id": 10
+    },
+    {
+      "complaint_id": 37,
+      "user_id": 11
     }
   ],
   "complaint_assignments": [],
@@ -2734,6 +2803,159 @@
       "change_reason": "Durum (Çözüldü) Sistem Yöneticisi tarafından güncellendi.",
       "created_at": "2026-08-17T14:59:23.168Z",
       "changed_by_name": "Ahmet Yılmaz (Sistem Yöneticisi)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 11,
+      "old_status": "Yok",
+      "new_status": "Yeni",
+      "change_reason": "Talep başarıyla oluşturuldu.",
+      "created_at": "2026-08-18T06:10:52.322Z",
+      "changed_by_name": "Sefa Bodur (Vatandaş)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "Yeni",
+      "new_status": "Yeni",
+      "change_reason": "Öncelik seviyesi \"Normal\" olarak güncellendi.",
+      "created_at": "2026-08-18T06:12:36.177Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "Yeni",
+      "new_status": "Görev Recep Yavuz (Sokak Canları Ekibi) isimli personele atandı. (test)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:12:50.845Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 35,
+      "changed_by_user_id": 12,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:13:40.899Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 35,
+      "changed_by_user_id": 12,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep Fen İşleri Müdürlüğü bünyesine yönlendirildi. Not: -",
+      "created_at": "2026-08-18T06:14:06.027Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:14:16.488Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Görev Recep Yavuz (Sokak Canları Ekibi) isimli personele atandı. (test)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:14:20.064Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "Personele atandı",
+      "new_status": "İşlem devam ediyor",
+      "change_reason": "Durum (İşlem devam ediyor) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-18T06:14:41.814Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 37,
+      "changed_by_user_id": 12,
+      "old_status": "İşlem devam ediyor",
+      "new_status": "Çözüldü",
+      "change_reason": "Durum (Çözüldü) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-18T06:15:20.984Z",
+      "changed_by_name": "Dr. Selin Aydın (Veteriner Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 10,
+      "old_status": "Yok",
+      "new_status": "Yeni",
+      "change_reason": "Talep başarıyla oluşturuldu.",
+      "created_at": "2026-08-18T06:18:03.531Z",
+      "changed_by_name": "Caner Özkan (Vatandaş)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "Yeni",
+      "new_status": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı. (Görev atandı.)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:18:39.812Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "Personele atandı",
+      "new_status": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı. (test)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:18:43.461Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "Personele atandı",
+      "new_status": "İlgili birime yönlendirildi",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:19:05.910Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "İlgili birime yönlendirildi",
+      "new_status": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı. (Görev atandı.)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:21:10.983Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "Personele atandı",
+      "new_status": "İşlem devam ediyor",
+      "change_reason": "Durum (İşlem devam ediyor) Birim Yöneticisi tarafından güncellendi.",
+      "created_at": "2026-08-18T06:21:17.149Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 7,
+      "old_status": "İşlem devam ediyor",
+      "new_status": "Çözüldü",
+      "change_reason": "bitti",
+      "created_at": "2026-08-18T06:21:55.849Z",
+      "changed_by_name": "Ali Usta (Fen İşleri Saha Personeli)"
+    },
+    {
+      "complaint_id": 38,
+      "changed_by_user_id": 2,
+      "old_status": "Çözüldü",
+      "new_status": "Görev Ali Usta (Fen İşleri Saha Personeli) isimli personele atandı. (Doğrulama test görevi)",
+      "change_reason": "Talep durumu güncellendi.",
+      "created_at": "2026-08-18T06:24:31.538Z",
+      "changed_by_name": "Mehmet Demir (Fen İşleri Müdürü)"
     }
   ],
   "complaint_actions": [
@@ -3048,6 +3270,32 @@
       "employee_name": "Recep Yavuz (Sokak Canları Ekibi)",
       "employee_title": "Saha Görevlisi",
       "created_at": "2026-08-17T13:51:08.834Z"
+    },
+    {
+      "id": 25,
+      "complaint_id": 38,
+      "employee_id": 1,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ahmet Yılmaz (Sistem Yöneticisi)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-18T06:21:55.842Z"
+    },
+    {
+      "id": 26,
+      "complaint_id": 38,
+      "employee_id": 1,
+      "action_description": "bitti",
+      "work_done": null,
+      "tools_equipment_used": null,
+      "citizen_response": null,
+      "resolution_photo_path": null,
+      "employee_name": "Ali Usta (Fen İşleri Saha Personeli)",
+      "employee_title": "Saha Görevlisi",
+      "created_at": "2026-08-18T06:21:55.850Z"
     }
   ],
   "complaint_files": [
@@ -3098,16 +3346,245 @@
       "file_type": "image/jpeg",
       "file_size": 86539,
       "uploaded_by_user_id": 29
+    },
+    {
+      "id": 6,
+      "complaint_id": 37,
+      "file_path": "uploads/bld-1787033452232-700871520.png",
+      "file_name": "1129c62c-8e25-4ffc-b861-d0a1f8db0403.png",
+      "file_type": "image/png",
+      "file_size": 1433669,
+      "uploaded_by_user_id": 11
     }
   ],
   "notifications": [
+    {
+      "id": 1787034271999,
+      "user_id": 10,
+      "department_id": null,
+      "title": "👷 Talebiniz Ekiplere Atandı!",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebiniz Ali Usta (Fen İşleri Saha Personeli) isimli saha görevlisine atanmıştır.",
+      "is_read": 0,
+      "type": "Durum",
+      "reference_id": "BLD-2026-883331",
+      "created_at": "2026-08-18T06:24:31.548Z"
+    },
+    {
+      "id": 1787034271607,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebi üzerinize atandı: Doğrulama test görevi",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:24:31.538Z"
+    },
+    {
+      "id": 1787034116699,
+      "user_id": 10,
+      "department_id": null,
+      "title": "✅ Talebiniz Güncellendi",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" başlıklı talebiniz hakkında işlem yapıldı (Çözüldü).",
+      "is_read": 0,
+      "type": "Çözüm",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:21:55.857Z"
+    },
+    {
+      "id": 1787034077253,
+      "user_id": 10,
+      "department_id": null,
+      "title": "👷 Talebiniz Ekiplere Atandı!",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebiniz incelenmiş olup saha ekiplerimize yönlendirilmiştir.",
+      "is_read": 0,
+      "type": "Durum",
+      "reference_id": "BLD-2026-883331",
+      "created_at": "2026-08-18T06:21:17.150Z"
+    },
+    {
+      "id": 1787034071033,
+      "user_id": 10,
+      "department_id": null,
+      "title": "👷 Talebiniz Ekiplere Atandı!",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebiniz Ali Usta (Fen İşleri Saha Personeli) isimli saha görevlisine atanmıştır.",
+      "is_read": 0,
+      "type": "Durum",
+      "reference_id": "BLD-2026-883331",
+      "created_at": "2026-08-18T06:21:10.990Z"
+    },
+    {
+      "id": 1787034071064,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebi üzerinize atandı: Görev atandı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:21:10.983Z"
+    },
+    {
+      "id": 1787033946847,
+      "user_id": 7,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-883331] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:19:05.910Z"
+    },
+    {
+      "id": 1787033940366,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:18:59.543Z"
+    },
+    {
+      "id": 1787033923903,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:18:43.461Z"
+    },
+    {
+      "id": 1787033920502,
+      "user_id": 7,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-883331] - \"Yolda çukur var\" talebi üzerinize atandı: Görev atandı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 38,
+      "created_at": "2026-08-18T06:18:39.813Z"
+    },
+    {
+      "id": 1787033721739,
+      "user_id": 11,
+      "department_id": null,
+      "title": "🎉 Talebiniz Başarıyla Çözüldü!",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebiniz belediye ekiplerimizce çözüme kavuşturuldu.",
+      "is_read": 1,
+      "type": "Durum",
+      "reference_id": "BLD-2026-438363",
+      "created_at": "2026-08-18T06:15:20.984Z"
+    },
+    {
+      "id": 1787033682295,
+      "user_id": 11,
+      "department_id": null,
+      "title": "👷 Talebiniz Ekiplere Atandı!",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebiniz incelenmiş olup saha ekiplerimize yönlendirilmiştir.",
+      "is_read": 0,
+      "type": "Durum",
+      "reference_id": "BLD-2026-438363",
+      "created_at": "2026-08-18T06:14:41.814Z"
+    },
+    {
+      "id": 1787033662597,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:14:21.698Z"
+    },
+    {
+      "id": 1787033660618,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:14:20.064Z"
+    },
+    {
+      "id": 1787033657350,
+      "user_id": 29,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-438363] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:14:16.488Z"
+    },
+    {
+      "id": 1787033621248,
+      "user_id": 29,
+      "department_id": null,
+      "title": "ℹ️ Görev Ataması Kaldırıldı",
+      "message": "[BLD-2026-503371] numaralı talep üzerinizden kaldırıldı.",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 35,
+      "created_at": "2026-08-18T06:13:40.899Z"
+    },
+    {
+      "id": 1787033573141,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:12:52.969Z"
+    },
+    {
+      "id": 1787033573055,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:12:52.738Z"
+    },
+    {
+      "id": 1787033572373,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:12:52.345Z"
+    },
+    {
+      "id": 1787033571620,
+      "user_id": 29,
+      "department_id": null,
+      "title": "📌 Yeni Görev Atandı",
+      "message": "[BLD-2026-438363] - \"Başıboş köpek\" talebi üzerinize atandı: test",
+      "is_read": 0,
+      "type": "Görev",
+      "reference_id": 37,
+      "created_at": "2026-08-18T06:12:50.846Z"
+    },
     {
       "id": 1786978764085,
       "user_id": 11,
       "department_id": null,
       "title": "🎉 Talebiniz Başarıyla Çözüldü!",
       "message": "[BLD-2026-725242] - \"Boru patladı\" talebiniz belediye ekiplerimizce çözüme kavuşturuldu.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Durum",
       "reference_id": "BLD-2026-725242",
       "created_at": "2026-08-17T14:59:23.168Z"
@@ -3118,7 +3595,7 @@
       "department_id": null,
       "title": "👷 Talebiniz Ekiplere Atandı!",
       "message": "[BLD-2026-725242] - \"Boru patladı\" talebiniz incelenmiş olup saha ekiplerimize yönlendirilmiştir.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Durum",
       "reference_id": "BLD-2026-725242",
       "created_at": "2026-08-17T14:57:53.210Z"
@@ -3129,7 +3606,7 @@
       "department_id": null,
       "title": "🎉 Talebiniz Başarıyla Çözüldü!",
       "message": "[BLD-2026-725242] - \"Boru patladı\" talebiniz belediye ekiplerimizce çözüme kavuşturuldu.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Durum",
       "reference_id": "BLD-2026-725242",
       "created_at": "2026-08-17T14:52:59.548Z"
@@ -3140,7 +3617,7 @@
       "department_id": null,
       "title": "👷 Talebiniz Ekiplere Atandı!",
       "message": "[BLD-2026-725242] - \"Boru patladı\" talebiniz incelenmiş olup saha ekiplerimize yönlendirilmiştir.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Durum",
       "reference_id": "BLD-2026-725242",
       "created_at": "2026-08-17T14:52:51.557Z"
@@ -3151,7 +3628,7 @@
       "department_id": null,
       "title": "👷 Talebiniz Ekiplere Atandı!",
       "message": "[BLD-2026-725242] - \"Boru patladı\" talebiniz incelenmiş olup saha ekiplerimize yönlendirilmiştir.",
-      "is_read": 0,
+      "is_read": 1,
       "type": "Durum",
       "reference_id": "BLD-2026-725242",
       "created_at": "2026-08-17T14:52:11.758Z"
@@ -3662,6 +4139,26 @@
       "review_comment": null,
       "created_at": "2026-08-17T12:23:26.423Z",
       "updated_at": "2026-08-17T12:23:26.430Z"
+    },
+    {
+      "id": 1787033102513,
+      "complaint_id": 36,
+      "citizen_id": 7,
+      "user_id": 11,
+      "rating": 3,
+      "review_comment": null,
+      "created_at": "2026-08-18T06:05:02.513Z",
+      "updated_at": "2026-08-18T06:05:02.520Z"
+    },
+    {
+      "id": 1787033116891,
+      "complaint_id": 36,
+      "citizen_id": 6,
+      "user_id": 10,
+      "rating": 5,
+      "review_comment": null,
+      "created_at": "2026-08-18T06:05:16.891Z",
+      "updated_at": "2026-08-18T06:05:16.899Z"
     }
   ],
   "audit_logs": [
@@ -6790,6 +7287,72 @@
       "new_value": "{\"priority_level\":\"Acil\",\"status\":\"Çözüldü\"}",
       "ip_address": "::ffff:172.20.0.1",
       "created_at": "2026-08-17T14:59:23.176Z"
+    },
+    {
+      "id": 283,
+      "user_id": 12,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "37",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Yeni\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:12:36.178Z"
+    },
+    {
+      "id": 284,
+      "user_id": 12,
+      "action": "FORWARD_DEPARTMENT",
+      "entity_name": "complaints",
+      "entity_id": "35",
+      "old_value": "{}",
+      "new_value": "{\"target_department_id\":\"1\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:14:06.027Z"
+    },
+    {
+      "id": 285,
+      "user_id": 12,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "37",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"İşlem devam ediyor\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:14:41.823Z"
+    },
+    {
+      "id": 286,
+      "user_id": 12,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "37",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Normal\",\"status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:15:20.992Z"
+    },
+    {
+      "id": 287,
+      "user_id": 2,
+      "action": "UPDATE_STATUS_PRIORITY",
+      "entity_name": "complaints",
+      "entity_id": "38",
+      "old_value": "{}",
+      "new_value": "{\"priority_level\":\"Acil\",\"status\":\"İşlem devam ediyor\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:21:17.158Z"
+    },
+    {
+      "id": 288,
+      "user_id": 7,
+      "action": "ADD_COMPLAINT_ACTION",
+      "entity_name": "complaint_actions",
+      "entity_id": 38,
+      "old_value": null,
+      "new_value": "{\"action_description\":\"bitti\",\"new_status\":\"Çözüldü\"}",
+      "ip_address": "::ffff:172.20.0.1",
+      "created_at": "2026-08-18T06:21:55.864Z"
     }
   ],
   "announcements": [
