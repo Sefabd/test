@@ -128,6 +128,3 @@ Tüm test hesaplarının şifresi: `123456`
 
 ---
 
-## 📄 Lisans
-
-Bu proje Bulancak Belediyesi Çözüm Merkezi için geliştirilmiştir. Tüm hakları saklıdır.
