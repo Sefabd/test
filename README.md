@@ -45,7 +45,7 @@
 - **Backend**: Node.js, Express.js, MySQL (mysql2), JSON State Engine (Otomatik Fallback), JWT, Bcrypt, Multer, Cors.
 - **Frontend**: Vanilla Modern JavaScript (SPA Mimarisi), Leaflet.js, OpenStreetMap, Chart.js, SweetAlert2, FontAwesome 6, Modern CSS Design Tokens.
 - **DevOps**: Docker, Docker Compose, Nginx Ready.
-
+.
 ---
 
 ## 🚀 Kurulum ve Çalıştırma
